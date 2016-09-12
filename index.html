@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>首页</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/tab.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="form-group">
+        <div class="input-group">
+            <div class="input-group-addon"><i class="fa fa-search fa-fw"></i></div>
+            <input class="form-control" type="email" placeholder="请输入宝贝关键字或卖家">
+        </div>
+    </div>
+    <!-- screening -->
+    <div class="screening">
+        <ul>
+            <li class="Regional">地区</li>
+            <li class="Brand">分类</li>
+            <li class="Sort">排序</li>
+        </ul>
+    </div>
+    <!-- End screening -->
+    <!-- grade -->
+    <div class="grade-eject">
+        <ul class="grade-w" id="gradew">
+            <li onclick="grade1(this)">哈尔滨</li>
+            <li onclick="grade1(this)">全国</li>
+            <li onclick="grade1(this)">北京</li>
+            <li onclick="grade1(this)">天津</li>
+            <li onclick="grade1(this)">河北</li>
+            <li onclick="grade1(this)">山西</li>
+            <li onclick="grade1(this)">内蒙古</li>
+            <li onclick="grade1(this)">辽宁</li>
+            <li onclick="grade1(this)">吉林</li>
+            <li onclick="grade1(this)">黑龙江</li>
+            <li onclick="grade1(this)">上海</li>
+            <li onclick="grade1(this)">江苏</li>
+            <li onclick="grade1(this)">山东</li>
+            <li onclick="grade1(this)">河南</li>
+            <li onclick="grade1(this)">湖北</li>
+            <li onclick="grade1(this)">湖南</li>
+            <li onclick="grade1(this)">广东</li>
+            <li onclick="grade1(this)">广西</li>
+            <li onclick="grade1(this)">海南</li>
+        </ul>
+        <ul class="grade-t" id="gradet">
+            <li onclick="gradet(this)">全河北</li>
+            <li onclick="gradet(this)">石家庄</li>
+            <li onclick="gradet(this)">唐山</li>
+            <li onclick="gradet(this)">秦皇岛</li>
+            <li onclick="gradet(this)">邢台</li>
+            <li onclick="gradet(this)">保定</li>
+            <li onclick="gradet(this)">张家口</li>
+            <li onclick="gradet(this)">承德</li>
+            <li onclick="gradet(this)">沧州</li>
+            <li onclick="gradet(this)">廊坊</li>
+            <li onclick="gradet(this)">衡水</li>
+        </ul>
+        <ul class="grade-s" id="grades">
+            <li onclick="grades(this)">全秦皇岛</li>
+            <li onclick="grades(this)">海港区</li>
+            <li onclick="grades(this)">山海关区</li>
+            <li onclick="grades(this)">北戴河区</li>
+            <li onclick="grades(this)">青龙满族自治区</li>
+            <li onclick="grades(this)">昌黎县</li>
+            <li onclick="grades(this)">抚宁县</li>
+            <li onclick="grades(this)">卢龙县</li>
+            <li onclick="grades(this)">其他区</li>
+            <li onclick="grades(this)">经济技术开发区</li>
+        </ul>
+    </div>
+    <!-- End grade -->
+    <!-- Category -->
+    <div class="Category-eject">
+        <ul class="Category-w" id="Categorytw">
+            <li onclick="Categorytw(this)">全部品牌</li>
+            <li onclick="Categorytw(this)">孕妈食品</li>
+            <li onclick="Categorytw(this)">孕妈食品</li>
+            <li onclick="Categorytw(this)">孕妈食品</li>
+            <li onclick="Categorytw(this)">孕妈食品</li>
+            <li onclick="Categorytw(this)">孕妈食品</li>
+            <li onclick="Categorytw(this)">孕妈食品</li>
+            <li onclick="Categorytw(this)">孕妈食品</li>
+            <li onclick="Categorytw(this)">孕妈食品</li>
+            <li onclick="Categorytw(this)">孕妈食品</li>
+            <li onclick="Categorytw(this)">孕妈食品</li>
+            <li onclick="Categorytw(this)">孕妈食品</li>
+            <li onclick="Categorytw(this)">孕妈食品</li>
+        </ul>
+        <ul class="Category-t" id="Categoryt">
+            <li onclick="Categoryt(this)">叶酸</li>
+            <li onclick="Categoryt(this)">叶酸</li>
+            <li onclick="Categoryt(this)">叶酸</li>
+            <li onclick="Categoryt(this)">叶酸</li>
+            <li onclick="Categoryt(this)">叶酸</li>
+            <li onclick="Categoryt(this)">叶酸</li>
+            <li onclick="Categoryt(this)">叶酸</li>
+            <li onclick="Categoryt(this)">叶酸</li>
+            <li onclick="Categoryt(this)">叶酸</li>
+            <li onclick="Categoryt(this)">叶酸</li>
+            <li onclick="Categoryt(this)">叶酸</li>
+            <li onclick="Categoryt(this)">叶酸</li>
+        </ul>
+        <ul class="Category-s" id="Categorys">
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+            <li onclick="Categorys(this)">叶酸</li>
+        </ul>
+    </div>
+    <!-- End Category -->
+    <!-- Category -->
+    <div class="Sort-eject Sort-height">
+        <ul class="Sort-Sort" id="Sort-Sort">
+            <li onclick="Sorts(this)">智能排序</li>
+            <li onclick="Sorts(this)">离我最近</li>
+            <li onclick="Sorts(this)">好评优先</li>
+            <li onclick="Sorts(this)">最新发布</li>
+            <li onclick="Sorts(this)">人气优先</li>
+            <li onclick="Sorts(this)">价格最低</li>
+            <li onclick="Sorts(this)">价格最高</li>
+        </ul>
+    </div>
+    <!-- End Category -->
+
+<div class="taolist">
+    <dl class="pull-left mr" onClick="location='details.html'">
+        <dt><img src="images/temp.jpg" /></dt>
+        <dd>
+            <p class="txt">时尚时尚宝宝时尚宝宝时尚宝宝宝宝</p>
+            <i class="fa fa-cny"></i><span class="cny">500</span><span class="pull-right text-right">2小时</span>
+        </dd>
+    </dl>
+    <dl class="pull-left">
+        <dt><img src="images/temp.jpg" /></dt>
+        <dd>
+            <p class="txt">时尚时尚宝宝时尚宝宝时尚宝宝宝宝</p>
+            <i class="fa fa-cny"></i><span class="cny">500</span><span class="pull-right text-right">2小时</span>
+        </dd>
+    </dl>
+    <dl class="pull-left mr">
+        <dt><img src="images/temp.jpg" /></dt>
+        <dd>
+            <p class="txt">时尚时尚宝宝时尚宝宝时尚宝宝宝宝</p>
+            <i class="fa fa-cny"></i><span class="cny">500</span><span class="pull-right text-right">2小时</span>
+        </dd>
+    </dl>
+    <dl class="pull-left">
+        <dt><img src="images/temp.jpg" /></dt>
+        <dd>
+            <p class="txt">时尚时尚宝宝时尚宝宝时尚宝宝宝宝</p>
+            <i class="fa fa-cny"></i><span class="cny">500</span><span class="pull-right text-right">2小时</span>
+        </dd>
+    </dl>
+</div>
+
+
+</body>
+</html>
