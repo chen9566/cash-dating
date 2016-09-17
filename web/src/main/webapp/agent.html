@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>注册</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+</head
+><body>
+<div class="container">
+    <form class="form-register " role="form">
+		<small>代理人介绍:<br>
+客服热线: 88888888&nbsp;&nbsp;&nbsp;官方网址: www.xxxx.com<br>
+<br>
+</small>
+        <div class="row iphonebg">
+            <div class="ml10">
+                <div class="iphone col-xs-1"> <i class="fa-fw"><img src="images/user-icon.svg"></i></div>
+                <div class="col-xs-9"> <input type="tel"  placeholder="请输入姓名"></div>
+                <div class="col-xs-1 error"><img src="images/registericon1.png" /></div>
+            </div>
+        </div>
+        <div class="row codebg m30 line-b">
+            <div class="mb">
+               <div class="iphone col-xs-1 "> <i class="fa-fw"><img src="dist/css/iphone-icon.svg"></i></div>
+                <div class="col-xs-9"><input type="text" placeholder="请输入手机号码"></div>
+               
+            </div>
+        </div>
+        <button type="button" class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#myModal" >提交申请</button>
+    </form>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">提交申请成功</h4>
+      </div>
+      <div class="modal-body">
+        
+我们的客服人员将尽快与您取得联系
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

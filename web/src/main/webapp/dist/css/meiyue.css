@@ -64,6 +64,7 @@ ul, li {
 	max-width: 100%;
 	margin: 22px auto;
 }
+.form-register small{ color:#888;}
 .form-register .txt{ color:#888}
 .form-register input[type="text"], .form-register input[type="password"], .form-register input[type="tel"] {
 	font-size: 16px;
@@ -751,4 +752,5 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.modcard ul{}
 	.modcard li{ background:#fff; color:#888; line-height:44px; padding:0 15px;}
 	.modcard i{ color:#cacaca; margin-top:7px}
+.modal{ top:15%}
 
