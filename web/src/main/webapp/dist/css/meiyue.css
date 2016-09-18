@@ -690,6 +690,8 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.code img{ width:50%; height:50%}
 	.code h4{ line-height:60px; font-weight:200}
 	.code .nun{ font-size:36px}
+	.code button{ margin-bottom:15px;}
+	.code .agent{ border:1px solid #F65150; color:#F65150}
 /*我的收款码*/
 .paycode{ padding:20px 15px; margin:22px 22px 0 22px; text-align:center;background:#fff;border-bottom:1px solid #dfdfdf;border-top:1px solid #dfdfdf;  }
 	.paycode img{ width:80%; height:80%; margin:10px 0 20px 0}
