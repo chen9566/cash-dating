@@ -39,7 +39,7 @@ public class User implements WeixinUser {
     private String mobileNumber;
 
     // 微信信息
-    @Column(length = 30)
+    @Column(length = 32)
     private String openId;
     private String accessToken;
     private LocalDateTime accessTimeToExpire;

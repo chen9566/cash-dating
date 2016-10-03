@@ -56,6 +56,7 @@ public class WebConfig {
 //            }
 
             registry
+                    .antMatchers("/all.js").permitAll()
                     // 有几个事情是没有登录也可以做的 比如说 忘记密码 注册
                     .antMatchers("/verificationCode").permitAll()// put 发送验证码
                     .antMatchers("/registerMobile").permitAll()// post注册手机

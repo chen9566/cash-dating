@@ -70,4 +70,7 @@ public interface UserService {
      */
     @Transactional(readOnly = true)
     User byOpenId(String openId);
+
+    @Transactional(readOnly = true)
+    User byMobile(String mobile);
 }

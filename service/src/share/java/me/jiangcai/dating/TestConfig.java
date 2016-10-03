@@ -1,5 +1,6 @@
 package me.jiangcai.dating;
 
+import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.service.VerificationCodeService;
 import me.jiangcai.wx.PublicAccountSupplier;
@@ -42,8 +43,9 @@ public class TestConfig {
             private Set<String> mobiles = new HashSet<>();
 
             @Override
-            public boolean verify(String mobile, String code, VerificationType type) {
-                return code.equals("1234") && mobiles.contains(mobile);
+            public void verify(String mobile, String code, VerificationType type) throws IllegalVerificationCodeException {
+                if (!(code.equals("1234") && mobiles.contains(mobile)))
+                    throw new IllegalVerificationCodeException(type);
             }
 
             @Override

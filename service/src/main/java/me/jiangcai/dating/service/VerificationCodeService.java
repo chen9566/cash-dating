@@ -1,5 +1,6 @@
 package me.jiangcai.dating.service;
 
+import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.VerificationType;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,9 +19,10 @@ public interface VerificationCodeService {
      * @param mobile 手机号码
      * @param code
      * @param type   验证码类型
-     * @return true for yes
+     * @throws IllegalVerificationCodeException 如果无效
      */
-    boolean verify(String mobile, String code, VerificationType type);
+    @Transactional(readOnly = true)
+    void verify(String mobile, String code, VerificationType type) throws IllegalVerificationCodeException;
 
     /**
      * 发送验证码

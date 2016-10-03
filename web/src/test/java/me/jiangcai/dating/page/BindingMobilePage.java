@@ -1,6 +1,7 @@
 package me.jiangcai.dating.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -38,7 +39,7 @@ public class BindingMobilePage extends AbstractPage {
                 .filter(element -> element.getText().equals("确定") && element.isDisplayed())
                 .findAny().ifPresent(element -> button = element);
 
-        webDriver.findElements(By.tagName("div")).stream()
+        webDriver.findElements(By.className("yzm")).stream()
                 .filter(element -> element.isDisplayed() && element.getText().equals("获取验证码"))
                 .findAny().ifPresent(element -> buttonSend = element);
 
@@ -64,5 +65,17 @@ public class BindingMobilePage extends AbstractPage {
      */
     public void sendCode() {
         buttonSend.click();
+        try {
+            webDriver.switchTo().alert();
+            throw new AssertionError("应该看不到错误的");
+        } catch (NoAlertPresentException ignored) {
+        }
+
+    }
+
+    public void submitWithCode() {
+        codeInput.clear();
+        codeInput.sendKeys("1234");
+        button.click();
     }
 }

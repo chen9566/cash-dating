@@ -3,8 +3,10 @@ package me.jiangcai.dating.service.impl;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
+import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.UserService;
+import me.jiangcai.dating.service.VerificationCodeService;
 import me.jiangcai.dating.util.WeixinAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
@@ -25,6 +27,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private VerificationCodeService verificationCodeService;
 
     private final SecurityContextRepository httpSessionSecurityContextRepository
             = new HttpSessionSecurityContextRepository();
@@ -46,7 +50,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registerMobile(String openId, String mobileNumber, String code, String inviteCode)
             throws IllegalVerificationCodeException {
-        return null;
+        verificationCodeService.verify(mobileNumber, code, VerificationType.register);
+
+        User user = userRepository.findByOpenId(openId);
+        if (user == null) {
+            user = new User();
+            user.setOpenId(openId);
+        }
+        user.setMobileNumber(mobileNumber);
+        return userRepository.save(user);
     }
 
     @Override
@@ -69,5 +81,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User byOpenId(String openId) {
         return userRepository.findByOpenId(openId);
+    }
+
+    @Override
+    public User byMobile(String mobile) {
+        return userRepository.findByMobileNumber(mobile);
     }
 }
