@@ -19,7 +19,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class<?>[]{
-                // TODO 还需要一个环境配置
+                EnvironmentConfig.class,
                 WebConfig.class
         };
     }

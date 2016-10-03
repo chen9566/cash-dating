@@ -1,10 +1,12 @@
 package me.jiangcai.dating.repository;
 
+import me.jiangcai.dating.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.User;
 
 /**
  * @author CJ
  */
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    User findByOpenId(String id);
 }

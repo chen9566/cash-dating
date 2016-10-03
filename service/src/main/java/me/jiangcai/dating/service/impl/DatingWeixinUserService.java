@@ -1,23 +1,27 @@
 package me.jiangcai.dating.service.impl;
 
+import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.wx.WeixinUserService;
 import me.jiangcai.wx.model.PublicAccount;
-import me.jiangcai.wx.model.SimpleWeixinUser;
 import me.jiangcai.wx.model.UserAccessResponse;
 import me.jiangcai.wx.model.WeixinUser;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import me.jiangcai.wx.protocol.Protocol;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 
 /**
  * @author CJ
  */
 @Service
 public class DatingWeixinUserService implements WeixinUserService {
-    private final HashMap<String, WeixinUser> tokens = new HashMap<>();
+//    private final HashMap<String, WeixinUser> tokens = new HashMap<>();
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public <T> T userInfo(PublicAccount account, String openId, Class<T> clazz) {
@@ -32,10 +36,9 @@ public class DatingWeixinUserService implements WeixinUserService {
 
     @Override
     public void updateUserToken(PublicAccount account, UserAccessResponse response) {
-        WeixinUser user = tokens.get(response.getOpenId());
+        User user = userRepository.findByOpenId(response.getOpenId());
         if (user == null) {
-            user = new SimpleWeixinUser();
-            tokens.put(response.getOpenId(), user);
+            user = new User();
             user.setOpenId(response.getOpenId());
         }
         user.setAccessToken(response.getAccessToken());
@@ -45,10 +48,12 @@ public class DatingWeixinUserService implements WeixinUserService {
         LocalDateTime dateTime = LocalDateTime.now();
         dateTime.plusSeconds(response.getTime());
         user.setAccessTimeToExpire(dateTime);
+
+        userRepository.save(user);
     }
 
     @Override
     public WeixinUser getTokenInfo(PublicAccount account, String openId) {
-        return tokens.get(openId);
+        return userRepository.findByOpenId(openId);
     }
 }

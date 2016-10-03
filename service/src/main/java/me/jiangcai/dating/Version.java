@@ -3,5 +3,6 @@ package me.jiangcai.dating;
 /**
  * @author CJ
  */
-public class A {
+public enum Version {
+    init,
 }
