@@ -1,6 +1,6 @@
-package me.jiangai.dating.loader;
+package me.jiangcai.dating.loader;
 
-import me.jiangai.dating.WebTest;
+import me.jiangcai.dating.WebTest;
 import org.junit.Test;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

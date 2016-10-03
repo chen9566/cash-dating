@@ -1,4 +1,4 @@
-package me.jiangai.dating.web;
+package me.jiangcai.dating.web;
 
 import me.jiangcai.wx.web.thymeleaf.WeixinDialect;
 import org.springframework.beans.factory.annotation.Autowired;

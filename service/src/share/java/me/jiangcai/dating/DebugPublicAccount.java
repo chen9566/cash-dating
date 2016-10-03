@@ -1,4 +1,4 @@
-package me.jiangai.dating;
+package me.jiangcai.dating;
 
 import me.jiangcai.wx.model.PublicAccount;
 

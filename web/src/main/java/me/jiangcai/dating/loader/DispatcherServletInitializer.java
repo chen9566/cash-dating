@@ -7,9 +7,9 @@
  * 2013-2016. All rights reserved.
  */
 
-package me.jiangai.dating.loader;
+package me.jiangcai.dating.loader;
 
-import me.jiangai.dating.web.WebConfig;
+import me.jiangcai.dating.web.WebConfig;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

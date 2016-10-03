@@ -1,6 +1,6 @@
-package me.jiangai.dating;
+package me.jiangcai.dating;
 
-import me.jiangai.dating.web.WebConfig;
+import me.jiangcai.dating.web.WebConfig;
 import me.jiangcai.lib.test.SpringWebTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;

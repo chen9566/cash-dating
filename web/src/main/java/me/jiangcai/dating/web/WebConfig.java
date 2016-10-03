@@ -1,4 +1,4 @@
-package me.jiangai.dating.web;
+package me.jiangcai.dating.web;
 
 import me.jiangcai.dating.core.CoreConfig;
 import me.jiangcai.dating.core.Login;

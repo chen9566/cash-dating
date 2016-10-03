@@ -7,7 +7,7 @@
  * 2013-2016. All rights reserved.
  */
 
-package me.jiangai.dating.loader;
+package me.jiangcai.dating.loader;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.filter.RequestContextFilter;

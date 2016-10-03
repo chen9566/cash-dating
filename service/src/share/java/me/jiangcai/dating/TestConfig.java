@@ -1,4 +1,4 @@
-package me.jiangai.dating;
+package me.jiangcai.dating;
 
 import me.jiangcai.wx.PublicAccountSupplier;
 import org.springframework.beans.factory.annotation.Autowired;
