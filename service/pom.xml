@@ -1,5 +1,7 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -8,10 +10,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>web</artifactId>
-    <packaging>war</packaging>
-
-    <name>web</name>
+    <artifactId>service</artifactId>
 
     <dependencies>
         <dependency>
@@ -21,9 +20,14 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>me.jiangcai.dating</groupId>
-            <artifactId>service</artifactId>
-            <version>${project.version}</version>
+            <groupId>me.jiangcai.lib</groupId>
+            <artifactId>spring</artifactId>
+            <version>${jiangcai.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>me.jiangcai.wx</groupId>
+            <artifactId>weixin-web</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>me.jiangcai.lib</groupId>
@@ -37,6 +41,26 @@
             <version>1.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>me.jiangcai.lib</groupId>
+            <artifactId>bracket</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>me.jiangcai.lib</groupId>
+            <artifactId>resource</artifactId>
+            <version>${jiangcai.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>me.jiangcai.lib</groupId>
+            <artifactId>upgrade</artifactId>
+            <version>${jiangcai.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>me.jiangcai.lib</groupId>
+            <artifactId>jdbc</artifactId>
+            <version>${jiangcai.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -45,35 +69,11 @@
                 <directory>src/test/resources</directory>
             </testResource>
             <testResource>
-                <directory>../service/src/share/resources</directory>
+                <directory>src/share/resources</directory>
             </testResource>
         </testResources>
         <plugins>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>process-classes</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <tasks>
-                                <echo>copy demo files</echo>
-                                <copy todir="target/demo-sources">
-                                    <fileset dir="../service/src/share/java"/>
-                                </copy>
-                            </tasks>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--添加一个测试源文件夹-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -87,7 +87,7 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>target/demo-sources</source>
+                                <source>src/share/java</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -95,5 +95,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>

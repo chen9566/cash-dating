@@ -15,6 +15,7 @@
 
     <modules>
         <module>web</module>
+        <module>service</module>
     </modules>
 
     <properties>
@@ -81,6 +82,15 @@
             <url>http://repo.jiangcai.me:8082/content/groups/public/</url>
         </pluginRepository>
     </pluginRepositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+            </plugin>
+        </plugins>
+    </build>
 
 
 </project>
