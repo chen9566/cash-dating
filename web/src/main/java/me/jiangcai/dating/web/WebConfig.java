@@ -56,6 +56,12 @@ public class WebConfig {
 //            }
 
             registry
+                    // 有几个事情是没有登录也可以做的 比如说 忘记密码 注册
+                    .antMatchers("/verificationCode").permitAll()// put 发送验证码
+                    .antMatchers("/registerMobile").permitAll()// post注册手机
+                    .antMatchers("/registerCard").permitAll()// post注册第一张银行卡
+                    .antMatchers("/forgetPassword").permitAll()//get,post 忘记密码
+                    // 有几个事情是没有登录也可以做的 比如说 忘记密码 注册
                     .antMatchers("/**").authenticated()
                     .antMatchers("/manage/**").hasAnyRole(Login.Role_Manage_Value, "ROOT")
                     .antMatchers("/manage/root/**").hasRole("ROOT")
