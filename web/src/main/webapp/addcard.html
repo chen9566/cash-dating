@@ -54,10 +54,26 @@
       <input type="checkbox">同意<a href="#">《服务协议》</a>
     </label>
   </div>
-		<button type="button" class="btn btn-danger btn-lg btn-block">下一步</button>
+		<button type="button" class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#myModal" >下一步</button>
 		
     </form>
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">您已帮卡成功</h4>
+      </div>
+      <div class="modal-body">      
+关注款爷，让我们更好、更快捷的为您服务！
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">关注款爷</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
