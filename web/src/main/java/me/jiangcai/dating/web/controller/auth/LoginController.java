@@ -1,5 +1,6 @@
 package me.jiangcai.dating.web.controller.auth;
 
+import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.wx.OpenId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author CJ
@@ -24,7 +28,7 @@ public class LoginController {
      * @return 登录页面
      */
     @RequestMapping(method = RequestMethod.GET, value = "/login", produces = MediaType.TEXT_HTML_VALUE)
-    public String login(@OpenId String id) {
+    public String login(@OpenId String id, HttpServletRequest request, HttpServletResponse response) {
 
         //  是否已经完成注册
         //
@@ -34,9 +38,24 @@ public class LoginController {
         if (userService.bankAccountRequired(id)) {
             return "addcard.html";
         }
-        return null;
+
+        userService.loginAs(request, response, userService.byOpenId(id));
+        // 完成登录
+        return "redirect:/";
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/registerMobile")
+    public String registerMobile(@OpenId String id, String mobile, String code, String inviteCode) {
+        userService.registerMobile(id, mobile, code, inviteCode);
+
+        return "redirect:/login";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/registerCard")
+    public String registerCard(@OpenId String id, String name, String number, String bankCode, String mobile, String code) {
+        Card card = userService.addCard(id, name, number, bankCode, mobile, code);
+        return "redirect:/login";
+    }
 
 
 }

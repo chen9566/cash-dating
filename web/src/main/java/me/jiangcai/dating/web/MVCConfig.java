@@ -24,7 +24,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
  */
 @Configuration
 @Import(MVCConfig.ThymeleafConfig.class)
-@ComponentScan("me.jiangcai.dating.web.controller")
+@ComponentScan({"me.jiangcai.dating.web.controller","me.jiangcai.dating.web.advice"})
 @EnableWebMvc
 class MVCConfig extends WebMvcConfigurerAdapter {
     private static String[] STATIC_RESOURCE_PATHS = new String[]{
