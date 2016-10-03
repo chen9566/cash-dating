@@ -3,6 +3,7 @@ package me.jiangcai.dating.web;
 import me.jiangcai.wx.web.thymeleaf.WeixinDialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
@@ -23,10 +24,11 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
  */
 @Configuration
 @Import(MVCConfig.ThymeleafConfig.class)
+@ComponentScan("me.jiangcai.dating.web.controller")
 @EnableWebMvc
 class MVCConfig extends WebMvcConfigurerAdapter {
     private static String[] STATIC_RESOURCE_PATHS = new String[]{
-            "css", "fonts", "holder.js", "images", "js", "_resources", "localisation", "admin/js", "users/js"
+            "dist", "css", "fonts", "holder.js", "images", "js", "_resources", "localisation", "admin/js", "users/js"
             , "user/js", "appfile/css", "appfile/images", "appfile/js", "appfile/list_files", "appfile/login_files"
     };
 
@@ -74,7 +76,6 @@ class MVCConfig extends WebMvcConfigurerAdapter {
         @Bean
         private ThymeleafViewResolver thymeleafViewResolver() {
             ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-            viewResolver.setCache(false);
             viewResolver.setTemplateEngine(engine);
             viewResolver.setCharacterEncoding("UTF-8");
             viewResolver.setContentType("text/html;charset=UTF-8");
@@ -98,7 +99,6 @@ class MVCConfig extends WebMvcConfigurerAdapter {
 
             private ITemplateResolver templateResolver() {
                 SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-                resolver.setCacheable(false);
                 resolver.setApplicationContext(webApplicationContext);
                 resolver.setCharacterEncoding("UTF-8");
                 resolver.setPrefix("/");
