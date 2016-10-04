@@ -8,25 +8,28 @@
     <link rel="stylesheet" href="dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="dist/css/font-awesome.min.css">
     <link rel="stylesheet" href="dist/css/meiyue.css">
+	<link rel="stylesheet" href="dist/css/jquery.dialogbox.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
     <script src="dist/js/yzm.js"></script>
+	<script src="dist/js/jquery.dialogBox.js"></script>
 </head>
 <body>
+<div id="mask-dialogBox"></div>
 <div class="container">
     <form class="form-register " action="addcard.html" method="post" th:action="@{/registerMobile}" role="form">
         <div class="row iphonebg">
             <div class="ml10">
                 <div class="iphone col-xs-1"><i class="fa-fw"><img src="dist/css/iphone-icon.svg"></i></div>
                 <div class="col-xs-9"><input name="mobile" type="tel" placeholder="请输入手机号码"></div>
-                <div class="col-xs-1 error"><img src="images/registericon1.png"/></div>
+                <!--<div class="col-xs-1 error"><img src="images/registericon1.png"/></div>!-->
             </div>
         </div>
         <div class="row codebg m30 line-b">
             <div class="mb">
                 <div class="iphone col-xs-1 "><i class="fa-fw"><img src="dist/css/passwrod-icon.svg"></i></div>
                 <div class="col-xs-6"><input name="code" type="text" placeholder="请输入验证码"></div>
-                <div class="col-xs-4 yzm">获取验证码</div>
+                <div class="col-xs-4 yzm" id="btn-mask">获取验证码</div>
             </div>
         </div>
         <button type="submit" class="btn btn-danger btn-lg btn-block">确定</button>
@@ -35,4 +38,5 @@
 
 </body>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
+
 </html>
