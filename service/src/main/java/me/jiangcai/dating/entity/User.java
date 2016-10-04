@@ -6,6 +6,7 @@ import lombok.Setter;
 import me.jiangcai.wx.model.Gender;
 import me.jiangcai.wx.model.WeixinUser;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -56,6 +57,6 @@ public class User implements WeixinUser {
     private String country;
 
     // 银行卡信息
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Card> cards;
 }

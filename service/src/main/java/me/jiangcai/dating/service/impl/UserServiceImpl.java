@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /**
  * @author CJ
@@ -64,7 +65,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public Card addCard(String openId, String name, String number, String bankCode, String mobile, String code)
             throws IllegalVerificationCodeException {
-        return null;
+        verificationCodeService.verify(mobile, code, VerificationType.card);
+        User user = userRepository.findByOpenId(openId);
+        Card card = new Card();
+        card.setNumber(number);
+        card.setOwner(name);
+        card.setType(bankCode);
+        if (user.getCards() == null) {
+            user.setCards(new ArrayList<>());
+        }
+        user.getCards().add(card);
+        user = userRepository.save(user);
+        return user.getCards().stream()
+                .filter(card1 -> card1.getNumber().equals(number))
+                .findAny()
+                .orElseThrow(IllegalStateException::new);
     }
 
     @Override
