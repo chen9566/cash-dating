@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>注册</title>
-<link rel="stylesheet" href="dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="dist/css/font-awesome.min.css">
-<link rel="stylesheet" href="dist/css/meiyue.css">
-<script src="dist/js/jquery.js"></script>
-<script src="dist/js/bootstrap.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>注册</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css" th:href="@{/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css" th:href="@{/dist/css/font-awesome.min.css}">
+    <link rel="stylesheet" href="dist/css/meiyue.css" th:href="@{/dist/css/meiyue.css}">
+    <script src="dist/js/jquery.js" th:src="@{/dist/js/jquery.js}"></script>
+    <script src="dist/js/bootstrap.min.js" th:src="@{/dist/js/bootstrap.min.js}"></script>
 </head>
 <body>
 <div class="paycode">
-	<h4> <i class="fa fa-cny"></i><span class="nun">30000</span></h4>
-	<p class="txt">哇哇哇哇哇</p>
-	<p><img src="images/temp2.png"/></p>
+    <h4><i class="fa fa-cny"></i><span class="nun">30000</span></h4>
+    <p class="txt">哇哇哇哇哇</p>
+    <p><img name="qrCode" src="images/temp2.png" th:src="@{/images/temp2.png}"/></p>
 </div>
-	<div class="share-btn"><button type="button" class="btn btn-danger btn-lg btn-block">我要分享</button></div>
+<div class="share-btn">
+    <button type="button" class="btn btn-danger btn-lg btn-block">我要分享</button>
+</div>
 </body>
 </html>

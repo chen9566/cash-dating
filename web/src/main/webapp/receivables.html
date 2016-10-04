@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
@@ -10,16 +10,16 @@
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
- 	<script src="dist/js/yzm.js"></script>
-</head
-><body>
+    <script src="dist/js/yzm.js"></script>
+</head>
+<body>
 <div class="container">
-    <form class="form-register " method="post" action="paycode.html" role="form">
+    <form class="form-register " method="post" th:action="@{/startOrder}" action="paycode.html" role="form">
         <div class="row iphonebg">
             <div class="ml10">
                 <div class="iphone col-xs-3"> 金额(元)</div>
-                <div class="col-xs-9"> <input type="number" name="amount" placeholder="请填写收款金额"></div>
-                
+                <div class="col-xs-9"><input type="number" name="amount" placeholder="请填写收款金额"></div>
+
             </div>
         </div>
         <div class="row codebg m30 line-b">
@@ -28,7 +28,7 @@
             </div>
         </div>
         <button type="submit" class="btn btn-danger btn-lg btn-block">支付</button>
-		<!--<button type="button" class="btn btn-default btn-lg btn-block">代付</button>-->
+        <!--<button type="button" class="btn btn-default btn-lg btn-block">代付</button>-->
     </form>
 </div>
 

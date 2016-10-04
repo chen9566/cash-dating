@@ -11,13 +11,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author CJ
  */
-public class StartPayPage extends AbstractPage {
+public class StartOrderPage extends AbstractPage {
 
     private WebElement amountInput;
     private WebElement commentInput;
     private WebElement button;
 
-    public StartPayPage(WebDriver webDriver) {
+    public StartOrderPage(WebDriver webDriver) {
         super(webDriver);
     }
 
