@@ -3,12 +3,17 @@ $(function () {
     var mobileInput = $('input[type=tel]');
     //获取短信验证码
     var validCode = true;
-    $(".yzm").click(function () {
+    $("#btn-mask").click(function () {
         var time = 30;
         var code = $(this);
         if (validCode) {
             if (mobileInput.val().length < 11) {
-                alert('输入手机号码');
+                $('#mask-dialogBox').dialogBox({
+					hasClose: true,
+					hasMask: true,
+					title: 'title text',
+					content: '请输入你的手机号码'
+				});
                 return;
             }
             // if (!$.prototypesMode) {
