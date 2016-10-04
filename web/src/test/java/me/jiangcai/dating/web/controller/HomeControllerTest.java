@@ -46,8 +46,8 @@ public class HomeControllerTest extends LoginWebTest {
 
         log.info("the url scanned:" + url);
 
-        driver.get(url);
-        System.out.println(driver.getPageSource());
+//        driver.get(url);
+//        System.out.println(driver.getPageSource());
     }
 
 }

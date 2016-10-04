@@ -73,7 +73,9 @@ public class GlobalController {
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append(request.getScheme()).append("://");
         urlBuilder.append(request.getLocalName());
-        if (request.getServerPort() == 80 && request.getScheme().equalsIgnoreCase("http"))
+        if (request.getServerPort() < 0)
+            ;
+        else if (request.getServerPort() == 80 && request.getScheme().equalsIgnoreCase("http"))
             ;
         else if (request.getServerPort() == 443 && request.getScheme().equalsIgnoreCase("https"))
             ;

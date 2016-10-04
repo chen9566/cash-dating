@@ -41,18 +41,17 @@ public class PayController {
     /**
      * 打开这个付款二维码展示界面,通常只有owner才会打开
      *
-     * @param user
      * @param id
      * @param model
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/order/{id}")
-    public String orderInfo(@AuthenticationPrincipal User user, @PathVariable("id") String id, Model model) {
+    public String orderInfo(@PathVariable("id") String id, Model model) {
         Order order = orderService.getOne(id);
 
-        if (!order.getOwner().equals(user)) {
-            return "redirect:/";
-        }
+//        if (!order.getOwner().equals(user)) {
+//            return "redirect:/";
+//        }
 
         model.addAttribute("order", order);
         return "paycode.html";
