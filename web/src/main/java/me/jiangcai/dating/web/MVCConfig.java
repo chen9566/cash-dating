@@ -1,5 +1,6 @@
 package me.jiangcai.dating.web;
 
+import me.jiangcai.dating.web.mvc.ImageResolver;
 import me.jiangcai.wx.web.thymeleaf.WeixinDialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
@@ -19,12 +21,14 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import java.util.List;
+
 /**
  * @author CJ
  */
 @Configuration
 @Import(MVCConfig.ThymeleafConfig.class)
-@ComponentScan({"me.jiangcai.dating.web.controller","me.jiangcai.dating.web.advice"})
+@ComponentScan({"me.jiangcai.dating.web.controller", "me.jiangcai.dating.web.advice"})
 @EnableWebMvc
 class MVCConfig extends WebMvcConfigurerAdapter {
     private static String[] STATIC_RESOURCE_PATHS = new String[]{
@@ -57,6 +61,12 @@ class MVCConfig extends WebMvcConfigurerAdapter {
             ignoring[startIndex++] = "/" + path + "/**/*";
         }
         return ignoring;
+    }
+
+    @Override
+    public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> returnValueHandlers) {
+        super.addReturnValueHandlers(returnValueHandlers);
+        returnValueHandlers.add(0, new ImageResolver());
     }
 
     @Autowired

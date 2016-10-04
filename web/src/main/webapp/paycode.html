@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="order" type="me.jiangcai.dating.entity.Order"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
@@ -13,9 +14,10 @@
 </head>
 <body>
 <div class="paycode">
-    <h4><i class="fa fa-cny"></i><span class="nun">30000</span></h4>
-    <p class="txt">哇哇哇哇哇</p>
-    <p><img name="qrCode" src="images/temp2.png" th:src="@{/images/temp2.png}"/></p>
+    <h4><i class="fa fa-cny"></i>
+        <span class="nun" th:text="${{order.amount}}">30000</span></h4>
+    <p class="txt" th:text="${order.comment}">哇哇哇哇哇</p>
+    <p><img name="qrCode" src="images/temp2.png" th:src="@{/toPayQR/{id}(id=${order.id})}"/></p>
 </div>
 <div class="share-btn">
     <button type="button" class="btn btn-danger btn-lg btn-block">我要分享</button>

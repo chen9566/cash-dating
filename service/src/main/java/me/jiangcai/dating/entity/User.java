@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 用户
@@ -59,4 +60,18 @@ public class User implements WeixinUser {
     // 银行卡信息
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Card> cards;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(mobileNumber, user.mobileNumber) &&
+                Objects.equals(openId, user.openId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mobileNumber, openId);
+    }
 }

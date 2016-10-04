@@ -24,4 +24,6 @@ public interface OrderService {
     @Transactional
     Order newOrder(User user, BigDecimal amount, String comment);
 
+    @Transactional(readOnly = true)
+    Order getOne(String id);
 }
