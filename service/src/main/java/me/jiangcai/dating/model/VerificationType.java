@@ -6,7 +6,8 @@ import java.util.function.Function;
  * @author CJ
  */
 public enum VerificationType {
-    register;
+    register,
+    card;
 
     public Function<String, String> work() {
         return Function.identity();
