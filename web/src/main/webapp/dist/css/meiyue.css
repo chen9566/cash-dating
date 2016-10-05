@@ -711,7 +711,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.my li{verflow:hidden;}
 	.my li img{ width:65px; height:65px; }
 	.my li i{ float:right; color:#cacaca}
-	.my li t{ color:#b3b3b3}
+	.my li span{ color:#b3b3b3}
 	.my li h4{ font-size:16px; font-weight:300; font-weight:400; line-height:16px}
 .my-activity{padding:10px 0;}
 	.my-activity ul{overflow:hidden;}

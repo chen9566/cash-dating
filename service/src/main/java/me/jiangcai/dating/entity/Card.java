@@ -2,6 +2,7 @@ package me.jiangcai.dating.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.dating.entity.support.Address;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,6 +37,8 @@ public class Card {
      * 持卡人姓名
      */
     private String owner;
+
+    private Address address;
 
     private String type;
 

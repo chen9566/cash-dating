@@ -4,12 +4,14 @@ import me.jiangcai.chanpay.data.trade.CreateInstantTrade;
 import me.jiangcai.chanpay.data.trade.GetPayChannel;
 import me.jiangcai.chanpay.data.trade.support.PayChannel;
 import me.jiangcai.chanpay.event.TradeEvent;
+import me.jiangcai.chanpay.model.CardAttribute;
+import me.jiangcai.chanpay.model.PayMode;
 import me.jiangcai.chanpay.service.TransactionService;
 import me.jiangcai.chanpay.service.impl.GetPayChannelHandler;
 import me.jiangcai.chanpay.service.impl.InstantTradeHandler;
 import me.jiangcai.dating.entity.Card;
-import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.repository.ChanpayOrderRepository;
 import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.ChanpayService;
@@ -44,12 +46,15 @@ public abstract class AbstractChanpayService implements ChanpayService {
         // 获取银行列表
         //GetPayChannel
         GetPayChannel getPayChannel = new GetPayChannel();
-        List<PayChannel> channels =  transactionService.execute(getPayChannel, new GetPayChannelHandler());
+        List<PayChannel> channels = transactionService.execute(getPayChannel, new GetPayChannelHandler());
 
-        for (PayChannel c:channels){
-            // TODO !!
-            System.out.println(c);
-        }
+        channels.stream()
+                .filter(payChannel -> payChannel.getMode() == PayMode.ONLINE_BANK)
+                .filter(payChannel -> payChannel.getAttribute() == CardAttribute.B)
+                .forEach(payChannel -> {
+                    log.debug("get bank info " + payChannel);
+                    bankService.updateBank(payChannel.getCode(), payChannel.getName());
+                });
     }
 
     @Override

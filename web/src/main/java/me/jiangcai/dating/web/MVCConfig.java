@@ -1,6 +1,7 @@
 package me.jiangcai.dating.web;
 
 import me.jiangcai.dating.web.mvc.ImageResolver;
+import me.jiangcai.dating.web.thymeleaf.CashDialect;
 import me.jiangcai.wx.web.thymeleaf.WeixinDialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -92,11 +93,14 @@ class MVCConfig extends WebMvcConfigurerAdapter {
             return viewResolver;
         }
 
+        @ComponentScan("me.jiangcai.dating.web.thymeleaf")
         static class ThymeleafTemplateConfig {
             @Autowired
             private WebApplicationContext webApplicationContext;
             @Autowired
             private WeixinDialect weixinDialect;
+            @Autowired
+            private CashDialect cashDialect;
 
             @Bean
             public TemplateEngine templateEngine() {
@@ -104,6 +108,7 @@ class MVCConfig extends WebMvcConfigurerAdapter {
                 engine.setEnableSpringELCompiler(true);
                 engine.setTemplateResolver(templateResolver());
                 engine.addDialect(weixinDialect);
+                engine.addDialect(cashDialect);
                 return engine;
             }
 

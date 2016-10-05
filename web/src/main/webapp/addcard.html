@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
@@ -10,67 +10,61 @@
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
- 	<script src="dist/js/yzm.js"></script>
-</head
-><body>
+    <script src="dist/js/yzm.js"></script>
+    <script src="dist/js/share.js"></script>
+</head>
+<body>
 <div class="container">
     <form class="form-register" role="form">
-	<p class="txt">请绑定持卡人的银行卡</p>
-
-        <div class="row iphonebg">
-            <div class="ml10">
-                <div class="iphone col-xs-11"> 银行账户类型: 借记卡</div>
-
-            </div>
-        </div>
+        <p class="txt">请绑定持卡人的银行卡(借记卡)</p>
+        <!--<div class="row iphonebg">-->
+        <!--<div class="ml10">-->
+        <!--<div class="iphone col-xs-11"> 银行账户类型: 借记卡</div>-->
+        <!--</div>-->
+        <!--</div>-->
         <div class="row codebg">
             <div class="ml10">
                 <div class="iphone col-xs-5">开户人真实姓名:</div>
                 <div class="col-xs-6"><input type="text" placeholder="输入真实姓名"></div>
-
             </div>
         </div>
+        <!--<div class="row codebg">-->
+        <!--<div class="ml10">-->
+        <!--<div class="iphone col-xs-3">卡属性:</div>-->
+        <!--<div class="col-xs-8">-->
+        <!--<label class="checkbox-inline">-->
+        <!--<input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1" checked>对公-->
+        <!--</label>-->
+        <!--<label class="checkbox-inline">-->
+        <!--<input type="radio" name="optionsRadiosinline" id="optionsRadios4" value="option2">对私-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row codebg">-->
+        <!--<div class="ml10">-->
+        <!--<div class="iphone col-xs-3">名单:</div>-->
+        <!--<div class="col-xs-9">-->
+        <!--<label class="checkbox-inline">-->
+        <!--<input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1" checked>无-->
+        <!--</label>-->
+        <!--<label class="checkbox-inline">-->
+        <!--<input type="radio" name="optionsRadiosinline" id="optionsRadios4" value="option2">黑名单-->
+        <!--</label>-->
+        <!--<label class="checkbox-inline">-->
+        <!--<input type="radio" name="optionsRadiosinline" id="optionsRadios5" value="option2">白名单-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
         <div class="row codebg">
-            <div class="ml10">
-                <div class="iphone col-xs-3">卡属性:</div>
-                <div class="col-xs-8">
-                    <label class="checkbox-inline">
-                        <input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1" checked>对公
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="radio" name="optionsRadiosinline" id="optionsRadios4" value="option2">对私
-                    </label>
-                </div>
-
-            </div>
-        </div>
-        <div class="row codebg">
-            <div class="ml10">
-                <div class="iphone col-xs-3">名单:</div>
-                <div class="col-xs-9">
-                    <label class="checkbox-inline">
-                        <input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1" checked>无
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="radio" name="optionsRadiosinline" id="optionsRadios4" value="option2">黑名单
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="radio" name="optionsRadiosinline" id="optionsRadios5" value="option2">白名单
-                    </label>
-                </div>
-
-            </div>
-        </div>
-		 <div class="row codebg">
             <div class="ml10">
                 <div class="iphone col-xs-5">开户银行所在省:</div>
                 <div class="col-xs-6">
-
-                    <select class="form-control">
+                    <select class="form-control province-selector">
                         <option value="">默认选择</option>
                         <option value="">北京</option>
                     </select>
-
                 </div>
             </div>
         </div>
@@ -78,12 +72,10 @@
             <div class="ml10">
                 <div class="iphone col-xs-5">开户银行所在市:</div>
                 <div class="col-xs-6">
-
-                    <select class="form-control">
+                    <select class="form-control city-selector">
                         <option value="">默认选择</option>
                         <option value="">北京</option>
                     </select>
-
                 </div>
             </div>
         </div>
@@ -123,27 +115,30 @@
         <p class="txt"><br>此银行卡号开户名必须与上方开户名一致<br>否则提现会失败<br><br></p>
 
 
-		<button type="button" class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#myModal" >提交</button>
-		
+        <button type="button" class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#myModal">提交
+        </button>
+
     </form>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">您已帮卡成功</h4>
-      </div>
-      <div class="modal-body">      
-关注款爷，让我们更好、更快捷的为您服务！
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">关注款爷</button>
-      </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">您已帮卡成功</h4>
+            </div>
+            <div class="modal-body">
+                关注款爷，让我们更好、更快捷的为您服务！
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">关注款爷</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 </body>
+<script src="mock/all.js" th:src="@{/all.js}"></script>
 </html>

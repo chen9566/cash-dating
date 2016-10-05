@@ -5,7 +5,7 @@ import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.PayChannel;
-import me.jiangcai.dating.repository.OrderRepository;
+import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.UserService;
@@ -27,7 +27,7 @@ import java.util.UUID;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    private OrderRepository orderRepository;
+    private CashOrderRepository cashOrderRepository;
     @Autowired
     private UserService userService;
     @Autowired
@@ -46,12 +46,12 @@ public class OrderServiceImpl implements OrderService {
         order.setAmount(amount);
         order.setComment(comment);
         order.setStartTime(LocalDateTime.now());
-        return orderRepository.save(order);
+        return cashOrderRepository.save(order);
     }
 
     @Override
     public CashOrder getOne(String id) {
-        return orderRepository.getOne(id);
+        return cashOrderRepository.getOne(id);
     }
 
     @Override
@@ -78,12 +78,12 @@ public class OrderServiceImpl implements OrderService {
             return order.getPlatformOrderSet().iterator().next();
         ChanpayOrder chanpayOrder = chanpayService.createOrder(order);
         order.getPlatformOrderSet().add(chanpayOrder);
-        orderRepository.save(order);
+        cashOrderRepository.save(order);
         return chanpayOrder;
     }
 
     @Override
     public List<CashOrder> findOrders(String openId) {
-        return orderRepository.findByOwnerOrderByStartTimeDesc(userService.byOpenId(openId));
+        return cashOrderRepository.findByOwnerOrderByStartTimeDesc(userService.byOpenId(openId));
     }
 }

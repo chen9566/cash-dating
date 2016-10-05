@@ -42,7 +42,7 @@ public class MyPage extends AbstractPage {
                 .findFirst()
                 .ifPresent(element -> title = element);
 
-        my.findElements(By.tagName("t")).stream()
+        my.findElements(By.tagName("span")).stream()
                 .filter(WebElement::isDisplayed)
                 .findFirst()
                 .ifPresent(element -> message = element);
@@ -83,6 +83,6 @@ public class MyPage extends AbstractPage {
     }
 
     public void clickMenu(String text) {
-
+        menus.get(text).click();
     }
 }

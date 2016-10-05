@@ -47,6 +47,10 @@ public class User implements WeixinUser {
      * 比如月中,统计上个月所有账单会是一个不错的办法
      */
     private BigDecimal settlementBalance = BigDecimal.ZERO;
+    /**
+     * 跟上面那个一样,不过这里是开支
+     */
+    private BigDecimal settlementExpense = BigDecimal.ZERO;
 
     // 业务信息
     @Column(length = 15)

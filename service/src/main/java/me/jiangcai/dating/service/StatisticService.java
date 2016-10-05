@@ -20,7 +20,7 @@ public interface StatisticService {
 
     /**
      * @param openId 用户openId
-     * @return 所有开支
+     * @return 实时的所有开支
      */
     @Transactional(readOnly = true)
     BigDecimal totalExpense(String openId);

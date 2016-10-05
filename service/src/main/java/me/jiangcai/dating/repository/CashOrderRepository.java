@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author CJ
  */
-public interface OrderRepository extends JpaRepository<CashOrder, String> {
+public interface CashOrderRepository extends JpaRepository<CashOrder, String> {
 
     List<CashOrder> findByOwnerOrderByStartTimeDesc(User user);
 
