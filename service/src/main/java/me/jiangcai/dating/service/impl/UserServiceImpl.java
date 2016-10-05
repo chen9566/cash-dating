@@ -3,11 +3,13 @@ package me.jiangcai.dating.service.impl;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
+import me.jiangcai.dating.model.CashWeixinUserDetail;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.service.VerificationCodeService;
 import me.jiangcai.dating.util.WeixinAuthentication;
+import me.jiangcai.wx.model.WeixinUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
@@ -101,5 +103,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User byMobile(String mobile) {
         return userRepository.findByMobileNumber(mobile);
+    }
+
+    @Override
+    public User updateWeixinDetail(WeixinUserDetail detail) {
+        // 自己玩自己?
+        if (detail instanceof CashWeixinUserDetail)
+            return byOpenId(detail.getOpenId());
+
+        User user = byOpenId(detail.getOpenId());
+        if (user==null){
+            user = new User();
+            user.setOpenId(detail.getOpenId());
+        }
+        user.updateWeixinUserDetail(detail);
+        return userRepository.save(user);
     }
 }

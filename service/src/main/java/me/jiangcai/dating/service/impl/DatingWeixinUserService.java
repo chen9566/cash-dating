@@ -29,8 +29,19 @@ public class DatingWeixinUserService implements WeixinUserService {
         if (clazz == String.class)
             //noinspection unchecked
             return (T) openId;
-        if (clazz == WeixinUserDetail.class)
+        if (clazz == WeixinUserDetail.class) {
+            User user = userRepository.findByOpenId(openId);
+            if (user == null)
+                //noinspection unchecked
+                return (T) Protocol.forAccount(account).userDetail(openId, this);
+            WeixinUserDetail detail = user.resolveWeixinUserDetail();
+            if (detail != null)
+                //noinspection unchecked
+                return (T) detail;
+            //noinspection unchecked
             return (T) Protocol.forAccount(account).userDetail(openId, this);
+        }
+
         throw new IllegalArgumentException(("unsupported type:" + clazz));
     }
 

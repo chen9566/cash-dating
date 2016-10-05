@@ -3,6 +3,7 @@ package me.jiangcai.dating.service;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
+import me.jiangcai.wx.model.WeixinUserDetail;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -73,4 +74,13 @@ public interface UserService {
 
     @Transactional(readOnly = true)
     User byMobile(String mobile);
+
+    /**
+     * 更新用户微信详情
+     *
+     * @param detail 详情
+     * @return 用户实例
+     */
+    @Transactional
+    User updateWeixinDetail(WeixinUserDetail detail);
 }

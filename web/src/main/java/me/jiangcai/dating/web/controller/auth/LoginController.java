@@ -3,6 +3,7 @@ package me.jiangcai.dating.web.controller.auth;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.wx.OpenId;
+import me.jiangcai.wx.model.WeixinUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -28,18 +29,18 @@ public class LoginController {
      * @return 登录页面
      */
     @RequestMapping(method = RequestMethod.GET, value = "/login", produces = MediaType.TEXT_HTML_VALUE)
-    public String login(@OpenId String id, HttpServletRequest request, HttpServletResponse response) {
-
+    public String login(WeixinUserDetail detail, HttpServletRequest request, HttpServletResponse response) {
+        userService.updateWeixinDetail(detail);
         //  是否已经完成注册
         //
-        if (userService.mobileRequired(id)) {
+        if (userService.mobileRequired(detail.getOpenId())) {
             return "register.html";
         }
-        if (userService.bankAccountRequired(id)) {
+        if (userService.bankAccountRequired(detail.getOpenId())) {
             return "addcard.html";
         }
 
-        userService.loginAs(request, response, userService.byOpenId(id));
+        userService.loginAs(request, response, userService.byOpenId(detail.getOpenId()));
         // 完成登录
         return "redirect:/";
     }
