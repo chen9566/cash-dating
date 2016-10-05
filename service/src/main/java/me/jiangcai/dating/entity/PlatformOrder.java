@@ -24,7 +24,7 @@ public abstract class PlatformOrder {
     private String id;
 
     @ManyToOne
-    private Order order;
+    private CashOrder cashOrder;
 
     /**
      * 支付平台提供的支付链接

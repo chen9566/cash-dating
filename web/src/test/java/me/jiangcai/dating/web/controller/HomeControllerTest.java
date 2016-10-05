@@ -2,11 +2,14 @@ package me.jiangcai.dating.web.controller;
 
 import me.jiangcai.chanpay.test.mock.MockPay;
 import me.jiangcai.dating.LoginWebTest;
-import me.jiangcai.dating.entity.Order;
+import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.page.MyBankPage;
+import me.jiangcai.dating.page.MyInvitePage;
+import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.QRCodePage;
 import me.jiangcai.dating.page.StartOrderPage;
-import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.QRCodeService;
+import me.jiangcai.dating.service.StatisticService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
@@ -30,10 +33,36 @@ public class HomeControllerTest extends LoginWebTest {
     @Autowired
     private QRCodeService qrCodeService;
     @Autowired
-    private OrderService orderService;
+    private StatisticService statisticService;
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private MockPay pay;
+
+    @Test
+    public void my() {
+        // 我的
+        driver.get("http://localhost/my");
+        MyPage page = initPage(MyPage.class);
+        System.out.println(page);
+
+        page.assertFrom(currentUser(), statisticService);
+
+        page.clickMenu("我要收款");
+        initPage(StartOrderPage.class);
+        driver.get("http://localhost/my");
+        page.reloadPageInfo();
+
+        page.clickMenu("我的银行卡");
+        bank(initPage(MyBankPage.class));
+        driver.get("http://localhost/my");
+        page.reloadPageInfo();
+
+    }
+
+
+    private void bank(MyBankPage page) {
+        page.assertCard(currentUser().getCards());
+    }
 
     @Test
     public void index() throws Exception {
@@ -63,12 +92,12 @@ public class HomeControllerTest extends LoginWebTest {
         // 现在的目标是获得这个页面url
         String chanpayUrl = driver.findElement(By.id("platformFrame")).getAttribute("src");
 
-        List<Order> orderList = orderService.findOrders(detail.getOpenId());
+        List<CashOrder> orderList = currentOrders();
         assertThat(orderList)
                 .isNotEmpty()
                 .hasSize(1);
 
-        Order order = orderList.get(0);
+        CashOrder order = orderList.get(0);
         assertThat(order.getPlatformOrderSet())
                 .isNotEmpty()
                 .hasSize(1);

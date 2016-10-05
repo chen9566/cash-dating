@@ -6,8 +6,10 @@ import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author CJ
@@ -47,7 +49,7 @@ public interface UserService {
      * @param response
      * @param user
      */
-    void loginAs(HttpServletRequest request, HttpServletResponse response, User user);
+    void loginAs(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException;
 
     /**
      * 增加银行卡

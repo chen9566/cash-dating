@@ -1,6 +1,6 @@
 package me.jiangcai.dating.web.controller.pay;
 
-import me.jiangcai.dating.entity.Order;
+import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class PayController {
      */
     @RequestMapping(method = RequestMethod.POST, value = "/startOrder")
     public String start(@AuthenticationPrincipal User user, BigDecimal amount, String comment) {
-        Order order = orderService.newOrder(user, amount, comment);
+        CashOrder order = orderService.newOrder(user, amount, comment);
         return "redirect:/order/" + order.getId();
     }
 
@@ -48,7 +48,7 @@ public class PayController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/order/{id}")
     public String orderInfo(@PathVariable("id") String id, Model model) {
-        Order order = orderService.getOne(id);
+        CashOrder order = orderService.getOne(id);
 
 //        if (!order.getOwner().equals(user)) {
 //            return "redirect:/";

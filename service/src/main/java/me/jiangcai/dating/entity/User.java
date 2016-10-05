@@ -14,33 +14,63 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * 用户
+ * 用户,当然一个代理商也是一个用户
+ * 每一个用户都会有一个引导者,也会有一个区域代理
  *
  * @author CJ
  */
 @Entity
 @Getter
 @Setter
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"mobileNumber", "openId"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"mobileNumber", "openId", "inviteCode"})})
 public class User implements WeixinUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String password;
+    // 价值信息
+    /**
+     * 结算后的余额
+     * 像实时订单信息 在一定时间以后 会被清盘
+     * 比如月中,统计上个月所有账单会是一个不错的办法
+     */
+    private BigDecimal settlementBalance = BigDecimal.ZERO;
 
     // 业务信息
     @Column(length = 15)
     private String mobileNumber;
+    /**
+     * 邀请码
+     */
+    @Column(length = 7)
+    private String inviteCode;
+    /**
+     * 只有代理商才会存在
+     */
+    @OneToOne
+    private AgentInfo agentInfo;
+    /**
+     * 引导者
+     */
+    @ManyToOne
+    private User guideUser;
+    /**
+     * 所属代理商,这个人必然存在{@link #agentInfo}
+     */
+    @ManyToOne
+    private User agentUser;
 
     // 微信信息
     @Column(length = 32)
@@ -60,6 +90,17 @@ public class User implements WeixinUser {
     private String country;
     // 最后一次获取真实微信详情的时间
     private LocalDateTime lastRefreshDetailTime;
+
+    // 杂项
+    /**
+     * 注册时间
+     */
+    private LocalDateTime joinTime;
+    /**
+     * 最后一次登录
+     */
+    private LocalDateTime loginTime;
+    private String password;
 
     // 银行卡信息
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)

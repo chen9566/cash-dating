@@ -1,9 +1,8 @@
 package me.jiangcai.dating;
 
 import me.jiangcai.chanpay.data.trade.CreateInstantTrade;
-import me.jiangcai.chanpay.test.ChanpayTest;
 import me.jiangcai.chanpay.test.ChanpayTestSpringConfig;
-import me.jiangcai.dating.entity.Order;
+import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.service.ChanpayService;
@@ -46,7 +45,7 @@ public class TestConfig {
     public ChanpayService chanpayService() {
         return new AbstractChanpayService() {
             @Override
-            protected void beforeExecute(Order order, CreateInstantTrade request) {
+            protected void beforeExecute(CashOrder order, CreateInstantTrade request) {
                 request.setBankCode("WXPAY");
             }
         };

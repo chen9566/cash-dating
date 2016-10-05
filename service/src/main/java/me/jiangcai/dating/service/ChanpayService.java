@@ -2,7 +2,7 @@ package me.jiangcai.dating.service;
 
 import me.jiangcai.chanpay.event.TradeEvent;
 import me.jiangcai.dating.entity.ChanpayOrder;
-import me.jiangcai.dating.entity.Order;
+import me.jiangcai.dating.entity.CashOrder;
 import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +17,7 @@ import java.security.SignatureException;
 public interface ChanpayService {
 
     //    @Transactional
-    ChanpayOrder createOrder(Order order) throws IOException, SignatureException;
+    ChanpayOrder createOrder(CashOrder order) throws IOException, SignatureException;
 
     @Transactional
     @EventListener(me.jiangcai.chanpay.event.TradeEvent.class)

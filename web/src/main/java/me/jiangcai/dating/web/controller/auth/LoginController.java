@@ -6,12 +6,18 @@ import me.jiangcai.wx.OpenId;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author CJ
@@ -29,7 +35,8 @@ public class LoginController {
      * @return 登录页面
      */
     @RequestMapping(method = RequestMethod.GET, value = "/login", produces = MediaType.TEXT_HTML_VALUE)
-    public String login(WeixinUserDetail detail, HttpServletRequest request, HttpServletResponse response) {
+    public String login(WeixinUserDetail detail, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         userService.updateWeixinDetail(detail);
         //  是否已经完成注册
         //
@@ -42,7 +49,9 @@ public class LoginController {
 
         userService.loginAs(request, response, userService.byOpenId(detail.getOpenId()));
         // 完成登录
-        return "redirect:/";
+//        return "redirect:/";
+        return null;
+
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/registerMobile")

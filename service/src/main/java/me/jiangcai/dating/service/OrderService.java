@@ -1,6 +1,6 @@
 package me.jiangcai.dating.service;
 
-import me.jiangcai.dating.entity.Order;
+import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.PayChannel;
@@ -27,10 +27,10 @@ public interface OrderService {
      * @return 订单
      */
     @Transactional
-    Order newOrder(User user, BigDecimal amount, String comment);
+    CashOrder newOrder(User user, BigDecimal amount, String comment);
 
     @Transactional(readOnly = true)
-    Order getOne(String id);
+    CashOrder getOne(String id);
 
     /**
      * @param id
@@ -56,6 +56,6 @@ public interface OrderService {
      * @return 这个用户相关的所有订单
      */
     @Transactional(readOnly = true)
-    List<Order> findOrders(String openId);
+    List<CashOrder> findOrders(String openId);
 
 }

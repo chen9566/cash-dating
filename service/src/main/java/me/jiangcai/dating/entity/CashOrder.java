@@ -20,10 +20,9 @@ import java.util.Set;
  * @author CJ
  */
 @Entity
-@Table(name = "_ORDER")
 @Setter
 @Getter
-public class Order {
+public class CashOrder {
     @Id
     @Column(length = 32)
     private String id;
@@ -44,7 +43,7 @@ public class Order {
      * 为什么是 1对多?
      * 是考虑到一种网络互动的状况下 导致创建多笔平台订单
      */
-    @OneToMany(mappedBy = "order",orphanRemoval = true,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cashOrder",orphanRemoval = true,cascade = CascadeType.ALL)
     private Set<PlatformOrder> platformOrderSet;
 
 }

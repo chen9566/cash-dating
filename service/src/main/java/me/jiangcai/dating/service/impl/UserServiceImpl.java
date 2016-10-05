@@ -12,14 +12,18 @@ import me.jiangcai.dating.util.WeixinAuthentication;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -85,13 +89,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void loginAs(HttpServletRequest request, HttpServletResponse response, User user) {
+    public void loginAs(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
         HttpRequestResponseHolder holder = new HttpRequestResponseHolder(request, response);
         SecurityContext context = httpSessionSecurityContextRepository.loadContext(holder);
 
-        context.setAuthentication(new WeixinAuthentication(user));
+        final WeixinAuthentication authentication = new WeixinAuthentication(user);
+        context.setAuthentication(authentication);
+//
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         httpSessionSecurityContextRepository.saveContext(context, holder.getRequest(), holder.getResponse());
+
+        new SavedRequestAwareAuthenticationSuccessHandler().onAuthenticationSuccess(request,response,authentication);
     }
 
 
@@ -112,7 +121,7 @@ public class UserServiceImpl implements UserService {
             return byOpenId(detail.getOpenId());
 
         User user = byOpenId(detail.getOpenId());
-        if (user==null){
+        if (user == null) {
             user = new User();
             user.setOpenId(detail.getOpenId());
         }

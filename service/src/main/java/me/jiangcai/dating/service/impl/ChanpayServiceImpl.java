@@ -1,7 +1,7 @@
 package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.chanpay.data.trade.CreateInstantTrade;
-import me.jiangcai.dating.entity.Order;
+import me.jiangcai.dating.entity.CashOrder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class ChanpayServiceImpl extends AbstractChanpayService {
 
     @Override
-    protected void beforeExecute(Order order, CreateInstantTrade request) {
+    protected void beforeExecute(CashOrder order, CreateInstantTrade request) {
         request.scanPay();
     }
 }
