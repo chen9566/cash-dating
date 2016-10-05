@@ -4,9 +4,8 @@ import me.jiangcai.chanpay.test.mock.MockPay;
 import me.jiangcai.dating.LoginWebTest;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.page.MyBankPage;
-import me.jiangcai.dating.page.MyInvitePage;
 import me.jiangcai.dating.page.MyPage;
-import me.jiangcai.dating.page.QRCodePage;
+import me.jiangcai.dating.page.ShowOrderPage;
 import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.StatisticService;
@@ -75,7 +74,7 @@ public class HomeControllerTest extends LoginWebTest {
         page.pay(amount, "");
 
         // 这个时候应该是到了二维码界面,在这个界面 我们可以分享它
-        QRCodePage codePage = initPage(QRCodePage.class);
+        ShowOrderPage codePage = initPage(ShowOrderPage.class);
         // 并且拥有了一个新订单
 
         // TODO 微信分享  分享的时候 应该携带者邀请信息
