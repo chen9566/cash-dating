@@ -27,6 +27,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.security.SignatureException;
 
 /**
  * 公开权限的
@@ -56,7 +57,7 @@ public class GlobalController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/toPay/{id}")
-    public String toPay(@PathVariable("id") String id, Model model) {
+    public String toPay(@PathVariable("id") String id, Model model) throws IOException, SignatureException {
         // 如果已完成
         if (orderService.isComplete(id)) {
             return "completed.html";

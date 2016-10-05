@@ -6,7 +6,9 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.PayChannel;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.SignatureException;
 
 /**
  * 订单和支付系统
@@ -44,5 +46,5 @@ public interface OrderService {
      * @return
      */
     @Transactional
-    PlatformOrder preparePay(String id, PayChannel channel);
+    PlatformOrder preparePay(String id, PayChannel channel) throws IOException, SignatureException;
 }

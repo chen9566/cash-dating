@@ -1,6 +1,8 @@
 package me.jiangcai.dating;
 
 import me.jiangcai.chanpay.data.trade.CreateInstantTrade;
+import me.jiangcai.chanpay.test.ChanpayTest;
+import me.jiangcai.chanpay.test.ChanpayTestSpringConfig;
 import me.jiangcai.dating.entity.Order;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.VerificationType;
@@ -25,7 +27,7 @@ import java.util.function.Function;
 /**
  * @author CJ
  */
-@Import({WeixinTestConfig.class, DSConfig.class})
+@Import({WeixinTestConfig.class, DSConfig.class, ChanpayTestSpringConfig.class})
 @ImportResource("classpath:/datasource_local.xml")
 public class TestConfig {
 

@@ -11,7 +11,9 @@ import me.jiangcai.dating.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.SignatureException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.UUID;
@@ -61,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PlatformOrder preparePay(String id, PayChannel channel) {
+    public PlatformOrder preparePay(String id, PayChannel channel) throws IOException, SignatureException {
         // 就一个支付平台啦
         Order order = getOne(id);
         if (order.getPlatformOrderSet() == null) {
