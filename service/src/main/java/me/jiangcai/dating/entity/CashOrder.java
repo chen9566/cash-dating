@@ -2,6 +2,7 @@ package me.jiangcai.dating.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.dating.entity.support.RateConfig;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -40,10 +40,20 @@ public class CashOrder {
     private User owner;
 
     /**
+     * 一个冗余标记位
+     */
+    private boolean completed;
+
+    /**
+     * 当时的几率配置
+     */
+    private RateConfig thatRateConfig;
+
+    /**
      * 为什么是 1对多?
      * 是考虑到一种网络互动的状况下 导致创建多笔平台订单
      */
-    @OneToMany(mappedBy = "cashOrder",orphanRemoval = true,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cashOrder", orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<PlatformOrder> platformOrderSet;
 
 }

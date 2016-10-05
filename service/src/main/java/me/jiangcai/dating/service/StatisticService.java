@@ -1,8 +1,10 @@
 package me.jiangcai.dating.service;
 
+import me.jiangcai.dating.entity.support.BalanceFlow;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 帐面金额，平台佣金，合伙人佣金，发展人佣金
@@ -26,10 +28,18 @@ public interface StatisticService {
     BigDecimal totalExpense(String openId);
 
     /**
-     * @param openId
+     * @param openId 用户openId
      * @return 实时余额
      */
     @Transactional(readOnly = true)
     BigDecimal balance(String openId);
 
+    /**
+     * 应该是按照时间的降序排列的
+     *
+     * @param openId 用户openId
+     * @return 用户所有的流水
+     */
+    @Transactional(readOnly = true)
+    List<BalanceFlow> balanceFlows(String openId);
 }

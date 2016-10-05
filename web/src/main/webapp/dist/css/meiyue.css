@@ -683,7 +683,7 @@ div.screening>ul>li {
 	.balliist ul{ overflow:hidden;padding:10px 15px; margin-left:15px;border-bottom:1px solid #dfdfdf}
 	.balliist li{ font-size:14px; line-height:20px; color:#888}
 	.balliist b{ color:#353535; font-weight:400;  font-size:16px;}
-	.balliist t{ color:#b3b3b3; font-size:12px}
+	.balliist span{ color:#b3b3b3; font-size:12px}
 	.balliist .lg{  font-size:16px;color:#353535}
 	.balliist .f65150{ color:#f65150}
 ul#navlist{font:12px verdana;padding-bottom: 10px;}

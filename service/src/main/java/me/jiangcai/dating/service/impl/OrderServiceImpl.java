@@ -1,7 +1,7 @@
 package me.jiangcai.dating.service.impl;
 
-import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.PayChannel;
@@ -57,13 +57,21 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean isComplete(String id) {
         CashOrder order = getOne(id);
+
+        if (order.isCompleted())
+            return true;
+
         if (order.getPlatformOrderSet() == null || order.getPlatformOrderSet().isEmpty())
             return false;
         //
-        return order.getPlatformOrderSet().stream()
+        if (order.getPlatformOrderSet().stream()
                 .filter(PlatformOrder::isFinish)
                 .findAny()
-                .isPresent();
+                .isPresent()) {
+            order.setCompleted(true);
+            return true;
+        } else
+            return false;
     }
 
     @Override

@@ -3,6 +3,7 @@ package me.jiangcai.dating.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.dating.entity.support.BalanceFlow;
 import me.jiangcai.dating.model.CashWeixinUserDetail;
 import me.jiangcai.wx.model.Gender;
 import me.jiangcai.wx.model.WeixinUser;
@@ -45,6 +46,7 @@ public class User implements WeixinUser {
      * 结算后的余额
      * 像实时订单信息 在一定时间以后 会被清盘
      * 比如月中,统计上个月所有账单会是一个不错的办法
+     * 简单的说就是{@link BalanceFlow}并不包含在这个值
      */
     private BigDecimal settlementBalance = BigDecimal.ZERO;
     /**

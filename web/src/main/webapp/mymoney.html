@@ -1,48 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>我的邀请</title>
-<link rel="stylesheet" href="dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="dist/css/font-awesome.min.css">
-<link rel="stylesheet" href="dist/css/meiyue.css">
-<script src="dist/js/jquery.js"></script>
-<script src="dist/js/bootstrap.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>我的邀请</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="balance">
-	<div class="yq"><i class="fa fa-question-circle ">邀请说明</i></div>
-	<div class="cri"> 金额(元) <b>200000</b> </div>
-	<div class="ba-btn">
-		<button type="button" class="btn ba-bred btn-lg">转入帐户余额</button>
-		<button type="button" class="btn ba-bglod btn-lg" onClick="location='code.html'">我的邀请码</button>
-	</div>
+    <div class="yq"><i class="fa fa-question-circle ">邀请说明</i></div>
+    <div class="cri"> 金额(元) <b>200000</b></div>
+    <div class="ba-btn">
+        <button type="button" class="btn ba-bred btn-lg">转入帐户余额</button>
+        <button type="button" class="btn ba-bglod btn-lg" onClick="location='code.html'">我的邀请码</button>
+    </div>
 </div>
 <ul id="navlist">
-		<li class="list1"></li>
-		<li class="list2"><a href=""><span>邀请明细</span></a></li>
+    <li class="list1"></li>
+    <li class="list2"><a href=""><span>邀请明细</span></a></li>
 </ul>
 <div class="balliist">
-	<ul>
-		<li class="pull-right lg">+900</li>
-		<li><b>12200993838</b></li>
-		<li>购买产品</li>
-		<li><t>2011-09-09</t></li>
-	</ul>
-	<ul>
-		<li class="pull-right lg">+900</li>
-		<li><b>12200993838</b></li>
-		<li>购买产品</li>
-		<li><t>2011-09-09</t></li>
-	</ul>
-	<ul>
-		<li class="pull-right lg">+900</li>
-		<li><b>12200993838</b></li>
-		<li>购买产品</li>
-		<li><t>2011-09-09</t></li>
-	</ul>
+    <ul>
+        <li class="pull-right lg flow-amount">+900</li>
+        <li class="flow-comment"><b>12200993838</b></li>
+        <li class="flow-name">购买产品</li>
+        <li class="flow-time">
+            <span>2011-09-09</span>
+        </li>
+    </ul>
+    <ul th:remove="all">
+        <li class="pull-right lg flow-amount">+900</li>
+        <li class="flow-comment"><b>12200993838</b></li>
+        <li class="flow-name">购买产品</li>
+        <li class="flow-time">
+            <span>2011-09-09</span>
+        </li>
+    </ul>
+    <ul th:remove="all">
+        <li class="pull-right lg flow-amount">+900</li>
+        <li class="flow-comment"><b>12200993838</b></li>
+        <li class="flow-name">购买产品</li>
+        <li class="flow-time">
+            <span>2011-09-09</span>
+        </li>
+    </ul>
 </div>
 </body>
 </html>

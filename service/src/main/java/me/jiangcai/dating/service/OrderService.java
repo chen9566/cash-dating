@@ -36,7 +36,7 @@ public interface OrderService {
      * @param id 主订单号
      * @return 这个订单是否已完成
      */
-    @Transactional(readOnly = true)
+    @Transactional
     boolean isComplete(String id);
 
     /**

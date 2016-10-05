@@ -13,4 +13,10 @@ public interface CashOrderRepository extends JpaRepository<CashOrder, String> {
 
     List<CashOrder> findByOwnerOrderByStartTimeDesc(User user);
 
+    // 返回user作为代理商身份所获得的订单(前提是订单必须是完成的)
+    List<CashOrder> findByOwner_AgentUserAndCompletedTrue(User user);
+
+    // 返回user作为引导者身份所获得的订单(前提是订单必须是完成的)
+    List<CashOrder> findByOwner_GuideUserAndCompletedTrue(User user);
+
 }

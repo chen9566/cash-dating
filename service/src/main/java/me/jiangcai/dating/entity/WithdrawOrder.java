@@ -2,6 +2,8 @@ package me.jiangcai.dating.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.dating.entity.support.BalanceFlow;
+import me.jiangcai.dating.entity.support.FlowType;
 import me.jiangcai.dating.entity.support.WithdrawOrderStatus;
 
 import javax.persistence.CascadeType;
@@ -10,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -22,7 +25,7 @@ import java.time.LocalDateTime;
 @Entity
 @Setter
 @Getter
-public class WithdrawOrder {
+public class WithdrawOrder implements BalanceFlow {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,4 +49,15 @@ public class WithdrawOrder {
     private String comment;
 
 
+    @Override
+    @Transient
+    public String getFlowName() {
+        return "提现";
+    }
+
+    @Override
+    @Transient
+    public FlowType getFlowType() {
+        return FlowType.payout;
+    }
 }

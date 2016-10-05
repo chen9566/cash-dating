@@ -6,7 +6,7 @@ $(function () {
 
     // 给所有 clickHref 添加一个点击行为
     $('.clickHref').click(function () {
-        console.log('click on ', this);
+        // console.log('click on ', this);
         var url = $(this).attr('href');
         if (url) {
             window.location.href = url;
