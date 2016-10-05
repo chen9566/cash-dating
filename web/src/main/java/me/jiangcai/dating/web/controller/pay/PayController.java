@@ -39,7 +39,8 @@ public class PayController {
     }
 
     /**
-     * 打开这个付款二维码展示界面,通常只有owner才会打开
+     * 打开这个付款二维码展示界面,开放显示
+     * 这个页面应该会存在多个效果  比如微信平台的效果和非微信平台的效果
      *
      * @param id
      * @param model
