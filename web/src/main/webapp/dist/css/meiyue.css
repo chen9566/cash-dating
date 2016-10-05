@@ -62,10 +62,11 @@ ul, li {
 /*注册*/
 .form-register {
 	max-width: 100%;
-	margin: 22px auto;
+	margin: 20px auto;
 }
 .form-register small{ color:#888;}
 .form-register .txt{ color:#888}
+.form-register .errortxt{ height:14px; line-height: 14px; color:#F00}
 .form-register input[type="text"], .form-register input[type="password"], .form-register input[type="tel"] {
 	font-size: 16px;
 	height: auto;
@@ -82,6 +83,11 @@ ul, li {
 .form-register .codebg {
 	background: #fff;
 	line-height: 64px;
+}
+.form-control{
+	background: #fff;
+	line-height: 64px;
+	margin:16px 0 0 0;
 }
 .form-register .passbg {
 	background: #fff;
