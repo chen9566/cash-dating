@@ -6,8 +6,10 @@ import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.repository.OrderRepository;
+import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
+import me.jiangcai.dating.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.math.BigDecimal;
 import java.security.SignatureException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -26,6 +29,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private UserService userService;
     @Autowired
     private ChanpayService chanpayService;
 
@@ -76,5 +81,10 @@ public class OrderServiceImpl implements OrderService {
         order.getPlatformOrderSet().add(chanpayOrder);
         orderRepository.save(order);
         return chanpayOrder;
+    }
+
+    @Override
+    public List<Order> findOrders(String openId) {
+        return orderRepository.findByOwnerOrderByStartTimeDesc(userService.byOpenId(openId));
     }
 }

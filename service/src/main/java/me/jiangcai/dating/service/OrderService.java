@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.SignatureException;
+import java.util.List;
 
 /**
  * 订单和支付系统
@@ -47,4 +48,14 @@ public interface OrderService {
      */
     @Transactional
     PlatformOrder preparePay(String id, PayChannel channel) throws IOException, SignatureException;
+
+    /**
+     * 应该是按照时间降序
+     *
+     * @param openId openId
+     * @return 这个用户相关的所有订单
+     */
+    @Transactional(readOnly = true)
+    List<Order> findOrders(String openId);
+
 }

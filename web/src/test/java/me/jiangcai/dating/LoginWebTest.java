@@ -29,7 +29,7 @@ public abstract class LoginWebTest extends WebTest {
         }
     }
 
-    static WeixinUserDetail detail;
+    protected static WeixinUserDetail detail;
     @Autowired
     private UserService userService;
     @Autowired

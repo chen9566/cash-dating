@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="order" type="me.jiangcai.dating.entity.PlatformOrder"*/-->
+<head>
+    <meta charset="UTF-8">
+    <title>支付页面</title>
+</head>
+<body>
+
+<iframe id="platformFrame" width="100%" height="1000" frameborder="0" scrolling="auto" src="paycode.html"
+        th:src="${order.url}">
+</iframe>
+</body>
+</html>

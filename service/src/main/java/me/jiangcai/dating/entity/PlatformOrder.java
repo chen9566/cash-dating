@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
 
 /**
  * @author CJ
@@ -29,6 +30,11 @@ public abstract class PlatformOrder {
      * 支付平台提供的支付链接
      */
     private String url;
+
+    /**
+     * 完成时间
+     */
+    private LocalDateTime finishTime;
 
     /**
      *
