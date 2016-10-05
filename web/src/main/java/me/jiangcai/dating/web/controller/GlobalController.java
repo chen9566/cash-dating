@@ -1,7 +1,10 @@
 package me.jiangcai.dating.web.controller;
 
 import com.google.zxing.WriterException;
+import me.jiangcai.dating.entity.PlatformOrder;
+import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.model.VerificationType;
+import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.VerificationCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,17 +44,27 @@ public class GlobalController {
     private Environment environment;
     @Autowired
     private QRCodeService qrCodeService;
+    @Autowired
+    private OrderService orderService;
 
 
     /**
      * 这是公开uri,所有人都可以参与支付,微信用户 或者 其他用户
+     * 这里通常是选择支付方式,选以后 才进入支付环境;在目前的案例中 只有一个选项!所以直接进入建立订单环境
      *
      * @param id 订单号
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/toPay/{id}")
-    public String toPay(@PathVariable("id") String id) {
-        return "hahahah";
+    public String toPay(@PathVariable("id") String id, Model model) {
+        // 如果已完成
+        if (orderService.isComplete(id)) {
+            return "completed.html";
+        }
+        // 如果已建立 平台订单 则直接走平台订单
+        PlatformOrder order = orderService.preparePay(id, PayChannel.weixin);
+        model.addAttribute("order", order);
+        return "pay.html";
     }
 
     /**

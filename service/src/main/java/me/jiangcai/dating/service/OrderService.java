@@ -1,7 +1,9 @@
 package me.jiangcai.dating.service;
 
 import me.jiangcai.dating.entity.Order;
+import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.model.PayChannel;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -26,4 +28,21 @@ public interface OrderService {
 
     @Transactional(readOnly = true)
     Order getOne(String id);
+
+    /**
+     * @param id
+     * @return 这个订单是否已完成
+     */
+    @Transactional(readOnly = true)
+    boolean isComplete(String id);
+
+    /**
+     * 准备支付,这个过程也就是建立支付平台订单,为了向下兼容我加入了渠道信息
+     *
+     * @param id      主订单号
+     * @param channel 渠道,默认微信
+     * @return
+     */
+    @Transactional
+    PlatformOrder preparePay(String id, PayChannel channel);
 }

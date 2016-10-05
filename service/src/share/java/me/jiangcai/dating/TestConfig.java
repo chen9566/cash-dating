@@ -1,8 +1,12 @@
 package me.jiangcai.dating;
 
+import me.jiangcai.chanpay.data.trade.CreateInstantTrade;
+import me.jiangcai.dating.entity.Order;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.VerificationType;
+import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.VerificationCodeService;
+import me.jiangcai.dating.service.impl.AbstractChanpayService;
 import me.jiangcai.wx.PublicAccountSupplier;
 import me.jiangcai.wx.test.WeixinTestConfig;
 import org.apache.commons.logging.Log;
@@ -33,6 +37,17 @@ public class TestConfig {
     @Bean
     public PublicAccountSupplier publicAccountSupplier() {
         return new DebugPublicAccountSupplier(environment.getProperty("account.url", "http://localhost/weixin/"));
+    }
+
+    @Bean
+    @Primary
+    public ChanpayService chanpayService() {
+        return new AbstractChanpayService() {
+            @Override
+            protected void beforeExecute(Order order, CreateInstantTrade request) {
+                request.setBankCode("WXPAY");
+            }
+        };
     }
 
     @Bean
