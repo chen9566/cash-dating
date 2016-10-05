@@ -35,16 +35,24 @@ public class MyBankPage extends AbstractPage {
                 .hasSize(cards.size());
 
         assertThat(bankCards.stream()
-                .filter(bankCard -> in(bankCard, cards))
+                .filter(bankCard -> !in(bankCard, cards))
                 .count())
                 .isEqualTo(0);
 
     }
 
+    /**
+     *
+     * @param bankCard
+     * @param cards
+     * @return bankCard 是否在cards 内
+     */
     private boolean in(BankCard bankCard, List<Card> cards) {
-        return cards.stream()
-                .filter(bankCard::check)
-                .count() > 0;
+        for(Card card:cards){
+            if (bankCard.check(card))
+                return true;
+        }
+        return false;
     }
 
     @Data

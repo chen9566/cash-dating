@@ -38,8 +38,14 @@ public class Card {
      */
     private String owner;
 
+    /**
+     * 开户行地址
+     */
     private Address address;
 
-    private String type;
+    /**
+     * 支行名称
+     */
+    private String subBranch;
 
 }

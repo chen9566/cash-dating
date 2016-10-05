@@ -79,8 +79,10 @@ public class User implements WeixinUser {
     // 微信信息
     @Column(length = 32)
     private String openId;
+    @Column(length = 50)
     private String accessToken;
     private LocalDateTime accessTimeToExpire;
+    @Column(length = 50)
     private String refreshToken;
     private String[] tokenScopes;
 
@@ -89,8 +91,11 @@ public class User implements WeixinUser {
     @JsonProperty("sex")
     private Gender gender;
     private String headImageUrl;
+    @Column(length = 20)
     private String province;
+    @Column(length = 20)
     private String city;
+    @Column(length = 20)
     private String country;
     // 最后一次获取真实微信详情的时间
     private LocalDateTime lastRefreshDetailTime;

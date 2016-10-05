@@ -2,6 +2,7 @@ package me.jiangcai.dating;
 
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.service.VerificationCodeService;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 
 /**
@@ -31,7 +33,7 @@ public abstract class LoginWebTest extends WebTest {
         return orderService.findOrders(detail.getOpenId());
     }
 
-    protected User currentUser(){
+    protected User currentUser() {
         return userService.byOpenId(detail.getOpenId());
     }
 
@@ -48,6 +50,8 @@ public abstract class LoginWebTest extends WebTest {
     private UserService userService;
     @Autowired
     private VerificationCodeService verificationCodeService;
+    @Autowired
+    private BankService bankService;
 
     protected String randomBankCard() {
         return RandomStringUtils.randomNumeric(16);
@@ -59,9 +63,11 @@ public abstract class LoginWebTest extends WebTest {
         String mobile = randomMobile();
         verificationCodeService.sendCode(mobile, Function.identity());
         userService.registerMobile(detail.getOpenId(), mobile, "1234", null);
-        verificationCodeService.sendCode(mobile, Function.identity());
+//        verificationCodeService.sendCode(mobile, Function.identity()); 现在不用发验证码了
         // 16
         String card = randomBankCard();
-        userService.addCard(detail.getOpenId(), detail.getNickname(), card, "HZ", mobile, "1234");
+        userService.addCard(detail.getOpenId(), detail.getNickname(), card
+                , bankService.list().stream()
+                        .findAny().orElse(null), null, UUID.randomUUID().toString());
     }
 }

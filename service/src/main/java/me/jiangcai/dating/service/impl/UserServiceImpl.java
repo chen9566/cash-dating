@@ -1,7 +1,9 @@
 package me.jiangcai.dating.service.impl;
 
+import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.CashWeixinUserDetail;
 import me.jiangcai.dating.model.VerificationType;
@@ -69,14 +71,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Card addCard(String openId, String name, String number, String bankCode, String mobile, String code)
+    public Card addCard(String openId, String name, String number, Bank bank, Address address, String subBranch)
             throws IllegalVerificationCodeException {
-        verificationCodeService.verify(mobile, code, VerificationType.card);
+//        verificationCodeService.verify(mobile, code, VerificationType.card);
         User user = userRepository.findByOpenId(openId);
         Card card = new Card();
         card.setNumber(number);
         card.setOwner(name);
-        card.setType(bankCode);
+        card.setBank(bank);
+        card.setAddress(address);
+        card.setSubBranch(subBranch);
+
         if (user.getCards() == null) {
             user.setCards(new ArrayList<>());
         }

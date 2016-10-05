@@ -1,7 +1,9 @@
 package me.jiangcai.dating.service;
 
+import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,14 +59,13 @@ public interface UserService {
      * @param openId   openId
      * @param name     持卡人
      * @param number   卡号
-     * @param bankCode 银行代码
-     * @param mobile   手机号码（银行预留）
-     * @param code     验证码
-     * @return 新增加的银行
+     * @param bank
+     *@param address
+     * @param subBranch @return 新增加的银行
      * @throws IllegalVerificationCodeException 验证码无效
      */
     @Transactional
-    Card addCard(String openId, String name, String number, String bankCode, String mobile, String code)
+    Card addCard(String openId, String name, String number, Bank bank, Address address, String subBranch)
             throws IllegalVerificationCodeException;
 
     /**
