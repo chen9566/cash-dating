@@ -36,6 +36,9 @@ public class LoginController {
     private UserService userService;
     @Autowired
     private BankService bankService;
+    ///////////////////////////////非微信登录
+    @Autowired
+    private QRCodeService qrCodeService;
 
     /**
      * 登录页面
@@ -69,7 +72,7 @@ public class LoginController {
             , String inviteCode) {
         userService.registerMobile(request, id, mobile, verificationCode, inviteCode);
 
-        return "redirect:/login";
+        return "redirect:/start";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/registerCard")
@@ -80,12 +83,8 @@ public class LoginController {
         address.setCity(city);
 
         Card card = userService.addCard(id, name, number, bankService.byCode(bank), address, subBranch);
-        return "redirect:/login";
+        return "redirect:/start";
     }
-
-    ///////////////////////////////非微信登录
-    @Autowired
-    private QRCodeService qrCodeService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/loginToken/{id}")
     public BufferedImage tokenQR(HttpServletRequest request, @PathVariable("id") String id)
@@ -117,7 +116,7 @@ public class LoginController {
     public String approvalLogin(@AuthenticationPrincipal User user, @PathVariable("id") long id) {
         // TODO 还需要确认么? 麻烦死
         userService.approvalLogin(id, user);
-        return "redirect:/";
+        return "redirect:/start";
     }
 
 }

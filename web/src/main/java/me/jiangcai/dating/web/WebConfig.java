@@ -39,7 +39,7 @@ public class WebConfig {
                             mvcConfig.staticResourceAntPatterns()
                     )
                     .antMatchers("/weixin/")
-                    .antMatchers("/notify")
+                    .antMatchers("/notify/**")
                     .antMatchers("/login");
         }
 
@@ -62,12 +62,12 @@ public class WebConfig {
                     // 所有的
                     .antMatchers("/all.js").permitAll()
                     // 非微信登录要获取的二维码
-                    .antMatchers("/loginToken").permitAll()
+                    .antMatchers("/loginToken/**").permitAll()
                     // 支付分享的
-                    .antMatchers("/inviteQR").permitAll()
-                    .antMatchers("/order").permitAll()
-                    .antMatchers("/toPay").permitAll()
-                    .antMatchers("/toPayQR").permitAll()
+                    .antMatchers("/inviteQR/**").permitAll()
+                    .antMatchers("/order/**").permitAll()
+                    .antMatchers("/toPay/**").permitAll()
+                    .antMatchers("/toPayQR/**").permitAll()
                     // 有几个事情是没有登录也可以做的 比如说 忘记密码 注册
                     .antMatchers("/verificationCode").permitAll()// put 发送验证码
                     .antMatchers("/registerMobile").permitAll()// post注册手机

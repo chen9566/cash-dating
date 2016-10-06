@@ -65,7 +65,7 @@ public class HomeControllerTest extends LoginWebTest {
 
     @Test
     public void index() throws Exception {
-        driver.get("http://localhost/");
+        driver.get("http://localhost/start");
 
         StartOrderPage page = initPage(StartOrderPage.class);
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * 目前设计2个入口
- * 1 收款 既首页
+ * 1 收款 既首页 不再是了 应该是/start
  * 2 我的
  *
  * @author CJ
@@ -22,7 +22,7 @@ public class HomeController {
     @Autowired
     private StatisticService statisticService;
 
-    @RequestMapping(method = RequestMethod.GET, value = {"", "/"})
+    @RequestMapping(method = RequestMethod.GET, value = {"/start"})
     public String index() {
         return "receivables.html";
     }

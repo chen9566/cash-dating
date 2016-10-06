@@ -1,6 +1,7 @@
 package me.jiangcai.dating;
 
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.google.common.base.Predicate;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.page.BindingCardPage;
 import me.jiangcai.dating.page.BindingMobilePage;
@@ -16,6 +17,8 @@ import me.jiangcai.dating.web.WebConfig;
 import me.jiangcai.lib.test.SpringWebTest;
 import me.jiangcai.lib.test.page.AbstractPage;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -26,6 +29,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -96,7 +100,7 @@ public abstract class WebTest extends SpringWebTest {
      * @throws IOException
      */
     protected User helloNewUser() throws IOException {
-        final String startUrl = "http://localhost/";
+        final String startUrl = "http://localhost/start";
         return helloNewUser(startUrl);
     }
 
@@ -149,6 +153,24 @@ public abstract class WebTest extends SpringWebTest {
         MyInvitePage invitePage = initPage(MyInvitePage.class);
         invitePage.clickMyCode();
         MyInviteCodePage codePage = initPage(MyInviteCodePage.class);
+
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(new Predicate<WebDriver>() {
+            @Override
+            public boolean apply(@Nullable WebDriver input) {
+                try {
+                    codePage.reloadPageInfo();
+                    codePage.getQRCodeImage();
+                    return true;
+                } catch (IOException e) {
+                    throw new InternalError(e);
+                } catch (IllegalArgumentException ex) {
+                    //
+                }
+                return false;
+            }
+        });
+
         try {
             return qrCodeService.scanImage(codePage.getQRCodeImage());
         } catch (IllegalArgumentException exception) {

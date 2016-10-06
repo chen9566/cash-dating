@@ -68,7 +68,11 @@ public class LoginControllerTest extends WebTest {
         // 好了 关注我们的pcDriver
         Thread.sleep(1000);
 
+        pcDriver.get("http://localhost/");
         System.out.println(pcDriver.getPageSource());
+
+        driver.get("http://localhost/start");
+        System.out.println(driver.getPageSource());
     }
 
     @Test

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
 <!--/*@thymesVar id="total" type="java.lang.Number"*/-->
 <head>
@@ -39,7 +39,8 @@
 </div>
 <div class="my-list">
     <ul>
-        <li class="border-b clickHref" href="receivables.html" th:href="@{/}"><img src="images/myicon-33.png">我要收款<i
+        <li class="border-b clickHref" href="receivables.html" th:href="@{/start}"><img
+                src="images/myicon-33.png">我要收款<i
                 class="fa fa-angle-right fa-2x pull-right"></i></li>
         <li class="border-b clickHref" href="bankcard.html" th:href="@{/myBank}"><img src="images/myicon-34.png">我的银行卡<i
                 class="fa fa-angle-right fa-2x pull-right"></i></li>

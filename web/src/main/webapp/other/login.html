@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="token" type="me.jiangcai.dating.entity.LoginToken"*/-->
 <head>
     <meta charset="UTF-8">
@@ -13,7 +13,7 @@
 </head>
 <body>
 <h1 class="center">请使用微信扫一扫已完成登录</h1>
-<div>
+<div class="center">
     <img src="../images/temp.jpg" name="qrCode" th:src="@{/loginToken/{id}(id=${token.id})}" title="登录二维码" width="466"
          height="446"/>
 </div>

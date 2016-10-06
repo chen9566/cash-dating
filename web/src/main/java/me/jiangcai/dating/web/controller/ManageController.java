@@ -19,7 +19,7 @@ public class ManageController {
     public String index(@AuthenticationPrincipal User user) {
         if (user.getManageStatus() == null) {
             // 非管理员无法进入
-            return "redirect:/";
+            return "redirect:/start";
         }
 
         return "other/index.html";
