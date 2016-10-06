@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
         user.setOpenId(openId);
         user.setJoinTime(LocalDateTime.now());
         do {
-            user.setInviteCode(RandomStringUtils.random(7));
+            user.setInviteCode(RandomStringUtils.randomAlphanumeric(7));
         } while (byInviteCode(user.getInviteCode()) != null);
         
 

@@ -5,8 +5,9 @@
 if ($) {
     $.prototypesMode = true;
     $.testMode = true;
+    $.unitTestMode= false;
     $.uriPrefix = '';
-    $.localXMLURI = 'dist/local.xml';
+    $.localXMLURI = 'dist/local.json';
     // if ($.testMode) {
     //     $.ajaxSetup({
     //         async: false

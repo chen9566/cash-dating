@@ -72,7 +72,7 @@ public class MyInviteCodePage extends AbstractPage {
      * @param qrCodeService
      */
     public void assertUser(User user, QRCodeService qrCodeService) throws IOException {
-        BufferedImage image = toImage(qrCode);
+        BufferedImage image = getQRCodeImage();
         String url = qrCodeService.scanImage(image);
         log.info("邀请url:" + url);
         Long userId = CashFilter.guideUserFromURL(url);
@@ -85,6 +85,10 @@ public class MyInviteCodePage extends AbstractPage {
         if (user.getAgentInfo() == null)
             assertThat(requestButton)
                     .isNotNull();
+    }
+
+    public BufferedImage getQRCodeImage() throws IOException {
+        return toImage(qrCode);
     }
 
     public void requestAgent() {

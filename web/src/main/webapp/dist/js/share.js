@@ -25,9 +25,19 @@ $(function () {
         // 得去下载文件了
         $.ajax($.localXMLURI, {
             method: 'get',
-            data: 'xml',
+            data: 'json',
+            error: function (res, code) {
+                console.error(res.responseText, code);
+            },
             success: function (data) {
-                $.locationDatabase = data.getElementsByTagName('Location').item(0);
+                if ($.unitTestMode) {
+                    console.error('Skip City auto select in UnitTest mode.');
+                    return;
+                }
+
+                // console.error('start');
+                $.locationDatabase = data;
+                // console.error('got data',data);
                 // console.log(data, $.locationDatabase);
                 // 先给他们数据
                 provinceSelector.empty();
@@ -37,27 +47,33 @@ $(function () {
                     // console.log(this,provinceName);
                     citySelector.empty();
                     // 寻找合适的
-                    $.each($.locationDatabase.getElementsByTagName('CountryRegion'), function () {
-                        var name = this.getAttribute('Name');
-                        var code = this.getAttribute('Code');
+
+                    for (var i = 0; i < $.locationDatabase.length; i++) {
+                        var val = $.locationDatabase[i];
+                        // console.error(val);
+                        var name = val.name;
+                        var code = val.code;
                         if (name == provinceName) {
-                            $.each(this.getElementsByTagName('State'), function () {
-                                var _this = this;
-                                var name = _this.getAttribute('Name');
-                                var code = _this.getAttribute('Code');
-                                citySelector.append('<option value="' + name + '" code="' + code + '">' + name + '</option>');
-                            });
+                            for (var j = 0; j < val.cities.length; j++) {
+                                var otherVal = val.cities[j];
+                                var otherName = otherVal.name;
+                                var otherCode = otherVal.code;
+                                citySelector.append('<option value="' + otherName + '" code="' + otherCode + '">' + otherName + '</option>');
+                            }
                         }
-                    });
-
+                    }
                 });
 
-                //CountryRegion
-                $.each($.locationDatabase.getElementsByTagName('CountryRegion'), function () {
-                    var name = this.getAttribute('Name');
-                    var code = this.getAttribute('Code');
+                // console.error('start for ',$.locationDatabase.length);
+
+                for (var i = 0; i < $.locationDatabase.length; i++) {
+                    var val = $.locationDatabase[i];
+                    // console.error(val);
+                    var name = val.name;
+                    var code = val.code;
                     provinceSelector.append('<option value="' + name + '" code="' + code + '">' + name + '</option>');
-                });
+                }
+
 
             }
         });

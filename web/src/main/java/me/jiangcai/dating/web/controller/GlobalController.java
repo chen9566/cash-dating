@@ -50,7 +50,6 @@ public class GlobalController {
     private OrderService orderService;
 
     /**
-     *
      * @return id这个人邀请别人加入的二维码
      */
     @RequestMapping(method = RequestMethod.GET, value = "/inviteQR/{id}")
@@ -123,7 +122,9 @@ public class GlobalController {
     public ResponseEntity<String> allScript() throws IOException {
         try (InputStream inputStream = applicationContext.getResource("/mock/all_live.js").getInputStream()) {
             String script = StreamUtils.copyToString(inputStream, Charset.forName("UTF-8"));
+            //
             script = script.replaceAll("_TestMode_", String.valueOf(environment.acceptsProfiles("test")));
+            script = script.replaceAll("_UnitTestMode_", String.valueOf(environment.acceptsProfiles("unit_test")));
             script = script.replaceAll("_UriPrefix_", applicationContext.getServletContext().getContextPath());
 
             return ResponseEntity
