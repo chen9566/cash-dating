@@ -62,7 +62,7 @@ public abstract class LoginWebTest extends WebTest {
         detail = WeixinUserMocker.randomWeixinUserDetail();
         String mobile = randomMobile();
         verificationCodeService.sendCode(mobile, Function.identity());
-        userService.registerMobile(detail.getOpenId(), mobile, "1234", null);
+        userService.registerMobile(null, detail.getOpenId(), mobile, "1234", null);
 //        verificationCodeService.sendCode(mobile, Function.identity()); 现在不用发验证码了
         // 16
         String card = randomBankCard();

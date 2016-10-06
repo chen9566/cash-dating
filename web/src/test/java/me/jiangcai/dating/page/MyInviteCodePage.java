@@ -2,7 +2,7 @@ package me.jiangcai.dating.page;
 
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.service.QRCodeService;
-import me.jiangcai.dating.web.mvc.CashFilter;
+import me.jiangcai.dating.CashFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;

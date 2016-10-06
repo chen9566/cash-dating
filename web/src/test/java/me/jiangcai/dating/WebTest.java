@@ -13,7 +13,6 @@ import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.web.WebConfig;
-import me.jiangcai.dating.web.mvc.CashFilter;
 import me.jiangcai.lib.test.SpringWebTest;
 import me.jiangcai.lib.test.page.AbstractPage;
 import org.apache.commons.lang3.RandomStringUtils;

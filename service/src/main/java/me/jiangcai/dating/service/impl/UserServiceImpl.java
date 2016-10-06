@@ -1,5 +1,6 @@
 package me.jiangcai.dating.service.impl;
 
+import me.jiangcai.dating.CashFilter;
 import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
@@ -59,13 +60,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerMobile(String openId, String mobileNumber, String verificationCode, String inviteCode)
+    public User registerMobile(HttpServletRequest request, String openId, String mobileNumber, String verificationCode, String inviteCode)
             throws IllegalVerificationCodeException {
         verificationCodeService.verify(mobileNumber, verificationCode, VerificationType.register);
 
         User user = userRepository.findByOpenId(openId);
         if (user == null) {
-            user = newUser(openId);
+            user = newUser(openId, request);
         }
         user.setMobileNumber(mobileNumber);
         return userRepository.save(user);
@@ -126,29 +127,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateWeixinDetail(WeixinUserDetail detail) {
+    public User updateWeixinDetail(WeixinUserDetail detail, HttpServletRequest request) {
+        User user = byOpenId(detail.getOpenId());
+        if (user != null) {
+            user.setLoginTime(LocalDateTime.now());
+        }
+
         // 自己玩自己?
         if (detail instanceof CashWeixinUserDetail)
             return byOpenId(detail.getOpenId());
 
-        User user = byOpenId(detail.getOpenId());
         if (user == null) {
-            user = newUser(detail.getOpenId());
+            user = newUser(detail.getOpenId(), request);
         }
         user.updateWeixinUserDetail(detail);
         return userRepository.save(user);
     }
 
     @Override
-    public User newUser(String openId) {
+    public User newUser(String openId, HttpServletRequest request) {
         User user = new User();
         user.setOpenId(openId);
         user.setJoinTime(LocalDateTime.now());
         do {
             user.setInviteCode(RandomStringUtils.randomAlphanumeric(7));
         } while (byInviteCode(user.getInviteCode()) != null);
-        
+
+        //要搞脑子了
+        Long guideId = CashFilter.inviteBy(request);
+        if (guideId != null) {
+            user.setGuideUser(userRepository.findOne(guideId));
+            if (user.getGuideUser() != null) {
+                user.setAgentUser(user.getGuideUser().getAgentUser());
+            }
+        }
 
         return userRepository.save(user);
     }
+
 }

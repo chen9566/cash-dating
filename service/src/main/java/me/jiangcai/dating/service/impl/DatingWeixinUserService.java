@@ -11,7 +11,9 @@ import me.jiangcai.wx.model.WeixinUserDetail;
 import me.jiangcai.wx.protocol.Protocol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.NativeWebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
 /**
@@ -27,7 +29,7 @@ public class DatingWeixinUserService implements WeixinUserService {
     private UserService userService;
 
     @Override
-    public <T> T userInfo(PublicAccount account, String openId, Class<T> clazz) {
+    public <T> T userInfo(PublicAccount account, String openId, Class<T> clazz, Object data) {
         // 建议版本就不保存什么了 直接使用微信返回的
         if (clazz == String.class)
             //noinspection unchecked
@@ -36,23 +38,32 @@ public class DatingWeixinUserService implements WeixinUserService {
             User user = userService.byOpenId(openId);
             if (user == null)
                 //noinspection unchecked
-                return (T) Protocol.forAccount(account).userDetail(openId, this);
+                return (T) Protocol.forAccount(account).userDetail(openId, this, data);
             WeixinUserDetail detail = user.resolveWeixinUserDetail();
             if (detail != null)
                 //noinspection unchecked
                 return (T) detail;
             //noinspection unchecked
-            return (T) Protocol.forAccount(account).userDetail(openId, this);
+            return (T) Protocol.forAccount(account).userDetail(openId, this, data);
         }
 
         throw new IllegalArgumentException(("unsupported type:" + clazz));
     }
 
     @Override
-    public void updateUserToken(PublicAccount account, UserAccessResponse response) {
+    public void updateUserToken(PublicAccount account, UserAccessResponse response, Object data) {
         User user = userService.byOpenId(response.getOpenId());
         if (user == null) {
-            user = userService.newUser(response.getOpenId());
+            HttpServletRequest request;
+            if (data == null)
+                request = null;
+            else if (data instanceof NativeWebRequest) {
+                request = ((NativeWebRequest) data).getNativeRequest(HttpServletRequest.class);
+            } else if (data instanceof HttpServletRequest)
+                request = (HttpServletRequest) data;
+            else
+                request = null;
+            user = userService.newUser(response.getOpenId(), request);
         }
         user.setAccessToken(response.getAccessToken());
         user.setRefreshToken(response.getRefreshToken());

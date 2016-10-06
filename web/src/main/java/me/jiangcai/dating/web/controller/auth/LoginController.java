@@ -38,7 +38,7 @@ public class LoginController {
     @RequestMapping(method = RequestMethod.GET, value = "/login", produces = MediaType.TEXT_HTML_VALUE)
     public String login(WeixinUserDetail detail, Model model, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        userService.updateWeixinDetail(detail);
+        userService.updateWeixinDetail(detail, request);
         //  是否已经完成注册
         //
         if (userService.mobileRequired(detail.getOpenId())) {
@@ -57,8 +57,9 @@ public class LoginController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/registerMobile")
-    public String registerMobile(@OpenId String id, String mobile, String verificationCode, String inviteCode) {
-        userService.registerMobile(id, mobile, verificationCode, inviteCode);
+    public String registerMobile(HttpServletRequest request, @OpenId String id, String mobile, String verificationCode
+            , String inviteCode) {
+        userService.registerMobile(request, id, mobile, verificationCode, inviteCode);
 
         return "redirect:/login";
     }

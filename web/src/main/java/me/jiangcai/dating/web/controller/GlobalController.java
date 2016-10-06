@@ -7,7 +7,7 @@ import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.VerificationCodeService;
-import me.jiangcai.dating.web.mvc.CashFilter;
+import me.jiangcai.dating.CashFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;

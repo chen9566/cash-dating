@@ -33,15 +33,16 @@ public interface UserService {
     /**
      * 绑定手机号码
      *
-     * @param openId       openId
-     * @param mobileNumber 手机
-     * @param verificationCode         验证码
-     * @param inviteCode   邀请码
+     * @param request
+     * @param openId           openId
+     * @param mobileNumber     手机
+     * @param verificationCode 验证码
+     * @param inviteCode       邀请码
      * @return 用户实例
      * @throws IllegalVerificationCodeException 验证码无效
      */
     @Transactional
-    User registerMobile(String openId, String mobileNumber, String verificationCode, String inviteCode)
+    User registerMobile(HttpServletRequest request, String openId, String mobileNumber, String verificationCode, String inviteCode)
             throws IllegalVerificationCodeException;
 
     /**
@@ -56,11 +57,11 @@ public interface UserService {
     /**
      * 增加银行卡
      *
-     * @param openId   openId
-     * @param name     持卡人
-     * @param number   卡号
+     * @param openId    openId
+     * @param name      持卡人
+     * @param number    卡号
      * @param bank
-     *@param address
+     * @param address
      * @param subBranch @return 新增加的银行
      * @throws IllegalVerificationCodeException 验证码无效
      */
@@ -77,23 +78,28 @@ public interface UserService {
 
     @Transactional(readOnly = true)
     User byMobile(String mobile);
+
     @Transactional(readOnly = true)
     User byInviteCode(String code);
 
     /**
      * 更新用户微信详情
      *
-     * @param detail 详情
+     * @param detail  详情
+     * @param request
      * @return 用户实例
      */
     @Transactional
-    User updateWeixinDetail(WeixinUserDetail detail);
+    User updateWeixinDetail(WeixinUserDetail detail, HttpServletRequest request);
 
     /**
      * 新增一个用户
-     * @param openId openId 必须的
+     *
+     * @param openId  openId 必须的
+     * @param request 当前的http请求,我们需要决定这个用户的一些细节,当然这是可选的
      * @return 新增的用户
      */
     @Transactional
-    User newUser(String openId);
+    User newUser(String openId, HttpServletRequest request);
+
 }

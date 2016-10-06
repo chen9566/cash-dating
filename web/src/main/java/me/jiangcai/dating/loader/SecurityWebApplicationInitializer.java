@@ -9,7 +9,7 @@
 
 package me.jiangcai.dating.loader;
 
-import me.jiangcai.dating.web.mvc.CashFilter;
+import me.jiangcai.dating.CashFilter;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.filter.RequestContextFilter;
 

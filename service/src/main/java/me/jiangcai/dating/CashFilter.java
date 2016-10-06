@@ -1,4 +1,4 @@
-package me.jiangcai.dating.web.mvc;
+package me.jiangcai.dating;
 
 import org.springframework.util.NumberUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
