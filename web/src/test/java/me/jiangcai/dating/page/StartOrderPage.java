@@ -40,6 +40,7 @@ public class StartOrderPage extends AbstractPage {
 
         assertThat(amountInput)
                 .isNotNull();
+        assertThat(amountInput.isDisplayed()).isTrue();
         assertThat(commentInput)
                 .isNotNull();
         assertThat(button)

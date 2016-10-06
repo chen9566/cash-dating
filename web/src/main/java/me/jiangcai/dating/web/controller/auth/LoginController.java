@@ -1,12 +1,15 @@
 package me.jiangcai.dating.web.controller.auth;
 
 import me.jiangcai.dating.entity.Card;
+import me.jiangcai.dating.entity.support.Address;
+import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.wx.OpenId;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -23,6 +26,8 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private BankService bankService;
 
     /**
      * 登录页面
@@ -31,7 +36,7 @@ public class LoginController {
      * @return 登录页面
      */
     @RequestMapping(method = RequestMethod.GET, value = "/login", produces = MediaType.TEXT_HTML_VALUE)
-    public String login(WeixinUserDetail detail, HttpServletRequest request, HttpServletResponse response)
+    public String login(WeixinUserDetail detail, Model model, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         userService.updateWeixinDetail(detail);
         //  是否已经完成注册
@@ -40,6 +45,7 @@ public class LoginController {
             return "register.html";
         }
         if (userService.bankAccountRequired(detail.getOpenId())) {
+            model.addAttribute("banks", bankService.list());
             return "addcard.html";
         }
 
@@ -58,8 +64,13 @@ public class LoginController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/registerCard")
-    public String registerCard(@OpenId String id, String name, String number, String bankCode, String mobile, String code) {
-        Card card = userService.addCard(id, name, number, null, null, null);
+    public String registerCard(@OpenId String id, String name, String number, String province, String city, String bank
+            , String subBranch) {
+        Address address = new Address();
+        address.setProvince(province);
+        address.setCity(city);
+
+        Card card = userService.addCard(id, name, number, bankService.byCode(bank), address, subBranch);
         return "redirect:/login";
     }
 

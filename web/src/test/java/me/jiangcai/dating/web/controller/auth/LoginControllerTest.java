@@ -3,7 +3,10 @@ package me.jiangcai.dating.web.controller.auth;
 import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.page.BindingCardPage;
 import me.jiangcai.dating.page.BindingMobilePage;
+import me.jiangcai.dating.page.StartOrderPage;
+import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.UserService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,6 +23,8 @@ public class LoginControllerTest extends WebTest {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private BankService bankService;
 
     @Test
     public void sendCode() throws Exception {
@@ -51,6 +56,13 @@ public class LoginControllerTest extends WebTest {
         // 这个用户已经产生
         assertThat(userService.byMobile(mobile))
                 .isNotNull();
+        //
+        // 地址自己选吧
+
+        cardPage.submitWithRandomAddress(bankService.list().stream()
+                .findAny().orElse(null), RandomStringUtils.random(3), RandomStringUtils.random(6), RandomStringUtils.randomNumeric(16));
+        initPage(StartOrderPage.class);
+        // 这就对了!
     }
 
 }

@@ -1,6 +1,7 @@
 package me.jiangcai.dating.page;
 
 import com.gargoylesoftware.htmlunit.html.HtmlImage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitWebElement;
@@ -44,6 +45,40 @@ public abstract class AbstractPage extends me.jiangcai.lib.test.page.AbstractPag
             return image.getImageReader().read(0);
         } catch (IllegalAccessException e) {
             throw new InternalError("炸!,版本更新了?", e);
+        }
+    }
+
+
+    public void inputSelect(WebElement formElement, String inputName, String label) {
+        WebElement input = formElement.findElement(By.name(inputName));
+
+        if (input.getAttribute("class") != null && input.getAttribute("class").contains("chosen-select")) {
+            // 换一个方式
+            WebElement container = formElement.findElements(By.className("chosen-container"))
+                    .stream()
+                    .filter(webElement -> webElement.getAttribute("title") != null && webElement.getAttribute("title")
+                            .equals(input.getAttribute("title")))
+                    .findAny().orElseThrow(() -> new IllegalStateException("使用了chosen-select,但没看到chosen-container"));
+
+            container.click();
+            for (WebElement element : container.findElements(By.cssSelector("li.active-result"))) {
+                if (label.equals(element.getText())) {
+                    element.click();
+                    return;
+                }
+            }
+            return;
+        }
+        //chosen-container chosen-container-single and same title
+        // li.active-result
+
+        input.clear();
+        for (WebElement element : input.findElements(By.tagName("option"))) {
+//            System.out.println(element.getText());
+            if (label.equals(element.getText())) {
+                element.click();
+                return;
+            }
         }
     }
 }

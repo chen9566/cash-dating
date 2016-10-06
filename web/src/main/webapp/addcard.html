@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="banks" type="java.lang.Iterable<me.jiangcai.dating.entity.Bank>"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
@@ -12,10 +13,12 @@
     <script src="dist/js/bootstrap.min.js"></script>
     <script src="dist/js/yzm.js"></script>
     <script src="dist/js/share.js"></script>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
 </head>
 <body>
 <div class="container">
-    <form class="form-register" role="form">
+    <form class="form-register" action="receivables.html" th:action="@{/registerCard}" th:method="post" id="addCardForm" role="form">
         <p class="txt">请绑定持卡人的银行卡(借记卡)</p>
         <!--<div class="row iphonebg">-->
         <!--<div class="ml10">-->
@@ -25,7 +28,8 @@
         <div class="row codebg">
             <div class="ml10">
                 <div class="iphone col-xs-5">开户人真实姓名:</div>
-                <div class="col-xs-6"><input type="text" placeholder="输入真实姓名"></div>
+                <div class="col-xs-6"><input type="text" name="name" required minlength="2" maxlength="20"
+                                             placeholder="输入真实姓名"></div>
             </div>
         </div>
         <!--<div class="row codebg">-->
@@ -61,7 +65,7 @@
             <div class="ml10">
                 <div class="iphone col-xs-5">开户银行所在省:</div>
                 <div class="col-xs-6">
-                    <select class="form-control province-selector">
+                    <select class="form-control province-selector" name="province" required>
                         <option value="">默认选择</option>
                         <option value="">北京</option>
                     </select>
@@ -72,7 +76,7 @@
             <div class="ml10">
                 <div class="iphone col-xs-5">开户银行所在市:</div>
                 <div class="col-xs-6">
-                    <select class="form-control city-selector">
+                    <select class="form-control city-selector" name="city" required>
                         <option value="">默认选择</option>
                         <option value="">北京</option>
                     </select>
@@ -83,12 +87,12 @@
             <div class="ml10">
                 <div class="iphone col-xs-5">选择银行:</div>
                 <div class="col-xs-6">
-
-                    <select class="form-control">
-                        <option value="">默认选择</option>
-                        <option value="">工商银行</option>
+                    <select class="form-control" name="bank" required>
+                        <option value="" th:remove="all">默认选择</option>
+                        <option value="1" th:each="bank:${banks}" th:value="${bank.code}" th:text="${bank.name}">
+                            工商银行
+                        </option>
                     </select>
-
                 </div>
             </div>
         </div>
@@ -96,26 +100,22 @@
             <div class="ml10">
                 <div class="iphone col-xs-5">支行名称:</div>
                 <div class="col-xs-6">
-
-                    <select class="form-control">
-                        <option value="">默认选择</option>
-                        <option value="">工商银行</option>
-                    </select>
-
+                    <input type="text" name="subBranch" required minlength="4" placeholder="输入支行全称"/>
                 </div>
             </div>
         </div>
         <div class="row codebg">
             <div class="ml10">
                 <div class="iphone col-xs-5 ">银行卡号:</div>
-                <div class="col-xs-6"><input type="text" placeholder="持卡人银行卡号"></div>
-
+                <div class="col-xs-6">
+                    <input type="text" name="number" required minlength="16" placeholder="持卡人银行卡号">
+                </div>
             </div>
         </div>
         <p class="txt"><br>此银行卡号开户名必须与上方开户名一致<br>否则提现会失败<br><br></p>
 
 
-        <button type="button" class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#myModal">提交
+        <button type="submit" class="btn btn-danger btn-lg btn-block">提交
         </button>
 
     </form>
@@ -138,7 +138,12 @@
         </div>
     </div>
 </div>
-
-</body>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
+<script>
+    $(function () {
+        var validator = $("#addCardForm").validate({});
+    });
+</script>
+</body>
+
 </html>

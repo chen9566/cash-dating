@@ -31,4 +31,9 @@ public class BankServiceImpl implements BankService {
     public List<Bank> list() {
         return bankRepository.findAll();
     }
+
+    @Override
+    public Bank byCode(String code) {
+        return bankRepository.getOne(code);
+    }
 }

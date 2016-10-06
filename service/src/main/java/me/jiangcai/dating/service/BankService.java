@@ -16,4 +16,7 @@ public interface BankService {
 
     @Transactional(readOnly = true)
     List<Bank> list();
+
+    @Transactional(readOnly = true)
+    Bank byCode(String code);
 }
