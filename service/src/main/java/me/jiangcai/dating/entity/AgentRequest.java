@@ -37,9 +37,11 @@ public class AgentRequest {
     @Column(length = 20)
     private String mobileNumber;
 
+    @Column(columnDefinition = "datetime")
     private LocalDateTime createdTime;
 
     private AgentRequestStatus processStatus;
+    @Column(columnDefinition = "datetime")
     private LocalDateTime processTime;
     private String comment;
 }

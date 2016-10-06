@@ -1,6 +1,6 @@
 package me.jiangcai.dating.service;
 
-import me.jiangcai.dating.entity.support.BalanceFlow;
+import me.jiangcai.dating.model.BalanceFlow;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;

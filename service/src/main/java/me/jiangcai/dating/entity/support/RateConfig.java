@@ -2,6 +2,7 @@ package me.jiangcai.dating.entity.support;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.math.BigDecimal;
 
@@ -15,8 +16,11 @@ import java.math.BigDecimal;
 @Data
 public class RateConfig {
 
+    @Column(scale = 7, precision = 10)
     private BigDecimal channelRate;
+    @Column(scale = 7, precision = 10)
     private BigDecimal agentRate;
+    @Column(scale = 7, precision = 10)
     private BigDecimal guideRate;
 
 }

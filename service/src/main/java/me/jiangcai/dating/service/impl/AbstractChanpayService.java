@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.security.SignatureException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -66,7 +65,9 @@ public abstract class AbstractChanpayService implements ChanpayService {
             // 校验金额
             order.setStatus(event.getTradeStatus());
             if (order.isFinish()) {
-                if (!order.getCashOrder().getAmount().equals(BigDecimal.valueOf(event.getAmount().doubleValue()))) {
+                // order.getCashOrder().getAmount().doubleValue()!=event.getAmount().doubleValue()
+                // !order.getCashOrder().getAmount().equals(BigDecimal.valueOf(event.getAmount().doubleValue()))
+                if (order.getCashOrder().getAmount().doubleValue() != event.getAmount().doubleValue()) {
                     throw new IllegalStateException("bad amount System:" + order.getCashOrder().getAmount() + " event:" + event.getAmount());
                 }
                 if (!preStatus) {

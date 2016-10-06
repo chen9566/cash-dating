@@ -32,5 +32,6 @@ public class Mobile {
     /**
      * 验证码过期时间
      */
+    @Column(columnDefinition = "datetime")
     private LocalDateTime codeExpireTime;
 }

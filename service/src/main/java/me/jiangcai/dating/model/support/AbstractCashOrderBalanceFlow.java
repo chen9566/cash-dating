@@ -1,7 +1,8 @@
-package me.jiangcai.dating.entity.support;
+package me.jiangcai.dating.model.support;
 
 import lombok.Data;
 import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.model.BalanceFlow;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -10,16 +11,15 @@ import java.time.LocalDateTime;
  * @author CJ
  */
 @Data
-abstract class AbstractCashOrderBalanceFlow implements BalanceFlow {
+public abstract class AbstractCashOrderBalanceFlow implements BalanceFlow {
 
-    AbstractCashOrderBalanceFlow(CashOrder cashOrder) {
+    public AbstractCashOrderBalanceFlow(CashOrder cashOrder) {
         comment = cashOrder.getComment();
         startTime = cashOrder.getStartTime();
         amount = toAmount(cashOrder);
     }
 
     /**
-     *
      * @param cashOrder 订单
      * @return 这个单子的收益
      */

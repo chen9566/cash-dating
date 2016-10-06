@@ -27,6 +27,7 @@ public class CashOrder {
     @Column(length = 32)
     private String id;
     //金额
+    @Column(scale = 2, precision = 20)
     private BigDecimal amount;
     //备注
     @Column(length = 50)
@@ -34,6 +35,7 @@ public class CashOrder {
     /**
      * 开启时间
      */
+    @Column(columnDefinition = "datetime")
     private LocalDateTime startTime;
 
     @ManyToOne(cascade = CascadeType.REFRESH)

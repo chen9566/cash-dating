@@ -2,10 +2,9 @@ package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.User;
-import me.jiangcai.dating.entity.WithdrawOrder;
-import me.jiangcai.dating.entity.support.AgentCashOrderBalanceFlow;
-import me.jiangcai.dating.entity.support.BalanceFlow;
-import me.jiangcai.dating.entity.support.GuideCashOrderBalanceFlow;
+import me.jiangcai.dating.model.AgentCashOrderBalanceFlow;
+import me.jiangcai.dating.model.BalanceFlow;
+import me.jiangcai.dating.model.GuideCashOrderBalanceFlow;
 import me.jiangcai.dating.entity.support.WithdrawOrderStatus;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.UserRepository;

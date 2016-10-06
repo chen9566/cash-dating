@@ -1,4 +1,6 @@
-package me.jiangcai.dating.entity.support;
+package me.jiangcai.dating.model;
+
+import me.jiangcai.dating.model.support.FlowType;
 
 /**
  * 用户余额的流水,这里的所有语义应该是以用于余额的流水考虑的

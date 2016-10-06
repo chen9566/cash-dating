@@ -34,6 +34,7 @@ public abstract class PlatformOrder {
     /**
      * 完成时间
      */
+    @Column(columnDefinition = "datetime")
     private LocalDateTime finishTime;
 
     /**

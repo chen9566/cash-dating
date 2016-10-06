@@ -2,11 +2,12 @@ package me.jiangcai.dating.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.jiangcai.dating.entity.support.BalanceFlow;
-import me.jiangcai.dating.entity.support.FlowType;
+import me.jiangcai.dating.model.BalanceFlow;
+import me.jiangcai.dating.model.support.FlowType;
 import me.jiangcai.dating.entity.support.WithdrawOrderStatus;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,14 +38,17 @@ public class WithdrawOrder implements BalanceFlow {
     /**
      * 提现金额
      */
+    @Column(scale = 2, precision = 20)
     private BigDecimal amount;
 
     /**
      * 开启时间
      */
+    @Column(columnDefinition = "datetime")
     private LocalDateTime startTime;
 
     private WithdrawOrderStatus processStatus;
+    @Column(columnDefinition = "datetime")
     private LocalDateTime processTime;
     private String comment;
 

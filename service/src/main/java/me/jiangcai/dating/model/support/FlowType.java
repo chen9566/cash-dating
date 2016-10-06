@@ -1,4 +1,4 @@
-package me.jiangcai.dating.entity.support;
+package me.jiangcai.dating.model.support;
 
 import java.math.BigDecimal;
 

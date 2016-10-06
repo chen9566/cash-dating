@@ -3,7 +3,7 @@ package me.jiangcai.dating.page;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import me.jiangcai.dating.entity.User;
-import me.jiangcai.dating.entity.support.BalanceFlow;
+import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.service.StatisticService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

@@ -1,6 +1,7 @@
-package me.jiangcai.dating.entity.support;
+package me.jiangcai.dating.model;
 
 import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.model.support.AbstractCashOrderBalanceFlow;
 
 import java.math.BigDecimal;
 

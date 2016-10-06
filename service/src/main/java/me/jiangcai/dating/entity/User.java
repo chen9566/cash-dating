@@ -3,7 +3,7 @@ package me.jiangcai.dating.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
-import me.jiangcai.dating.entity.support.BalanceFlow;
+import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.model.CashWeixinUserDetail;
 import me.jiangcai.wx.model.Gender;
 import me.jiangcai.wx.model.WeixinUser;
@@ -48,10 +48,12 @@ public class User implements WeixinUser {
      * 比如月中,统计上个月所有账单会是一个不错的办法
      * 简单的说就是{@link BalanceFlow}并不包含在这个值
      */
+    @Column(scale = 2, precision = 20)
     private BigDecimal settlementBalance = BigDecimal.ZERO;
     /**
      * 跟上面那个一样,不过这里是开支
      */
+    @Column(scale = 2, precision = 20)
     private BigDecimal settlementExpense = BigDecimal.ZERO;
 
     // 业务信息
@@ -83,12 +85,14 @@ public class User implements WeixinUser {
     private String openId;
     @Column(length = 50)
     private String accessToken;
+    @Column(columnDefinition = "datetime")
     private LocalDateTime accessTimeToExpire;
     @Column(length = 50)
     private String refreshToken;
-    private String[] tokenScopes;
+    private String tokenScopeStr;
 
     // 这些信息是用户详情 可以随时更新
+    @Column(length = 150)
     private String nickname;
     @JsonProperty("sex")
     private Gender gender;
@@ -100,16 +104,19 @@ public class User implements WeixinUser {
     @Column(length = 20)
     private String country;
     // 最后一次获取真实微信详情的时间
+    @Column(columnDefinition = "datetime")
     private LocalDateTime lastRefreshDetailTime;
 
     // 杂项
     /**
      * 注册时间
      */
+    @Column(columnDefinition = "datetime")
     private LocalDateTime joinTime;
     /**
      * 最后一次登录
      */
+    @Column(columnDefinition = "datetime")
     private LocalDateTime loginTime;
     private String password;
 
@@ -171,4 +178,19 @@ public class User implements WeixinUser {
         return Objects.hash(mobileNumber, openId);
     }
 
+    @Override
+    public String[] getTokenScopes() {
+        String str = getTokenScopeStr();
+        if (str == null)
+            return null;
+        return str.split(",");
+    }
+
+    @Override
+    public void setTokenScopes(String[] strings) {
+        if (strings == null) {
+            setTokenScopeStr(null);
+        } else
+            setTokenScopeStr(String.join(",", (CharSequence[]) strings));
+    }
 }
