@@ -3,12 +3,22 @@ package me.jiangcai.dating.service;
 import me.jiangcai.dating.entity.support.RateConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
+
 /**
  * 系统级别
  *
  * @author CJ
  */
 public interface SystemService {
+
+
+    /**
+     * 自动调度
+     */
+    @PostConstruct
+    @Transactional
+    void init();
 
     /**
      * @return 当前的配置

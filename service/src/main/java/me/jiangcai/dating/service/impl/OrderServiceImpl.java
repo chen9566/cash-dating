@@ -8,6 +8,7 @@ import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
+import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,8 @@ public class OrderServiceImpl implements OrderService {
     private UserService userService;
     @Autowired
     private ChanpayService chanpayService;
+    @Autowired
+    private SystemService systemService;
 
     @Override
     public CashOrder newOrder(User user, BigDecimal amount, String comment) {
@@ -46,6 +49,8 @@ public class OrderServiceImpl implements OrderService {
         order.setAmount(amount);
         order.setComment(comment);
         order.setStartTime(LocalDateTime.now());
+        order.setThatRateConfig(systemService.currentRateConfig());
+
         return cashOrderRepository.save(order);
     }
 

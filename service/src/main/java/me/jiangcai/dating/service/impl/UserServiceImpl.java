@@ -154,13 +154,16 @@ public class UserServiceImpl implements UserService {
         } while (byInviteCode(user.getInviteCode()) != null);
 
         //要搞脑子了
-        Long guideId = CashFilter.inviteBy(request);
-        if (guideId != null) {
-            user.setGuideUser(userRepository.findOne(guideId));
-            if (user.getGuideUser() != null) {
-                user.setAgentUser(user.getGuideUser().getAgentUser());
+        if (request != null) {
+            Long guideId = CashFilter.inviteBy(request);
+            if (guideId != null) {
+                user.setGuideUser(userRepository.findOne(guideId));
+                if (user.getGuideUser() != null) {
+                    user.setAgentUser(user.getGuideUser().getAgentUser());
+                }
             }
         }
+
 
         return userRepository.save(user);
     }
