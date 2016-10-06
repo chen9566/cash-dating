@@ -10,6 +10,7 @@ import me.jiangcai.dating.service.AgentService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.StatisticService;
 import org.junit.Test;
+import org.openqa.selenium.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
@@ -66,7 +67,13 @@ public class InviteControllerTest extends LoginWebTest {
         assertThat(agentRequest1.getMobileNumber())
                 .isEqualTo(mobile);
 
-
+        // 这里动点坏脑子, 检查下错误的示范
+        driver.get("http://localhost/agent");
+        requestPage = initPage(AgentRequestPage.class);
+        requestPage.submitRequest(currentUser().getNickname(), mobile);
+        // 这里应该存在一个alert
+        Alert alert = driver.switchTo().alert();
+        System.out.println(alert.getText());
     }
 
 }

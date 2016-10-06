@@ -4,6 +4,11 @@ import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.exception.RequestedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestHeader;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * @author CJ
@@ -36,12 +41,29 @@ public class CommonAdvice {
 //X-Requested-With:XMLHttpRequest
 
     @ExceptionHandler(RequestedException.class)
-    public void requestedException(RequestedException ex) {
+    public void requestedException(RequestedException ex, @RequestHeader("X-Requested-With") String ajaxRequest
+            , HttpServletResponse response) throws IOException {
+        if (notAjax(ex, ajaxRequest, response))
+            throw ex;
+    }
 
+    private boolean notAjax(Exception ex, String ajaxRequest, HttpServletResponse response) throws IOException {
+        if (!ajaxRequest.equalsIgnoreCase("XMLHttpRequest"))
+            return true;
+        //开始ajax处理
+        response.setContentType("text/plant; charset=UTF-8");
+        try (Writer writer = response.getWriter()) {
+            writer.write(ex.getMessage());
+            writer.flush();
+        }
+        response.sendError(400);
+        return false;
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public void illegalArgumentException(IllegalArgumentException ex) {
-
+    public void illegalArgumentException(IllegalArgumentException ex
+            , @RequestHeader("X-Requested-With") String ajaxRequest, HttpServletResponse response) throws IOException {
+        if (notAjax(ex, ajaxRequest, response))
+            throw ex;
     }
 }
