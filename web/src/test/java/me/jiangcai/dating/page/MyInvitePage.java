@@ -28,6 +28,7 @@ public class MyInvitePage extends AbstractPage {
 
     public MyInvitePage(WebDriver webDriver) {
         super(webDriver);
+        System.out.println(webDriver.getPageSource());
     }
 
     @Override
@@ -35,7 +36,10 @@ public class MyInvitePage extends AbstractPage {
         webDriver.findElements(By.className("cri")).stream()
                 .filter(WebElement::isDisplayed)
                 .findAny()
-                .ifPresent(element -> balanceText = element);
+                .ifPresent(element -> {
+                    // 暂时就应该是用b了吧
+                    balanceText = element.findElement(By.tagName("b"));
+                });
 
         //withdraw
         webDriver.findElements(By.tagName("button")).stream()

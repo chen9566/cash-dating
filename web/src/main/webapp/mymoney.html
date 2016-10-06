@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
+<!--/*@thymesVar id="balance" type="java.lang.Number"*/-->
+<!--/*@thymesVar id="flows" type="java.lang.Iterable<me.jiangcai.dating.entity.support.BalanceFlow>"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
@@ -10,27 +13,28 @@
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/share.js"></script>
 </head>
 <body>
 <div class="balance">
     <div class="yq"><i class="fa fa-question-circle ">邀请说明</i></div>
-    <div class="cri"> 金额(元) <b>200000</b></div>
+    <div class="cri"> 金额(元) <b th:text="${{balance}}">200000</b></div>
     <div class="ba-btn">
-        <button type="button" class="btn ba-bred btn-lg">转入帐户余额</button>
-        <button type="button" class="btn ba-bglod btn-lg" onClick="location='code.html'">我的邀请码</button>
+        <button type="button" class="btn ba-bred btn-lg">提现</button>
+        <button type="button" class="btn ba-bglod btn-lg clickHref" href="code.html" th:href="@{/myInviteCode}">我的邀请码</button>
     </div>
 </div>
 <ul id="navlist">
     <li class="list1"></li>
-    <li class="list2"><a href=""><span>邀请明细</span></a></li>
+    <li class="list2"><a href=""><span>余额明细</span></a></li>
 </ul>
 <div class="balliist">
-    <ul>
-        <li class="pull-right lg flow-amount">+900</li>
-        <li class="flow-comment"><b>12200993838</b></li>
-        <li class="flow-name">购买产品</li>
+    <ul th:each="flow:${flows}">
+        <li class="pull-right lg flow-amount" th:text="${flow.flowType.toFlag()}${{flow.amount}}">+900</li>
+        <li class="flow-comment"><b th:text="${flow.comment}">12200993838</b></li>
+        <li class="flow-name" th:text="${flow.flowName}">购买产品</li>
         <li class="flow-time">
-            <span>2011-09-09</span>
+            <span th:text="${{flow.startTime}}">2011-09-09</span>
         </li>
     </ul>
     <ul th:remove="all">
