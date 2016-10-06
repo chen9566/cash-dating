@@ -31,8 +31,8 @@
             <map>
                 <entry key="javax.persistence.schema-generation.database.action" value="create"/>
                 <entry key="eclipselink.logging.level" value="FINE"/>
-                <entry key="eclipselink.logging.logger"
-                       value="org.eclipse.persistence.logging.CommonsLoggingLog"/>
+                <!--<entry key="eclipselink.logging.logger"-->
+                       <!--value="org.eclipse.persistence.logging.CommonsLoggingLog"/>-->
                 <entry key="eclipselink.weaving" value="false"/>
             </map>
         </property>

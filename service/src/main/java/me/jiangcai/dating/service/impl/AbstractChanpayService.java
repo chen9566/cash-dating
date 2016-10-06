@@ -42,6 +42,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
 
     @PostConstruct
     @Transactional
+    @Override
     public void init() throws IOException, SignatureException {
         // 获取银行列表
         //GetPayChannel
