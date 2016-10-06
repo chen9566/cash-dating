@@ -96,7 +96,18 @@ public abstract class WebTest extends SpringWebTest {
      * @throws IOException
      */
     protected User helloNewUser() throws IOException {
-        driver.get("http://localhost/");
+        final String startUrl = "http://localhost/";
+        return helloNewUser(startUrl);
+    }
+
+    /**
+     * 磨磨唧唧的建立一个新用户
+     *
+     * @return
+     * @throws IOException
+     */
+    protected User helloNewUser(String startUrl) throws IOException {
+        driver.get(startUrl);
         String mobile = randomMobile();
         BindingMobilePage page = initPage(BindingMobilePage.class);
 

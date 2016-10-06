@@ -2,6 +2,7 @@ package me.jiangcai.dating.service;
 
 import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
+import me.jiangcai.dating.entity.LoginToken;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
@@ -102,4 +103,37 @@ public interface UserService {
     @Transactional
     User newUser(String openId, HttpServletRequest request);
 
+
+    /**
+     * 非微信客户端请求登录
+     *
+     * @param request 当前请求
+     * @return 准备许可证
+     */
+    @Transactional
+    LoginToken requestLogin(HttpServletRequest request);
+
+    /**
+     * 用户user许可了id的登录
+     *
+     * @param id
+     * @param user
+     */
+    @Transactional
+    void approvalLogin(long id, User user);
+
+    /**
+     * 检查之前的登录许可是否已被处理,如果已被处理直接完成登录
+     *
+     *
+     * @param id
+     * @param request  request
+     * @param response response
+     * @throws ServletException
+     * @throws IOException
+     * @throws IllegalStateException    还没被许可,但有可能
+     * @throws IllegalArgumentException 永远无法许可了。
+     */
+    @Transactional
+    void checkRequestLogin(long id, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 }

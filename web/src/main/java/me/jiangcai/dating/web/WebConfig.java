@@ -37,7 +37,10 @@ public class WebConfig {
                     .antMatchers(
                             // 安全系统无关的uri
                             mvcConfig.staticResourceAntPatterns()
-                    ).antMatchers("/weixin/");
+                    )
+                    .antMatchers("/weixin/")
+                    .antMatchers("/notify")
+                    .antMatchers("/login");
         }
 
         @Override
@@ -58,6 +61,8 @@ public class WebConfig {
             registry
                     // 所有的
                     .antMatchers("/all.js").permitAll()
+                    // 非微信登录要获取的二维码
+                    .antMatchers("/loginToken").permitAll()
                     // 支付分享的
                     .antMatchers("/inviteQR").permitAll()
                     .antMatchers("/order").permitAll()

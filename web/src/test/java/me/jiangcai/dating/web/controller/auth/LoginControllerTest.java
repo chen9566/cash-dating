@@ -1,11 +1,20 @@
 package me.jiangcai.dating.web.controller.auth;
 
+import com.google.common.base.Predicate;
 import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.page.PCLoginPage;
+import me.jiangcai.dating.service.QRCodeService;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,6 +26,50 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author CJ
  */
 public class LoginControllerTest extends WebTest {
+
+    @Autowired
+    private QRCodeService qrCodeService;
+
+    @Test
+    public void pcLogin() throws IOException, InterruptedException {
+        // 需要一个新的driver实例
+        WebDriver pcDriver = MockMvcHtmlUnitDriverBuilder
+                .mockMvcSetup(mockMvc)
+                .build();
+
+        pcDriver.get("http://localhost/");
+
+
+        WebDriverWait webDriverWait = new WebDriverWait(pcDriver,5);
+        webDriverWait.until(new Predicate<WebDriver>() {
+            @Override
+            public boolean apply(@Nullable WebDriver input) {
+                PCLoginPage loginPage = PageFactory.initElements(input, PCLoginPage.class);
+                loginPage.validatePage();
+                try{
+                    loginPage.codeImage();
+                    return true;
+                }catch (Exception ex){
+                    return false;
+                }
+
+            }
+        });
+
+        PCLoginPage loginPage = PageFactory.initElements(pcDriver, PCLoginPage.class);
+        loginPage.validatePage();
+
+
+        String url = qrCodeService.scanImage(loginPage.codeImage());
+
+        // 好了 一会儿让我们的
+        helloNewUser(url);
+
+        // 好了 关注我们的pcDriver
+        Thread.sleep(1000);
+
+        System.out.println(pcDriver.getPageSource());
+    }
 
     @Test
     public void sendCode() throws Exception {

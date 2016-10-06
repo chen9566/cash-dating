@@ -3,11 +3,13 @@ package me.jiangcai.dating.service.impl;
 import me.jiangcai.dating.CashFilter;
 import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
+import me.jiangcai.dating.entity.LoginToken;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.CashWeixinUserDetail;
 import me.jiangcai.dating.model.VerificationType;
+import me.jiangcai.dating.repository.LoginTokenRepository;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.service.VerificationCodeService;
@@ -37,6 +39,8 @@ import java.util.ArrayList;
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
+    private LoginTokenRepository loginTokenRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -97,6 +101,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void loginAs(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
+        final WeixinAuthentication authentication = login(request, response, user);
+
+        new SavedRequestAwareAuthenticationSuccessHandler().onAuthenticationSuccess(request, response, authentication);
+    }
+
+    private WeixinAuthentication login(HttpServletRequest request, HttpServletResponse response, User user) {
         HttpRequestResponseHolder holder = new HttpRequestResponseHolder(request, response);
         SecurityContext context = httpSessionSecurityContextRepository.loadContext(holder);
 
@@ -106,8 +116,7 @@ public class UserServiceImpl implements UserService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         httpSessionSecurityContextRepository.saveContext(context, holder.getRequest(), holder.getResponse());
-
-        new SavedRequestAwareAuthenticationSuccessHandler().onAuthenticationSuccess(request, response, authentication);
+        return authentication;
     }
 
 
@@ -166,6 +175,37 @@ public class UserServiceImpl implements UserService {
 
 
         return userRepository.save(user);
+    }
+
+    @Override
+    public LoginToken requestLogin(HttpServletRequest request) {
+        LoginToken token = new LoginToken();
+        token.setCreatedTime(LocalDateTime.now());
+        return loginTokenRepository.save(token);
+    }
+
+    @Override
+    public void approvalLogin(long id, User user) {
+        loginTokenRepository.getOne(id).setApproval(user);
+    }
+
+    @Override
+    public void checkRequestLogin(long id, HttpServletRequest request, HttpServletResponse response) throws ServletException
+            , IOException {
+        LoginToken token = loginTokenRepository.findOne(id);
+        if (token == null)
+            throw new IllegalArgumentException();
+        if (LocalDateTime.now().isAfter(token.getCreatedTime().plusMinutes(5))) {
+            loginTokenRepository.delete(token);
+            throw new IllegalArgumentException();
+        }
+
+        if (token.getApproval() != null) {
+            // 已经被许可了,准备登录 以及删除
+            login(request, response, token.getApproval());
+            loginTokenRepository.delete(token);
+        } else
+            throw new IllegalStateException();
     }
 
 }

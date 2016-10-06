@@ -96,7 +96,7 @@ public class GlobalController {
         return qrCodeService.generateQRCode(urlBuilder.toString());
     }
 
-    private StringBuilder contextUrlBuilder(HttpServletRequest request) {
+    public static StringBuilder contextUrlBuilder(HttpServletRequest request) {
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append(request.getScheme()).append("://");
         urlBuilder.append(request.getLocalName());

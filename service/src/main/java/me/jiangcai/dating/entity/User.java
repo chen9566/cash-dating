@@ -3,6 +3,7 @@ package me.jiangcai.dating.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.model.CashWeixinUserDetail;
 import me.jiangcai.wx.model.Gender;
@@ -40,6 +41,9 @@ public class User implements WeixinUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    // 管理信息
+    private ManageStatus manageStatus;
 
     // 价值信息
     /**
@@ -83,11 +87,11 @@ public class User implements WeixinUser {
     // 微信信息
     @Column(length = 32)
     private String openId;
-    @Column(length = 50)
+    @Column(length = 120)
     private String accessToken;
     @Column(columnDefinition = "datetime")
     private LocalDateTime accessTimeToExpire;
-    @Column(length = 50)
+    @Column(length = 120)
     private String refreshToken;
     private String tokenScopeStr;
 

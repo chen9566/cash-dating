@@ -1,21 +1,29 @@
 package me.jiangcai.dating.web.controller.auth;
 
+import com.google.zxing.WriterException;
 import me.jiangcai.dating.entity.Card;
+import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.service.BankService;
+import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.UserService;
+import me.jiangcai.dating.web.controller.GlobalController;
 import me.jiangcai.wx.OpenId;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
@@ -75,5 +83,41 @@ public class LoginController {
         return "redirect:/login";
     }
 
+    ///////////////////////////////非微信登录
+    @Autowired
+    private QRCodeService qrCodeService;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/loginToken/{id}")
+    public BufferedImage tokenQR(HttpServletRequest request, @PathVariable("id") String id)
+            throws IOException, WriterException {
+        StringBuilder urlBuilder = GlobalController.contextUrlBuilder(request);
+        urlBuilder.append("/approvalLogin/").append(id);
+
+        return qrCodeService.generateQRCode(urlBuilder.toString());
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/loginToken/{id}")
+    @ResponseBody
+    public int checkLoginRequest(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id) {
+        try {
+            userService.checkRequestLogin(id, request, response);
+        } catch (ServletException e) {
+            return 1;
+        } catch (IOException e) {
+            return 1;
+        } catch (IllegalStateException e) {
+            return 1;
+        } catch (IllegalArgumentException e) {
+            return -1;
+        }
+        return 0;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/approvalLogin/{id}")
+    public String approvalLogin(@AuthenticationPrincipal User user, @PathVariable("id") long id) {
+        // TODO 还需要确认么? 麻烦死
+        userService.approvalLogin(id, user);
+        return "redirect:/";
+    }
 
 }

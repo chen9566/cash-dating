@@ -1,11 +1,14 @@
 package me.jiangcai.dating.web.advice;
 
+import me.jiangcai.dating.entity.LoginToken;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.exception.RequestedException;
-import org.springframework.http.HttpHeaders;
+import me.jiangcai.dating.service.UserService;
+import me.jiangcai.wx.web.exception.NoWeixinClientException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +20,23 @@ import java.io.Writer;
  */
 @ControllerAdvice
 public class CommonAdvice {
+
+    @Autowired
+    private UserService userService;
+
+    /**
+     * 不是微信平台的话,我们会给出一个二维码 让它使用微信用户扫码以完成登录
+     *
+     * @param ex ex
+     * @return
+     */
+    @ExceptionHandler(NoWeixinClientException.class)
+    public String noWeixinClientException(NoWeixinClientException ex, HttpServletRequest request, Model model) {
+        LoginToken token = userService.requestLogin(request);
+        model.addAttribute("token", token);
+        return "other/login.html";
+//        return "kinglist.html";
+    }
 
     @ExceptionHandler(IllegalVerificationCodeException.class)
     public String illegalVerificationCodeException(IllegalVerificationCodeException ex) {
@@ -69,7 +89,7 @@ public class CommonAdvice {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public void illegalArgumentException(IllegalArgumentException ex
-            , HttpServletRequest request,  HttpServletResponse response) throws IOException {
+            , HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (notAjax(ex, request, response))
             throw ex;
     }

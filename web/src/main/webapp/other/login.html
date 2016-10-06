@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="token" type="me.jiangcai.dating.entity.LoginToken"*/-->
+<head>
+    <meta charset="UTF-8">
+    <title>非微信登录</title>
+    <style>
+        .center {
+            text-align: center;
+        }
+    </style>
+    <script src="../dist/js/jquery.js" th:src="@{/dist/js/jquery.js}"></script>
+</head>
+<body>
+<h1 class="center">请使用微信扫一扫已完成登录</h1>
+<div>
+    <img src="../images/temp.jpg" name="qrCode" th:src="@{/loginToken/{id}(id=${token.id})}" title="登录二维码" width="466"
+         height="446"/>
+</div>
+<!--<script src="../mock/all.js" th:src="@{/all.js}"></script>-->
+<script th:inline="javascript">
+    var uri = /*[[@{/loginToken/{id}(id=${token.id})}]]*/'login.html';
+    var indexUri = /*[[@{/pc}]]*/'index.html';
+
+    $(function () {
+        var success = function (data) {
+            if (data == 0) {
+                window.location.href = indexUri;
+            } else if (data == 1) {
+                //继续刷
+                //等待一会儿
+                setTimeout('$._loginCheck()', 500);
+            } else {
+                console.error('login failed');
+            }
+        };
+
+        $._loginCheck = function () {
+            $.ajax(uri, {
+                method: 'put',
+                dataType: 'json',
+                success: success
+            });
+        }
+    });
+</script>
+</body>
+</html>
