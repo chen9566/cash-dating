@@ -22,7 +22,7 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public List<AgentRequest> waitingList() {
-        return agentRequestRepository.findByProcessStatusOrderByCreatedTime(AgentRequestStatus.requested
+        return agentRequestRepository.findByProcessStatusInOrderByCreatedTime(AgentRequestStatus.requested
                 , AgentRequestStatus.forward);
     }
 
@@ -30,7 +30,7 @@ public class AgentServiceImpl implements AgentService {
     public AgentRequest newRequest(User user, String name, String mobile) throws RequestedException {
         if (user.getAgentInfo() != null)
             throw new IllegalStateException();
-        if (agentRequestRepository.findByFromAndProcessStatus(user, AgentRequestStatus.requested
+        if (agentRequestRepository.findByFromAndProcessStatusIn(user, AgentRequestStatus.requested
                 , AgentRequestStatus.forward) != null)
             throw new RequestedException("您的申请正在处理中,重复申请会拖慢您的申请进度。");
 

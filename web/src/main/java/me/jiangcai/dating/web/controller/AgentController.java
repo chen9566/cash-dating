@@ -7,9 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.util.Map;
 
 /**
  * 代理商相关
@@ -38,7 +41,10 @@ public class AgentController {
      */
     @RequestMapping(method = RequestMethod.POST, value = "/agent")
     @ResponseStatus(HttpStatus.CREATED)
-    public void request(@AuthenticationPrincipal User user, String name, String mobile) {
+    public void request(@AuthenticationPrincipal User user
+            , @RequestBody Map<String, Object> data) {
+        String name = (String) data.get("name");
+        String mobile = (String) data.get("mobile");
         if (StringUtils.isEmpty(name))
             throw new IllegalArgumentException("name is required");
         if (StringUtils.isEmpty(mobile))

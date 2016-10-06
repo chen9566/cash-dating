@@ -22,7 +22,8 @@
         <div class="row iphonebg">
             <div class="ml10">
                 <div class="iphone col-xs-1"><i class="fa-fw"><img src="images/user-icon.svg"></i></div>
-                <div class="col-xs-9"><input type="text" required minlength="2" name="name" placeholder="请输入姓名"></div>
+                <div class="col-xs-9"><input type="text" required minlength="2" maxlength="20" name="name"
+                                             placeholder="请输入姓名"></div>
                 <div class="col-xs-1 error"><img src="images/registericon1.png"/></div>
             </div>
         </div>
@@ -71,11 +72,12 @@
                 mobile: {
                     required: "手机号码不能为空 ",
                     minlength: " 不能少于 11 位手机号码",
-                    maxlength: " 不能少于 11 位手机号码"
+                    maxlength: " 不能多于 11 位手机号码"
                 },
                 name: {
                     required: "姓名不能为空",
-                    minlength: "姓名至少得2个字"
+                    minlength: "姓名至少得2个字",
+                    maxlength: "姓名太长了"
                 }
             }
         });
@@ -93,10 +95,11 @@
                 } else
                     $.ajax($.uriPrefix + '/agent', {
                         method: 'post',
-                        data: {
+                        contentType: 'application/json; charset-UTF-8',
+                        data: JSON.stringify({
                             name: $('input[name=name]').val(),
                             mobile: $('input[name=mobile]').val()
-                        },
+                        }),
                         success: afterSuccess,
                         error: function (res) {
 //                        console.log(arguments);

@@ -4,6 +4,7 @@ import me.jiangcai.dating.entity.AgentRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.AgentRequestStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -12,8 +13,10 @@ import java.util.List;
  */
 public interface AgentRequestRepository extends JpaRepository<AgentRequest, Long> {
 
-    List<AgentRequest> findByProcessStatusOrderByCreatedTime(AgentRequestStatus... statuses);
+    @Query("from AgentRequest r where r.processStatus in ?1")
+    List<AgentRequest> findByProcessStatusInOrderByCreatedTime(AgentRequestStatus... statuses);
 
-    AgentRequest findByFromAndProcessStatus(User user, AgentRequestStatus... statuses);
+    @Query("from AgentRequest r where r.from = ?1 and r.processStatus in ?2")
+    AgentRequest findByFromAndProcessStatusIn(User user, AgentRequestStatus... statuses);
 
 }

@@ -12,6 +12,7 @@ import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.service.VerificationCodeService;
 import me.jiangcai.dating.util.WeixinAuthentication;
 import me.jiangcai.wx.model.WeixinUserDetail;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +27,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
@@ -63,8 +65,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByOpenId(openId);
         if (user == null) {
-            user = new User();
-            user.setOpenId(openId);
+            user = newUser(openId);
         }
         user.setMobileNumber(mobileNumber);
         return userRepository.save(user);
@@ -105,7 +106,7 @@ public class UserServiceImpl implements UserService {
 
         httpSessionSecurityContextRepository.saveContext(context, holder.getRequest(), holder.getResponse());
 
-        new SavedRequestAwareAuthenticationSuccessHandler().onAuthenticationSuccess(request,response,authentication);
+        new SavedRequestAwareAuthenticationSuccessHandler().onAuthenticationSuccess(request, response, authentication);
     }
 
 
@@ -120,6 +121,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User byInviteCode(String code) {
+        return userRepository.findByInviteCode(code);
+    }
+
+    @Override
     public User updateWeixinDetail(WeixinUserDetail detail) {
         // 自己玩自己?
         if (detail instanceof CashWeixinUserDetail)
@@ -127,10 +133,22 @@ public class UserServiceImpl implements UserService {
 
         User user = byOpenId(detail.getOpenId());
         if (user == null) {
-            user = new User();
-            user.setOpenId(detail.getOpenId());
+            user = newUser(detail.getOpenId());
         }
         user.updateWeixinUserDetail(detail);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User newUser(String openId) {
+        User user = new User();
+        user.setOpenId(openId);
+        user.setJoinTime(LocalDateTime.now());
+        do {
+            user.setInviteCode(RandomStringUtils.random(7));
+        } while (byInviteCode(user.getInviteCode()) != null);
+        
+
         return userRepository.save(user);
     }
 }

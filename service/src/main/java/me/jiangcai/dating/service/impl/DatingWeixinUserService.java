@@ -2,6 +2,7 @@ package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.repository.UserRepository;
+import me.jiangcai.dating.service.UserService;
 import me.jiangcai.wx.WeixinUserService;
 import me.jiangcai.wx.model.PublicAccount;
 import me.jiangcai.wx.model.UserAccessResponse;
@@ -22,6 +23,8 @@ public class DatingWeixinUserService implements WeixinUserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
     @Override
     public <T> T userInfo(PublicAccount account, String openId, Class<T> clazz) {
@@ -30,7 +33,7 @@ public class DatingWeixinUserService implements WeixinUserService {
             //noinspection unchecked
             return (T) openId;
         if (clazz == WeixinUserDetail.class) {
-            User user = userRepository.findByOpenId(openId);
+            User user = userService.byOpenId(openId);
             if (user == null)
                 //noinspection unchecked
                 return (T) Protocol.forAccount(account).userDetail(openId, this);
@@ -47,10 +50,9 @@ public class DatingWeixinUserService implements WeixinUserService {
 
     @Override
     public void updateUserToken(PublicAccount account, UserAccessResponse response) {
-        User user = userRepository.findByOpenId(response.getOpenId());
+        User user = userService.byOpenId(response.getOpenId());
         if (user == null) {
-            user = new User();
-            user.setOpenId(response.getOpenId());
+            user = userService.newUser(response.getOpenId());
         }
         user.setAccessToken(response.getAccessToken());
         user.setRefreshToken(response.getRefreshToken());

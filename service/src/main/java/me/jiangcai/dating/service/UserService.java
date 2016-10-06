@@ -77,6 +77,8 @@ public interface UserService {
 
     @Transactional(readOnly = true)
     User byMobile(String mobile);
+    @Transactional(readOnly = true)
+    User byInviteCode(String code);
 
     /**
      * 更新用户微信详情
@@ -86,4 +88,12 @@ public interface UserService {
      */
     @Transactional
     User updateWeixinDetail(WeixinUserDetail detail);
+
+    /**
+     * 新增一个用户
+     * @param openId openId 必须的
+     * @return 新增的用户
+     */
+    @Transactional
+    User newUser(String openId);
 }

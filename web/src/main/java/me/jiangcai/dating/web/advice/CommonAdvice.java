@@ -2,10 +2,12 @@ package me.jiangcai.dating.web.advice;
 
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.exception.RequestedException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
@@ -41,29 +43,34 @@ public class CommonAdvice {
 //X-Requested-With:XMLHttpRequest
 
     @ExceptionHandler(RequestedException.class)
-    public void requestedException(RequestedException ex, @RequestHeader("X-Requested-With") String ajaxRequest
+    public void requestedException(RequestedException ex, HttpServletRequest request
             , HttpServletResponse response) throws IOException {
-        if (notAjax(ex, ajaxRequest, response))
+        if (notAjax(ex, request, response))
             throw ex;
     }
 
-    private boolean notAjax(Exception ex, String ajaxRequest, HttpServletResponse response) throws IOException {
-        if (!ajaxRequest.equalsIgnoreCase("XMLHttpRequest"))
+    private boolean notAjax(Exception ex, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (!"XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With")))
             return true;
+//        if (!"XMLHttpRequest".equalsIgnoreCase(httpHeaders.getFirst("X-Requested-With")))
+//            return true;
+//        if (!ajaxRequest.equalsIgnoreCase("XMLHttpRequest"))
+//            return true;
         //开始ajax处理
         response.setContentType("text/plant; charset=UTF-8");
+        response.setStatus(400);
         try (Writer writer = response.getWriter()) {
             writer.write(ex.getMessage());
             writer.flush();
         }
-        response.sendError(400);
+//        response.sendError(400);
         return false;
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public void illegalArgumentException(IllegalArgumentException ex
-            , @RequestHeader("X-Requested-With") String ajaxRequest, HttpServletResponse response) throws IOException {
-        if (notAjax(ex, ajaxRequest, response))
+            , HttpServletRequest request,  HttpServletResponse response) throws IOException {
+        if (notAjax(ex, request, response))
             throw ex;
     }
 }
