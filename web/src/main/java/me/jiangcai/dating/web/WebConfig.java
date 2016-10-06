@@ -59,6 +59,7 @@ public class WebConfig {
                     // 所有的
                     .antMatchers("/all.js").permitAll()
                     // 支付分享的
+                    .antMatchers("/inviteQR").permitAll()
                     .antMatchers("/order").permitAll()
                     .antMatchers("/toPay").permitAll()
                     .antMatchers("/toPayQR").permitAll()

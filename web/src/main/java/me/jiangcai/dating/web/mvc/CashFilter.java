@@ -19,6 +19,14 @@ public class CashFilter extends OncePerRequestFilter {
     private static final Pattern inviteFlagPattern = Pattern.compile(".+_inviteBy=(\\d+).*");
 
     /**
+     * @param id 用户的id{@link me.jiangcai.dating.entity.User#id}
+     * @return 从id 生成url（一部分）
+     */
+    public static String guideUserFromId(long id) {
+        return "_inviteBy=" + id;
+    }
+
+    /**
      * 从地址中解析出邀请者的id
      *
      * @param url url
@@ -37,4 +45,5 @@ public class CashFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         filterChain.doFilter(request, response);
     }
+
 }

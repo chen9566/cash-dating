@@ -7,6 +7,7 @@ import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.VerificationCodeService;
+import me.jiangcai.dating.web.mvc.CashFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -48,6 +49,18 @@ public class GlobalController {
     @Autowired
     private OrderService orderService;
 
+    /**
+     *
+     * @return id这个人邀请别人加入的二维码
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/inviteQR/{id}")
+    public BufferedImage inviteQRCode(@PathVariable("id") long id, HttpServletRequest request) throws IOException, WriterException {
+        StringBuilder urlBuilder = contextUrlBuilder(request);
+        urlBuilder.append("/");
+        urlBuilder.append(CashFilter.guideUserFromId(id));
+
+        return qrCodeService.generateQRCode(urlBuilder.toString());
+    }
 
     /**
      * 这是公开uri,所有人都可以参与支付,微信用户 或者 其他用户

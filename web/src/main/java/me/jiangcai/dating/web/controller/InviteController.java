@@ -29,6 +29,7 @@ public class InviteController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/myInviteCode")
     public String code(@AuthenticationPrincipal User user, Model model){
+        model.addAttribute("user",user);
         return "code.html";
     }
 
