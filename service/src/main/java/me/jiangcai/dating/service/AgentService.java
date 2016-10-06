@@ -1,6 +1,8 @@
 package me.jiangcai.dating.service;
 
 import me.jiangcai.dating.entity.AgentRequest;
+import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.exception.RequestedException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,4 +21,16 @@ public interface AgentService {
      */
     @Transactional(readOnly = true)
     List<AgentRequest> waitingList();
+
+    /**
+     * 新加申请
+     * @param user 用户
+     * @param name 真实名字
+     * @param mobile 电话
+     * @return 新添加的申请
+     * @throws RequestedException 已经申请了
+     * @throws IllegalStateException 没有必要;比如它已经是代理商了
+     */
+    @Transactional
+    AgentRequest newRequest(User user, String name, String mobile) throws RequestedException;
 }
