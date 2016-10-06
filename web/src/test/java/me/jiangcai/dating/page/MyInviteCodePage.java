@@ -56,6 +56,8 @@ public class MyInviteCodePage extends AbstractPage {
 
         assertThat(qrCode)
                 .isNotNull();
+        assertThat(qrCode.isDisplayed())
+                .isTrue();
         assertThat(message)
                 .isNotNull();
         assertThat(inviteButton)

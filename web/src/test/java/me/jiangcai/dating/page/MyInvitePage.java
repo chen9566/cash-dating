@@ -61,6 +61,8 @@ public class MyInvitePage extends AbstractPage {
 
         assertThat(balanceText)
                 .isNotNull();
+        assertThat(balanceText.isDisplayed())
+                .isTrue();
         assertThat(withdrawButton)
                 .isNotNull();
         assertThat(codeButton)

@@ -9,6 +9,7 @@
 
 package me.jiangcai.dating.loader;
 
+import me.jiangcai.dating.web.mvc.CashFilter;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.filter.RequestContextFilter;
 
@@ -21,6 +22,6 @@ public class SecurityWebApplicationInitializer extends AbstractSecurityWebApplic
     @Override
     protected void beforeSpringSecurityFilterChain(ServletContext servletContext) {
         super.beforeSpringSecurityFilterChain(servletContext);
-        insertFilters(servletContext, new RequestContextFilter());
+        insertFilters(servletContext, new RequestContextFilter(), new CashFilter());
     }
 }

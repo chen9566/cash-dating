@@ -55,6 +55,8 @@ public class MyPage extends AbstractPage {
 
         assertThat(headImage)
                 .isNotNull();
+        assertThat(headImage.isDisplayed())
+                .isTrue();
         assertThat(title)
                 .isNotNull();
         assertThat(message)

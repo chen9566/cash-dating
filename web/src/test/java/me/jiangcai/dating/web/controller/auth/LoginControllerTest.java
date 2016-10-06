@@ -30,18 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * @author CJ
  */
-@ActiveProfiles({"test","unit_test"})
 public class LoginControllerTest extends WebTest {
-
-    @SuppressWarnings("SpringJavaAutowiringInspection")
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private BankService bankService;
-    @Autowired
-    private QRCodeService qrCodeService;
 
     @Test
     public void sendCode() throws Exception {
@@ -57,41 +46,9 @@ public class LoginControllerTest extends WebTest {
 
     @Test
     public void newUser() throws IOException {
-        driver.get("http://localhost/");
-        String mobile = randomMobile();
-        BindingMobilePage page = initPage(BindingMobilePage.class);
+        driver.manage().deleteAllCookies();
 
-        page.submitWithNothing();
-        page.inputMobileNumber(mobile);
-        page.sendCode();
-        // 找到最近发送的验证码
-        page.submitWithCode();
-
-        // 应该到了下一个页面了
-
-        BindingCardPage cardPage = initPage(BindingCardPage.class);
-        // 这个用户已经产生
-        assertThat(userService.byMobile(mobile))
-                .isNotNull();
-        //
-        // 地址自己选吧
-
-        cardPage.submitWithRandomAddress(bankService.list().stream()
-                .findAny().orElse(null), RandomStringUtils.randomAlphanumeric(3), RandomStringUtils.randomAlphanumeric(6), RandomStringUtils.randomNumeric(16));
-        initPage(StartOrderPage.class);
-        // 这就对了!
-        // 还需要检查 银行是否已设置 地址是否已设置
-        driver.get("http://localhost/my");
-        MyPage myPage = initPage(MyPage.class);
-        myPage.clickMenu("我的邀请");
-        MyInvitePage invitePage = initPage(MyInvitePage.class);
-        invitePage.clickMyCode();
-        MyInviteCodePage codePage = initPage(MyInviteCodePage.class);
-        String url = qrCodeService.scanImage(codePage.getQRCodeImage());
-        //终于找到id了
-        Long userId = CashFilter.guideUserFromURL(url);
-
-        User user = userRepository.getOne(userId);
+        User user = helloNewUser();
 
         assertThat(user.getCards())
                 .isNotEmpty();

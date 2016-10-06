@@ -44,6 +44,7 @@ public class BindingMobilePage extends AbstractPage {
                 .findAny().ifPresent(element -> buttonSend = element);
 
         assertThat(mobileInput).isNotNull();
+        assertThat(mobileInput.isDisplayed()).isTrue();
         assertThat(codeInput).isNotNull();
         assertThat(button).isNotNull();
         assertThat(buttonSend).isNotNull();
