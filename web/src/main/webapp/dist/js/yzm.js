@@ -7,15 +7,10 @@ $(function () {
         var time = 30;
         var code = $(this);
         if (validCode) {
-            if (mobileInput.val().length < 11) {
-                $('#mask-dialogBox').dialogBox({
-					hasClose: true,
-					hasMask: true,
-					title: 'title text',
-					content: '请输入你的手机号码'
-				});
+            if (!$.yzmValidator.element(mobileInput)) {
                 return;
             }
+
             // if (!$.prototypesMode) {
             // 原型发个球
             // console.error('mobile', mobileInput.val());

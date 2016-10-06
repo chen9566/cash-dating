@@ -35,13 +35,13 @@ public interface UserService {
      *
      * @param openId       openId
      * @param mobileNumber 手机
-     * @param code         验证码
+     * @param verificationCode         验证码
      * @param inviteCode   邀请码
      * @return 用户实例
      * @throws IllegalVerificationCodeException 验证码无效
      */
     @Transactional
-    User registerMobile(String openId, String mobileNumber, String code, String inviteCode)
+    User registerMobile(String openId, String mobileNumber, String verificationCode, String inviteCode)
             throws IllegalVerificationCodeException;
 
     /**

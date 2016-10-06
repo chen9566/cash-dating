@@ -59,9 +59,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerMobile(String openId, String mobileNumber, String code, String inviteCode)
+    public User registerMobile(String openId, String mobileNumber, String verificationCode, String inviteCode)
             throws IllegalVerificationCodeException {
-        verificationCodeService.verify(mobileNumber, code, VerificationType.register);
+        verificationCodeService.verify(mobileNumber, verificationCode, VerificationType.register);
 
         User user = userRepository.findByOpenId(openId);
         if (user == null) {

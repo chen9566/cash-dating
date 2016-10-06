@@ -77,5 +77,6 @@ public class BindingMobilePage extends AbstractPage {
         codeInput.clear();
         codeInput.sendKeys("1234");
         button.click();
+        System.out.println(webDriver.getPageSource());
     }
 }
