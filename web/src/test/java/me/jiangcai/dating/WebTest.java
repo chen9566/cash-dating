@@ -20,6 +20,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -39,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @ActiveProfiles({"test", "unit_test"})
 @WebAppConfiguration
-@ContextConfiguration(classes = {TestConfig.class, WebConfig.class})
+@ContextConfiguration(classes = {WebTest.Config.class, TestConfig.class, WebConfig.class})
 public abstract class WebTest extends SpringWebTest {
 
     @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -75,7 +76,6 @@ public abstract class WebTest extends SpringWebTest {
         return builder;
     }
 
-
     @Override
     protected void createWebDriver() {
         driver = MockMvcHtmlUnitDriverBuilder
@@ -91,7 +91,6 @@ public abstract class WebTest extends SpringWebTest {
                 // DIY by interface.
                 .build();
     }
-
 
     /**
      * 磨磨唧唧的建立一个新用户
@@ -182,5 +181,10 @@ public abstract class WebTest extends SpringWebTest {
             codePage.printThisPage();
             throw exception;
         }
+    }
+
+    @ComponentScan({"me.jiangcai.dating.test"})
+    static class Config {
+
     }
 }

@@ -2,8 +2,6 @@ package me.jiangcai.dating.web.controller;
 
 import com.google.zxing.WriterException;
 import me.jiangcai.dating.CashFilter;
-import me.jiangcai.dating.entity.PlatformOrder;
-import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.QRCodeService;
@@ -14,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +25,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.security.SignatureException;
 
 /**
  * 公开权限的
@@ -78,40 +74,40 @@ public class GlobalController {
         return qrCodeService.generateQRCode(urlBuilder.toString());
     }
 
-    /**
-     * 这是公开uri,所有人都可以参与支付,微信用户 或者 其他用户
-     * 这里通常是选择支付方式,选以后 才进入支付环境;在目前的案例中 只有一个选项!所以直接进入建立订单环境
-     *
-     * @param id 订单号
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "/toPay/{id}")
-    public String toPay(@PathVariable("id") String id, Model model) throws IOException, SignatureException {
-        // 如果已完成
-        if (orderService.isComplete(id)) {
-            return "completed.html";
-        }
-        // 如果已建立 平台订单 则直接走平台订单
-        PlatformOrder order = orderService.preparePay(id, PayChannel.weixin);
-        model.addAttribute("order", order);
-        return "pay.html";
-    }
+//    /**
+//     * 这是公开uri,所有人都可以参与支付,微信用户 或者 其他用户
+//     * 这里通常是选择支付方式,选以后 才进入支付环境;在目前的案例中 只有一个选项!所以直接进入建立订单环境
+//     *
+//     * @param id 订单号
+//     * @return
+//     */
+//    @RequestMapping(method = RequestMethod.GET, value = "/toPay/{id}")
+//    public String toPay(@PathVariable("id") String id, Model model) throws IOException, SignatureException {
+//        // 如果已完成
+//        if (orderService.isComplete(id)) {
+//            return "completed.html";
+//        }
+//        // 如果已建立 平台订单 则直接走平台订单
+//        PlatformOrder order = orderService.preparePay(id, PayChannel.weixin);
+//        model.addAttribute("order", order);
+//        return "pay.html";
+//    }
 
-    /**
-     * 这是公开uri,所有人都可以参与支付,微信用户 或者 其他用户
-     * 包括上列url的二维码url
-     *
-     * @param id 订单号
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "/toPayQR/{id}")
-    public BufferedImage toPayImage(@PathVariable("id") String id, HttpServletRequest request) throws IOException
-            , WriterException {
-        StringBuilder urlBuilder = contextUrlBuilder(request);
-
-        urlBuilder.append("/toPay/").append(id);
-        return qrCodeService.generateQRCode(urlBuilder.toString());
-    }
+//    /**
+//     * 这是公开uri,所有人都可以参与支付,微信用户 或者 其他用户
+//     * 包括上列url的二维码url
+//     *
+//     * @param id 订单号
+//     * @return
+//     */
+//    @RequestMapping(method = RequestMethod.GET, value = "/toPayQR/{id}")
+//    public BufferedImage toPayImage(@PathVariable("id") String id, HttpServletRequest request) throws IOException
+//            , WriterException {
+//        StringBuilder urlBuilder = contextUrlBuilder(request);
+//
+//        urlBuilder.append("/toPay/").append(id);
+//        return qrCodeService.generateQRCode(urlBuilder.toString());
+//    }
 
     /**
      * 应该在页面的最下方载入

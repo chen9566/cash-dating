@@ -12,7 +12,6 @@ import me.jiangcai.dating.service.StatisticService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.awt.image.BufferedImage;
@@ -76,6 +75,7 @@ public class HomeControllerTest extends LoginWebTest {
         // 这个时候应该是到了二维码界面,在这个界面 我们可以分享它
         ShowOrderPage codePage = initPage(ShowOrderPage.class);
         // 并且拥有了一个新订单
+        String orderUrl = driver.getCurrentUrl();
 
         // TODO 微信分享  分享的时候 应该携带者邀请信息
         // 我们长按这个二维码进行
@@ -85,11 +85,12 @@ public class HomeControllerTest extends LoginWebTest {
 
         log.info("the url scanned:" + url);
 
-        driver.get(url);
+
+//        driver.get(url);
 //        System.out.println(driver.getPageSource());
         // 如果打开这个支付页面应该是可以完成支付的
         // 现在的目标是获得这个页面url
-        String chanpayUrl = driver.findElement(By.id("platformFrame")).getAttribute("src");
+//        String chanpayUrl = driver.findElement(By.id("platformFrame")).getAttribute("src");
 
         List<CashOrder> orderList = currentOrders();
         assertThat(orderList)
@@ -101,19 +102,20 @@ public class HomeControllerTest extends LoginWebTest {
                 .isNotEmpty()
                 .hasSize(1);
 
-        pay.pay(order.getPlatformOrderSet().iterator().next().getId(), chanpayUrl);
+        pay.pay(order.getPlatformOrderSet().iterator().next().getId(), url);
 
         Thread.sleep(2000);
 
         // 同时 我们的订单应该也是牛逼了!
-        driver.get(url);
-//        currentPageIsCompleted();
+        driver.get(orderUrl);
+        currentPageIsCompleted();
     }
 
     /**
      * 当前页面显示的是 订单已完成
      */
     private void currentPageIsCompleted() {
+        System.out.println(driver.getPageSource());
         assertThat(driver.getTitle())
                 .isEqualTo("订单已完成");
     }

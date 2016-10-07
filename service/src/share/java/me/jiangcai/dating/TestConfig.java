@@ -21,6 +21,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -42,7 +43,10 @@ public class TestConfig {
         return new AbstractChanpayService() {
             @Override
             public String QRCodeImageFromOrder(ChanpayOrder order) throws IllegalStateException, IOException {
-                return "http://d.hiphotos.baidu.com/image/pic/item/0ff41bd5ad6eddc492d491153ddbb6fd52663328.jpg";
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append("http://localhost/qrUrl?url=")
+                        .append(URLEncoder.encode(order.getUrl(), "UTF-8"));
+                return stringBuilder.toString();
             }
 
             @Override

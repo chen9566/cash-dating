@@ -1,7 +1,11 @@
 package me.jiangcai.dating.web.controller.pay;
 
 import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.entity.ChanpayOrder;
+import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.SignatureException;
 
 /**
  * 支付相关
@@ -23,6 +29,8 @@ public class PayController {
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private ChanpayService chanpayService;
 
     /**
      * 开始付款--订单开始
@@ -47,12 +55,22 @@ public class PayController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/order/{id}")
-    public String orderInfo(@PathVariable("id") String id, Model model) {
+    public String orderInfo(@PathVariable("id") String id, Model model) throws IOException, SignatureException {
+        if (orderService.isComplete(id)) {
+            return "completed.html";
+        }
         CashOrder order = orderService.getOne(id);
 
 //        if (!order.getOwner().equals(user)) {
 //            return "redirect:/";
 //        }
+        // 直接建立订单
+        PlatformOrder platformOrder = orderService.preparePay(id, PayChannel.weixin);
+
+        if (platformOrder instanceof ChanpayOrder) {
+            model.addAttribute("qrUrl", chanpayService.QRCodeImageFromOrder((ChanpayOrder) platformOrder));
+        } else
+            throw new IllegalStateException("no chanpayOrder??" + platformOrder);
 
         model.addAttribute("order", order);
         return "paycode.html";
