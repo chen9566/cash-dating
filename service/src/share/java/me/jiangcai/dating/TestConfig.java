@@ -3,6 +3,7 @@ package me.jiangcai.dating;
 import me.jiangcai.chanpay.data.trade.CreateInstantTrade;
 import me.jiangcai.chanpay.test.ChanpayTestSpringConfig;
 import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.service.ChanpayService;
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -38,6 +40,11 @@ public class TestConfig {
     @Primary
     public ChanpayService chanpayService() {
         return new AbstractChanpayService() {
+            @Override
+            public String QRCodeImageFromOrder(ChanpayOrder order) throws IllegalStateException, IOException {
+                return "http://d.hiphotos.baidu.com/image/pic/item/0ff41bd5ad6eddc492d491153ddbb6fd52663328.jpg";
+            }
+
             @Override
             protected void beforeExecute(CashOrder order, CreateInstantTrade request) {
                 request.setBankCode("WXPAY");

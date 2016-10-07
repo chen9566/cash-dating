@@ -136,8 +136,13 @@ public abstract class WebTest extends SpringWebTest {
         // 这就对了!
         // 还需要检查 银行是否已设置 地址是否已设置
         String url = currentUserInviteURL();
+
+        // 这个地址需是我们的收款页吧
+        assertThat(url)
+                .contains("/start");
+
         //终于找到id了
-        Long userId = CashFilter.guideUserFromURL(url);
+        Long userId = CashFilter.guideUserFromURL(url, null);
 
         return userRepository.getOne(userId);
     }

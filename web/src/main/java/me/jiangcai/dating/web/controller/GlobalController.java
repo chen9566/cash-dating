@@ -1,13 +1,13 @@
 package me.jiangcai.dating.web.controller;
 
 import com.google.zxing.WriterException;
+import me.jiangcai.dating.CashFilter;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.VerificationCodeService;
-import me.jiangcai.dating.CashFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -49,13 +49,30 @@ public class GlobalController {
     @Autowired
     private OrderService orderService;
 
+    public static StringBuilder contextUrlBuilder(HttpServletRequest request) {
+        StringBuilder urlBuilder = new StringBuilder();
+        urlBuilder.append(request.getScheme()).append("://");
+        urlBuilder.append(request.getLocalName());
+        if (request.getServerPort() < 0)
+            ;
+        else if (request.getServerPort() == 80 && request.getScheme().equalsIgnoreCase("http"))
+            ;
+        else if (request.getServerPort() == 443 && request.getScheme().equalsIgnoreCase("https"))
+            ;
+        else
+            urlBuilder.append(":").append(request.getServerPort());
+
+        urlBuilder.append(request.getContextPath());
+        return urlBuilder;
+    }
+
     /**
      * @return id这个人邀请别人加入的二维码
      */
     @RequestMapping(method = RequestMethod.GET, value = "/inviteQR/{id}")
     public BufferedImage inviteQRCode(@PathVariable("id") long id, HttpServletRequest request) throws IOException, WriterException {
         StringBuilder urlBuilder = contextUrlBuilder(request);
-        urlBuilder.append("/");
+        urlBuilder.append("/start?");
         urlBuilder.append(CashFilter.guideUserFromId(id));
 
         return qrCodeService.generateQRCode(urlBuilder.toString());
@@ -94,23 +111,6 @@ public class GlobalController {
 
         urlBuilder.append("/toPay/").append(id);
         return qrCodeService.generateQRCode(urlBuilder.toString());
-    }
-
-    public static StringBuilder contextUrlBuilder(HttpServletRequest request) {
-        StringBuilder urlBuilder = new StringBuilder();
-        urlBuilder.append(request.getScheme()).append("://");
-        urlBuilder.append(request.getLocalName());
-        if (request.getServerPort() < 0)
-            ;
-        else if (request.getServerPort() == 80 && request.getScheme().equalsIgnoreCase("http"))
-            ;
-        else if (request.getServerPort() == 443 && request.getScheme().equalsIgnoreCase("https"))
-            ;
-        else
-            urlBuilder.append(":").append(request.getServerPort());
-
-        urlBuilder.append(request.getContextPath());
-        return urlBuilder;
     }
 
     /**

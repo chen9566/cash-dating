@@ -1,8 +1,8 @@
 package me.jiangcai.dating.page;
 
+import me.jiangcai.dating.CashFilter;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.service.QRCodeService;
-import me.jiangcai.dating.CashFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;
@@ -77,7 +77,7 @@ public class MyInviteCodePage extends AbstractPage {
         BufferedImage image = getQRCodeImage();
         String url = qrCodeService.scanImage(image);
         log.info("邀请url:" + url);
-        Long userId = CashFilter.guideUserFromURL(url);
+        Long userId = CashFilter.guideUserFromURL(url, null);
         assertThat(userId)
                 .isEqualTo(user.getId());
 

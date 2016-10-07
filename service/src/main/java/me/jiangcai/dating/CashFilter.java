@@ -1,6 +1,7 @@
 package me.jiangcai.dating;
 
 import org.springframework.util.NumberUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -31,10 +32,16 @@ public class CashFilter extends OncePerRequestFilter {
     /**
      * 从地址中解析出邀请者的id
      *
-     * @param url url
+     * @param url     url
+     * @param request 这个可选的,为了更加准确
      * @return 用户id {@link me.jiangcai.dating.entity.User#id}
      */
-    public static Long guideUserFromURL(String url) {
+    public static Long guideUserFromURL(String url, HttpServletRequest request) {
+        if (request != null) {
+            String text = request.getParameter("_inviteBy");
+            if (!StringUtils.isEmpty(text))
+                return NumberUtils.parseNumber(text, Long.class);
+        }
         Matcher matcher = inviteFlagPattern.matcher(url);
         if (matcher.matches()) {
             return NumberUtils.parseNumber(matcher.group(1), Long.class);
@@ -58,7 +65,7 @@ public class CashFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         // 只要是get 请求 并且url符合规则 就给予session标记
         if (request.getMethod().equalsIgnoreCase("get")) {
-            Long id = guideUserFromURL(request.getRequestURL().toString());
+            Long id = guideUserFromURL(request.getRequestURL().toString(), request);
             if (id != null) {
                 request.getSession(true).setAttribute(SESSION_KEY, id);
             }
