@@ -1,12 +1,17 @@
 [
   {
-    "name": "测试",
+    "name": "淘用",
     "type": "view",
-    "data": "http://www.baidu.com"
+    "data": "http://app.kuanyes.com/cash/start"
   },
   {
-    "name": "测试2",
+    "name": "推广",
     "type": "view",
-    "data": "http://www.baidu.com"
+    "data": "http://app.kuanyes.com/cash/my"
+  },
+  {
+    "name": "淘趣",
+    "type": "view",
+    "data": "http://www.kuanyes.com"
   }
 ]

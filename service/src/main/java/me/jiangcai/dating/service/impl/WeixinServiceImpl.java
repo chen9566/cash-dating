@@ -1,5 +1,6 @@
 package me.jiangcai.dating.service.impl;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.jiangcai.dating.service.WeixinService;
@@ -10,6 +11,7 @@ import me.jiangcai.wx.protocol.Protocol;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
 /**
@@ -23,7 +25,12 @@ public class WeixinServiceImpl implements WeixinService {
     @Override
     public void menus(String json, PublicAccount account) throws IOException {
 
-        JsonNode menus = objectMapper.readTree(json);
+        JsonNode menus;
+        try {
+            menus = objectMapper.readTree(json);
+        } catch (JsonParseException exception) {
+            menus = objectMapper.readTree(URLDecoder.decode(json, "UTF-8"));
+        }
         // 用简单模式
         // cash.weixin.menus = []
         ArrayList<Menu> menuArrayList = new ArrayList<>();
