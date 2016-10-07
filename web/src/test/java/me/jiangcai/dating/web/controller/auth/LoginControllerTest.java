@@ -5,6 +5,7 @@ import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.page.PCLoginPage;
+import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.service.QRCodeService;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -65,14 +66,18 @@ public class LoginControllerTest extends WebTest {
         // 好了 一会儿让我们的
         helloNewUser(url);
 
+        driver.get(url);
         // 好了 关注我们的pcDriver
         Thread.sleep(1000);
 
-        pcDriver.get("http://localhost/");
+//        pcDriver.get("http://localhost/");
         System.out.println(pcDriver.getPageSource());
+        StartOrderPage page = PageFactory.initElements(pcDriver, StartOrderPage.class);
+        // 应该没有管理权 所以是这个
+        page.validatePage();
 
-        driver.get("http://localhost/start");
-        System.out.println(driver.getPageSource());
+//        driver.get("http://localhost/start");
+//        System.out.println(driver.getPageSource());
     }
 
     @Test

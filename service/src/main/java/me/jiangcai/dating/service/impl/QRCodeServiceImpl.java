@@ -26,7 +26,7 @@ public class QRCodeServiceImpl implements QRCodeService {
     @Override
     public BufferedImage generateQRCode(String url) throws IOException, WriterException {
         QRCodeWriter writer = new QRCodeWriter();
-        BitMatrix bitMatrix = writer.encode(url, BarcodeFormat.QR_CODE, 500, 500);
+        BitMatrix bitMatrix = writer.encode(url, BarcodeFormat.QR_CODE, 700, 700);
         return MatrixToImageWriter.toBufferedImage(bitMatrix);
     }
 
