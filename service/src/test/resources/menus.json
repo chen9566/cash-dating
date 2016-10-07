@@ -1,17 +1,17 @@
 [
   {
-    "name": "淘用",
+    "name": "买单",
     "type": "view",
     "data": "http://app.kuanyes.com/cash/start"
   },
   {
     "name": "推广",
     "type": "view",
-    "data": "http://app.kuanyes.com/cash/my"
+    "data": "http://app.kuanyes.com/cash/myInviteCode"
   },
   {
-    "name": "淘趣",
+    "name": "我的",
     "type": "view",
-    "data": "http://www.kuanyes.com"
+    "data": "http://app.kuanyes.com/cash/my"
   }
 ]

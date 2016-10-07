@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:wx="http://weixin.jiangcai.me">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:wx="http://weixin.jiangcai.me" lang="en">
 <!--/*@thymesVar id="order" type="me.jiangcai.dating.entity.CashOrder"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -20,8 +20,12 @@
     <p><img name="qrCode" src="images/temp2.png" th:src="@{/toPayQR/{id}(id=${order.id})}"/></p>
 </div>
 <div class="share-btn">
+    <button type="button" class="btn btn-info btn-lg btn-block">支付</button>
+</div>
+<div class="share-btn">
     <button type="button" class="btn btn-danger btn-lg btn-block" onclick="wx.showOptionMenu();">我要分享</button>
 </div>
+
 <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js" th:remove="all"></script>
 <script wx:js=""></script>
 <script wx:share=""></script>

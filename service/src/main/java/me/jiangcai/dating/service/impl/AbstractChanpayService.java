@@ -18,6 +18,7 @@ import me.jiangcai.dating.service.ChanpayService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -27,6 +28,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
+ * 可以通过环境变量
+ * cash.bank.auto.forbid 禁止1 允许0  默认允许0
+ *
  * @author CJ
  */
 public abstract class AbstractChanpayService implements ChanpayService {
@@ -38,23 +42,28 @@ public abstract class AbstractChanpayService implements ChanpayService {
     private ChanpayOrderRepository chanpayOrderRepository;
     @Autowired
     private BankService bankService;
+    @Autowired
+    private Environment environment;
 
     @PostConstruct
     @Transactional
     @Override
     public void init() throws IOException, SignatureException {
-        // 获取银行列表
-        //GetPayChannel
-        GetPayChannel getPayChannel = new GetPayChannel();
-        List<PayChannel> channels = transactionService.execute(getPayChannel, new GetPayChannelHandler());
 
-        channels.stream()
-                .filter(payChannel -> payChannel.getMode() == PayMode.ONLINE_BANK)
-                .filter(payChannel -> payChannel.getAttribute() == CardAttribute.B)
-                .forEach(payChannel -> {
-                    log.debug("get bank info " + payChannel);
-                    bankService.updateBank(payChannel.getCode(), payChannel.getName());
-                });
+        // 获取银行列表
+        if (environment.getProperty("cash.bank.auto.forbid", Integer.class, 0) == 0) {
+            GetPayChannel getPayChannel = new GetPayChannel();
+            List<PayChannel> channels = transactionService.execute(getPayChannel, new GetPayChannelHandler());
+
+            channels.stream()
+                    .filter(payChannel -> payChannel.getMode() == PayMode.ONLINE_BANK)
+                    .filter(payChannel -> payChannel.getAttribute() == CardAttribute.B)
+                    .forEach(payChannel -> {
+                        log.debug("get bank info " + payChannel);
+                        bankService.updateBank(payChannel.getCode(), payChannel.getName());
+                    });
+        }
+
     }
 
     @Override

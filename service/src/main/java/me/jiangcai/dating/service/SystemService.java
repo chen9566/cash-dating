@@ -4,6 +4,8 @@ import me.jiangcai.dating.entity.support.RateConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 
 /**
  * 系统级别
@@ -18,7 +20,7 @@ public interface SystemService {
      */
     @PostConstruct
     @Transactional
-    void init();
+    void init() throws UnsupportedEncodingException;
 
     /**
      * @return 当前的配置
@@ -27,10 +29,28 @@ public interface SystemService {
     RateConfig currentRateConfig();
 
     /**
+     * 获取配置值
+     *
+     * @param key          key
+     * @param exceptedType 期待的类型
+     * @param defaultValue 默认数据
+     * @param <T>          范型
+     * @return 默认数据或者当前值
+     */
+    @Transactional(readOnly = true)
+    <T> T getSystemString(String key, Class<T> exceptedType, T defaultValue);
+
+    /**
      * 更新配置,并不会影响已下的订单
      *
      * @param rateConfig
      */
     @Transactional
     void updateRateConfig(RateConfig rateConfig);
+
+    @Transactional
+    void updateSystemString(String key, String value);
+
+    @Transactional
+    void updateSystemString(String key, LocalDateTime value);
 }

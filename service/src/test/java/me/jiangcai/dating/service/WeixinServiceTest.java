@@ -52,6 +52,9 @@ public class WeixinServiceTest extends SpringWebTest {
             weixinService.menus(code, account);
         }
 
+        String msg = "%5B%7B%22name%22%3A%22%E4%B9%B0%E5%8D%95%22%2C%22type%22%3A%22view%22%2C%22data%22%3A%22http%3A%2F%2Fapp.kuanyes.com%2Fcash%2Fstart%22%7D%2C%7B%22name%22%3A%22%E6%8E%A8%E5%B9%BF%22%2C%22type%22%3A%22view%22%2C%22data%22%3A%22http%3A%2F%2Fapp.kuanyes.com%2Fcash%2FmyInviteCode%22%7D%2C%7B%22name%22%3A%22%E6%88%91%E7%9A%84%22%2C%22type%22%3A%22view%22%2C%22data%22%3A%22http%3A%2F%2Fapp.kuanyes.com%2Fcash%2Fmy%22%7D%5D";
+
+        weixinService.menus(msg, account);
 
     }
 

@@ -8,7 +8,6 @@ import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.VerificationCodeService;
 import me.jiangcai.dating.service.impl.AbstractChanpayService;
-import me.jiangcai.wx.PublicAccountSupplier;
 import me.jiangcai.wx.test.WeixinTestConfig;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
 import java.util.HashSet;
@@ -26,19 +26,13 @@ import java.util.function.Function;
 /**
  * @author CJ
  */
-@Import({WeixinTestConfig.class, DSConfig.class, ChanpayTestSpringConfig.class})
+@Import({TestConfig.Config.class, WeixinTestConfig.class, DSConfig.class, ChanpayTestSpringConfig.class})
 @ImportResource("classpath:/datasource_local.xml")
 public class TestConfig {
 
     private static final Log log = LogFactory.getLog(TestConfig.class);
-
     @Autowired
     private Environment environment;
-
-    @Bean
-    public PublicAccountSupplier publicAccountSupplier() {
-        return new DebugPublicAccountSupplier(environment.getProperty("account.url", "http://localhost/weixin/"));
-    }
 
     @Bean
     @Primary
@@ -50,6 +44,11 @@ public class TestConfig {
             }
         };
     }
+
+//    @Bean
+//    public PublicAccountSupplier publicAccountSupplier() {
+//        return new DebugPublicAccountSupplier(environment.getProperty("account.url", "http://localhost/weixin/"));
+//    }
 
     @Bean
     @Primary
@@ -70,6 +69,11 @@ public class TestConfig {
                 mobiles.add(mobile);
             }
         };
+    }
+
+    @PropertySource("classpath:/default_wx.properties")
+    static class Config {
+
     }
 
 }
