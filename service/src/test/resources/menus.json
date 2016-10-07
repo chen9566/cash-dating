@@ -1,0 +1,12 @@
+[
+  {
+    "name": "测试",
+    "type": "view",
+    "data": "http://www.baidu.com"
+  },
+  {
+    "name": "测试2",
+    "type": "view",
+    "data": "http://www.baidu.com"
+  }
+]
