@@ -75,6 +75,13 @@ ul, li {
 	border: 0;
 	background: none;
 }
+.form-register input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+-webkit-appearance: none !important;
+border: 0;background: none; 
+}
+.form-register input[type="number"]{-moz-appearance:textfield;border: 0;
+	background: none}
 .form-register .iphonebg {
 	background: #fff;
 	line-height: 66px;
