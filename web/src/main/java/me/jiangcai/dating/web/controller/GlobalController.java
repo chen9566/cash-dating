@@ -133,7 +133,7 @@ public class GlobalController {
     @RequestMapping(value = "/verificationCode", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void send(@RequestParam String mobile, @RequestParam VerificationType type) {
-        verificationCodeService.sendCode(mobile, type.work());
+        verificationCodeService.sendCode(mobile, type);
     }
 
 }

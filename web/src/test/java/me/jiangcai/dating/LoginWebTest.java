@@ -2,6 +2,7 @@ package me.jiangcai.dating;
 
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.UserService;
@@ -17,7 +18,6 @@ import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Function;
 
 /**
  * 已登录的测试
@@ -26,8 +26,15 @@ import java.util.function.Function;
  */
 @ContextConfiguration(classes = LoginWebTest.Config.class)
 public abstract class LoginWebTest extends WebTest {
+    protected static WeixinUserDetail detail;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private VerificationCodeService verificationCodeService;
+    @Autowired
+    private BankService bankService;
 
     protected List<CashOrder> currentOrders() {
         return orderService.findOrders(detail.getOpenId());
@@ -37,22 +44,6 @@ public abstract class LoginWebTest extends WebTest {
         return userService.byOpenId(detail.getOpenId());
     }
 
-    static class Config {
-        @Bean
-        @Primary
-        public WeixinUserMocker weixinUserMocker() {
-            return (modelAndViewContainer, nativeWebRequest) -> detail;
-        }
-    }
-
-    protected static WeixinUserDetail detail;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private VerificationCodeService verificationCodeService;
-    @Autowired
-    private BankService bankService;
-
     protected String randomBankCard() {
         return RandomStringUtils.randomNumeric(16);
     }
@@ -61,7 +52,7 @@ public abstract class LoginWebTest extends WebTest {
     public void forLogin() {
         detail = WeixinUserMocker.randomWeixinUserDetail();
         String mobile = randomMobile();
-        verificationCodeService.sendCode(mobile, Function.identity());
+        verificationCodeService.sendCode(mobile, VerificationType.register);
         userService.registerMobile(null, detail.getOpenId(), mobile, "1234", null);
 //        verificationCodeService.sendCode(mobile, Function.identity()); 现在不用发验证码了
         // 16
@@ -69,5 +60,13 @@ public abstract class LoginWebTest extends WebTest {
         userService.addCard(detail.getOpenId(), detail.getNickname(), card
                 , bankService.list().stream()
                         .findAny().orElse(null), null, UUID.randomUUID().toString());
+    }
+
+    static class Config {
+        @Bean
+        @Primary
+        public WeixinUserMocker weixinUserMocker() {
+            return (modelAndViewContainer, nativeWebRequest) -> detail;
+        }
     }
 }

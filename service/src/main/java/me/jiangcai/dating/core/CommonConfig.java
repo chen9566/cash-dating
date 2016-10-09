@@ -5,6 +5,7 @@ import me.jiangcai.dating.entity.SystemString;
 import me.jiangcai.dating.repository.SystemStringRepository;
 import me.jiangcai.lib.bracket.BracketSpringConfig;
 import me.jiangcai.lib.jdbc.JdbcSpringConfig;
+import me.jiangcai.lib.notice.NoticeSpringConfig;
 import me.jiangcai.lib.resource.ResourceSpringConfig;
 import me.jiangcai.lib.spring.logging.LoggingConfig;
 import me.jiangcai.lib.upgrade.UpgradeSpringConfig;
@@ -24,7 +25,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @ComponentScan("me.jiangcai.loveport.service")
 @Import({BracketSpringConfig.class, ResourceSpringConfig.class, UpgradeSpringConfig.class, JdbcSpringConfig.class
-        , LoggingConfig.class})
+        , NoticeSpringConfig.class, LoggingConfig.class})
 @EnableJpaRepositories(basePackages = {"me.jiangcai.loveport.repository"})
 class CommonConfig {
 

@@ -4,11 +4,14 @@ import me.jiangcai.chanpay.data.trade.CreateInstantTrade;
 import me.jiangcai.chanpay.test.ChanpayTestSpringConfig;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
-import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.VerificationCodeService;
 import me.jiangcai.dating.service.impl.AbstractChanpayService;
+import me.jiangcai.dating.service.impl.AbstractVerificationCodeService;
+import me.jiangcai.lib.notice.Content;
+import me.jiangcai.lib.notice.To;
+import me.jiangcai.lib.notice.exception.NoticeException;
 import me.jiangcai.wx.test.WeixinTestConfig;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,9 +25,6 @@ import org.springframework.core.env.Environment;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Function;
 
 /**
  * @author CJ
@@ -65,21 +65,32 @@ public class TestConfig {
     @Primary
     public VerificationCodeService verificationCodeService() {
         // 1234 always work
-        return new VerificationCodeService() {
-            private Set<String> mobiles = new HashSet<>();
-
+        return new AbstractVerificationCodeService() {
             @Override
-            public void verify(String mobile, String code, VerificationType type) throws IllegalVerificationCodeException {
-                if (!(code.equals("1234") && mobiles.contains(mobile)))
-                    throw new IllegalVerificationCodeException(type);
+            protected void send(To to, Content content) throws NoticeException {
+                System.err.println("Send Code " + content.asText() + " to " + to.mobilePhone());
             }
 
             @Override
-            public void sendCode(String mobile, Function<String, String> fill) {
-                log.debug("send code to " + mobile);
-                mobiles.add(mobile);
+            protected String generateCode(String mobile, VerificationType type) {
+                return "1234";
             }
         };
+//        return new VerificationCodeService() {
+//            private Set<String> mobiles = new HashSet<>();
+//
+//            @Override
+//            public void verify(String mobile, String code, VerificationType type) throws IllegalVerificationCodeException {
+//                if (!(code.equals("1234") && mobiles.contains(mobile)))
+//                    throw new IllegalVerificationCodeException(type);
+//            }
+//
+//            @Override
+//            public void sendCode(String mobile, VerificationType type) {
+//                log.debug("send code to " + mobile);
+//                mobiles.add(mobile);
+//            }
+//        };
     }
 
     @PropertySource("classpath:/default_wx.properties")

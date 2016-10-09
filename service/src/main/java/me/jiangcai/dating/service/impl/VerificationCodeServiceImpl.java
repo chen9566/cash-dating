@@ -1,24 +1,30 @@
 package me.jiangcai.dating.service.impl;
 
-import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.VerificationType;
-import me.jiangcai.dating.service.VerificationCodeService;
+import me.jiangcai.lib.notice.Content;
+import me.jiangcai.lib.notice.NoticeService;
+import me.jiangcai.lib.notice.To;
+import me.jiangcai.lib.notice.exception.NoticeException;
+import org.apache.commons.lang.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.function.Function;
 
 /**
  * @author CJ
  */
 @Service
-public class VerificationCodeServiceImpl implements VerificationCodeService {
-    @Override
-    public void verify(String mobile, String code, VerificationType type) throws IllegalVerificationCodeException {
+public class VerificationCodeServiceImpl extends AbstractVerificationCodeService {
 
+    @Autowired
+    private NoticeService noticeService;
+
+    @Override
+    protected void send(To to, Content content) throws NoticeException {
+        noticeService.send("zjy://", to, content);
     }
 
     @Override
-    public void sendCode(String mobile, Function<String, String> fill) {
-
+    protected String generateCode(String mobile, VerificationType type) {
+        return RandomStringUtils.randomNumeric(4);
     }
 }

@@ -4,8 +4,6 @@ import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.VerificationType;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.function.Function;
-
 /**
  * 验证码服务
  *
@@ -26,11 +24,10 @@ public interface VerificationCodeService {
 
     /**
      * 发送验证码
-     *
-     * @param mobile 手机号码
-     * @param fill   这是一个函数,会传入验证码,然后返回最终发给用户的文本
+     *  @param mobile 手机号码
+     * @param type
      */
     @Transactional
-    void sendCode(String mobile, Function<String, String> fill);
+    void sendCode(String mobile, VerificationType type);
 
 }

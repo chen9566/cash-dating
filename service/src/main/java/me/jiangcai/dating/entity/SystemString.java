@@ -18,7 +18,7 @@ import javax.persistence.Id;
 public class SystemString {
 
     @Id
-    @Column(length = 30)
+    @Column(length = 50)
     private String id;
     private String value;
 
