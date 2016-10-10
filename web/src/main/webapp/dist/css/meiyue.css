@@ -9,71 +9,88 @@ ul, li {
 /*登录*/
 .form-login {
 	max-width: 100%;
-	margin: 22px auto;
+	margin: 15px auto;
 }
 .form-login input[type="text"], .form-login input[type="password"], .form-login input[type="tel"] {
-	font-size: 16px;
-	height: auto;
-	width: 100%;
+	font-size: 15px;
+	
+	width: 95%;
 	outline: none;
 	border: 0;
 	background: none;
+	height:30px;
+	line-height:30px;
+	padding-left:2px;
+	
+	
 }
 .form-login .iphonebg {
 	background: #fff;
-	line-height: 66px;
+	line-height: 44px;
 	border-top: 1px solid #dfdfdf;
+	
+	
 }
 .form-login .passbg {
 	background: #fff;
-	line-height: 66px;
+	line-height: 44px;
 	border-bottom: 1px solid #dfdfdf;
-	margin-bottom: 45px;
+	margin-bottom: 30px;
+	
 }
 .form-login .iphone img, .form-login .passwrod img {
-	width: 26px;
-	margin-left: -12px;
+	width: 20px;
+	margin:-2px 0 0 -12px;
 }
-.form-login .error img {
-	width: 22px;
+.form-login .err img {
+	width: 18px;
 	margin-left: 7px;
 }
 .form-login .mb {
-	margin-left: 20px;
+	margin-left: 15px;
 	padding-left: -10px;
 }
 .form-login .ml10 {
-	margin-left: 20px;
+	margin-left: 15px;
 	padding-left: -10px;
 	border-bottom: 1px solid #dfdfdf;
-	height: 68px
+	height: 46px
 }
 .form-login .nopass {
-	color: #1686ff;
+	
 	border-left: 1px solid #dfdfdf;
-	height: 66px;
+	
 	text-align: center;
-	font-size: 16px;
+	font-size: 15px;
 	float:right
 }
+.form-login .nopass a{color: #1686ff; text-decoration:none;height: 45px; display:block}
 .form-login button {
-	margin-bottom: 22px;
+	margin-bottom: 15px;
+	height:42px;
+	line-height:18px;
+	
 }
+.form-login .errortxt{ font-size:14px; color:#F00; }
+.form-login .ts{ color:#F00; font-weight:bold;}
 /*注册*/
 .form-register {
 	max-width: 100%;
-	margin: 20px auto;
+	margin: 15px auto;
 }
 .form-register small{ color:#888;}
-.form-register .txt{ color:#888}
-.form-register .errortxt{ height:14px; line-height: 14px; color:#F00}
+.form-register .txt{ color:#888; font-size:14px}
+.form-register .errortxt{ height:14px; line-height: 14px; display:none; color:#F00}
 .form-register input[type="text"], .form-register input[type="password"], .form-register input[type="tel"] {
-	font-size: 16px;
+	font-size: 15px;
 	height: auto;
-	width: 100%;
+	width: 95%;
 	outline: none;
 	border: 0;
 	background: none;
+	height:30px;
+	line-height:30px;
+	padding-left:2px;
 }
 .form-register input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button{
@@ -84,52 +101,54 @@ border: 0;background: none;
 	background: none}
 .form-register .iphonebg {
 	background: #fff;
-	line-height: 66px;
+	line-height: 44px;
 	border-top: 1px solid #dfdfdf;
+	
 }
 .form-register .codebg {
 	background: #fff;
-	line-height: 64px;
+	line-height: 44px;
 }
 .form-control{
 	background: #fff;
-	line-height: 64px;
-	margin:16px 0 0 0;
+	line-height: 44px;
+	margin:5px 0 0 0;
 }
 .form-register .passbg {
 	background: #fff;
-	line-height: 66px;
+	line-height: 44px;
 	border-bottom: 1px solid #dfdfdf;
-	margin-bottom: 45px;
+	margin-bottom: 30px;
+	
 }
 .form-register .cardmore {
 	background: #fff;
-	line-height: 66px;
+	line-height: 44px;
 	border-bottom: 1px solid #dfdfdf;
-	margin-bottom: 45px;
+	margin-bottom: 30px;
 }
 .form-register .cardmore .more{ padding-top:3px; color:#888; text-align:right;}
 .form-register .cardmore i{ color:#888; margin:0 0 0 15px; vertical-align:middle }
 .form-register .service { margin:20px 0 30px 20px}
 .form-register .service checkbox{ width:25px; height:25px; background:#fff; border:1px solid #dfdfdf}
 .form-register .iphone img, .form-register .passwrod img {
-	width: 26px;
-	margin-left: -12px;
+	width: 20px;
+	margin:-2px 0 0 -12px;
 }
-.form-register .error img {
-	width: 22px;
+.form-register .err img {
+	width: 18px;
 	margin-left: 7px;
 }
 .form-register .mb {
-	margin-left: 20px;
+	margin-left: 15px;
 	padding-left: -10px;
 	
 }
 .form-register .ml10 {
-	margin-left: 20px;
+	margin-left: 15px;
 	padding-left: -10px;
 	border-bottom: 1px solid #dfdfdf;
-	height: 68px
+	height: 44px
 }
 ..form-register .line-b{border-bottom: 1px solid #dfdfdf;}
 .form-register .m30{margin-bottom:30px;}
@@ -137,15 +156,21 @@ border: 0;background: none;
 	background: #f65150;
 	color: #fff;
 	border-left: 1px solid #dfdfdf;
-	height: 66px;
+	height: 44px;
 	text-align: center;
-	font-size: 16px;
+	font-size: 15px;
 	float:right;
+	margin-top:-1px;
 }
 .form-register .msgs1{background:#E6E6E6;color:#818080;}
 .form-register button {
 	margin-bottom: 22px;
+	margin-bottom: 15px;
+	height:42px;
+	line-height:18px;
 }
+.form-register .errortxt{ font-size:14px; color:#F00; display:none; }
+.form-register .ts{ color:#F00; font-weight:bold;}
 /*产品赛选*/
 
 .form-group {
@@ -178,6 +203,7 @@ div.screening {
 	position: fixed;
 	z-index: 4;
 	top: 48px;
+
 }
 div.screening>ul {
 	margin: 0;
@@ -613,8 +639,9 @@ div.screening>ul>li {
 }
 .form-add .iphonebg {
 	background: #fff;
-	line-height: 66px;
+	line-height:40px;
 	border-top: 1px solid #dfdfdf;
+	padding:10px 0;
 }
 .form-add .codebg {
 	background: #fff;
@@ -622,9 +649,10 @@ div.screening>ul>li {
 }
 .form-add .passbg {
 	background: #fff;
-	line-height: 66px;
+	line-height: 40px;
 	border-bottom: 1px solid #dfdfdf;
 	margin-bottom: 45px;
+	padding:10px 0;
 }
 .form-add .mb {
 	margin-left: 20px;
@@ -769,4 +797,25 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.modcard li{ background:#fff; color:#888; line-height:44px; padding:0 15px;}
 	.modcard i{ color:#cacaca; margin-top:7px}
 .modal{ top:15%}
+
+.payment{}
+	.payment .card{background: -webkit-linear-gradient(left, #E75C65 , #E8507D); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(right, #E75C65 , #E8507D); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(right, #E75C65 , #E8507D); /* Firefox 3.6 - 15 */
+  background: linear-gradient(to right, #E75C65 , #E8507D); color:#fff; font-size:14px; padding:15px; height:69px}
+	.payment .card img{ float:left; width:38px; height:38px; margin-right:10px}
+	.payment .card a{ float:right; background:none; border-radius:4px; color:#fceef2; width:60px; height:27px; line-height:24px; font-size:13px; text-align:center; border:1px solid #f4bac9;  margin:-17px 0 0 0}
+	.payment .card .banktxt{ font-size:16px; display:block; text-decoration:none}
+.payment .pay-m{ background:#fff; padding:15px 15px 0 15px;border:1px solid #dfdfdf; }
+	.payment .pay-m .t1{ color:#353535; font-size:14px; }
+	.payment .pay-m .t2{ font-size:42px; margin:-8px 0 7px 0;  border-bottom:1px solid #dfdfdf}
+	.payment .pay-m .t3{ font-size:13px; color:#888; line-height:30px; padding-left:10px}
+	.payment .pay-m input{ padding-left:8px; height:42px; line-height:42px; border:0; width:80%; }
+	.payment .pay-m i{ font-size:26px; color:#353535; font-weight:100 !important; }
+.payment .explain{padding:15px; color:#b3b3b3; font-size:13px;}
+.payment .paybtn{ padding:0 15px}
+	.payment .paybtn button{ height:42px;}
+	.payment .paybtn .black{ color:#b3b3b3}
+	
+
 
