@@ -5,4 +5,8 @@ package me.jiangcai.dating;
  */
 public enum Version {
     init,
+    /**
+     * v1.1
+     */
+    v101000,
 }

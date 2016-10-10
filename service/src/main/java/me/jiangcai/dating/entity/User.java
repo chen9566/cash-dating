@@ -3,9 +3,11 @@ package me.jiangcai.dating.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.dating.ProfitSplit;
 import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.model.CashWeixinUserDetail;
+import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.wx.model.Gender;
 import me.jiangcai.wx.model.WeixinUser;
 import me.jiangcai.wx.model.WeixinUserDetail;
@@ -36,7 +38,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"mobileNumber", "openId", "inviteCode"})})
-public class User implements WeixinUser {
+public class User implements WeixinUser, ProfitSplit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -196,5 +198,17 @@ public class User implements WeixinUser {
             setTokenScopeStr(null);
         } else
             setTokenScopeStr(String.join(",", (CharSequence[]) strings));
+    }
+
+    @Override
+    public double agentProfileRate(SystemService systemService) {
+        if (agentUser == null)
+            return 0;
+        return agentUser.agentInfo != null ? 0.8 : 0.2;
+    }
+
+    @Override
+    public double guideProfileRate(SystemService systemService) {
+        return 0;
     }
 }

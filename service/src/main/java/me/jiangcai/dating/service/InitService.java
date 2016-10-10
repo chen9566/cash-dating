@@ -1,5 +1,8 @@
 package me.jiangcai.dating.service;
 
+import me.jiangcai.dating.Version;
+import me.jiangcai.lib.upgrade.VersionUpgrade;
+import me.jiangcai.lib.upgrade.service.UpgradeService;
 import me.jiangcai.wx.PublicAccountSupplier;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,6 +28,8 @@ public class InitService {
     private Environment environment;
     @Autowired
     private PublicAccountSupplier supplier;
+    @Autowired
+    private UpgradeService upgradeService;
 
     @PostConstruct
     public void init() throws IOException {
@@ -32,6 +37,18 @@ public class InitService {
         log.debug(json);
         if (json != null)
             weixinService.menus(json, supplier.findByHost(null));
+
+
+        upgradeService.systemUpgrade(new VersionUpgrade<Version>() {
+            @Override
+            public void upgradeToVersion(Version version) throws Exception {
+                switch (version) {
+                    case v101000:
+                        System.out.println("update to 1.1?");
+                        break;
+                }
+            }
+        });
     }
 
 }

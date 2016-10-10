@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
         order.setAmount(amount);
         order.setComment(comment);
         order.setStartTime(LocalDateTime.now());
-        order.setThatRateConfig(systemService.currentRateConfig());
+        order.setThatRateConfig(systemService.currentRateConfig(user));
 
         return cashOrderRepository.save(order);
     }
