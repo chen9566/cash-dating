@@ -1,6 +1,6 @@
 [
   {
-    "name": "买单",
+    "name": "收银台",
     "type": "view",
     "data": "http://app.kuanyes.com/cash/start"
   },
