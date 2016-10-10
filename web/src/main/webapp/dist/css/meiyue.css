@@ -203,6 +203,7 @@ div.screening {
 	position: fixed;
 	z-index: 4;
 	top: 48px;
+
 }
 div.screening>ul {
 	margin: 0;
@@ -796,4 +797,25 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.modcard li{ background:#fff; color:#888; line-height:44px; padding:0 15px;}
 	.modcard i{ color:#cacaca; margin-top:7px}
 .modal{ top:15%}
+
+.payment{}
+	.payment .card{background: -webkit-linear-gradient(left, #E75C65 , #E8507D); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(right, #E75C65 , #E8507D); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(right, #E75C65 , #E8507D); /* Firefox 3.6 - 15 */
+  background: linear-gradient(to right, #E75C65 , #E8507D); color:#fff; font-size:14px; padding:15px; height:69px}
+	.payment .card img{ float:left; width:38px; height:38px; margin-right:10px}
+	.payment .card a{ float:right; background:none; border-radius:4px; color:#fceef2; width:60px; height:27px; line-height:24px; font-size:13px; text-align:center; border:1px solid #f4bac9;  margin:-17px 0 0 0}
+	.payment .card .banktxt{ font-size:16px; display:block; text-decoration:none}
+.payment .pay-m{ background:#fff; padding:15px 15px 0 15px;border:1px solid #dfdfdf; }
+	.payment .pay-m .t1{ color:#353535; font-size:14px; }
+	.payment .pay-m .t2{ font-size:42px; margin:-8px 0 7px 0;  border-bottom:1px solid #dfdfdf}
+	.payment .pay-m .t3{ font-size:13px; color:#888; line-height:30px; padding-left:10px}
+	.payment .pay-m input{ padding-left:8px; height:42px; line-height:42px; border:0; width:80%; }
+	.payment .pay-m i{ font-size:26px; color:#353535; font-weight:100 !important; }
+.payment .explain{padding:15px; color:#b3b3b3; font-size:13px;}
+.payment .paybtn{ padding:0 15px}
+	.payment .paybtn button{ height:42px;}
+	.payment .paybtn .black{ color:#b3b3b3}
+	
+
 
