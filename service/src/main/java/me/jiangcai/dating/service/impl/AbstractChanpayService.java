@@ -10,6 +10,7 @@ import me.jiangcai.chanpay.event.WithdrawalEvent;
 import me.jiangcai.chanpay.model.CardAttribute;
 import me.jiangcai.chanpay.model.PayMode;
 import me.jiangcai.chanpay.model.SubBranch;
+import me.jiangcai.chanpay.model.TradeStatus;
 import me.jiangcai.chanpay.model.WithdrawalStatus;
 import me.jiangcai.chanpay.service.TransactionService;
 import me.jiangcai.chanpay.service.impl.GetPayChannelHandler;
@@ -94,6 +95,8 @@ public abstract class AbstractChanpayService implements ChanpayService {
         ChanpayWithdrawalOrder order = chanpayWithdrawalOrderRepository.findOne(event.getSerialNumber());
         if (order != null) {
             boolean preFinish = order.isFinish();
+            if (preFinish)
+                return;
 //            boolean preSuccess = order.isSuccess();
             order.setStatus(event.getStatus());
             order.setComment(event.getMessage());
@@ -117,9 +120,13 @@ public abstract class AbstractChanpayService implements ChanpayService {
     @Override
     public void tradeUpdate(TradeEvent event) throws IOException, SignatureException {
         log.debug("trade event:" + event);
+        if (event.getTradeStatus() != TradeStatus.TRADE_SUCCESS)
+            return;
         ChanpayOrder order = chanpayOrderRepository.findOne(event.getSerialNumber());
         if (order != null) {
             boolean preStatus = order.isFinish();
+            if (preStatus)
+                return;
             // 校验金额
             order.setStatus(event.getTradeStatus());
             if (order.isFinish()) {
@@ -163,6 +170,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
         // 锁定订单号
         log.debug("prepare to withdrawal " + order);
         synchronized (order.getId().intern()) {
+            order = cashOrderRepository.getOne(order.getId());
             if (order.isWithdrawalCompleted())
                 throw new IllegalStateException("提现已完成。");
             if (order.getPlatformWithdrawalOrderSet() != null && !order.getPlatformWithdrawalOrderSet().isEmpty()) {
@@ -191,6 +199,8 @@ public abstract class AbstractChanpayService implements ChanpayService {
             withdrawalOrder.setUserOrder(order);
 
             beforeExecute(order, withdrawalOrder, card);
+
+            order.getPlatformWithdrawalOrderSet().add(withdrawalOrder);
 
             cashOrderRepository.save(order);
             // 先保存,失败自然回滚

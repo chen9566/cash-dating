@@ -40,6 +40,7 @@ public class WeixinServiceTest extends ServiceBaseTest {
             String jsonLine = mapper.writeValueAsString(mapper.readTree(code));
 
             System.out.println(jsonLine.replaceAll("\"", "\""));
+            System.out.println("用这个!");
             System.out.println(URLEncoder.encode(jsonLine, "UTF-8"));
 //            System.out.println();
 
