@@ -2,17 +2,12 @@ package me.jiangcai.dating.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.dating.entity.support.WithdrawOrderStatus;
 import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.model.support.FlowType;
-import me.jiangcai.dating.entity.support.WithdrawOrderStatus;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -26,32 +21,11 @@ import java.time.LocalDateTime;
 @Entity
 @Setter
 @Getter
-public class WithdrawOrder implements BalanceFlow {
+public class WithdrawOrder extends UserOrder implements BalanceFlow {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    private User owner;
-
-    /**
-     * 提现金额
-     */
-    @Column(scale = 2, precision = 20)
-    private BigDecimal amount;
-
-    /**
-     * 开启时间
-     */
-    @Column(columnDefinition = "datetime")
-    private LocalDateTime startTime;
-
-    private WithdrawOrderStatus processStatus;
+    private WithdrawOrderStatus processStatus = WithdrawOrderStatus.requested;
     @Column(columnDefinition = "datetime")
     private LocalDateTime processTime;
-    private String comment;
-
 
     @Override
     @Transient
@@ -63,5 +37,20 @@ public class WithdrawOrder implements BalanceFlow {
     @Transient
     public FlowType getFlowType() {
         return FlowType.payout;
+    }
+
+    @Override
+    public BigDecimal getWithdrawalAmount() {
+        return getAmount();
+    }
+
+    @Override
+    public void withdrawalSuccess() {
+        setProcessStatus(WithdrawOrderStatus.completed);
+    }
+
+    @Override
+    public void withdrawalFailed() {
+        setProcessStatus(WithdrawOrderStatus.cancelled);
     }
 }

@@ -72,8 +72,8 @@ public class SystemServiceImpl implements SystemService {
         // 剩下的则属于利润,利润分配参与者有3个 系统（贪婪获取）,合伙人,发展人
 
         // 账面
-        BigDecimal bookRate = getSystemString(BookRate, BigDecimal.class, BigDecimal.valueOf(0.006));
-        BigDecimal channelRate = getSystemString(ChannelRate, BigDecimal.class, BigDecimal.valueOf(0.0026));
+        BigDecimal bookRate = getSystemString(BookRate, BigDecimal.class, new BigDecimal("0.006"));
+        BigDecimal channelRate = getSystemString(ChannelRate, BigDecimal.class, new BigDecimal("0.0026"));
 
         BigDecimal profitRate = bookRate.subtract(channelRate);
 

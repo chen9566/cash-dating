@@ -1,8 +1,13 @@
 package me.jiangcai.dating.page;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,6 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author CJ
  */
 public class StartOrderPage extends AbstractPage {
+
+    private static final Log log = LogFactory.getLog(StartOrderPage.class);
 
     private WebElement amountInput;
     private WebElement commentInput;
@@ -47,9 +54,17 @@ public class StartOrderPage extends AbstractPage {
                 .isNotNull();
     }
 
-    public void pay(int amount, String comment) {
+    public void pay(double amount, String comment) {
         amountInput.clear();
-        amountInput.sendKeys(String.valueOf(amount));
+
+        NumberFormat format = NumberFormat.getNumberInstance();
+        format.setRoundingMode(RoundingMode.HALF_UP);//设置四舍五入
+        format.setMaximumFractionDigits(2);
+        format.setGroupingUsed(false);
+
+        log.debug(amount);
+        log.debug(format.format(amount));
+        amountInput.sendKeys(format.format(amount));
         commentInput.clear();
         commentInput.sendKeys(comment);
         button.click();

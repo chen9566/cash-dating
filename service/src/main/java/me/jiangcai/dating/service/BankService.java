@@ -19,4 +19,7 @@ public interface BankService {
 
     @Transactional(readOnly = true)
     Bank byCode(String code);
+
+    @Transactional(readOnly = true)
+    Bank byName(String name);
 }

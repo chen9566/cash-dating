@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author CJ
  */
 public interface BankRepository extends JpaRepository<Bank, String> {
+
+    Bank findByName(String name);
 }

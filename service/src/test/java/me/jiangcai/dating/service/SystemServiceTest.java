@@ -36,9 +36,9 @@ public class SystemServiceTest extends ServiceBaseTest {
     @Test
     public void currentRateConfig() {
 
-        BigDecimal maxRate = BigDecimal.valueOf(0.0034D);
-        BigDecimal halfRate = maxRate.multiply(BigDecimal.valueOf(0.5));
-        BigDecimal bacheng = maxRate.multiply(BigDecimal.valueOf(0.2));
+        BigDecimal maxRate = new BigDecimal("0.0034");
+        BigDecimal halfRate = maxRate.multiply(new BigDecimal("0.5"));
+        BigDecimal bacheng = maxRate.multiply(new BigDecimal("0.2"));
 
         RateConfig config = systemService.currentRateConfig(new ProfitSplit() {
             @Override

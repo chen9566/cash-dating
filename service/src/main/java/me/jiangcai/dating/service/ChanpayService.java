@@ -1,8 +1,10 @@
 package me.jiangcai.dating.service;
 
 import me.jiangcai.chanpay.event.TradeEvent;
+import me.jiangcai.chanpay.event.WithdrawalEvent;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
+import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
 import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +19,27 @@ import java.security.SignatureException;
  */
 public interface ChanpayService {
 
+    /**
+     * 建立支付订单
+     *
+     * @param order 对应订单
+     * @return 已建立的支付订单
+     * @throws IOException
+     * @throws SignatureException
+     */
     //    @Transactional
     ChanpayOrder createOrder(CashOrder order) throws IOException, SignatureException;
+
+    /**
+     * 建立提现订单
+     *
+     * @param order 对应主订单
+     * @return 已建立的提现订单
+     * @throws IOException
+     * @throws SignatureException
+     */
+    @Transactional
+    ChanpayWithdrawalOrder withdrawalOrder(CashOrder order) throws IOException, SignatureException;
 
     @PostConstruct
     @Transactional
@@ -35,6 +56,10 @@ public interface ChanpayService {
     String QRCodeImageFromOrder(ChanpayOrder order) throws IllegalStateException, IOException;
 
     @Transactional
-    @EventListener(me.jiangcai.chanpay.event.TradeEvent.class)
-    void tradeUpdate(TradeEvent event);
+    @EventListener(TradeEvent.class)
+    void tradeUpdate(TradeEvent event) throws IOException, SignatureException;
+
+    @Transactional
+    @EventListener(WithdrawalEvent.class)
+    void tradeUpdate(WithdrawalEvent event);
 }

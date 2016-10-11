@@ -5,13 +5,9 @@ import lombok.Setter;
 import me.jiangcai.dating.entity.support.RateConfig;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -22,29 +18,17 @@ import java.util.Set;
 @Entity
 @Setter
 @Getter
-public class CashOrder {
-    @Id
-    @Column(length = 32)
-    private String id;
-    //金额
-    @Column(scale = 2, precision = 20)
-    private BigDecimal amount;
-    //备注
-    @Column(length = 50)
-    private String comment;
-    /**
-     * 开启时间
-     */
-    @Column(columnDefinition = "datetime")
-    private LocalDateTime startTime;
-
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    private User owner;
+public class CashOrder extends UserOrder {
 
     /**
      * 一个冗余标记位
      */
     private boolean completed;
+
+    /**
+     * 另一个,呵呵
+     */
+    private boolean withdrawalCompleted;
 
     /**
      * 当时的几率配置
@@ -58,4 +42,21 @@ public class CashOrder {
     @OneToMany(mappedBy = "cashOrder", orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<PlatformOrder> platformOrderSet;
 
+    @OneToMany(mappedBy = "userOrder", orphanRemoval = true, cascade = CascadeType.ALL)
+    private Set<PlatformWithdrawalOrder> platformWithdrawalOrderSet;
+
+    @Override
+    public BigDecimal getWithdrawalAmount() {
+        return getAmount().multiply(BigDecimal.ONE.subtract(thatRateConfig.getBookRate()));
+    }
+
+    @Override
+    public void withdrawalSuccess() {
+        setWithdrawalCompleted(true);
+    }
+
+    @Override
+    public void withdrawalFailed() {
+        setWithdrawalCompleted(false);
+    }
 }

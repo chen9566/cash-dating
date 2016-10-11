@@ -8,6 +8,7 @@
     <loggers>
         <logger name="org.springframework.web" level="debug"/>
         <logger name="me.jiangcai.dating" level="debug"/>
+        <logger name="me.jiangcai.chanpay" level="debug"/>
         <root level="info">
             <appender-ref ref="Console"/>
         </root>
