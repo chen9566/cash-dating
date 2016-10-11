@@ -3,7 +3,6 @@ package me.jiangcai.dating.web.controller.auth;
 import com.google.zxing.WriterException;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
-import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.UserService;
@@ -76,13 +75,16 @@ public class LoginController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/registerCard")
-    public String registerCard(@OpenId String id, String name, String number, String province, String city, String bank
+    public String registerCard(@OpenId String id, String name, String number
+                               // 这3个参数 其实用不上
+            , String province, String city, String bank
             , String subBranch) {
-        Address address = new Address();
-//        address.setProvince(province);
-//        address.setCity(city);
+//
+//        Address address = new Address();
+//        address.setProvince(PayResourceService.provinceById(province));
+//        address.setCity(PayResourceService.cityById(city));
 
-        Card card = userService.addCard(id, name, number, bankService.byCode(bank), address, subBranch);
+        Card card = userService.addCard(id, name, number, null, null, subBranch);
         return "redirect:/start";
     }
 

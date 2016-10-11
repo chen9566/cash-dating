@@ -6,6 +6,7 @@ import me.jiangcai.chanpay.model.Province;
 import me.jiangcai.chanpay.model.SubBranch;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public interface PayResourceService {
 
-    Collection<Province> provinceCollection = Dictionary.findAll(Province.class);
+    Collection<Province> provinceCollection = Collections.unmodifiableCollection(Dictionary.findAll(Province.class));
 
     /**
      * @return 所有省份
@@ -31,6 +32,13 @@ public interface PayResourceService {
     static Province provinceById(String id) {
         return provinceCollection.stream()
                 .filter(province -> id.equals(province.getId()))
+                .findAny()
+                .orElse(null);
+    }
+
+    static Province provinceByCity(City city) {
+        return provinceCollection.stream()
+                .filter(province -> province.getCityList().contains(city))
                 .findAny()
                 .orElse(null);
     }

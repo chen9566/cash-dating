@@ -51,7 +51,7 @@
             <div class="ml10">
                 <div class="iphone col-xs-5">选择银行:</div>
                 <div class="col-xs-6">
-                    <select class="form-control" name="bank" required>
+                    <select class="form-control bank-selector" name="bank" required>
                         <option value="" th:remove="all">默认选择</option>
                         <option value="1" th:each="bank:${banks}" th:value="${bank.code}" th:text="${bank.name}">
                             工商银行
@@ -62,13 +62,14 @@
         </div>
         <div class="row codebg">
             <div class="ml10">
-                <datalist id="subs">
-                    <option value="Boston">
-                    <option value="Cambridge">
-                </datalist>
+                <!--<datalist id="subs">-->
+                <!--<option value="Boston">-->
+                <!--<option value="Cambridge">-->
+                <!--</datalist>-->
                 <div class="iphone col-xs-5">支行名称:</div>
                 <div class="col-xs-6">
-                    <input type="text" name="subBranch" list="subs" required minlength="4" placeholder="输入支行全称"/>
+                    <select class="form-control subBranch-selector" name="subBranch" required></select>
+                    <!--<input type="text" name="subBranch" list="subs" required minlength="4" placeholder="输入支行全称"/>-->
                 </div>
             </div>
         </div>

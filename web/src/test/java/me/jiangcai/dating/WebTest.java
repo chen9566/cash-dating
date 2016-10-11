@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.google.common.base.Predicate;
+import me.jiangcai.dating.entity.Card;
+import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.page.BindingCardPage;
 import me.jiangcai.dating.page.BindingMobilePage;
@@ -11,6 +13,7 @@ import me.jiangcai.dating.page.MyInviteCodePage;
 import me.jiangcai.dating.page.MyInvitePage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.StartOrderPage;
+import me.jiangcai.dating.repository.SubBranchBankRepository;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.QRCodeService;
@@ -35,7 +38,9 @@ import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -57,6 +62,9 @@ public abstract class WebTest extends SpringWebTest {
     private BankService bankService;
     @Autowired
     private QRCodeService qrCodeService;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private SubBranchBankRepository subBranchBankRepository;
 
     private static <T> Iterable<T> IterableIterator(Iterator<T> iterator) {
         return () -> iterator;
@@ -167,8 +175,12 @@ public abstract class WebTest extends SpringWebTest {
         //
         // 地址自己选吧
 
-        cardPage.submitWithRandomAddress(bankService.list().stream()
-                .findAny().orElse(null), RandomStringUtils.randomAlphanumeric(3), RandomStringUtils.randomAlphanumeric(6), RandomStringUtils.randomNumeric(16));
+        // 这里应该是根据已有的支行给出选择
+        SubBranchBank subBranchBank = randomSubBranchBank();
+
+        final String owner = RandomStringUtils.randomAlphanumeric(3);
+        final String number = RandomStringUtils.randomNumeric(16);
+        cardPage.submitWithRandomAddress(subBranchBank, owner, number);
         initPage(StartOrderPage.class);
         // 这就对了!
         // 还需要检查 银行是否已设置 地址是否已设置
@@ -181,7 +193,29 @@ public abstract class WebTest extends SpringWebTest {
         //终于找到id了
         Long userId = CashFilter.guideUserFromURL(url, null);
 
-        return userRepository.getOne(userId);
+        User user = userRepository.getOne(userId);
+        assertThat(user.getCards())
+                .hasSize(1);
+
+        Card card = user.getCards().get(0);
+        assertThat(card.getAddress().getCity().getId())
+                .isEqualTo(subBranchBank.getCityCode());
+        assertThat(card.getBank())
+                .isEqualTo(subBranchBank.getBank());
+        assertThat(card.getSubBranchBank())
+                .isEqualTo(subBranchBank);
+        assertThat(card.getOwner())
+                .isEqualTo(owner);
+        assertThat(card.getNumber())
+                .isEqualTo(number);
+
+        return user;
+    }
+
+    protected SubBranchBank randomSubBranchBank() {
+        return subBranchBankRepository.findAll().stream()
+                .max(new RandomComparator())
+                .orElse(null);
     }
 
     /**
@@ -224,5 +258,14 @@ public abstract class WebTest extends SpringWebTest {
     @ComponentScan({"me.jiangcai.dating.test"})
     static class Config {
 
+    }
+
+    private static class RandomComparator implements Comparator<Object> {
+        static Random random = new Random();
+
+        @Override
+        public int compare(Object o1, Object o2) {
+            return random.nextInt();
+        }
     }
 }

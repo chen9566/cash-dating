@@ -143,7 +143,7 @@ public class GlobalController {
     @RequestMapping(method = RequestMethod.GET, value = "/provinceList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public Object provinceList() {
-        return PayResourceService.provinceCollection;
+        return PayResourceService.listProvince();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/subBranchList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

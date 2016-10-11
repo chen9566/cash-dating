@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.util.Objects;
 
 /**
  * 支行,为了提高搜索效率,还是将它作为一个实体
@@ -34,5 +35,17 @@ public class SubBranchBank {
     @Column(length = Address.ID_LENGTH)
     private String cityCode;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SubBranchBank)) return false;
+        SubBranchBank that = (SubBranchBank) o;
+        return Objects.equals(code, that.code) &&
+                Objects.equals(name, that.name);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, name);
+    }
 }

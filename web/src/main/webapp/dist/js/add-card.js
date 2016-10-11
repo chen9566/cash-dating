@@ -11,6 +11,8 @@ $(function () {
     // 如果出现多个目标才需要配对 一个的话 就算了 哈
     var provinceSelector = $('.province-selector');
     var citySelector = $('.city-selector');
+    var bankSelector = $('.bank-selector');
+    var subBranchSelector = $('.subBranch-selector');
     // 还有一个是State 这里用不到 就懒惰了
     if (provinceSelector.size() > 0) {
         // 得去下载文件了
@@ -22,15 +24,15 @@ $(function () {
 
         $.ajax(targetUri, {
             method: 'get',
-            data: 'json',
+            dataType: 'json',
             error: function (res, code) {
                 console.error(res.responseText, code);
             },
             success: function (data) {
-                if ($.unitTestMode) {
-                    console.error('Skip City auto select in UnitTest mode.');
-                    return;
-                }
+                // if ($.unitTestMode) {
+                //     console.error('Skip City auto select in UnitTest mode.');
+                //     return;
+                // }
 
                 // console.error('start');
                 $.locationDatabase = data;
@@ -39,8 +41,8 @@ $(function () {
                 // 先给他们数据
                 provinceSelector.empty();
 
-                provinceSelector.change(function () {
-                    var provinceName = $(this).val();
+                var provinceChanged = function () {
+                    var provinceName = provinceSelector.val();
                     // console.log(this,provinceName);
                     citySelector.empty();
                     // 寻找合适的
@@ -59,7 +61,9 @@ $(function () {
                             }
                         }
                     }
-                });
+                };
+
+                provinceSelector.change(provinceChanged);
 
                 // console.error('start for ',$.locationDatabase.length);
 
@@ -71,10 +75,60 @@ $(function () {
                     provinceSelector.append('<option value="' + code + '" code="' + code + '">' + name + '</option>');
                 }
 
-
+                provinceChanged(provinceSelector);
             }
         });
 
+    }
+
+    if (bankSelector.size() > 0 && citySelector.size() > 0 && subBranchSelector.size() > 0) {
+        var anyChanged = function () {
+            var city = citySelector.val();
+            var bank = bankSelector.val();
+
+            if (!city || !bank) {
+                subBranchSelector.empty();
+                return;
+            }
+            if (city.length == 0 || bank.length == 0) {
+                subBranchSelector.empty();
+                return;
+            }
+
+            var targetUri;
+            if ($.prototypesMode)
+                targetUri = 'mock/branches.json';
+            else
+                targetUri = $.uriPrefix + '/subBranchList';
+
+            $.ajax(targetUri, {
+                method: 'get',
+                data: {
+                    bankId: bank,
+                    cityId: city
+                },
+                dataType: 'json',
+                error: function (res, code) {
+                    console.error(res.responseText, code);
+                },
+                success: function (data) {
+                    subBranchSelector.empty();
+                    for (var i = 0; i < data.length; i++) {
+                        var val = data[i];
+                        // console.error(val);
+                        var name = val.name;
+                        var code = val.id;
+                        subBranchSelector.append('<option value="' + code + '" code="' + code + '">' + name + '</option>');
+                    }
+                }
+            });
+        };
+
+        citySelector.change(anyChanged);
+        bankSelector.change(anyChanged);
+
+
+        anyChanged();
     }
 
 });
