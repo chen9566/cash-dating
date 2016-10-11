@@ -79,8 +79,8 @@ public class LoginController {
     public String registerCard(@OpenId String id, String name, String number, String province, String city, String bank
             , String subBranch) {
         Address address = new Address();
-        address.setProvince(province);
-        address.setCity(city);
+//        address.setProvince(province);
+//        address.setCity(city);
 
         Card card = userService.addCard(id, name, number, bankService.byCode(bank), address, subBranch);
         return "redirect:/start";

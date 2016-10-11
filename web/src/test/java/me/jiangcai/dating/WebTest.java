@@ -1,5 +1,7 @@
 package me.jiangcai.dating;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.google.common.base.Predicate;
 import me.jiangcai.dating.entity.User;
@@ -32,6 +34,8 @@ import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,6 +47,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = {WebTest.Config.class, TestConfig.class, WebConfig.class})
 public abstract class WebTest extends SpringWebTest {
 
+    protected final ObjectMapper objectMapper = new ObjectMapper();
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserRepository userRepository;
@@ -52,6 +57,10 @@ public abstract class WebTest extends SpringWebTest {
     private BankService bankService;
     @Autowired
     private QRCodeService qrCodeService;
+
+    private static <T> Iterable<T> IterableIterator(Iterator<T> iterator) {
+        return () -> iterator;
+    }
 
     @Override
     public <T extends AbstractPage> T initPage(Class<T> clazz) {
@@ -90,6 +99,35 @@ public abstract class WebTest extends SpringWebTest {
                 })
                 // DIY by interface.
                 .build();
+    }
+
+    /**
+     * 断言输入json是一个数组,并且结构上跟inputStream类似
+     *
+     * @param json
+     * @param inputStream
+     * @throws IOException
+     */
+    protected void assertSimilarJsonArray(JsonNode json, InputStream inputStream) throws IOException {
+        assertThat(json.isArray())
+                .isTrue();
+        JsonNode mockArray = objectMapper.readTree(inputStream);
+        JsonNode mockOne = mockArray.get(0);
+
+        assertSimilarJsonObject(json.get(0), mockOne);
+    }
+
+    /**
+     * 断言实际json是类似期望json的
+     *
+     * @param actual
+     * @param excepted
+     */
+    private void assertSimilarJsonObject(JsonNode actual, JsonNode excepted) {
+        assertThat(actual.isObject())
+                .isTrue();
+        assertThat(actual.fieldNames())
+                .containsAll(IterableIterator(excepted.fieldNames()));
     }
 
     /**
