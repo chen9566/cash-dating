@@ -146,4 +146,10 @@ public class GlobalController {
         return PayResourceService.provinceCollection;
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/subBranchList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public Object subBranchList(String bankId, String cityId) {
+        return payResourceService.listSubBranches(cityId, bankId);
+    }
+
 }

@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="banks" type="java.lang.Iterable<me.jiangcai.dating.entity.Bank>"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>注册</title>
+    <title>绑定银行卡</title>
     <link rel="stylesheet" href="dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="dist/css/font-awesome.min.css">
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
-    <script src="dist/js/yzm.js"></script>
     <script src="dist/js/share.js"></script>
+    <script src="dist/js/add-card.js"></script>
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
 </head>
@@ -20,11 +20,6 @@
 <div class="container">
     <form class="form-register" action="receivables.html" th:action="@{/registerCard}" th:method="post" id="addCardForm" role="form">
         <p class="txt">请绑定持卡人的银行卡(借记卡)</p>
-        <!--<div class="row iphonebg">-->
-        <!--<div class="ml10">-->
-        <!--<div class="iphone col-xs-11"> 银行账户类型: 借记卡</div>-->
-        <!--</div>-->
-        <!--</div>-->
         <div class="row codebg">
             <div class="ml10">
                 <div class="iphone col-xs-5">开户人真实姓名:</div>
@@ -32,35 +27,6 @@
                                              placeholder="输入真实姓名"></div>
             </div>
         </div>
-        <!--<div class="row codebg">-->
-        <!--<div class="ml10">-->
-        <!--<div class="iphone col-xs-3">卡属性:</div>-->
-        <!--<div class="col-xs-8">-->
-        <!--<label class="checkbox-inline">-->
-        <!--<input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1" checked>对公-->
-        <!--</label>-->
-        <!--<label class="checkbox-inline">-->
-        <!--<input type="radio" name="optionsRadiosinline" id="optionsRadios4" value="option2">对私-->
-        <!--</label>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="row codebg">-->
-        <!--<div class="ml10">-->
-        <!--<div class="iphone col-xs-3">名单:</div>-->
-        <!--<div class="col-xs-9">-->
-        <!--<label class="checkbox-inline">-->
-        <!--<input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1" checked>无-->
-        <!--</label>-->
-        <!--<label class="checkbox-inline">-->
-        <!--<input type="radio" name="optionsRadiosinline" id="optionsRadios4" value="option2">黑名单-->
-        <!--</label>-->
-        <!--<label class="checkbox-inline">-->
-        <!--<input type="radio" name="optionsRadiosinline" id="optionsRadios5" value="option2">白名单-->
-        <!--</label>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
         <div class="row codebg">
             <div class="ml10">
                 <div class="iphone col-xs-5">开户银行所在省:</div>
@@ -96,9 +62,13 @@
         </div>
         <div class="row codebg">
             <div class="ml10">
+                <datalist id="subs">
+                    <option value="Boston">
+                    <option value="Cambridge">
+                </datalist>
                 <div class="iphone col-xs-5">支行名称:</div>
                 <div class="col-xs-6">
-                    <input type="text" name="subBranch" required minlength="4" placeholder="输入支行全称"/>
+                    <input type="text" name="subBranch" list="subs" required minlength="4" placeholder="输入支行全称"/>
                 </div>
             </div>
         </div>

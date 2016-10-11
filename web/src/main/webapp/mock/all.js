@@ -7,7 +7,6 @@ if ($) {
     $.testMode = true;
     $.unitTestMode= false;
     $.uriPrefix = '';
-    $.localXMLURI = 'dist/local.json';
     // if ($.testMode) {
     //     $.ajaxSetup({
     //         async: false
