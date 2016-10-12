@@ -1,10 +1,12 @@
 package me.jiangcai.dating.service.impl;
 
+import me.jiangcai.dating.entity.AgentInfo;
 import me.jiangcai.dating.entity.AgentRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.AgentRequestStatus;
 import me.jiangcai.dating.exception.RequestedException;
 import me.jiangcai.dating.repository.AgentRequestRepository;
+import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import java.util.List;
 public class AgentServiceImpl implements AgentService {
     @Autowired
     private AgentRequestRepository agentRequestRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<AgentRequest> waitingList() {
@@ -41,5 +45,17 @@ public class AgentServiceImpl implements AgentService {
         request.setMobileNumber(mobile);
         request.setProcessStatus(AgentRequestStatus.requested);
         return agentRequestRepository.save(request);
+    }
+
+    @Override
+    public AgentInfo makeAgent(User user) {
+        if (user.getAgentInfo() != null)
+            throw new IllegalStateException(user.getUsername() + "已经是合伙人了。");
+        AgentInfo info = new AgentInfo();
+        info.setJoinTime(LocalDateTime.now());
+        user.setAgentInfo(info);
+
+        user = userRepository.save(user);
+        return user.getAgentInfo();
     }
 }

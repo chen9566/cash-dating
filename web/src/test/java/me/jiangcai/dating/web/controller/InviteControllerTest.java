@@ -73,7 +73,7 @@ public class InviteControllerTest extends LoginWebTest {
         requestPage.submitRequest(currentUser().getNickname(), mobile);
         // 这里应该存在一个alert
         Alert alert = driver.switchTo().alert();
-        System.out.println(alert.getText());
+//        System.out.println(alert.getText());
     }
 
 }

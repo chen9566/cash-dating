@@ -2,10 +2,12 @@ package me.jiangcai.dating.web.controller.auth;
 
 import com.google.common.base.Predicate;
 import me.jiangcai.dating.WebTest;
+import me.jiangcai.dating.entity.AgentInfo;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.page.PCLoginPage;
 import me.jiangcai.dating.page.StartOrderPage;
+import me.jiangcai.dating.service.AgentService;
 import me.jiangcai.dating.service.QRCodeService;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -30,6 +32,8 @@ public class LoginControllerTest extends WebTest {
 
     @Autowired
     private QRCodeService qrCodeService;
+    @Autowired
+    private AgentService agentService;
 
     @Test
     public void pcLogin() throws IOException, InterruptedException {
@@ -41,16 +45,16 @@ public class LoginControllerTest extends WebTest {
         pcDriver.get("http://localhost/");
 
 
-        WebDriverWait webDriverWait = new WebDriverWait(pcDriver,5);
+        WebDriverWait webDriverWait = new WebDriverWait(pcDriver, 5);
         webDriverWait.until(new Predicate<WebDriver>() {
             @Override
             public boolean apply(@Nullable WebDriver input) {
                 PCLoginPage loginPage = PageFactory.initElements(input, PCLoginPage.class);
                 loginPage.validatePage();
-                try{
+                try {
                     loginPage.codeImage();
                     return true;
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     return false;
                 }
 
@@ -64,14 +68,14 @@ public class LoginControllerTest extends WebTest {
         String url = qrCodeService.scanImage(loginPage.codeImage());
 
         // 好了 一会儿让我们的
-        helloNewUser(url);
+        helloNewUser(url, null);
 
         driver.get(url);
         // 好了 关注我们的pcDriver
 //        Thread.sleep(1000);
 
 //        pcDriver.get("http://localhost/");
-        System.out.println(pcDriver.getPageSource());
+//        System.out.println(pcDriver.getPageSource());
         webDriverWait = new WebDriverWait(pcDriver, 20);
         webDriverWait.until(new Predicate<WebDriver>() {
             @Override
@@ -110,7 +114,7 @@ public class LoginControllerTest extends WebTest {
     public void newUser() throws IOException {
         driver.manage().deleteAllCookies();
 
-        User user = helloNewUser();
+        User user = helloNewUser(null);
 
         assertThat(user.getCards())
                 .isNotEmpty();
@@ -131,6 +135,24 @@ public class LoginControllerTest extends WebTest {
         assertThat(card.getNumber())
                 .isNotEmpty();
 
+        // 测试邀请码
+        User boss = userService.byOpenId(createNewUser().getOpenId());
+        driver.quit();
+        createWebDriver();
+        User newUser = helloNewUser(boss.getInviteCode());
+        assertThat(newUser.getGuideUser())
+                .isEqualTo(boss);
+        assertThat(newUser.getAgentUser())
+                .isNull();
+        // 如果当时他是合伙人
+        AgentInfo info = agentService.makeAgent(boss);
+        driver.quit();
+        createWebDriver();
+        newUser = helloNewUser(boss.getInviteCode());
+        assertThat(newUser.getGuideUser())
+                .isEqualTo(boss);
+        assertThat(newUser.getAgentUser())
+                .isEqualTo(boss);
 
     }
 

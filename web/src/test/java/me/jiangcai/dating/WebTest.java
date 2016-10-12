@@ -13,13 +13,10 @@ import me.jiangcai.dating.page.MyInviteCodePage;
 import me.jiangcai.dating.page.MyInvitePage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.StartOrderPage;
-import me.jiangcai.dating.repository.SubBranchBankRepository;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.QRCodeService;
-import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.web.WebConfig;
-import me.jiangcai.lib.test.SpringWebTest;
 import me.jiangcai.lib.test.page.AbstractPage;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebDriver;
@@ -38,9 +35,7 @@ import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,22 +44,17 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @ActiveProfiles({"test", "unit_test"})
 @WebAppConfiguration
-@ContextConfiguration(classes = {WebTest.Config.class, TestConfig.class, WebConfig.class})
-public abstract class WebTest extends SpringWebTest {
+@ContextConfiguration(classes = {WebTest.Config.class, WebConfig.class})
+public abstract class WebTest extends ServiceBaseTest {
 
     protected final ObjectMapper objectMapper = new ObjectMapper();
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserService userService;
-    @Autowired
     private BankService bankService;
     @Autowired
     private QRCodeService qrCodeService;
-    @SuppressWarnings("SpringJavaAutowiringInspection")
-    @Autowired
-    private SubBranchBankRepository subBranchBankRepository;
 
     private static <T> Iterable<T> IterableIterator(Iterator<T> iterator) {
         return () -> iterator;
@@ -141,21 +131,23 @@ public abstract class WebTest extends SpringWebTest {
     /**
      * 磨磨唧唧的建立一个新用户
      *
+     * @param inviteCode 邀请码
      * @return
      * @throws IOException
      */
-    protected User helloNewUser() throws IOException {
+    protected User helloNewUser(String inviteCode) throws IOException {
         final String startUrl = "http://localhost/start";
-        return helloNewUser(startUrl);
+        return helloNewUser(startUrl, inviteCode);
     }
 
     /**
      * 磨磨唧唧的建立一个新用户
      *
+     * @param inviteCode 邀请码
      * @return
      * @throws IOException
      */
-    protected User helloNewUser(String startUrl) throws IOException {
+    protected User helloNewUser(String startUrl, String inviteCode) throws IOException {
         driver.get(startUrl);
         String mobile = randomMobile();
         BindingMobilePage page = initPage(BindingMobilePage.class);
@@ -163,6 +155,8 @@ public abstract class WebTest extends SpringWebTest {
         page.submitWithNothing();
         page.inputMobileNumber(mobile);
         page.sendCode();
+        if (inviteCode != null)
+            page.inputInviteCode(inviteCode);
         // 找到最近发送的验证码
         page.submitWithCode();
 
@@ -179,7 +173,7 @@ public abstract class WebTest extends SpringWebTest {
         SubBranchBank subBranchBank = randomSubBranchBank();
 
         final String owner = RandomStringUtils.randomAlphanumeric(3);
-        final String number = RandomStringUtils.randomNumeric(16);
+        final String number = randomBankCard();
         cardPage.submitWithRandomAddress(subBranchBank, owner, number);
         initPage(StartOrderPage.class);
         // 这就对了!
@@ -210,12 +204,6 @@ public abstract class WebTest extends SpringWebTest {
                 .isEqualTo(number);
 
         return user;
-    }
-
-    protected SubBranchBank randomSubBranchBank() {
-        return subBranchBankRepository.findAll().stream()
-                .max(new RandomComparator())
-                .orElse(null);
     }
 
     /**
@@ -260,12 +248,4 @@ public abstract class WebTest extends SpringWebTest {
 
     }
 
-    public static class RandomComparator implements Comparator<Object> {
-        static Random random = new Random();
-
-        @Override
-        public int compare(Object o1, Object o2) {
-            return random.nextInt();
-        }
-    }
 }

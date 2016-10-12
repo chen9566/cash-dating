@@ -42,7 +42,7 @@ public class HomeControllerTest extends LoginWebTest {
         // 我的
         driver.get("http://localhost/my");
         MyPage page = initPage(MyPage.class);
-        System.out.println(page);
+//        System.out.println(page);
 
         page.assertFrom(currentUser(), statisticService);
 
@@ -122,7 +122,7 @@ public class HomeControllerTest extends LoginWebTest {
      * 当前页面显示的是 订单已完成
      */
     private void currentPageIsCompleted() {
-        System.out.println(driver.getPageSource());
+//        System.out.println(driver.getPageSource());
         assertThat(driver.getTitle())
                 .isEqualTo("订单已完成");
     }

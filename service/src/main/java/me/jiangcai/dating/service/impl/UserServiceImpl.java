@@ -19,6 +19,8 @@ import me.jiangcai.dating.service.VerificationCodeService;
 import me.jiangcai.dating.util.WeixinAuthentication;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,6 +43,8 @@ import java.util.ArrayList;
  */
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final Log log = LogFactory.getLog(UserServiceImpl.class);
 
     private final SecurityContextRepository httpSessionSecurityContextRepository
             = new HttpSessionSecurityContextRepository();
@@ -68,13 +72,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerMobile(HttpServletRequest request, String openId, String mobileNumber, String verificationCode, String inviteCode)
+    public User registerMobile(HttpServletRequest request, String openId, String mobileNumber, String verificationCode
+            , String inviteCode)
             throws IllegalVerificationCodeException {
         verificationCodeService.verify(mobileNumber, verificationCode, VerificationType.register);
 
         User user = userRepository.findByOpenId(openId);
         if (user == null) {
             user = newUser(openId, request);
+        }
+        if (inviteCode != null) {
+            User from = userRepository.findByInviteCode(inviteCode);
+            applyGuide(user, from);
         }
         user.setMobileNumber(mobileNumber);
         return userRepository.save(user);
@@ -115,7 +124,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void loginAs(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
+    public void loginAs(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException
+            , IOException {
         final WeixinAuthentication authentication = login(request, response, user);
 
         new SavedRequestAwareAuthenticationSuccessHandler().onAuthenticationSuccess(request, response, authentication);
@@ -181,15 +191,32 @@ public class UserServiceImpl implements UserService {
         if (request != null) {
             Long guideId = CashFilter.inviteBy(request);
             if (guideId != null) {
-                user.setGuideUser(userRepository.findOne(guideId));
-                if (user.getGuideUser() != null) {
-                    user.setAgentUser(user.getGuideUser().getAgentUser());
-                }
+                final User fromUser = userRepository.findOne(guideId);
+                applyGuide(user, fromUser);
             }
         }
 
 
         return userRepository.save(user);
+    }
+
+    /**
+     * 应用邀请者
+     *
+     * @param user     被邀请的用户
+     * @param fromUser 邀请者
+     */
+    private void applyGuide(User user, User fromUser) {
+        if (fromUser != null) {
+            log.info(user.getOpenId() + " is invited from " + fromUser.getOpenId());
+            user.setGuideUser(fromUser);
+            if (user.getGuideUser().getAgentInfo() != null) {
+                // 邀请者是一个合伙人
+                user.setAgentUser(user.getGuideUser());
+            } else
+                //如果不是的话 就送给邀请者所在的合伙人
+                user.setAgentUser(user.getGuideUser().getAgentUser());
+        }
     }
 
     @Override
@@ -205,7 +232,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void checkRequestLogin(long id, HttpServletRequest request, HttpServletResponse response) throws ServletException
+    public void checkRequestLogin(long id, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException
             , IOException {
         LoginToken token = loginTokenRepository.findOne(id);
         if (token == null)

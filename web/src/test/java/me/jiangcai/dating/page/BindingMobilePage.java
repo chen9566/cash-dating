@@ -18,6 +18,7 @@ public class BindingMobilePage extends AbstractPage {
     private WebElement button;
     @FindBy(id = "btn-mask")
     private WebElement buttonSend;
+    private WebElement inviteCodeInput;
 
     public BindingMobilePage(WebDriver webDriver) {
         super(webDriver);
@@ -36,6 +37,10 @@ public class BindingMobilePage extends AbstractPage {
         webDriver.findElements(By.tagName("input")).stream()
                 .filter(element -> element.isDisplayed() && element.getAttribute("placeholder").contains("验证码"))
                 .findAny().ifPresent(element -> codeInput = element);
+
+        webDriver.findElements(By.tagName("input")).stream()
+                .filter(element -> element.isDisplayed() && element.getAttribute("placeholder").contains("邀请码"))
+                .findAny().ifPresent(element -> inviteCodeInput = element);
 
         webDriver.findElements(By.tagName("button")).stream()
                 .filter(element -> element.getText().equals("确定") && element.isDisplayed())
@@ -80,6 +85,18 @@ public class BindingMobilePage extends AbstractPage {
         codeInput.clear();
         codeInput.sendKeys("1234");
         button.click();
-        System.out.println(webDriver.getPageSource());
+//        System.out.println(webDriver.getPageSource());
+    }
+
+    /**
+     * 录入邀请码
+     *
+     * @param code
+     */
+    public void inputInviteCode(String code) {
+        assertThat(inviteCodeInput.isDisplayed())
+                .isTrue();
+        inviteCodeInput.clear();
+        inviteCodeInput.sendKeys(code);
     }
 }

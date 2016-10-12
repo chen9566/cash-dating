@@ -85,7 +85,7 @@ public class User implements WeixinUser, ProfitSplit, UserDetails {
     /**
      * 只有代理商才会存在
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private AgentInfo agentInfo;
     /**
      * 引导者

@@ -1,5 +1,8 @@
 package me.jiangcai.dating.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +16,8 @@ import java.time.LocalDateTime;
  * @author CJ
  */
 @Entity
+@Setter
+@Getter
 public class AgentInfo {
 
     // 可能还需要些实际的信息吧
