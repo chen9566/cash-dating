@@ -99,6 +99,9 @@ border: 0;background: none;
 }
 .form-register input[type="number"]{-moz-appearance:textfield;border: 0;
 	background: none}
+.form-register select{border: 0px;
+border: none;
+outline:none; }
 .form-register .iphonebg {
 	background: #fff;
 	line-height: 44px;
@@ -804,18 +807,99 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
   background: -moz-linear-gradient(right, #E75C65 , #E8507D); /* Firefox 3.6 - 15 */
   background: linear-gradient(to right, #E75C65 , #E8507D); color:#fff; font-size:14px; padding:15px; height:69px}
 	.payment .card img{ float:left; width:38px; height:38px; margin-right:10px}
-	.payment .card a{ float:right; background:none; border-radius:4px; color:#fceef2; width:60px; height:27px; line-height:24px; font-size:13px; text-align:center; border:1px solid #f4bac9;  margin:-17px 0 0 0}
+	.payment .card a{ float:right; background:none; border-radius:4px; color:#fceef2; width:60px; height:27px; line-height:24px; font-size:13px; text-align:center; border:1px solid #f4bac9;  margin:-17px 0 0 0; text-decoration:none;}
 	.payment .card .banktxt{ font-size:16px; display:block; text-decoration:none}
+.payment .nocard{ margin-bottom:15px; color:#007AFF; text-align:center; background:#fff; border-bottom:1px solid #dfdfdf; line-height:44px;}
+	.payment .nocard img{ width:15px; height:15px; margin:-3px 10px 0 0}
+	.payment .nocard a{ text-decoration:none; display:block;color:#007AFF;}
 .payment .pay-m{ background:#fff; padding:15px 15px 0 15px;border:1px solid #dfdfdf; }
 	.payment .pay-m .t1{ color:#353535; font-size:14px; }
 	.payment .pay-m .t2{ font-size:42px; margin:-8px 0 7px 0;  border-bottom:1px solid #dfdfdf}
-	.payment .pay-m .t3{ font-size:13px; color:#888; line-height:30px; padding-left:10px}
-	.payment .pay-m input{ padding-left:8px; height:42px; line-height:42px; border:0; width:80%; }
-	.payment .pay-m i{ font-size:26px; color:#353535; font-weight:100 !important; }
+		.payment .pay-m .t2 input{ font-weight:300}
+	.payment .pay-m .t3{ font-size:13px; line-height:30px; }
+	.payment .pay-m .t3 t{color:#888; padding-left:12px;}
+	.payment .pay-m input{ padding-left:11px; height:42px; line-height:42px; border:0; width:80%; }
+	.payment .pay-m i img{ vertical-align:center}
 .payment .explain{padding:15px; color:#b3b3b3; font-size:13px;}
+.payment .nopaybtn{ padding:0 15px}
+	.payment .nopaybtn input{ text-decoration:none; display:block; height:42px; border-radius:6px; line-height:42px; background:#ddd; color:#b3b3b3; text-align:center; font-size:18px;}
 .payment .paybtn{ padding:0 15px}
-	.payment .paybtn button{ height:42px;}
-	.payment .paybtn .black{ color:#b3b3b3}
-	
+	.payment .paybtn input{text-decoration:none;  display:block; height:42px; border-radius:6px; line-height:42px; background:#F65150; color:#fff; text-align:center; font-size:18px;}
+
+
+.pay-new{  margin:15px; padding:15px 15px 40px 15px; text-align:center}
+	.pay-new .t1{ font-size:16px;line-height:20px}
+	.pay-new .t2{ font-size:14px; color:#888; line-height:18px;}
+	.pay-new .t3{ font-size:36px; padding-bottom:15px; line-height:30px;border-bottom:1px dashed #dfdfdf}
+	.pay-new .t3 i{ font-size:28px; margin-right:3px;  }
+	.pay-new .t4{ margin:20px 0 0 0;}
+	.pay-new .t4 img{ width:190px; height:190px; }
+	.pay-new .t5{ color:#F65150; line-height:40px; font-size:15px; margin-bottom:20px}
+	.pay-new .t6{}
+	.pay-new .t6 button{ background:#fcfcfc; height:42px; line-height:18px;}
+	 .pay-new button{ margin-bottom:15px;}
+.pay-ok{ background:#fff; text-align:center; padding:50px 15px 120px 15px}
+	.pay-ok img{ width:180px;}
+	.pay-ok .k1{ font-size:15px; color:#353535; margin:22px 0 30px 0}
+		.pay-ok .k1 b{ font-weight:400; color:#F65150;font-size:16px}
+	.pay-ok .k2 button{  height:42px; line-height:18px;}
+	.pay-ok .k2 a{ color:#fff; text-decoration:none}
+	.pay-ok .k3 button{ background:#fcfcfc; height:42px; line-height:18px;}
+	.pay-ok .k3 a{ color:#353535;text-decoration:none}
+	.pay-ok button{ margin-bottom:15px;}
+.pay-close{background:#fff; text-align:center; padding:50px 15px 120px 15px}
+.from-bank{ padding:15px 0}
+	.from-bank ul{ border-top:1px solid #dfdfdf; border-bottom:1px solid #dfdfdf;background:#fff; padding-left:15px; overflow:hidden; margin-bottom:15px;}
+	.from-bank li{border-bottom:1px solid #dfdfdf; line-height:44px; overflow:hidden; height:44px;}
+	.from-bank li input{  background:none; height:30px; margin:5px 0 ;border:0;}
+	.from-bank li select{ background:none;  height:30px; margin:5px 0; border:0;}
+	.from-bank li .select {width:116%; background:none; border:none; }   
+	.from-bank li .select2 {width:116%; background:none; border:none; }  
+	.from-bank li .select3 {width:116%; text-align:center; padding-left:20px; background:none; border:none; }  
+	#sleHid { display:block;  overflow:hidden; }     
+	#sleBG {  border-right:none; float:left; display:block;}
+	.from-bank li label{ color:#888; width:95px; font-weight:400; font-size:14px;}
+	.from-bank li .s1{ width:33%}
+	.from-bank li .s2{ width:66%}
+	.from-bank li .s3{ width:33%;text-align:right; padding-right:15px;}
+	.from-bank .b1{ font-size:13px; color:#888; padding-left:15px; margin-bottom:8px; }
+	.from-bank .noline{ border-bottom:0}
+	.from-bank .b2{ padding:0 15px}
+	.from-bank .b2 button{ margin:30px 0 0 0; height:42px; line-height:18px;}
+.order{ margin:0 0 15px 0;background:#fff;padding-left:15px;}
+	.order dl{ height:74px; border-bottom:1px solid #dfdfdf; margin:0; padding:15px 15px 15px 0}
+	.order dt{ float:left; margin-right:10px; width:44px; line-height:44px; text-align:center; height:44px; font-weight:300}
+	.order dt.d1{ background:#d1d1d1; color:#fff;font-size:13px}
+	.order dt.d2{background:#FDBC6B; color:#fff; font-size:15px}
+	.order dd{font-weight:300; float:left; font-size:13px;}
+	.order dd .d3{ font-size:16px; color:#353535;display:block}
+	.order dd .d4{font-weight:100;  font-size:14px; color:#b3b3b3; }
+	.order .t1{ float:right; color:#F65150; line-height:44px;}
+	.order .t2{ float:right; color:#000; line-height:44px;}
+	.order .t3{ float:right; line-height:44px;}
+		.order .t3 a{ border-radius:4px; background:#F65150; color:#fff; width:55px; height:25px; line-height:24px; display:block; text-align:center; text-decoration:none; font-size:14px;}
+	.order .t4{ float:right; line-height:22px; text-align:right}
+	.order .t5{ display:block; color:#888; }
+.addcard{ margin-bottom:15px; color:#007AFF; text-align:center; background:#fff; border-bottom:1px solid #dfdfdf;  padding:20px}
+	.addcard img{ width:32px; height:32px; margin:0 auto 8px auto; display:block}
+	.addcard a{ font-size:14px; text-decoration:none; display:block;color:#007AFF;}
+.show-c{ line-height:55px; text-align:center; font-size:15px}
+.show-c1{ float:left; width:50%; border-right:1px solid #dfdfdf; line-height:44px; text-align:center; font-size:17px; color:#0079FF}
+	.show-c1 a{display:block;color:#0079FF; text-decoration:none}
+.show-c2{ float:left; width:50%; font-weight:bold;  line-height:44px; text-align:center; font-size:17px; color:#0079FF; }
+	.show-c2 a{ display:block;color:#0079FF; text-decoration:none}
+.form-reg-n{ margin:15px 0;}
+	.form-reg-n ul{ background:#fff; padding-left:15px; border-bottom:1px solid #dfdfdf; border-top:1px solid #dfdfdf}
+	.form-reg-n li{ border-bottom:1px solid #dfdfdf; line-height:44px;height:44px;}
+	.form-reg-n li i img{ width:22px; height:22px; vertical-align:center; margin-top:-2px; margin-right:5px;}
+	.form-reg-n li input{ border:0;vertical-align:center;  height:30px; width:80%; }
+	.form-reg-n li.noline{border-bottom:0;}
+	.form-reg-n .yamput{}
+		.form-reg-n .yamput input{ width:50%}
+	.form-reg-n .yzm-n{ float:right; color:#FFF; font-size:15px; line-height:44px; background:#F65150; padding:0 13px;}
+	.form-reg-n .y1{ margin:30px 15px 0 15px}
+		.form-reg-n .y1 button{ height:42px; line-height:18px;}
+	.form-reg-n li .mi{}
+		.form-reg-n li .mi img{ width:8px; }
 
 
