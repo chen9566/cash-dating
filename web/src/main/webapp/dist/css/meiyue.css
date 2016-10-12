@@ -887,16 +887,16 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.show-c2 a{ display:block;color:#0079FF; text-decoration:none}
 .form-reg-n{ margin:15px 0;}
 	.form-reg-n ul{ background:#fff; padding-left:15px; border-bottom:1px solid #dfdfdf; border-top:1px solid #dfdfdf}
-	.form-reg-n li{ border-bottom:1px solid #dfdfdf; line-height:44px;height:44px;}
+	.form-reg-n li{ border-bottom:1px solid #dfdfdf;line-height:44px; overflow:hidden; height:44px;}
 	.form-reg-n li i img{ width:22px; height:22px; vertical-align:center; margin-top:-2px; margin-right:5px;}
-	.form-reg-n li input{ font-size:14px; border:0;vertical-align:center; line-height:30px;  height:30px; width:80%; }
+	.form-reg-n li input{ font-size:14px; background:none; height:30px; line-height:30px; margin:5px 0 ;border:0; width:80% }
 	.form-reg-n li.noline{border-bottom:0;}
 	.form-reg-n .yamput{}
 		.form-reg-n .yamput input{ width:50%}
 	.form-reg-n .yzm-n{ float:right; color:#FFF; font-size:15px; line-height:44px; background:#F65150; padding:0 13px;}
 	.form-reg-n .y1{ margin:30px 15px 0 15px}
 		.form-reg-n .y1 button{ height:42px; line-height:18px;}
-	.form-reg-n li .mi{}
+	.form-reg-n li .mi{ display:b}
 		.form-reg-n li .mi img{ width:8px; }
 .black{ background:#ddd; border-radius:6px; width:100%; line-height:42px; height:42px; text-align:center;font-size:18px;color:#b3b3b3;text-decoration:none; }
 	.black a{ display:block; }
