@@ -68,10 +68,24 @@ public class LoginControllerTest extends WebTest {
 
         driver.get(url);
         // 好了 关注我们的pcDriver
-        Thread.sleep(1000);
+//        Thread.sleep(1000);
 
 //        pcDriver.get("http://localhost/");
         System.out.println(pcDriver.getPageSource());
+        webDriverWait = new WebDriverWait(pcDriver, 20);
+        webDriverWait.until(new Predicate<WebDriver>() {
+            @Override
+            public boolean apply(@Nullable WebDriver input) {
+                try {
+                    StartOrderPage page = PageFactory.initElements(input, StartOrderPage.class);
+                    // 应该没有管理权 所以是这个
+                    page.validatePage();
+                    return true;
+                } catch (Exception ex) {
+                    return false;
+                }
+            }
+        });
         StartOrderPage page = PageFactory.initElements(pcDriver, StartOrderPage.class);
         // 应该没有管理权 所以是这个
         page.validatePage();

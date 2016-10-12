@@ -9,6 +9,7 @@ import org.openqa.selenium.htmlunit.HtmlUnitWebElement;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.function.Predicate;
 
 /**
  * @author CJ
@@ -50,6 +51,12 @@ public abstract class AbstractPage extends me.jiangcai.lib.test.page.AbstractPag
 
 
     public void inputSelect(WebElement formElement, String inputName, String label) {
+        Predicate<String> predicate = label::equals;
+
+        inputSelect(formElement, inputName, predicate);
+    }
+
+    public void inputSelect(WebElement formElement, String inputName, Predicate<String> predicate) {
         WebElement input = formElement.findElement(By.name(inputName));
 
         if (input.getAttribute("class") != null && input.getAttribute("class").contains("chosen-select")) {
@@ -62,7 +69,7 @@ public abstract class AbstractPage extends me.jiangcai.lib.test.page.AbstractPag
 
             container.click();
             for (WebElement element : container.findElements(By.cssSelector("li.active-result"))) {
-                if (label.equals(element.getText())) {
+                if (predicate.test(element.getText())) {
                     element.click();
                     return;
                 }
@@ -75,7 +82,7 @@ public abstract class AbstractPage extends me.jiangcai.lib.test.page.AbstractPag
         input.clear();
         for (WebElement element : input.findElements(By.tagName("option"))) {
 //            System.out.println(element.getText());
-            if (label.equals(element.getText())) {
+            if (predicate.test(element.getText())) {
                 element.click();
                 return;
             }

@@ -116,7 +116,9 @@ public class BindingCardPage extends AbstractPage {
         inputSelect(form, citySelect.getAttribute("name"), city.getName());
         //
         inputSelect(form, bankSelect.getAttribute("name"), branchBank.getBank().getName());
-        inputSelect(form, subBranchInput.getAttribute("name"), branchBank.getName());
+        inputSelect(form, subBranchInput.getAttribute("name"), label -> {
+            return branchBank.getName().endsWith(label);
+        });
 
 //        subBranchInput.clear();
 //        subBranchInput.sendKeys(subBranch);

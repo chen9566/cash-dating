@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,6 +16,7 @@ public class BindingMobilePage extends AbstractPage {
     private WebElement mobileInput;
     private WebElement codeInput;
     private WebElement button;
+    @FindBy(id = "btn-mask")
     private WebElement buttonSend;
 
     public BindingMobilePage(WebDriver webDriver) {
@@ -39,9 +41,9 @@ public class BindingMobilePage extends AbstractPage {
                 .filter(element -> element.getText().equals("确定") && element.isDisplayed())
                 .findAny().ifPresent(element -> button = element);
 
-        webDriver.findElements(By.className("yzm")).stream()
-                .filter(element -> element.isDisplayed() && element.getText().equals("获取验证码"))
-                .findAny().ifPresent(element -> buttonSend = element);
+//        webDriver.findElements(By.className("yzm")).stream()
+//                .filter(element -> element.isDisplayed() && element.getText().equals("获取验证码"))
+//                .findAny().ifPresent(element -> buttonSend = element);
 
         assertThat(mobileInput).isNotNull();
         assertThat(mobileInput.isDisplayed()).isTrue();

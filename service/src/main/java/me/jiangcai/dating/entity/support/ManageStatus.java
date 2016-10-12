@@ -1,6 +1,8 @@
 package me.jiangcai.dating.entity.support;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static me.jiangcai.dating.core.Login.*;
@@ -23,37 +25,55 @@ public enum ManageStatus {
      * 占位符
      */
     all,
-    editor(Role_User_Value, Role_Edit_Value),
+    editor,
     /**
      *
      */
-    waiter(Role_Order_Value),
+    waiter,
     /**
      * 财务
      */
-    financial(Role_Finance_Value),
+    financial,
     /**
      * 主管
      */
-    general(Role_Finance_Value, Role_Order_Value, Role_Edit_Value),
+    general,
     /**
      * 经理
      */
-    manager(Role_Finance_Value, Role_Order_Value, Role_Edit_Value, Role_Grant_Value),
+    manager,
     /**
      * build-in
      */
-    root("ROOT");
-
-
-    private final List<String> roles;
-
-    ManageStatus(String... roles) {
-        this.roles = Arrays.asList(roles);
-        this.roles.add(Role_Manage_Value);
-    }
+    root;
 
     public List<String> roles() {
-        return roles;
+        List<String> list = new ArrayList<>();
+        list.add(Role_Manage_Value);
+        switch (this) {
+            case all:
+                break;
+            case editor:
+                list.addAll(Arrays.asList(Role_User_Value, Role_Edit_Value));
+                break;
+            case waiter:
+                list.addAll(Collections.singletonList((Role_Order_Value)));
+                break;
+            case financial:
+                list.addAll(Collections.singleton(Role_Finance_Value));
+                break;
+            case general:
+                list.addAll(Arrays.asList(Role_Finance_Value, Role_Order_Value, Role_Edit_Value));
+                break;
+            case manager:
+                list.addAll(Arrays.asList(Role_Finance_Value, Role_Order_Value, Role_Edit_Value, Role_Grant_Value));
+                break;
+            case root:
+                list.addAll(Collections.singleton("ROOT"));
+                break;
+            default:
+                throw new IllegalArgumentException("unknown of " + this);
+        }
+        return list;
     }
 }

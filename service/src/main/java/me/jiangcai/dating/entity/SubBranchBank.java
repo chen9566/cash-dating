@@ -2,6 +2,7 @@ package me.jiangcai.dating.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import me.jiangcai.dating.entity.support.Address;
 
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import java.util.Objects;
 @Entity
 @Setter
 @Getter
+@ToString
 public class SubBranchBank {
 
     public static final int CODE_LENGTH = 15;
