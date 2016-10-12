@@ -2,6 +2,7 @@ package me.jiangcai.dating.service;
 
 import me.jiangcai.dating.Version;
 import me.jiangcai.dating.entity.Bank;
+import me.jiangcai.dating.entity.User;
 import me.jiangcai.lib.jdbc.JdbcService;
 import me.jiangcai.lib.upgrade.VersionUpgrade;
 import me.jiangcai.lib.upgrade.service.UpgradeService;
@@ -47,6 +48,9 @@ public class InitService {
             @Override
             public void upgradeToVersion(Version version) throws Exception {
                 switch (version) {
+                    case v102001:
+                        jdbcService.tableAlterAddColumn(User.class, "enabled", "1");
+                        break;
                     case v102000:
                         jdbcService.tableAlterAddColumn(Bank.class, "weight", "50");
                         break;

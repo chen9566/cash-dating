@@ -21,7 +21,7 @@ public class WeixinAuthentication implements Authentication {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return user.getAuthorities();
     }
 
     @Override
@@ -51,6 +51,6 @@ public class WeixinAuthentication implements Authentication {
 
     @Override
     public String getName() {
-        return user.getOpenId();
+        return user.getUsername();
     }
 }

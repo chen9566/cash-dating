@@ -20,7 +20,7 @@
 <!--<script src="../mock/all.js" th:src="@{/all.js}"></script>-->
 <script th:inline="javascript">
     var uri = /*[[@{/loginToken/{id}(id=${token.id})}]]*/'login.html';
-    var indexUri = /*[[@{/pc}]]*/'index.html';
+    var indexUri = /*[[@{/manage}]]*/'index.html';
 
     $(function () {
         var success = function (data) {

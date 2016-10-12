@@ -34,7 +34,7 @@ public class CommonAdvice {
     public String noWeixinClientException(NoWeixinClientException ex, HttpServletRequest request, Model model) {
         LoginToken token = userService.requestLogin(request);
         model.addAttribute("token", token);
-        return "other/login.html";
+        return "manage/login.html";
 //        return "kinglist.html";
     }
 
