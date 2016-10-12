@@ -5,6 +5,7 @@ import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.io.IOException;
  * @author CJ
  */
 @Service
+@DependsOn("initService")
 public class ChanpayServiceImpl extends AbstractChanpayService {
 
     @Override

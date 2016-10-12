@@ -23,6 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Primary;
@@ -47,6 +48,7 @@ public class TestConfig {
 
     @Bean
     @Primary
+    @DependsOn("initService")
     public ChanpayService chanpayService() {
         return new AbstractChanpayService() {
             @Override

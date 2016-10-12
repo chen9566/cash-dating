@@ -9,4 +9,8 @@ public enum Version {
      * v1.1
      */
     v101000,
+    /**
+     * v1.2
+     */
+    v102000,
 }

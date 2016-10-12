@@ -20,6 +20,11 @@ public class Bank {
     private String code;
     @Column(length = 20)
     private String name;
+    /**
+     * @see me.jiangcai.dating.Version#v102000
+     * @since 1.2
+     */
+    private int weight = 50;
 
 
 }

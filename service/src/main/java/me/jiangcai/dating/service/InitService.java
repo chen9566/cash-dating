@@ -1,6 +1,8 @@
 package me.jiangcai.dating.service;
 
 import me.jiangcai.dating.Version;
+import me.jiangcai.dating.entity.Bank;
+import me.jiangcai.lib.jdbc.JdbcService;
 import me.jiangcai.lib.upgrade.VersionUpgrade;
 import me.jiangcai.lib.upgrade.service.UpgradeService;
 import me.jiangcai.wx.PublicAccountSupplier;
@@ -30,6 +32,8 @@ public class InitService {
     private PublicAccountSupplier supplier;
     @Autowired
     private UpgradeService upgradeService;
+    @Autowired
+    private JdbcService jdbcService;
 
     @PostConstruct
     public void init() throws IOException {
@@ -43,6 +47,9 @@ public class InitService {
             @Override
             public void upgradeToVersion(Version version) throws Exception {
                 switch (version) {
+                    case v102000:
+                        jdbcService.tableAlterAddColumn(Bank.class, "weight", "50");
+                        break;
                     case v101000:
                         System.out.println("update to 1.1?");
                         break;

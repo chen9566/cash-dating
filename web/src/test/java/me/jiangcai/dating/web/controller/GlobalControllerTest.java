@@ -1,10 +1,9 @@
 package me.jiangcai.dating.web.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import me.jiangcai.chanpay.model.City;
-import me.jiangcai.chanpay.model.Province;
 import me.jiangcai.dating.WebTest;
-import me.jiangcai.dating.entity.Bank;
+import me.jiangcai.dating.entity.SubBranchBank;
+import me.jiangcai.dating.repository.SubBranchBankRepository;
 import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.PayResourceService;
 import org.junit.Test;
@@ -30,6 +29,9 @@ public class GlobalControllerTest extends WebTest {
     @Autowired
     private BankService bankService;
 
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private SubBranchBankRepository subBranchBankRepository;
 
     @Test
     public void provinceList() throws Exception {
@@ -45,30 +47,22 @@ public class GlobalControllerTest extends WebTest {
             assertSimilarJsonArray(array, inputStream);
         }
 
-        for (Bank bank : bankService.list()) {
-            // 找一个有的city
-            for (Province province : PayResourceService.provinceCollection) {
-                for (City city : province.getCityList()) {
-                    if (payResourceService.listSubBranches(city.getId(), bank.getCode()).isEmpty())
-                        continue;
+        SubBranchBank subBranchBank = subBranchBankRepository.findAll().stream()
+                .max(new RandomComparator())
+                .orElse(null);
 
-                    String strSubs = mockMvc.perform(
-                            get("/subBranchList")
-                                    .param("bankId", bank.getCode())
-                                    .param("cityId", city.getId())
-                    )
-                            .andExpect(status().isOk())
-                            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                            .andReturn().getResponse().getContentAsString();
+        String strSubs = mockMvc.perform(
+                get("/subBranchList")
+                        .param("bankId", subBranchBank.getBank().getCode())
+                        .param("cityId", subBranchBank.getCityCode())
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse().getContentAsString();
 
-                    JsonNode subArray = objectMapper.readTree(strSubs);
-                    try (InputStream inputStream = applicationContext.getResource("/mock/branches.json").getInputStream()) {
-                        assertSimilarJsonArray(subArray, inputStream);
-                    }
-
-                    return;// 一次就好
-                }
-            }
+        JsonNode subArray = objectMapper.readTree(strSubs);
+        try (InputStream inputStream = applicationContext.getResource("/mock/branches.json").getInputStream()) {
+            assertSimilarJsonArray(subArray, inputStream);
         }
         // 然后是根据 市 和 银行 可以获取一个支行列表
     }

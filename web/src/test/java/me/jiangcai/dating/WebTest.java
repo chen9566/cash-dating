@@ -260,7 +260,7 @@ public abstract class WebTest extends SpringWebTest {
 
     }
 
-    private static class RandomComparator implements Comparator<Object> {
+    public static class RandomComparator implements Comparator<Object> {
         static Random random = new Random();
 
         @Override
