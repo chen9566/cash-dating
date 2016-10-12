@@ -814,7 +814,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.payment .nocard a{ text-decoration:none; display:block;color:#007AFF;}
 .payment .pay-m{ background:#fff; padding:15px 15px 0 15px;border:1px solid #dfdfdf; }
 	.payment .pay-m .t1{ color:#353535; font-size:14px; }
-	.payment .pay-m .t2{  margin:-8px 0 7px 0;  border-bottom:1px solid #dfdfdf}
+	.payment .pay-m .t2{ height:50px; margin:-8px 0 7px 0;  border-bottom:1px solid #dfdfdf}
 		.payment .pay-m .t2 input{ font-weight:300; font-size:50px; height:50px; line-height:50px;}
 	.payment .pay-m .t3{ font-size:13px; line-height:30px; }
 	.payment .pay-m .t3 t{color:#888; padding-left:12px;}
