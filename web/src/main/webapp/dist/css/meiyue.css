@@ -814,8 +814,8 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.payment .nocard a{ text-decoration:none; display:block;color:#007AFF;}
 .payment .pay-m{ background:#fff; padding:15px 15px 0 15px;border:1px solid #dfdfdf; }
 	.payment .pay-m .t1{ color:#353535; font-size:14px; }
-	.payment .pay-m .t2{ font-size:42px; margin:-8px 0 7px 0;  border-bottom:1px solid #dfdfdf}
-		.payment .pay-m .t2 input{ font-weight:300}
+	.payment .pay-m .t2{ font-size:50px; height:50px; line-height:50px; margin:-8px 0 7px 0;  border-bottom:1px solid #dfdfdf}
+		.payment .pay-m .t2 input{ font-weight:300; }
 	.payment .pay-m .t3{ font-size:13px; line-height:30px; }
 	.payment .pay-m .t3 t{color:#888; padding-left:12px;}
 	.payment .pay-m input{ padding-left:11px; height:42px; line-height:42px; border:0; width:80%; }
@@ -827,7 +827,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.pay-new .t1{ font-size:16px;line-height:20px}
 	.pay-new .t2{ font-size:14px; color:#888; line-height:18px;}
 	.pay-new .t3{ font-size:36px; padding-bottom:15px; line-height:30px;border-bottom:1px dashed #dfdfdf}
-	.pay-new .t3 i{ font-size:28px; margin-right:3px;  }
+	.pay-new .t3 i img{ width:15px; height:20px; vertical-align:center; }
 	.pay-new .t4{ margin:20px 0 0 0;}
 	.pay-new .t4 img{ width:190px; height:190px; }
 	.pay-new .t5{ color:#F65150; line-height:40px; font-size:15px; margin-bottom:20px}
@@ -851,11 +851,11 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.from-bank li select{ background:none;  height:30px;line-height:30px; margin:5px 0; border:0;}
 	.from-bank li .select {width:116%; background:none; border:none; }   
 	.from-bank li .select2 {width:116%; background:none; border:none; }  
-	.from-bank li .select3 {width:116%; text-align:center; padding-left:20px; background:none; border:none; }  
+	.from-bank li .select3 {width:118%; text-align:center; padding-left:20px; background:none; border:none; }  
 	#sleHid { display:block;  overflow:hidden; }     
 	#sleBG {  border-right:none; float:left; display:block;}
 	.from-bank li label{ color:#888; width:95px; font-weight:400; font-size:14px;}
-	.from-bank li .s1{ width:33%}
+	.from-bank li .s1{ width:33%;}
 	.from-bank li .s2{ width:66%}
 	.from-bank li .s3{ width:33%;text-align:right; padding-right:15px;}
 	.from-bank .b1{ font-size:13px; color:#888; padding-left:15px; margin-bottom:8px; }
@@ -903,4 +903,4 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.red a{ display:block; text-decoration:none;color:#FFF; }
 .p-15{ padding:0 15px;}
 	.p-15 input{ border:0;}
-
+.bg-write{ background:#FFF}
