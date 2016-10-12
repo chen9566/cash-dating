@@ -21,6 +21,9 @@ import javax.persistence.ManyToOne;
 @Getter
 public class Card {
 
+    public static final int NUMBER_LENGTH = 30;
+    public static final int OWNER_LENGTH = 20;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,12 +36,12 @@ public class Card {
     /**
      * 卡号
      */
-    @Column(length = 20, nullable = false)
+    @Column(length = NUMBER_LENGTH, nullable = false)
     private String number;
     /**
      * 持卡人姓名
      */
-    @Column(length = 20, nullable = false)
+    @Column(length = OWNER_LENGTH, nullable = false)
     private String owner;
 
     /**

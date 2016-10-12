@@ -12,6 +12,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
+import static me.jiangcai.dating.entity.Card.NUMBER_LENGTH;
+import static me.jiangcai.dating.entity.Card.OWNER_LENGTH;
+
 /**
  * 平台的提现订单
  *
@@ -56,12 +59,12 @@ public abstract class PlatformWithdrawalOrder {
     /**
      * 卡号
      */
-    @Column(length = 20, nullable = false)
+    @Column(length = NUMBER_LENGTH, nullable = false)
     private String number;
     /**
      * 持卡人姓名
      */
-    @Column(length = 20, nullable = false)
+    @Column(length = OWNER_LENGTH, nullable = false)
     private String owner;
 
     /**

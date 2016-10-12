@@ -122,27 +122,27 @@ public abstract class AbstractChanpayService implements ChanpayService {
         log.debug("trade event:" + event);
         if (event.getTradeStatus() != TradeStatus.TRADE_SUCCESS)
             return;
-        ChanpayOrder order = chanpayOrderRepository.findOne(event.getSerialNumber());
-        if (order != null) {
-            boolean preStatus = order.isFinish();
-            if (preStatus)
-                return;
-            // 校验金额
-            order.setStatus(event.getTradeStatus());
-            if (order.isFinish()) {
-                // order.getCashOrder().getAmount().doubleValue()!=event.getAmount().doubleValue()
-                // !order.getCashOrder().getAmount().equals(BigDecimal.valueOf(event.getAmount().doubleValue()))
-                if (order.getCashOrder().getAmount().doubleValue() != event.getAmount().doubleValue()) {
-                    throw new IllegalStateException("bad amount System:" + order.getCashOrder().getAmount() + " event:" + event.getAmount());
-                }
-                if (!preStatus) {
+        synchronized (event.getSerialNumber().intern()) {
+            ChanpayOrder order = chanpayOrderRepository.findOne(event.getSerialNumber());
+            if (order != null) {
+                boolean preStatus = order.isFinish();
+                if (preStatus)
+                    return;
+                // 校验金额
+                order.setStatus(event.getTradeStatus());
+                if (order.isFinish()) {
+                    // order.getCashOrder().getAmount().doubleValue()!=event.getAmount().doubleValue()
+                    // !order.getCashOrder().getAmount().equals(BigDecimal.valueOf(event.getAmount().doubleValue()))
+                    if (order.getCashOrder().getAmount().doubleValue() != event.getAmount().doubleValue()) {
+                        throw new IllegalStateException("bad amount System:" + order.getCashOrder().getAmount() + " event:" + event.getAmount());
+                    }
                     order.setFinishTime(LocalDateTime.now());
                     // 此时应该开启 套现
                     applicationContext.getBean(ChanpayService.class).withdrawalOrder(order.getCashOrder());
                 }
-            }
-        } else
-            log.warn("we received tradeEvent " + event + " no in our system.");
+            } else
+                log.warn("we received tradeEvent " + event + " no in our system.");
+        }
     }
 
     @Override
