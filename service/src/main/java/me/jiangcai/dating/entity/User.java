@@ -57,7 +57,7 @@ public class User implements WeixinUser, ProfitSplit, UserDetails {
      * @see me.jiangcai.dating.Version#v102001
      * @since 1.2
      */
-    private boolean enabled;
+    private boolean enabled = true;
 
     // 价值信息
     /**
