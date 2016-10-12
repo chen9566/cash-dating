@@ -821,10 +821,6 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.payment .pay-m input{ padding-left:11px; height:42px; line-height:42px; border:0; width:80%; }
 	.payment .pay-m i img{ vertical-align:center}
 .payment .explain{padding:15px; color:#b3b3b3; font-size:13px;}
-.payment .nopaybtn{ padding:0 15px}
-	.payment .nopaybtn input{ text-decoration:none; display:block; height:42px; border-radius:6px; line-height:42px; background:#ddd; color:#b3b3b3; text-align:center; font-size:18px;}
-.payment .paybtn{ padding:0 15px}
-	.payment .paybtn input{text-decoration:none;  display:block; height:42px; border-radius:6px; line-height:42px; background:#F65150; color:#fff; text-align:center; font-size:18px;}
 
 
 .pay-new{  margin:15px; padding:15px 15px 40px 15px; text-align:center}
@@ -901,5 +897,10 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 		.form-reg-n .y1 button{ height:42px; line-height:18px;}
 	.form-reg-n li .mi{}
 		.form-reg-n li .mi img{ width:8px; }
-
+.black{ background:#ddd; border-radius:6px; width:100%; line-height:42px; height:42px; text-align:center;font-size:18px;color:#b3b3b3;text-decoration:none; }
+	.black a{ display:block; }
+.red{ background:#F65150; font-size:18px; color:#fff; border-radius:6px; width:100%; line-height:42px; height:42px; text-align:center; }
+	.red a{ display:block; text-decoration:none;color:#FFF; }
+.p-15{ padding:0 15px;}
+	.p-15 input{ border:0;}
 

@@ -4,21 +4,20 @@
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>我要收款</title>
+<title>设置付款金额</title>
 <link rel="stylesheet" href="dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="dist/css/font-awesome.min.css">
 <link rel="stylesheet" href="dist/css/meiyue.css">
 <script src="dist/js/jquery.js"></script>
 <script src="dist/js/bootstrap.min.js"></script>
-<style>.normalInput { border:1px solid #ccc; }
-.focusInput {    border:1px solid #FFD42C; } </style>
+
 </head>
 <body>
 <div class="payment">
 	<div class="nocard"><a href="#"> <img src="images/addicon.png">绑定银行卡</a></div>
 	<div class="pay-m">
 		<p class="t1">收款金额(元)</p>
-		<p class="t2"><i><img src="images/1.png" width="18" height="24"></i><input name="" type="tel" placeholder="0.00"  ></p>
+		<p class="t2"><i><img src="images/1.png" width="18" height="24"></i><input type="num" placeholder="0.00" id="_content" name="content" onfocus="isEnable()" onblur="isEnable()" onkeyup="isEnable()" ></p>
 		<p class="t3">到账金额  0.00      <t>手续费  0.00</t></p>
 	</div>
 	<div class="explain">
@@ -27,21 +26,23 @@
 2. 手续费由付款方支付。<br>
 </p>
 	</div>
-	<div class="paybtn">  <button type="button" class="btn btn-default btn-lg btn-block active black" >确定</button> </div>
+	<div class="p-15">
+	<input value="确定"type="button" id="_btn1"class="black" name="btn1" disabled="disabled" onClick="windows.open("pay-new.html")">
+	</div>
 </div>
 <script type="text/javascript">
-    $(function(){
-        //找到文本框，并注册得到焦点事件
-        $("input:text").focus(function(){
-            //让当前得到焦点的文本框改变其背景色
-            $(this).css("background","pink");
-        });
-        //找到文本框，并注册失去焦点事件
-        $("input:text").blur(function(){
-            //让当前失去焦点的文本框背景色变为白色
-            $(this).css("background","white");
-        });
-    });
+	function isEnable(){
+		var cont=document.getElementById("_content");
+			if(cont.value==""){
+				document.getElementById("_btn1").disabled="disabled";
+				document.getElementById("_btn1").value="确定";
+				document.getElementById("_btn1").className='red';
+				}else{
+				document.getElementById("_btn1").disabled="ture";
+				document.getElementById("_btn1").value="确定";
+
+	}
+}
 </script>
 </body>
 </html>
