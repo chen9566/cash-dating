@@ -847,8 +847,8 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .from-bank{ padding:15px 0}
 	.from-bank ul{ border-top:1px solid #dfdfdf; border-bottom:1px solid #dfdfdf;background:#fff; padding-left:15px; overflow:hidden; margin-bottom:15px;}
 	.from-bank li{border-bottom:1px solid #dfdfdf; line-height:44px; overflow:hidden; height:44px;}
-	.from-bank li input{  background:none;  margin:5px 0 ;border:0;}
-	.from-bank li select{ background:none;  margin:5px 0; border:0;}
+	.from-bank li input{  background:none; height:30px; line-height:30px; margin:5px 0 ;border:0;}
+	.from-bank li select{ background:none;  height:30px;line-height:30px; margin:5px 0; border:0;}
 	.from-bank li .select {width:116%; background:none; border:none; }   
 	.from-bank li .select2 {width:116%; background:none; border:none; }  
 	.from-bank li .select3 {width:116%; text-align:center; padding-left:20px; background:none; border:none; }  
