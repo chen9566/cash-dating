@@ -4,13 +4,16 @@ import me.jiangcai.dating.CashFilter;
 import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.LoginToken;
+import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.CashWeixinUserDetail;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.repository.LoginTokenRepository;
+import me.jiangcai.dating.repository.SubBranchBankRepository;
 import me.jiangcai.dating.repository.UserRepository;
+import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.service.VerificationCodeService;
 import me.jiangcai.dating.util.WeixinAuthentication;
@@ -39,15 +42,16 @@ import java.util.ArrayList;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final SecurityContextRepository httpSessionSecurityContextRepository
+            = new HttpSessionSecurityContextRepository();
     @Autowired
     private LoginTokenRepository loginTokenRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private VerificationCodeService verificationCodeService;
-
-    private final SecurityContextRepository httpSessionSecurityContextRepository
-            = new HttpSessionSecurityContextRepository();
+    @Autowired
+    private SubBranchBankRepository subBranchBankRepository;
 
     @Override
     public boolean mobileRequired(String openId) {
@@ -77,16 +81,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Card addCard(String openId, String name, String number, Bank bank, Address address, String subBranch)
-            throws IllegalVerificationCodeException {
+    public Card addCard(String openId, String name, String number, Bank bank, Address address, String subBranch) {
 //        verificationCodeService.verify(mobile, code, VerificationType.card);
+
         User user = userRepository.findByOpenId(openId);
+
+        SubBranchBank branchBank = subBranchBankRepository.getOne(subBranch);
+
         Card card = new Card();
         card.setNumber(number);
         card.setOwner(name);
-        card.setBank(bank);
-        card.setAddress(address);
-        card.setSubBranch(subBranch);
+        card.setBank(branchBank.getBank());
+
+        Address address1 = new Address();
+        address1.setCity(PayResourceService.cityById(branchBank.getCityCode()));
+        address1.setProvince(PayResourceService.provinceByCity(address1.getCity()));
+
+        card.setAddress(address1);
+
+        card.setSubBranchBank(branchBank);
+        card.setSubBranch(branchBank.getName());
+//        card.setSubBranch(subBranch);
 
         if (user.getCards() == null) {
             user.setCards(new ArrayList<>());

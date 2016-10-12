@@ -4,6 +4,7 @@ import com.google.zxing.WriterException;
 import me.jiangcai.dating.CashFilter;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.service.OrderService;
+import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.VerificationCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -44,6 +46,8 @@ public class GlobalController {
     private QRCodeService qrCodeService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private PayResourceService payResourceService;
 
     public static StringBuilder contextUrlBuilder(HttpServletRequest request) {
         StringBuilder urlBuilder = new StringBuilder();
@@ -60,18 +64,6 @@ public class GlobalController {
 
         urlBuilder.append(request.getContextPath());
         return urlBuilder;
-    }
-
-    /**
-     * @return id这个人邀请别人加入的二维码
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "/inviteQR/{id}")
-    public BufferedImage inviteQRCode(@PathVariable("id") long id, HttpServletRequest request) throws IOException, WriterException {
-        StringBuilder urlBuilder = contextUrlBuilder(request);
-        urlBuilder.append("/start?");
-        urlBuilder.append(CashFilter.guideUserFromId(id));
-
-        return qrCodeService.generateQRCode(urlBuilder.toString());
     }
 
 //    /**
@@ -110,6 +102,18 @@ public class GlobalController {
 //    }
 
     /**
+     * @return id这个人邀请别人加入的二维码
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/inviteQR/{id}")
+    public BufferedImage inviteQRCode(@PathVariable("id") long id, HttpServletRequest request) throws IOException, WriterException {
+        StringBuilder urlBuilder = contextUrlBuilder(request);
+        urlBuilder.append("/start?");
+        urlBuilder.append(CashFilter.guideUserFromId(id));
+
+        return qrCodeService.generateQRCode(urlBuilder.toString());
+    }
+
+    /**
      * 应该在页面的最下方载入
      *
      * @return 所有页面都载入的js
@@ -134,6 +138,18 @@ public class GlobalController {
     @ResponseStatus(HttpStatus.OK)
     public void send(@RequestParam String mobile, @RequestParam VerificationType type) {
         verificationCodeService.sendCode(mobile, type);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/provinceList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public Object provinceList() {
+        return PayResourceService.listProvince();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/subBranchList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public Object subBranchList(String bankId, String cityId) {
+        return payResourceService.listSubBranches(cityId, bankId);
     }
 
 }

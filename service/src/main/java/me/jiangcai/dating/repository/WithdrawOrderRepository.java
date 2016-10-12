@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author CJ
  */
-public interface WithdrawOrderRepository extends JpaRepository<WithdrawOrder, Long> {
+public interface WithdrawOrderRepository extends JpaRepository<WithdrawOrder, String> {
 
     List<WithdrawOrder> findByOwnerOrderByStartTimeDesc(User user);
 }

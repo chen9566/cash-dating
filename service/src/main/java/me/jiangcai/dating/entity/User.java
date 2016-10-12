@@ -3,12 +3,17 @@ package me.jiangcai.dating.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.dating.ProfitSplit;
 import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.model.CashWeixinUserDetail;
+import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.wx.model.Gender;
 import me.jiangcai.wx.model.WeixinUser;
 import me.jiangcai.wx.model.WeixinUserDetail;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,8 +28,12 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 用户,当然一个代理商也是一个用户
@@ -36,7 +45,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"mobileNumber", "openId", "inviteCode"})})
-public class User implements WeixinUser {
+public class User implements WeixinUser, ProfitSplit, UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +53,11 @@ public class User implements WeixinUser {
 
     // 管理信息
     private ManageStatus manageStatus;
+    /**
+     * @see me.jiangcai.dating.Version#v102001
+     * @since 1.2
+     */
+    private boolean enabled;
 
     // 价值信息
     /**
@@ -196,5 +210,52 @@ public class User implements WeixinUser {
             setTokenScopeStr(null);
         } else
             setTokenScopeStr(String.join(",", (CharSequence[]) strings));
+    }
+
+    @Override
+    public double agentProfileRate(SystemService systemService) {
+        if (agentUser == null)
+            return 0;
+        return agentUser.agentInfo != null ? 0.8 : 0.2;
+    }
+
+    @Override
+    public double guideProfileRate(SystemService systemService) {
+        return 0;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return manageStatus == null
+                ? Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"))
+                : manageStatus.roles().stream()
+                .map(role -> {
+                    role = role.toUpperCase(Locale.CHINA);
+                    if (role.startsWith("ROLE_"))
+                        return role;
+                    return "ROLE_" + role;
+                })
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public String getUsername() {
+        return nickname == null ? openId : nickname;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 }

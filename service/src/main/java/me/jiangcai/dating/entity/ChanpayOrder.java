@@ -6,8 +6,7 @@ import me.jiangcai.chanpay.model.TradeStatus;
 
 import javax.persistence.Entity;
 
-import static me.jiangcai.chanpay.model.TradeStatus.PAY_FINISHED;
-import static me.jiangcai.chanpay.model.TradeStatus.TRADE_SUCCESS;
+import static me.jiangcai.chanpay.model.TradeStatus.*;
 
 /**
  * 畅捷订单,是指在支付平台建立的订单
@@ -26,6 +25,6 @@ public class ChanpayOrder extends PlatformOrder {
 
     @Override
     public boolean isFinish() {
-        return status == PAY_FINISHED || status == TRADE_SUCCESS;
+        return status == PAY_FINISHED || status == TRADE_SUCCESS || status == TRADE_FINISHED;
     }
 }

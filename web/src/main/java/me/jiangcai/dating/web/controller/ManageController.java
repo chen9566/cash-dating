@@ -8,20 +8,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * 管理
- * 入口就是/pc
+ * 入口就是/manage
  *
  * @author CJ
  */
 @Controller
 public class ManageController {
 
-    @RequestMapping(method = RequestMethod.GET, value = {"/pc", "/pc/"})
+    @RequestMapping(method = RequestMethod.GET, value = {"/manage", "/manage/"})
     public String index(@AuthenticationPrincipal User user) {
         if (user.getManageStatus() == null) {
             // 非管理员无法进入
             return "redirect:/start";
         }
 
-        return "other/index.html";
+        return "manage/index.html";
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -68,9 +69,15 @@ public class HomeControllerTest extends LoginWebTest {
 
         StartOrderPage page = initPage(StartOrderPage.class);
 
-        int amount = Math.abs(random.nextInt());
+        // 小数点前 只可以有7位
+        // 最大 9,999,999.99
+        double amount = (double) Math.abs(random.nextInt(9999999)) + Math.abs(random.nextDouble());
+        // 2109694666.00
+        //  856846127.38
+        //   76352258.18&version=1.0
+        //    6491427.62 work
 
-        page.pay(amount, "");
+        page.pay(amount, UUID.randomUUID().toString());
 
         // 这个时候应该是到了二维码界面,在这个界面 我们可以分享它
         ShowOrderPage codePage = initPage(ShowOrderPage.class);

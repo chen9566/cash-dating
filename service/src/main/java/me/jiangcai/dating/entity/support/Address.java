@@ -1,6 +1,8 @@
 package me.jiangcai.dating.entity.support;
 
 import lombok.Data;
+import me.jiangcai.chanpay.model.City;
+import me.jiangcai.chanpay.model.Province;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -14,9 +16,11 @@ import javax.persistence.Embeddable;
 @Data
 public class Address {
 
-    @Column(length = 20)
-    private String province;
-    @Column(length = 20)
-    private String city;
+    public static final int ID_LENGTH = 10;
+
+    @Column(length = ID_LENGTH)
+    private Province province;
+    @Column(length = ID_LENGTH)
+    private City city;
 
 }

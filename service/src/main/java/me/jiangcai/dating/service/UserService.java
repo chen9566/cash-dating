@@ -63,12 +63,12 @@ public interface UserService {
      * @param number    卡号
      * @param bank
      * @param address
-     * @param subBranch @return 新增加的银行
+     * @param subBranch 支行,可以是code也可以是name
+     * @return 新增加的银行
      * @throws IllegalVerificationCodeException 验证码无效
      */
     @Transactional
-    Card addCard(String openId, String name, String number, Bank bank, Address address, String subBranch)
-            throws IllegalVerificationCodeException;
+    Card addCard(String openId, String name, String number, Bank bank, Address address, String subBranch);
 
     /**
      * @param openId openId
@@ -124,7 +124,6 @@ public interface UserService {
 
     /**
      * 检查之前的登录许可是否已被处理,如果已被处理直接完成登录
-     *
      *
      * @param id
      * @param request  request

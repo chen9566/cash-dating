@@ -1,5 +1,6 @@
 package me.jiangcai.dating.service;
 
+import me.jiangcai.dating.ProfitSplit;
 import me.jiangcai.dating.entity.support.RateConfig;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +24,11 @@ public interface SystemService {
     void init() throws UnsupportedEncodingException;
 
     /**
+     * @param profitSplit 利润分配者
      * @return 当前的配置
      */
     @Transactional(readOnly = true)
-    RateConfig currentRateConfig();
+    RateConfig currentRateConfig(ProfitSplit profitSplit);
 
     /**
      * 获取配置值

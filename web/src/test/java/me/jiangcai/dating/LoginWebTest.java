@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 已登录的测试
@@ -58,8 +57,7 @@ public abstract class LoginWebTest extends WebTest {
         // 16
         String card = randomBankCard();
         userService.addCard(detail.getOpenId(), detail.getNickname(), card
-                , bankService.list().stream()
-                        .findAny().orElse(null), null, UUID.randomUUID().toString());
+                , null, null, randomSubBranchBank().getCode());
     }
 
     static class Config {

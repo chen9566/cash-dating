@@ -59,6 +59,8 @@ public class WebConfig {
 //            }
 
             registry
+                    .antMatchers("/provinceList").permitAll()
+                    .antMatchers("/subBranchList").permitAll()
                     // 所有的
                     .antMatchers("/all.js").permitAll()
                     // 非微信登录要获取的二维码

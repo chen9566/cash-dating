@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.dating.entity.support.Address;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,9 @@ import javax.persistence.ManyToOne;
 @Getter
 public class Card {
 
+    public static final int NUMBER_LENGTH = 30;
+    public static final int OWNER_LENGTH = 20;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,15 +31,17 @@ public class Card {
     /**
      * 选择的银行
      */
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Bank bank;
     /**
      * 卡号
      */
+    @Column(length = NUMBER_LENGTH, nullable = false)
     private String number;
     /**
      * 持卡人姓名
      */
+    @Column(length = OWNER_LENGTH, nullable = false)
     private String owner;
 
     /**
@@ -44,8 +50,14 @@ public class Card {
     private Address address;
 
     /**
+     * 支行编号,我们是允许用户手工输入支行名称,所以此处可以为null
+     */
+    @ManyToOne
+    private SubBranchBank subBranchBank;
+    /**
      * 支行名称
      */
+    @Column(length = SubBranchBank.NAME_LENGTH, nullable = false)
     private String subBranch;
 
 }

@@ -1,11 +1,13 @@
 package me.jiangcai.dating.page;
 
-import me.jiangcai.dating.entity.Bank;
+import me.jiangcai.chanpay.model.City;
+import me.jiangcai.chanpay.model.Province;
+import me.jiangcai.dating.entity.SubBranchBank;
+import me.jiangcai.dating.service.PayResourceService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.Random;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,8 +53,12 @@ public class BindingCardPage extends AbstractPage {
                 .findFirst()
                 .ifPresent(element -> bankSelect = element);
 
-        getWorkingInputs()
-                .filter(element -> element.getAttribute("placeholder").contains("支行"))
+//        getWorkingInputs()
+//                .filter(element -> element.getAttribute("placeholder").contains("支行"))
+//                .findFirst()
+//                .ifPresent(element -> subBranchInput = element);
+        getWorkingSelects()
+                .filter(element -> "subBranch".equalsIgnoreCase(element.getAttribute("name")))
                 .findFirst()
                 .ifPresent(element -> subBranchInput = element);
 
@@ -89,35 +95,31 @@ public class BindingCardPage extends AbstractPage {
     }
 
     /**
-     * 地址自行随机
      *
-     * @param bank      银行
-     * @param name      姓名
-     * @param subBranch 支行
-     * @param number    卡号
+     * @param branchBank
+     * @param name
+     * @param number
      */
-    public void submitWithRandomAddress(Bank bank, String name, String subBranch, String number) {
+    public void submitWithRandomAddress(SubBranchBank branchBank, String name, String number) {
+
+        // 这下省份了城市都应该有了
+        City city = PayResourceService.cityById(branchBank.getCityCode());
+        Province province = PayResourceService.provinceByCity(city);
+
+
         nameInput.clear();
         nameInput.sendKeys(name);
 
-        String[][] s1 = new String[][]{
-                new String[]{
-                        "浙江", "宁波市"
-                }, new String[]{
-                "云南", "丽江市"
-        }
-        };
-
         WebElement form = webDriver.findElement(By.tagName("form"));
-        String[] address = s1[new Random().nextInt(s1.length)];
 
-        inputSelect(form,provinceSelect.getAttribute("name"),address[0]);
-        inputSelect(form,citySelect.getAttribute("name"),address[1]);
+        inputSelect(form, provinceSelect.getAttribute("name"), province.getName());
+        inputSelect(form, citySelect.getAttribute("name"), city.getName());
         //
-        inputSelect(form,bankSelect.getAttribute("name"),bank.getName());
+        inputSelect(form, bankSelect.getAttribute("name"), branchBank.getBank().getName());
+        inputSelect(form, subBranchInput.getAttribute("name"), branchBank.getName());
 
-        subBranchInput.clear();
-        subBranchInput.sendKeys(subBranch);
+//        subBranchInput.clear();
+//        subBranchInput.sendKeys(subBranch);
         numberInput.clear();
         numberInput.sendKeys(number);
 
