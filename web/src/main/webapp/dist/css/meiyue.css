@@ -869,7 +869,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.order dt.d1{ background:#d1d1d1; color:#fff;font-size:13px}
 	.order dt.d2{background:#FDBC6B; color:#fff; font-size:15px}
 	.order dd{font-weight:300; float:left; font-size:13px;}
-	.order dd .d3{ font-size:16px; font-weight:200;color:#353535;display:block}
+	.order dd .d3{ font-size:16px; color:#353535;display:block}
 	.order dd .d4{font-weight:200;  font-size:14px; color:#b3b3b3; }
 	.order .t1{ float:right; color:#F65150; line-height:44px;}
 	.order .t2{ float:right; color:#000; line-height:44px;}
