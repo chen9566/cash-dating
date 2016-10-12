@@ -27,7 +27,7 @@
 </p>
 	</div>
 	<div class="p-15">
-	<input value="确定"type="button" id="_btn1"class="black" name="btn1" disabled="disabled" onClick="windows.open("pay-new.html")">
+	<input value="确定"type="button" id="_btn1"class="black" name="btn1" disabled="disabled" onclick="isEnable()">
 	</div>
 <script type="text/javascript">
 	function isEnable(){
@@ -36,9 +36,11 @@
 				document.getElementById("_btn1").disabled="disabled";
 				document.getElementById("_btn1").value="确定";
 				document.getElementById("_btn1").className='red';
+				
 				}else{
 				document.getElementById("_btn1").disabled="";
 				document.getElementById("_btn1").value="确定";
+			
 
 	}
 }
