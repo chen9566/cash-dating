@@ -814,8 +814,8 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.payment .nocard a{ text-decoration:none; display:block;color:#007AFF;}
 .payment .pay-m{ background:#fff; padding:15px 15px 0 15px;border:1px solid #dfdfdf; }
 	.payment .pay-m .t1{ color:#353535; font-size:14px; }
-	.payment .pay-m .t2{ display:block; height:65px; margin:-8px 0 7px 0;   border-bottom:1px solid #dfdfdf; overflow:hidden}
-		.payment .pay-m .t2 input{ font-weight:300; font-size:45px;height:45px; line-height:45px; border:0; width:80%; padding-left:12px; margin-top:10px}
+	.payment .pay-m .t2{ display:block; margin:-8px 0 7px 0;   border-bottom:1px solid #dfdfdf; overflow:hidden;line-height:60px; overflow:hidden; height:60px;}
+		.payment .pay-m .t2 input{ background:none; font-weight:300; font-size:45px;width:80%; padding-left:12px; height:45px; line-height:45px; margin:5px 0 ;border:0;}
 		.payment .pay-m .t2 i{}
 		.payment .pay-m .t2 img{ width:18px; height:24px; vertical-align:center; margin-top:-15px }
 	.payment .pay-m .t3{ font-size:13px; line-height:30px; }
