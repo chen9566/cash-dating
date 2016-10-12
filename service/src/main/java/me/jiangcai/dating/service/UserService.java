@@ -135,4 +135,12 @@ public interface UserService {
      */
     @Transactional
     void checkRequestLogin(long id, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+
+    /**
+     * 清空银行卡
+     *
+     * @param openId openId
+     */
+    @Transactional
+    void deleteCards(String openId);
 }

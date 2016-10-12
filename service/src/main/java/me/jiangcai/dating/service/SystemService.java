@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -29,6 +30,12 @@ public interface SystemService {
      */
     @Transactional(readOnly = true)
     RateConfig currentRateConfig(ProfitSplit profitSplit);
+
+    /**
+     * @param profitSplit 相关
+     * @return 账面手续费
+     */
+    BigDecimal systemBookRate(ProfitSplit profitSplit);
 
     /**
      * 获取配置值

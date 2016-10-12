@@ -162,20 +162,18 @@ public abstract class WebTest extends ServiceBaseTest {
 
         // 应该到了下一个页面了
 
-        BindingCardPage cardPage = initPage(BindingCardPage.class);
-        // 这个用户已经产生
-        assertThat(userService.byMobile(mobile))
-                .isNotNull();
-        //
-        // 地址自己选吧
+        StartOrderPage startOrderPage = initPage(StartOrderPage.class);
+
+        startOrderPage.assertNoCard();
+//        startOrderPage.assertHaveCard();
 
         // 这里应该是根据已有的支行给出选择
         SubBranchBank subBranchBank = randomSubBranchBank();
 
         final String owner = RandomStringUtils.randomAlphanumeric(3);
         final String number = randomBankCard();
-        cardPage.submitWithRandomAddress(subBranchBank, owner, number);
-        initPage(StartOrderPage.class);
+
+        startOrderPage = bindCardOnOrderPage(mobile, startOrderPage, subBranchBank, owner, number);
         // 这就对了!
         // 还需要检查 银行是否已设置 地址是否已设置
         String url = currentUserInviteURL();
@@ -204,6 +202,23 @@ public abstract class WebTest extends ServiceBaseTest {
                 .isEqualTo(number);
 
         return user;
+    }
+
+    private StartOrderPage bindCardOnOrderPage(String mobile, StartOrderPage startOrderPage
+            , SubBranchBank subBranchBank, String owner, String number) {
+        startOrderPage.toCard();
+
+        BindingCardPage cardPage = initPage(BindingCardPage.class);
+        // 这个用户已经产生
+        assertThat(userService.byMobile(mobile))
+                .isNotNull();
+        //
+        // 地址自己选吧
+
+
+        cardPage.submitWithRandomAddress(subBranchBank, owner, number);
+        startOrderPage = initPage(StartOrderPage.class);
+        return startOrderPage;
     }
 
     /**

@@ -2,6 +2,8 @@ package me.jiangcai.dating.web.controller;
 
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.service.StatisticService;
+import me.jiangcai.dating.service.SystemService;
+import me.jiangcai.dating.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -21,9 +23,22 @@ public class HomeController {
 
     @Autowired
     private StatisticService statisticService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private SystemService systemService;
 
     @RequestMapping(method = RequestMethod.GET, value = {"/start"})
-    public String index() {
+    public String index(@AuthenticationPrincipal User user, Model model) {
+        user = userService.byOpenId(user.getOpenId());
+        if (user.getCards() != null && !user.getCards().isEmpty())
+            model.addAttribute("card", user.getCards().get(0));
+        else
+            model.addAttribute("card", null);
+
+        // 还有一个数字
+        model.addAttribute("rate", systemService.systemBookRate(user));
+
         return "receivables.html";
     }
 

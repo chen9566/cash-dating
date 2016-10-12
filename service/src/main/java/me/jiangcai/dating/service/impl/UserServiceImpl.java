@@ -251,4 +251,12 @@ public class UserServiceImpl implements UserService {
             throw new IllegalStateException();
     }
 
+    @Override
+    public void deleteCards(String openId) {
+        User user = userRepository.findByOpenId(openId);
+
+        if (user.getCards() != null)
+            user.getCards().clear();
+    }
+
 }

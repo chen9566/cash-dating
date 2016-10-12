@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import java.math.RoundingMode;
 import java.text.NumberFormat;
@@ -22,6 +23,7 @@ public class StartOrderPage extends AbstractPage {
 
     private WebElement amountInput;
     private WebElement commentInput;
+    @FindBy(id = "_btn1")
     private WebElement button;
 
     public StartOrderPage(WebDriver webDriver) {
@@ -40,10 +42,10 @@ public class StartOrderPage extends AbstractPage {
                 .findAny()
                 .ifPresent(element -> commentInput = element);
 
-        webDriver.findElements(By.tagName("button")).stream()
-                .filter(element -> "submit".equals(element.getAttribute("type")) && element.isDisplayed())
-                .findAny()
-                .ifPresent(element -> button = element);
+//        webDriver.findElements(By.tagName("button")).stream()
+//                .filter(element -> "submit".equals(element.getAttribute("type")) && element.isDisplayed())
+//                .findAny()
+//                .ifPresent(element -> button = element);
 
         assertThat(amountInput)
                 .isNotNull();
@@ -52,6 +54,8 @@ public class StartOrderPage extends AbstractPage {
                 .isNotNull();
         assertThat(button)
                 .isNotNull();
+        assertThat(button.isDisplayed())
+                .isTrue();
     }
 
     public void pay(double amount, String comment) {
@@ -65,8 +69,31 @@ public class StartOrderPage extends AbstractPage {
         log.debug(amount);
         log.debug(format.format(amount));
         amountInput.sendKeys(format.format(amount));
-        commentInput.clear();
-        commentInput.sendKeys(comment);
+//        commentInput.clear();
+//        commentInput.sendKeys(comment);
         button.click();
+    }
+
+    public void assertNoCard() {
+        assertThat(webDriver.findElements(By.className("nocard")))
+                .isNotEmpty();
+    }
+
+    public void assertHaveCard() {
+        assertThat(webDriver.findElements(By.className("card")))
+                .isNotEmpty();
+    }
+
+    /**
+     * 点击 绑卡 或者是更换卡
+     */
+    public void toCard() {
+        WebElement host;
+        if (webDriver.findElements(By.className("nocard")).isEmpty()) {
+            host = webDriver.findElement(By.className("card"));
+        } else
+            host = webDriver.findElement(By.className("nocard"));
+
+        host.findElement(By.tagName("a")).click();
     }
 }

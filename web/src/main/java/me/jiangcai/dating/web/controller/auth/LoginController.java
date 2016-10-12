@@ -1,7 +1,6 @@
 package me.jiangcai.dating.web.controller.auth;
 
 import com.google.zxing.WriterException;
-import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.QRCodeService;
@@ -54,10 +53,10 @@ public class LoginController {
         if (userService.mobileRequired(detail.getOpenId())) {
             return "register.html";
         }
-        if (userService.bankAccountRequired(detail.getOpenId())) {
-            model.addAttribute("banks", bankService.list());
-            return "addcard.html";
-        }
+//        if (userService.bankAccountRequired(detail.getOpenId())) {
+//            model.addAttribute("banks", bankService.list());
+//            return "addcard.html";
+//        }
 
         userService.loginAs(request, response, userService.byOpenId(detail.getOpenId()));
         // 完成登录
@@ -71,20 +70,6 @@ public class LoginController {
             , String inviteCode) {
         userService.registerMobile(request, id, mobile, verificationCode, inviteCode);
 
-        return "redirect:/start";
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/registerCard")
-    public String registerCard(@OpenId String id, String name, String number
-                               // 这3个参数 其实用不上
-            , String province, String city, String bank
-            , String subBranch) {
-//
-//        Address address = new Address();
-//        address.setProvince(PayResourceService.provinceById(province));
-//        address.setCity(PayResourceService.cityById(city));
-
-        Card card = userService.addCard(id, name, number, null, null, subBranch);
         return "redirect:/start";
     }
 
