@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>绑定银行卡</title>
     <link rel="stylesheet" href="dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
-    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">    <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
     <script src="dist/js/share.js"></script>
@@ -26,7 +25,7 @@
 			</li>
 			<li>
 				<label class="pull-left">开户银行</label>
-				<span id="sleBG" class="s2" style="background:url(images/Path.png) no-repeat right;background-size:10px 6px;" > <span id="sleHid">
+				<span class="sleBG s2" > <span class="sleHid">
 				<select name="bank" selected="selected" class="select">
 					 <option value="" th:remove="all">默认选择</option>
                         <option value="1" th:each="bank:${banks}" th:value="${bank.code}" th:text="${bank.name}">
@@ -35,11 +34,11 @@
 				</span></span></li>
 			<li>
 				<label class="pull-left">开户地址</label>
-				<span id="sleBG" class="s1" style="background:url(images/Path.png) no-repeat 80px 19px;background-size:10px 6px;" > <span id="sleHid">
+				<span class="sleBG s1" > <span class="sleHid">
 				<select class="select2" name="province" required>
 					<option value="1">北京</option>
 				</select>
-				</span></span> <span id="sleBG" class="s3" style="background:url(images/Path.png) no-repeat right;background-size:10px 6px; " > <span id="sleHid">
+				</span></span> <span class="sleBG s3"> <span class="sleHid">
 				<select class="select3" name="city" required>
 					<option value="1">北京</option>
 				</select>

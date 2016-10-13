@@ -853,12 +853,12 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.from-bank li .select {width:116%; background:none; border:none; }   
 	.from-bank li .select2 {width:116%; background:none; border:none; }  
 	.from-bank li .select3 {width:118%; text-align:center; padding-left:20px; background:none; border:none; }  
-	#sleHid { display:block;  overflow:hidden; }     
-	#sleBG {  border-right:none; float:left; display:block;}
+.sleHid { display:block;  overflow:hidden; }     
+.sleBG {  border-right:none; float:left; display:block;}
 	.from-bank li label{ color:#888; width:95px; font-weight:400; font-size:14px;}
-	.from-bank li .s1{ width:33%;}
-	.from-bank li .s2{ width:66%}
-	.from-bank li .s3{ width:33%;text-align:right; padding-right:15px;}
+	.from-bank li .s1{ width:33%;background:url(images/Path.png) no-repeat 80px 19px;background-size:10px 6px;}
+	.from-bank li .s2{ width:66%;background:url(images/Path.png) no-repeat right;background-size:10px 6px;}
+	.from-bank li .s3{ width:33%;text-align:right; padding-right:15px;background:url(images/Path.png) no-repeat 80px 19px;background-size:10px 6px;}
 	.from-bank .b1{ font-size:13px; color:#888; padding-left:15px; margin-bottom:8px; }
 	.from-bank .noline{ border-bottom:0}
 	.from-bank .b2{ padding:0 15px}
