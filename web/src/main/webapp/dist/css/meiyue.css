@@ -870,13 +870,13 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.order dt.d2{background:#FDBC6B; color:#fff; font-size:15px}
 	.order dd{font-weight:300; float:left; font-size:13px;}
 	.order dd .d3{ font-size:16px; color:#353535;display:block}
-	.order dd .d4{font-weight:200;  font-size:14px; color:#b3b3b3; }
+	.order .t4{ float:right; line-height:20px; text-align:right}
+	.order .t5{ display:block; color:#888; }
 	.order .t1{ float:right; color:#F65150; line-height:44px;}
 	.order .t2{ float:right; color:#000; line-height:44px;}
-	.order .t3{ float:right; margin-top:8px;line-height:44px;}
+	.order .t3{ float:right; margin-top:8px;line-height:44px;}	
 		.order .t3 a{ border-radius:4px; background:#F65150; color:#fff; width:55px; height:25px; line-height:24px; display:block; text-align:center; text-decoration:none; font-size:14px;}
-	.order .t4{ float:right; line-height:22px; text-align:right}
-	.order .t5{ display:block; color:#888; }
+	
 .addcard{ margin-bottom:15px; color:#007AFF; text-align:center; background:#fff; border-bottom:1px solid #dfdfdf;  padding:20px}
 	.addcard img{ width:32px; height:32px; margin:0 auto 8px auto; display:block}
 	.addcard a{ font-size:14px; text-decoration:none; display:block;color:#007AFF;}
