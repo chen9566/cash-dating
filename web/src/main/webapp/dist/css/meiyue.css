@@ -905,3 +905,5 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .p-15{ padding:0 15px;}
 	.p-15 input{ border:0;}
 .bg-write{ background:#FFF}
+.po-fix{position:fixed; bottom:0; width:100%; margin:10px 0}
+.ma-b{ margin-bottom:65px}
