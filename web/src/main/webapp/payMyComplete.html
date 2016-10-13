@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:wx="http://weixin.jiangcai.me" lang="en">
+<!--/*@thymesVar id="order" type="me.jiangcai.dating.entity.CashOrder"*/-->
+<!--/*@thymesVar id="type" type="java.lang.Integer"*/-->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>付款成功</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css" th:href="@{/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css" th:href="@{/dist/css/font-awesome.min.css}">
+    <link rel="stylesheet" href="dist/css/meiyue.css" th:href="@{/dist/css/meiyue.css}">
+    <script src="dist/js/jquery.js" th:src="@{/dist/js/jquery.js}"></script>
+    <script src="dist/js/bootstrap.min.js" th:src="@{/dist/js/bootstrap.min.js}"></script>
+</head>
+<body class="bg-write">
+
+<div class="pay-ok">
+    <p><img src="images/kuanyes_pic01.png"></p>
+    <p class="k1">已收到一笔<b th:text="${#numbers.formatDecimal(order.amount,0,'COMMA',2,'POINT')}">100</b>元的付款订单
+        <br>
+        <span th:if="${type==0}" class="pay-done-0">已经打往你指定的收款账户</span>
+        <span th:if="${type==1}" class="pay-done-1">预计到达时间需要<b>5-10</b>分钟</span>
+        <span th:if="${type==2}" class="pay-done-2">资金正在打往你指定的收款账户</span>
+    </p>
+    <p class="k2">
+        <button type="button" class="btn btn-danger btn-lg btn-block">
+            <a href="addcard.html" th:href="@{/card}">绑定收款银行卡</a></button>
+    </p>
+    <p class="k3">
+        <button type="button" class="btn btn-default btn-lg btn-block">
+            <a href="my.html" th:href="@{/my}">返回首页</a>
+        </button>
+    </p>
+</div>
+
+<script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js" th:remove="all"></script>
+<script wx:js=""></script>
+<script wx:share=""></script>
+<!--此处应该禁止分享-->
+</body>
+</html>

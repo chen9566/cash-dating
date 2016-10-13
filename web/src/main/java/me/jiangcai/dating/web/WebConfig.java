@@ -68,6 +68,7 @@ public class WebConfig {
                     // 支付分享的
                     .antMatchers("/inviteQR/**").permitAll()
                     .antMatchers("/order/**").permitAll()
+                    .antMatchers("/orderCompleted/**").permitAll()
 //                    .antMatchers("/toPay/**").permitAll()
 //                    .antMatchers("/toPayQR/**").permitAll()
                     // 有几个事情是没有登录也可以做的 比如说 忘记密码 注册

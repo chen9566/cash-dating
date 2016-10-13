@@ -5,6 +5,7 @@ import me.jiangcai.dating.LoginWebTest;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.page.MyBankPage;
 import me.jiangcai.dating.page.MyPage;
+import me.jiangcai.dating.page.PayCompletedPage;
 import me.jiangcai.dating.page.ShowOrderPage;
 import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.service.QRCodeService;
@@ -113,20 +114,26 @@ public class HomeControllerTest extends LoginWebTest {
 
         pay.pay(order.getPlatformOrderSet().iterator().next().getId(), url);
 
-        Thread.sleep(2000);
-
-        // 同时 我们的订单应该也是牛逼了!
-        driver.get(orderUrl);
-        currentPageIsCompleted();
-    }
-
-    /**
-     * 当前页面显示的是 订单已完成
-     */
-    private void currentPageIsCompleted() {
-//        System.out.println(driver.getPageSource());
-        assertThat(driver.getTitle())
-                .isEqualTo("订单已完成");
+//        WebDriverWait wait = new WebDriverWait(driver, 10);
+//        wait.until(new Predicate<WebDriver>() {
+//            @Override
+//            public boolean apply(@Nullable WebDriver input) {
+//                // 此处是扫码界面的标题
+//                return input != null && input.getTitle().equals("支付二维码");
+//            }
+//        });
+        Thread.sleep(2500);
+        //
+        PayCompletedPage payCompletedPage = initPage(PayCompletedPage.class);
+        // 刚打款
+        payCompletedPage.assertJustPayWithoutWithdrawal();
+        payCompletedPage.assertVisitByMyself();
+        //
+//        Thread.sleep(2000);
+//
+//        // 同时 我们的订单应该也是牛逼了!
+//        driver.get(orderUrl);
+//        currentPageIsCompleted();
     }
 
 }

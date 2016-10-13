@@ -7,17 +7,21 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
+import me.jiangcai.wx.OpenId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.SignatureException;
+import java.time.LocalDateTime;
 
 /**
  * 支付相关
@@ -46,20 +50,53 @@ public class PayController {
         return "redirect:/order/" + order.getId();
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/orderCompleted/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public boolean orderStatus(@PathVariable("id") String id) {
+        return orderService.isComplete(id);
+    }
+
     /**
      * 打开这个付款二维码展示界面,开放显示
      * 这个页面应该会存在多个效果  比如微信平台的效果和非微信平台的效果
+     * 在确认用户完成支付以后,会根据当前登录的不同身份获取不同的信息
      *
-     * @param id
-     * @param model
-     * @return
+     * @param id    主订单id
+     * @param model 数据
+     * @return 将来的页面
      */
     @RequestMapping(method = RequestMethod.GET, value = "/order/{id}")
-    public String orderInfo(@PathVariable("id") String id, Model model) throws IOException, SignatureException {
-        if (orderService.isComplete(id)) {
-            return "completed.html";
-        }
+    public String orderInfo(@OpenId String openId, @PathVariable("id") String id, Model model) throws IOException, SignatureException {
         CashOrder order = orderService.getOne(id);
+        if (orderService.isComplete(id)) {
+            // 看是不是我
+            boolean isMe = order.getOwner().getOpenId().equals(openId);
+
+            LocalDateTime time = order.getPlatformOrderSet().stream()
+                    .filter(PlatformOrder::isFinish)
+                    .map(PlatformOrder::getFinishTime)
+                    .findFirst()
+                    .orElseThrow(IllegalStateException::new);
+            int type;
+            if (order.isWithdrawalCompleted()) {
+                type = 0;
+            } else if (LocalDateTime.now().isBefore(time.plusMinutes(10))) {
+                type = 1;
+            } else
+                type = 2;
+            model.addAttribute("type", type);
+
+            if (!isMe) {
+
+                // current<f+10M
+                // 如果已到账则显示已到账,10分钟内打款的 则提示正常的 否则显示  资金正在发向对方账户
+                return "payOtherComplete.html";
+            } else {
+                model.addAttribute("order", order);
+                return "payMyComplete.html";
+            }
+//            return "completed.html";
+        }
 
 //        if (!order.getOwner().equals(user)) {
 //            return "redirect:/";

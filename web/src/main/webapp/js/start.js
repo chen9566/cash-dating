@@ -40,6 +40,7 @@ $(function () {
             button.removeClass('red');
             return;
         }
+        //最高可以刷的金额是 9,999,999.99
 
         button.removeAttr('disabled');
         button.removeClass('black');
