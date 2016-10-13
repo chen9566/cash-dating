@@ -1,62 +1,88 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="banks" type="java.lang.Iterable<me.jiangcai.dating.entity.Bank>"*/-->
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>绑卡</title>
-<link rel="stylesheet" href="dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="dist/css/font-awesome.min.css">
-<link rel="stylesheet" href="dist/css/meiyue.css">
-<script src="dist/js/jquery.js"></script>
-<script src="dist/js/bootstrap.min.js"></script>
-<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
-<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>绑定银行卡</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/share.js"></script>
+    <script src="dist/js/add-card.js"></script>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
 </head>
 <body>
-<form method="post" action="" >
-	<div class="from-bank">
+ <form class="from-bank" action="receivables.html" th:action="@{/registerCard}" th:method="post" id="addCardForm" role="form">
 		<p class="b1">请绑定持卡人的银行卡(借记卡)</p>
 		<ul>
 			<li>
 				<label>持卡人姓名</label>
-				<input name="" type="text"  placeholder="输入真实姓名">
+				<input type="text" name="name" required minlength="2" maxlength="20"  placeholder="输入真实姓名">
 			</li>
 			<li>
 				<label class="pull-left">开户银行</label>
 				<span id="sleBG" class="s2" style="background:url(images/Path.png) no-repeat right;background-size:10px 6px;" > <span id="sleHid">
-				<select name="type" selected="selected" class="select">
-					<option>工商银行</option>
-					<option>工商银行</option>
+				<select name="bank" selected="selected" class="select">
+					 <option value="" th:remove="all">默认选择</option>
+                        <option value="1" th:each="bank:${banks}" th:value="${bank.code}" th:text="${bank.name}">
 					<option>工商银行</option>
 				</select>
 				</span></span></li>
 			<li>
 				<label class="pull-left">开户地址</label>
 				<span id="sleBG" class="s1" style="background:url(images/Path.png) no-repeat 80px 19px;background-size:10px 6px;" > <span id="sleHid">
-				<select name="" class="select2">
-					<option>浙江省</option>
+				<select class="select2" name="province" required>
+					<option value="1">北京</option>
 				</select>
 				</span></span> <span id="sleBG" class="s3" style="background:url(images/Path.png) no-repeat right;background-size:10px 6px; " > <span id="sleHid">
-				<select name="" class="select3">
-					<option>杭州市</option>
+				<select class="select3" name="city" required>
+					<option value="1">北京</option>
 				</select>
 				</span></span> </li>
 			<li>
 				<label>支行名称</label>
-				<input name="" type="text" placeholder="输入支行全称">
+				<input name="" type="text" placeholder="输入支行全称" name="subBranch" required>
 			</li>
 			<li class="noline">
 				<label>银行卡号</label>
-				<input name="" type="text" placeholder="持卡人银行卡卡号">
+				<input type="text" name="number" required minlength="16" placeholder="持卡人银行卡卡号">
 			</li>
 		</ul>
 		<p class="b1">此银行卡号开户名必须与上方开户名一致，否则提现会失败！</p>
 		<p class="b2">
 			<button type="submit" class="btn btn-danger btn-lg btn-block">提交</button>
 		</p>
-	</div>
+
 </form>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">您已帮卡成功</h4>
+            </div>
+            <div class="modal-body">
+                关注款爷，让我们更好、更快捷的为您服务！
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">关注款爷</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="mock/all.js" th:src="@{/all.js}"></script>
+<script>
+    $(function () {
+        var validator = $("#addCardForm").validate({});
+    });
+
+</script>
 </body>
 </html>
