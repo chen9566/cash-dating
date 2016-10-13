@@ -25,7 +25,7 @@
 			</li>
 			<li>
 				<label class="pull-left">开户银行</label>
-				<span class="sleBG s2" > <span class="sleHid">
+				<span class="sleBG s2" style="background:url(images/Path.png) no-repeat right;background-size:10px 6px;"> <span class="sleHid">
 				<select name="bank" selected="selected" class="select">
 					 <option value="" th:remove="all">默认选择</option>
                         <option value="1" th:each="bank:${banks}" th:value="${bank.code}" th:text="${bank.name}">
@@ -34,19 +34,24 @@
 				</span></span></li>
 			<li>
 				<label class="pull-left">开户地址</label>
-				<span class="sleBG s1" > <span class="sleHid">
+				<span class="sleBG s1" style="background:url(images/Path.png) no-repeat 80px 19px;background-size:10px 6px;"> <span class="sleHid">
 				<select class="select2" name="province" required>
 					<option value="1">北京</option>
 				</select>
-				</span></span> <span class="sleBG s3"> <span class="sleHid">
+				</span></span> <span class="sleBG s3" style="background:url(images/Path.png) no-repeat right;background-size:10px 6px; "> <span class="sleHid">
 				<select class="select3" name="city" required>
 					<option value="1">北京</option>
 				</select>
 				</span></span> </li>
 			<li>
-				<label>支行名称</label>
-				<input name="" type="text" placeholder="输入支行全称" name="subBranch" required>
-			</li>
+				<label class="pull-left">支行名称</label>
+				<span class="sleBG s2" style="background:url(images/Path.png) no-repeat right;background-size:10px 6px;"> <span class="sleHid">
+				<select name="subBranch" required selected="selected" class="select">
+					 <option value="" th:remove="all">默认选择</option>
+                        <option value="1" th:each="bank:${banks}" th:value="${bank.code}" th:text="${bank.name}">
+					<option>工商银行</option>
+				</select>
+				</span></span></li>
 			<li class="noline">
 				<label>银行卡号</label>
 				<input type="tel" name="number" required minlength="19" placeholder="持卡人银行卡卡号">
