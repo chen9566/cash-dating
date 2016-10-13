@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -19,7 +19,7 @@
     <h4 th:text="'邀请码：'+${user.inviteCode}">邀请码：8387373</h4>
     <button type="button" class="btn btn-danger btn-lg btn-block">邀请</button>
     <button th:if="${user.agentInfo==null}" type="button" class="btn btn-default btn-lg btn-block agent clickHref"
-            href="agent.html" th:href="@{/agent}">升级代理人
+            href="agent.html" th:href="@{/agent}">升级合伙人
     </button>
 
 </div>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:wx="http://weixin.jiangcai.me" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>回头见</title>`
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/share.js"></script>
+</head>
+<body>
+
+<h1 style="text-align: center;">成功注销!</h1>
+<br/>
+<br/>
+<br/>
+<p style="font-size: 30px;margin: 30px;">如果您想更换帐号再次登录款爷,请先切换微信帐号;点击这行文字即可复制【款爷二手】微信号!</p>
+
+<div class="p-15">
+    <input value="点错了,我要回去" type="button" class="red clickHref" href="my.html" th:href="@{/start}"/>
+</div>
+
+<br/>
+<script wx:js=""></script>
+<script src="//res.wx.qq.com/open/js/jweixin-1.1.0.js" th:remove="all"></script>
+<div class="p-15">
+    <input value="关闭" type="button" class="red" onclick="wx.closeWindow();"/>
+</div>
+</body>
+</html>

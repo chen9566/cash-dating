@@ -18,10 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class MyPage extends AbstractPage {
 
+    private final Map<String, WebElement> menus = new HashMap<>();
     private WebElement headImage;
     private WebElement title;
     private WebElement message;
-    private final Map<String, WebElement> menus = new HashMap<>();
 
     public MyPage(WebDriver webDriver) {
         super(webDriver);
@@ -86,5 +86,17 @@ public class MyPage extends AbstractPage {
 
     public void clickMenu(String text) {
         menus.get(text).click();
+    }
+
+    /**
+     * 登出
+     */
+    public void logout() {
+        webDriver.findElements(By.tagName("input")).stream()
+                .filter(WebElement::isDisplayed)
+                .filter(webElement -> "注销".equals(webElement.getAttribute("value")))
+                .findFirst()
+                .orElseThrow(NullPointerException::new)
+                .click();
     }
 }
