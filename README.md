@@ -8,3 +8,6 @@
 
 对于美工而言主要就是add,commit,pull,push几个操作,完整的[git教程](http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)。
 *SourceTree*这个软件应该可以提供不少的帮助。
+## 预览
+github会实时(大概会有几分钟的延迟)生成静态网站,这样我们就可以随时查看我们的静态原型。
+[这里](https://joleneol.github.io/cash-dating/web/src/main/webapp/)是地址。
