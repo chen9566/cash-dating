@@ -5,6 +5,8 @@ import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.AgentInfo;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.page.LogoutPage;
+import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.PCLoginPage;
 import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.service.AgentService;
@@ -108,6 +110,22 @@ public class LoginControllerTest extends WebTest {
 //                        .content("type=register&mobile=" + randomMobile()) ??
         ).andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void logout() throws IOException {
+        // 登录用户
+        // 回头见
+        driver.manage().deleteAllCookies();
+
+        User user = helloNewUser(null);
+
+        driver.get("http://localhost/my");
+        MyPage myPage = initPage(MyPage.class);
+
+        myPage.logout();
+        LogoutPage page = initPage(LogoutPage.class);
+        System.out.println(page);
     }
 
     @Test

@@ -38,6 +38,12 @@ public class LoginController {
     @Autowired
     private QRCodeService qrCodeService;
 
+    @RequestMapping(method = RequestMethod.GET, value = "/justLogout")
+    public String logout() {
+        // 已登出页面
+        return "logout.html";
+    }
+
     /**
      * 登录页面
      * 在这里我们确定它是否要登录
