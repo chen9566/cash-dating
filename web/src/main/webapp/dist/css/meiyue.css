@@ -868,13 +868,13 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.order dt{ float:left; margin-right:10px; width:44px; line-height:44px; text-align:center; height:44px; font-weight:300}
 	.order dt.d1{ background:#d1d1d1; color:#fff;font-size:13px}
 	.order dt.d2{background:#FDBC6B; color:#fff; font-size:15px}
-	.order dd{font-weight:300; float:left; font-size:13px;}
-	.order dd .d3{ font-size:16px; color:#353535;display:block}
-	.order .t4{ float:right; line-height:20px; text-align:right}
+	.order dd .d4{font-weight:300; color:#b3b3b3; float:left; font-size:13px;}
+	.order dd .d3{ font-size:16px; color:#353535;display:block;}
+	.order .t4{ float:right; margin-top:-21px;line-height:20px; text-align:right}
 	.order .t5{ display:block; color:#888; }
-	.order .t1{ float:right; color:#F65150; line-height:44px;}
-	.order .t2{ float:right; color:#000; line-height:44px;}
-	.order .t3{ float:right; margin-top:8px;line-height:44px;}	
+	.order .t1{ float:right; margin-top:-24px; color:#F65150; line-height:44px;}
+	.order .t2{ float:right; color:#000; margin-top:-24px;line-height:44px;}
+	.order .t3{ float:right; margin-top:-15px;line-height:44px;}	
 		.order .t3 a{ border-radius:4px; background:#F65150; color:#fff; width:55px; height:25px; line-height:24px; display:block; text-align:center; text-decoration:none; font-size:14px;}
 	
 .addcard{ margin-bottom:15px; color:#007AFF; text-align:center; background:#fff; border-bottom:1px solid #dfdfdf;  padding:20px}
