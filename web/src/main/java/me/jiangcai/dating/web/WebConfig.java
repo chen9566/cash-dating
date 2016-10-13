@@ -88,7 +88,8 @@ public class WebConfig {
                     .failureUrl("/login?type=error")
                     .permitAll()
                     .and()
-                    .logout().logoutUrl("/logout").permitAll();
+                    .logout().logoutUrl("/logout").permitAll()
+                    .logoutSuccessUrl("/justLogout").permitAll();
         }
     }
 }
