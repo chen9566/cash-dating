@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>买单</title>
+    <title>支付二维码</title>
     <link rel="stylesheet" href="dist/css/bootstrap.min.css" th:href="@{/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" href="dist/css/font-awesome.min.css" th:href="@{/dist/css/font-awesome.min.css}">
     <link rel="stylesheet" href="dist/css/meiyue.css" th:href="@{/dist/css/meiyue.css}">
@@ -14,17 +14,18 @@
     <script src="dist/js/bootstrap.min.js" th:src="@{/dist/js/bootstrap.min.js}"></script>
 </head>
 <body>
-<div class="paycode">
-    <h4><i class="fa fa-cny"></i>
-        <span class="nun" th:text="${{order.amount}}">30000</span></h4>
-    <p class="txt" th:text="${order.comment}">哇哇哇哇哇</p>
-    <p><img name="qrCode" src="images/temp2.png" th:src="${qrUrl}"/></p>
-</div>
-<!--<div class="share-btn">-->
-<!--<button type="button" class="btn btn-info btn-lg btn-block">支付</button>-->
-<!--</div>-->
-<div class="share-btn">
-    <button type="button" class="btn btn-danger btn-lg btn-block" onclick="wx.showOptionMenu();">我要分享</button>
+
+<div class="pay-new" style=" background:url(images/paybg.png) no-repeat; background-size:100%;">
+    <p class="t1" th:text="${order.owner.username}">呵呵</p>
+    <p class="t2"><span th:text="${order.owner.realName}">*春风</span> 向您发起一笔收款申请</p>
+    <p class="t3"><i><img src="images/1.png"></i><span class="nun"
+                                                       th:text="${#numbers.formatDecimal(order.amount,0,'COMMA',2,'POINT')}">123.00</span>
+    </p>
+    <p class="t4"><img name="qrCode" src="images/temp2.png" th:src="${qrUrl}"/></p>
+    <p class="t5">长按二维码可进行支付</p>
+    <p class="t6">
+        <button type="button" class="btn btn-default btn-lg btn-block" onclick="wx.showOptionMenu();">发送收款二维码</button>
+    </p>
 </div>
 
 <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js" th:remove="all"></script>

@@ -50,7 +50,7 @@ public class MyInviteCodePage extends AbstractPage {
 
         webDriver.findElements(By.tagName("button")).stream()
                 .filter(WebElement::isDisplayed)
-                .filter(element -> element.getText().contains("代理"))
+                .filter(element -> element.getText().contains("合伙人"))
                 .findFirst()
                 .ifPresent(element -> requestButton = element);
 

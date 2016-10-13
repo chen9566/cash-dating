@@ -3,10 +3,12 @@ package me.jiangcai.dating.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.htmlunit.HtmlUnitWebElement;
+import org.thymeleaf.util.NumberPointType;
+import org.thymeleaf.util.NumberUtils;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,6 +45,7 @@ public class ShowOrderPage extends AbstractPage {
 
         assertThat(amountSpan)
                 .isNotNull();
+        assertThat(amountSpan.isDisplayed()).isTrue();
         assertThat(image)
                 .isNotNull();
         assertThat(shareButton)
@@ -54,4 +57,8 @@ public class ShowOrderPage extends AbstractPage {
         return toImage(image);
     }
 
+    public void assertAmount(double amount) {
+        assertThat(amountSpan.getText())
+                .isEqualTo(NumberUtils.format(amount, 0, NumberPointType.COMMA, 2, NumberPointType.POINT, Locale.CHINA));
+    }
 }

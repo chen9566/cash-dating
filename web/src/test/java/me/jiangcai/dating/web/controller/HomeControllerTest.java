@@ -46,8 +46,9 @@ public class HomeControllerTest extends LoginWebTest {
 
         page.assertFrom(currentUser(), statisticService);
 
-        page.clickMenu("我要收款");
-        initPage(StartOrderPage.class);
+//        page.clickMenu("我要收款");
+//        initPage(StartOrderPage.class);
+        // TODO 替换为流水测试
         driver.get("http://localhost/my");
         page.reloadPageInfo();
 
@@ -81,6 +82,7 @@ public class HomeControllerTest extends LoginWebTest {
 
         // 这个时候应该是到了二维码界面,在这个界面 我们可以分享它
         ShowOrderPage codePage = initPage(ShowOrderPage.class);
+        codePage.assertAmount(amount);
         // 并且拥有了一个新订单
         String orderUrl = driver.getCurrentUrl();
 

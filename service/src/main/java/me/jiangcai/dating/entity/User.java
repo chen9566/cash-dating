@@ -239,6 +239,18 @@ public class User implements WeixinUser, ProfitSplit, UserDetails {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * @return 真实名字
+     */
+    public String getRealName() {
+        String name;
+        if (cards != null && !cards.isEmpty())
+            name = cards.get(0).getOwner();
+        else
+            name = getUsername();
+        return "*" + name.substring(1);
+    }
+
     @Override
     public String getUsername() {
         return nickname == null ? openId : nickname;
