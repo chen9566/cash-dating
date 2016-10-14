@@ -28,6 +28,7 @@ public class MyInviteCodePage extends AbstractPage {
 
     public MyInviteCodePage(WebDriver webDriver) {
         super(webDriver);
+        System.out.println(webDriver.getPageSource());
     }
 
     @Override

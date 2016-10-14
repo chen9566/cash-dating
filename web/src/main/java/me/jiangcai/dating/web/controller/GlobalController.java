@@ -7,6 +7,7 @@ import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.VerificationCodeService;
+import me.jiangcai.wx.web.mvc.WeixinInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -101,14 +102,19 @@ public class GlobalController {
 //        return qrCodeService.generateQRCode(urlBuilder.toString());
 //    }
 
+    public static StringBuilder generateInviteURL(long userId, HttpServletRequest request) {
+        StringBuilder urlBuilder = contextUrlBuilder(request);
+        urlBuilder.append("/start?");
+        urlBuilder.append(CashFilter.guideUserFromId(userId));
+        return urlBuilder;
+    }
+
     /**
      * @return id这个人邀请别人加入的二维码
      */
     @RequestMapping(method = RequestMethod.GET, value = "/inviteQR/{id}")
     public BufferedImage inviteQRCode(@PathVariable("id") long id, HttpServletRequest request) throws IOException, WriterException {
-        StringBuilder urlBuilder = contextUrlBuilder(request);
-        urlBuilder.append("/start?");
-        urlBuilder.append(CashFilter.guideUserFromId(id));
+        StringBuilder urlBuilder = generateInviteURL(id, request);
 
         return qrCodeService.generateQRCode(urlBuilder.toString());
     }
@@ -119,13 +125,14 @@ public class GlobalController {
      * @return 所有页面都载入的js
      */
     @RequestMapping(value = "/all.js", method = RequestMethod.GET, produces = "application/javascript")
-    public ResponseEntity<String> allScript() throws IOException {
+    public ResponseEntity<String> allScript(HttpServletRequest request) throws IOException {
         try (InputStream inputStream = applicationContext.getResource("/mock/all_live.js").getInputStream()) {
             String script = StreamUtils.copyToString(inputStream, Charset.forName("UTF-8"));
             //
             script = script.replaceAll("_TestMode_", String.valueOf(environment.acceptsProfiles("test")));
             script = script.replaceAll("_UnitTestMode_", String.valueOf(environment.acceptsProfiles("unit_test")));
             script = script.replaceAll("_UriPrefix_", applicationContext.getServletContext().getContextPath());
+            script = script.replaceAll("_WeixinEnabled_", String.valueOf(request.getAttribute(WeixinInterceptor.WEIXIN_ENABLED_REQUEST_KEY)));
 
             return ResponseEntity
                     .ok()

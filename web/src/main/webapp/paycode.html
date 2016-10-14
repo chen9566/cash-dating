@@ -24,17 +24,18 @@
     <p class="t4"><img name="qrCode" src="images/temp2.png" th:src="${qrUrl}"/></p>
     <p class="t5">长按二维码可进行支付</p>
     <p class="t6">
-        <button type="button" class="btn btn-default btn-lg btn-block" onclick="wx.showOptionMenu();">发送收款二维码</button>
+        <button type="button" class="btn btn-default btn-lg btn-block weixinShare">发送收款二维码</button>
     </p>
 </div>
 
 <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js" th:remove="all"></script>
 <script wx:js=""></script>
-<script wx:share=""></script>
+<script wx:share="${#share.title(order)}|${#share.desc(order)}|${#share.link(order,#request)}|${#share.imageUrl(order)}"></script>
 <script type="text/javascript" th:inline="javascript">
     $.targetOrderId = /*[[${order.id}]]*/ null;
 </script>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
 <script src="js/pay.js" th:src="@{/js/pay.js}"></script>
+<script src="dist/js/share.js" th:src="@{/dist/js/share.js}"></script>
 </body>
 </html>

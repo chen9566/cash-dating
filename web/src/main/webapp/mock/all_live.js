@@ -6,6 +6,7 @@ if ($) {
     $.testMode = _TestMode_;
     $.unitTestMode= _UnitTestMode_;
     $.uriPrefix = '_UriPrefix_';
+    $.weixinEnabled = _WeixinEnabled_;
     if ($.testMode) {
         $.ajaxSetup({
             async: false

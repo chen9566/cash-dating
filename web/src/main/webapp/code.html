@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:wx="http://weixin.jiangcai.me" lang="en">
 <!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -11,17 +11,21 @@
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
-    <script src="dist/js/share.js"></script>
 </head>
 <body>
 <div class="code">
     <p><img src="images/temp2.png" th:src="@{/inviteQR/{id}(id=${user.id})}"/></p>
     <h4 th:text="'邀请码：'+${user.inviteCode}">邀请码：8387373</h4>
-    <button type="button" class="btn btn-danger btn-lg btn-block">邀请</button>
+    <button type="button" class="btn btn-danger btn-lg btn-block weixinShare">邀请</button>
     <button th:if="${user.agentInfo==null}" type="button" class="btn btn-default btn-lg btn-block agent clickHref"
             href="agent.html" th:href="@{/agent}">升级合伙人
     </button>
 
 </div>
+<script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js" th:remove="all"></script>
+<script wx:js=""></script>
+<script wx:share="${#share.title(user)}|${#share.desc(user)}|${#share.link(user,#request)}|${#share.imageUrl(user)}"></script>
+<script src="mock/all.js" th:src="@{/all.js}"></script>
+<script src="dist/js/share.js" th:src="@{/dist/js/share.js}"></script>
 </body>
 </html>
