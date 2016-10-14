@@ -59,6 +59,6 @@ public class ShowOrderPage extends AbstractPage {
 
     public void assertAmount(double amount) {
         assertThat(amountSpan.getText())
-                .isEqualTo(NumberUtils.format(amount, 0, NumberPointType.COMMA, 2, NumberPointType.POINT, Locale.CHINA));
+                .isEqualTo(NumberUtils.format(amount, 1, NumberPointType.COMMA, 2, NumberPointType.POINT, Locale.CHINA));
     }
 }

@@ -18,7 +18,7 @@
 <body>
 <div class="balance">
     <div class="yq"><i class="fa fa-question-circle ">邀请说明</i></div>
-    <div class="cri"> 金额(元) <b th:text="${#numbers.formatDecimal(balance,0,'COMMA',2,'POINT')}">200000</b></div>
+    <div class="cri"> 金额(元) <b th:text="${#numbers.formatDecimal(balance,1,'COMMA',2,'POINT')}">200000</b></div>
     <div class="ba-btn">
         <button type="button" class="btn ba-bred btn-lg">提现</button>
         <button type="button" class="btn ba-bglod btn-lg clickHref" href="code.html" th:href="@{/myInviteCode}">我的邀请码</button>

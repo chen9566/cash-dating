@@ -17,7 +17,7 @@
 
 <div class="pay-ok">
     <p><img src="images/kuanyes_pic01.png" th:src="@{/images/kuanyes_pic01.png}"></p>
-    <p class="k1">已收到一笔<b th:text="${#numbers.formatDecimal(order.amount,0,'COMMA',2,'POINT')}">100</b>元的付款订单
+    <p class="k1">已收到一笔<b th:text="${#numbers.formatDecimal(order.amount,1,'COMMA',2,'POINT')}">100</b>元的付款订单
         <br>
         <span th:if="${type==0}" class="pay-done-0">已经打往你指定的收款账户</span>
         <span th:if="${type==1}" class="pay-done-1">预计到达时间需要<b>5-10</b>分钟</span>
