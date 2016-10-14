@@ -58,4 +58,32 @@ $(function () {
     amount.change(onChange);
     amount.blur(onChange);
     amount.keyup(onChange);
+
+    // 选择卡
+    var all = $('.all-cards');
+
+    $('[name=cardChanger]').click(function () {
+
+        // all-cards
+        if (all.is(':visible')) {
+            all.slideUp();
+        } else
+            all.slideDown();
+        return false;
+    });
+
+    var inputCard = $('input[name=card]');
+
+    var selectedCard = $('.selectedCard');
+
+    if (selectedCard.size() > 0) {
+        inputCard.val(selectedCard.attr('data-id'));
+    }
+
+    var cardChooser = $('[name=cardChooser]');
+    cardChooser.click(function () {
+        console.error($(this).closest('.card'));
+        all.slideUp();
+        return false;
+    });
 });

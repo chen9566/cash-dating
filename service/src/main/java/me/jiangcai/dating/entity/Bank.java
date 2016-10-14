@@ -25,6 +25,20 @@ public class Bank {
      * @since 1.2
      */
     private int weight = 50;
+    /**
+     * 背景,等同于css的background属性
+     *
+     * @since 1.3
+     */
+    @Column(length = 100)
+    private String background = "linear-gradient(to right, #E75C65 , #E8507D);";
 
+    /**
+     * @return 在这个web系统的图片uri
+     * @since 1.3
+     */
+    public String getImageUri() {
+        return "/images/banks/" + name + ".png";
+    }
 
 }
