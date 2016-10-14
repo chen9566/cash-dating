@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
 <!--/*@thymesVar id="balance" type="java.lang.Number"*/-->
 <!--/*@thymesVar id="flows" type="java.lang.Iterable<me.jiangcai.dating.model.BalanceFlow>"*/-->
@@ -18,7 +18,7 @@
 <body>
 <div class="balance">
     <div class="yq"><i class="fa fa-question-circle ">邀请说明</i></div>
-    <div class="cri"> 金额(元) <b th:text="${{balance}}">200000</b></div>
+    <div class="cri"> 金额(元) <b th:text="${#numbers.formatDecimal(balance,0,'COMMA',2,'POINT')}">200000</b></div>
     <div class="ba-btn">
         <button type="button" class="btn ba-bred btn-lg">提现</button>
         <button type="button" class="btn ba-bglod btn-lg clickHref" href="code.html" th:href="@{/myInviteCode}">我的邀请码</button>

@@ -18,8 +18,8 @@
 <div class="pay-new" style=" background:url(images/paybg.png) no-repeat; background-size:100%;">
     <p class="t1" th:text="${order.owner.username}">呵呵</p>
     <p class="t2"><span th:text="${order.owner.realName}">*春风</span> 向您发起一笔收款申请</p>
-    <p class="t3"><i><img src="images/1.png"></i><span class="nun"
-                                                       th:text="${#numbers.formatDecimal(order.amount,0,'COMMA',2,'POINT')}">123.00</span>
+    <p class="t3"><i><img src="images/1.png" th:src="@{/images/1.png}"></i><span class="nun"
+                                                                                 th:text="${#numbers.formatDecimal(order.amount,0,'COMMA',2,'POINT')}">123.00</span>
     </p>
     <p class="t4"><img name="qrCode" src="images/temp2.png" th:src="${qrUrl}"/></p>
     <p class="t5">长按二维码可进行支付</p>
