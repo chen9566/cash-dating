@@ -17,11 +17,11 @@
 </head>
 <body>
 <div class="balance">
-    <div class="yq"><i class="fa fa-question-circle ">合伙人说明</i></div>
+    <div class="yq"><i class="fa fa-question-circle "></i><a href="explain.html">合伙人说明</a></div>
     <div class="cri"> 佣金总额<b th:text="${{balance}}">200000<small>.00</small></b></div>
     <div class="ba-btn">
         <button type="button" class="btn ba-bred btn-lg tx">提现</button>
-        <button type="button" class="btn ba-bglod btn-lg clickHref yj" href="code.html" th:href="@{/myInviteCode}">合伙佣金</button>
+        <button type="button" class="btn ba-bglod btn-lg clickHref yj" href="moneylist-new.html" th:href="@{/myInviteCode}">合伙佣金</button>
     </div>
 </div>
 <p class="yjmx">佣金明细<span class="pull-right"><a href="#">导出表格</a></span></p>

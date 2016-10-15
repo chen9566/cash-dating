@@ -721,6 +721,8 @@ div.screening>ul>li {
 	.balance .ba-bglod{ background:#fcfcfc; color:#353535; border:1px solid #e0e0e0}
 	.balance .ba-btn button{ margin:0 10px}
 	.balance .yq{ width:100%; font-size:12px; color:#b3b3b3; text-align:right; margin-top:15px; padding-right:15px}
+	.balance .yq a{color:#b3b3b3; text-decoration:none}
+	.balance .yq i{ margin-right:5px;}
 .balliist{}
 	.balliist ul{ overflow:hidden;padding:10px 15px; margin-left:15px;border-bottom:1px solid #dfdfdf}
 	.balliist li{ font-size:14px; line-height:20px; color:#888}
