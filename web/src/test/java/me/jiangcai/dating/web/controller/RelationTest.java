@@ -18,7 +18,7 @@ public class RelationTest extends WebTest {
     @Test
     public void tryIt() throws IOException {
         // 建立一个人物 并且获取它的信息
-        User invite = helloNewUser(null);
+        User invite = helloNewUser(null, true);
 
         assertThat(invite.getGuideUser())
                 .isNull();
@@ -31,7 +31,7 @@ public class RelationTest extends WebTest {
         driver.quit();
         createWebDriver();
         driver.get(url);// 这个时候发生了什么事? 为什么还是原来的用户?
-        User newOne = helloNewUser(null);
+        User newOne = helloNewUser(null, true);
         assertThat(newOne.getGuideUser())
                 .isEqualTo(invite);
     }

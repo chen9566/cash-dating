@@ -45,8 +45,8 @@ public class PayController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, value = "/startOrder")
-    public String start(@AuthenticationPrincipal User user, BigDecimal amount, String comment) {
-        CashOrder order = orderService.newOrder(user, amount, comment);
+    public String start(@AuthenticationPrincipal User user, BigDecimal amount, String comment, Long card) {
+        CashOrder order = orderService.newOrder(user, amount, comment, card);
         return "redirect:/order/" + order.getId();
     }
 

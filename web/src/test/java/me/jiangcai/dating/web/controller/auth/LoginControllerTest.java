@@ -70,7 +70,7 @@ public class LoginControllerTest extends WebTest {
         String url = qrCodeService.scanImage(loginPage.codeImage());
 
         // 好了 一会儿让我们的
-        helloNewUser(url, null);
+        helloNewUser(url, null, true);
 
         driver.get(url);
         // 好了 关注我们的pcDriver
@@ -118,7 +118,7 @@ public class LoginControllerTest extends WebTest {
         // 回头见
         driver.manage().deleteAllCookies();
 
-        User user = helloNewUser(null);
+        User user = helloNewUser(null, true);
 
         driver.get("http://localhost/my");
         MyPage myPage = initPage(MyPage.class);
@@ -132,7 +132,7 @@ public class LoginControllerTest extends WebTest {
     public void newUser() throws IOException {
         driver.manage().deleteAllCookies();
 
-        User user = helloNewUser(null);
+        User user = helloNewUser(null, true);
 
         assertThat(user.getCards())
                 .isNotEmpty();
@@ -157,7 +157,7 @@ public class LoginControllerTest extends WebTest {
         User boss = userService.byOpenId(createNewUser().getOpenId());
         driver.quit();
         createWebDriver();
-        User newUser = helloNewUser(boss.getInviteCode());
+        User newUser = helloNewUser(boss.getInviteCode(), true);
         assertThat(newUser.getGuideUser())
                 .isEqualTo(boss);
         assertThat(newUser.getAgentUser())
@@ -166,7 +166,7 @@ public class LoginControllerTest extends WebTest {
         AgentInfo info = agentService.makeAgent(boss);
         driver.quit();
         createWebDriver();
-        newUser = helloNewUser(boss.getInviteCode());
+        newUser = helloNewUser(boss.getInviteCode(), true);
         assertThat(newUser.getGuideUser())
                 .isEqualTo(boss);
         assertThat(newUser.getAgentUser())

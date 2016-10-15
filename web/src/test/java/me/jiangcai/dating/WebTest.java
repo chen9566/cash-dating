@@ -131,23 +131,25 @@ public abstract class WebTest extends ServiceBaseTest {
     /**
      * 磨磨唧唧的建立一个新用户
      *
-     * @param inviteCode 邀请码
+     * @param inviteCode      邀请码
+     * @param withBindingCard 是否自动绑定一个银行卡
      * @return
      * @throws IOException
      */
-    protected User helloNewUser(String inviteCode) throws IOException {
+    protected User helloNewUser(String inviteCode, boolean withBindingCard) throws IOException {
         final String startUrl = "http://localhost/start";
-        return helloNewUser(startUrl, inviteCode);
+        return helloNewUser(startUrl, inviteCode, withBindingCard);
     }
 
     /**
      * 磨磨唧唧的建立一个新用户
      *
-     * @param inviteCode 邀请码
+     * @param inviteCode      邀请码
+     * @param withBindingCard 是否自动绑定一个银行卡
      * @return
      * @throws IOException
      */
-    protected User helloNewUser(String startUrl, String inviteCode) throws IOException {
+    protected User helloNewUser(String startUrl, String inviteCode, boolean withBindingCard) throws IOException {
         driver.get(startUrl);
         String mobile = randomMobile();
         BindingMobilePage page = initPage(BindingMobilePage.class);
@@ -165,15 +167,20 @@ public abstract class WebTest extends ServiceBaseTest {
         StartOrderPage startOrderPage = initPage(StartOrderPage.class);
 
         startOrderPage.assertNoCard();
-//        startOrderPage.assertHaveCard();
 
-        // 这里应该是根据已有的支行给出选择
         SubBranchBank subBranchBank = randomSubBranchBank();
 
         final String owner = RandomStringUtils.randomAlphanumeric(3);
         final String number = randomBankCard();
 
-        startOrderPage = bindCardOnOrderPage(mobile, startOrderPage, subBranchBank, owner, number);
+        if (withBindingCard) {
+            startOrderPage = bindCardOnOrderPage(mobile, startOrderPage, subBranchBank, owner, number);
+        }
+
+//        startOrderPage.assertHaveCard();
+
+        // 这里应该是根据已有的支行给出选择
+
         // 这就对了!
         // 还需要检查 银行是否已设置 地址是否已设置
         String url = currentUserInviteURL();
@@ -186,27 +193,30 @@ public abstract class WebTest extends ServiceBaseTest {
         Long userId = CashFilter.guideUserFromURL(url, null);
 
         User user = userRepository.getOne(userId);
-        assertThat(user.getCards())
-                .hasSize(1);
+        if (withBindingCard) {
+            assertThat(user.getCards())
+                    .hasSize(1);
 
-        Card card = user.getCards().get(0);
-        assertThat(card.getAddress().getCity().getId())
-                .isEqualTo(subBranchBank.getCityCode());
-        assertThat(card.getBank())
-                .isEqualTo(subBranchBank.getBank());
-        assertThat(card.getSubBranchBank())
-                .isEqualTo(subBranchBank);
-        assertThat(card.getOwner())
-                .isEqualTo(owner);
-        assertThat(card.getNumber())
-                .isEqualTo(number);
+            Card card = user.getCards().get(0);
+            assertThat(card.getAddress().getCity().getId())
+                    .isEqualTo(subBranchBank.getCityCode());
+            assertThat(card.getBank())
+                    .isEqualTo(subBranchBank.getBank());
+            assertThat(card.getSubBranchBank())
+                    .isEqualTo(subBranchBank);
+            assertThat(card.getOwner())
+                    .isEqualTo(owner);
+            assertThat(card.getNumber())
+                    .isEqualTo(number);
+        }
+
 
         return user;
     }
 
-    private StartOrderPage bindCardOnOrderPage(String mobile, StartOrderPage startOrderPage
+    public StartOrderPage bindCardOnOrderPage(String mobile, StartOrderPage startOrderPage
             , SubBranchBank subBranchBank, String owner, String number) {
-        startOrderPage.toCard();
+        startOrderPage.toCreateNewOneCard();
 
         BindingCardPage cardPage = initPage(BindingCardPage.class);
         // 这个用户已经产生

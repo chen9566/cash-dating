@@ -11,22 +11,21 @@
     <script src="dist/js/share.js"></script>
 </head>
 <body>
-
-<h1 style="text-align: center;">成功注销!</h1>
-<br/>
-<br/>
-<br/>
-<p style="font-size: 30px;margin: 30px;">如果您想更换帐号再次登录款爷,请先切换微信帐号;点击这行文字即可复制【款爷二手】微信号!</p>
-
-<div class="p-15">
-    <input value="点错了,我要回去" type="button" class="red clickHref" href="my.html" th:href="@{/start}"/>
+<div class="logout">
+    <p class="l1"><img src="images/5.png">成功注销</p>
+    <p class="l2">如果您想更换帐号再次登录款爷<br>
+        请先切换微信账号；点击这行文字<br>
+        即可复制[款爷二手]微信号</p>
+    <p class="l3">
+        <button type="button" class="btn btn-danger btn-lg btn-block">
+            <a href="#">点错了，我要回去</a></button>
+    </p>
+    <p class="l4">
+        <input value="关闭" type="button" class="btn btn-default btn-lg btn-block" onclick="wx.closeWindow();"/>
+    </p>
 </div>
 
-<br/>
 <script wx:js=""></script>
 <script src="//res.wx.qq.com/open/js/jweixin-1.1.0.js" th:remove="all"></script>
-<div class="p-15">
-    <input value="关闭" type="button" class="red" onclick="wx.closeWindow();"/>
-</div>
 </body>
 </html>

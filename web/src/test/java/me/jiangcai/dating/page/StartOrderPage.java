@@ -28,6 +28,7 @@ public class StartOrderPage extends AbstractPage {
 
     public StartOrderPage(WebDriver webDriver) {
         super(webDriver);
+        System.out.println(webDriver.getPageSource());
     }
 
     @Override
@@ -85,9 +86,9 @@ public class StartOrderPage extends AbstractPage {
     }
 
     /**
-     * 点击 绑卡 或者是更换卡
+     * 去建立唯一的一个卡
      */
-    public void toCard() {
+    public void toCreateNewOneCard() {
         WebElement host;
         if (webDriver.findElements(By.className("nocard")).isEmpty()) {
             host = webDriver.findElement(By.className("card"));

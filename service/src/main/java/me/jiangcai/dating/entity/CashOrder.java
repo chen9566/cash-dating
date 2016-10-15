@@ -6,6 +6,7 @@ import me.jiangcai.dating.entity.support.RateConfig;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.util.Set;
@@ -34,6 +35,9 @@ public class CashOrder extends UserOrder {
      * 当时的几率配置
      */
     private RateConfig thatRateConfig;
+
+    @ManyToOne
+    private Card card;
 
     /**
      * 为什么是 1对多?

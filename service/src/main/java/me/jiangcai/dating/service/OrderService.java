@@ -24,10 +24,11 @@ public interface OrderService {
      * @param user    所有者
      * @param amount  金额
      * @param comment 备注
+     * @param cardId  套现的卡,如果卡未设置,则暂时不套现
      * @return 订单
      */
     @Transactional
-    CashOrder newOrder(User user, BigDecimal amount, String comment);
+    CashOrder newOrder(User user, BigDecimal amount, String comment, Long cardId);
 
     @Transactional(readOnly = true)
     CashOrder getOne(String id);

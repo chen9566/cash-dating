@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
+
 /**
  * 目前设计2个入口
  * 1 收款 既首页 不再是了 应该是/start
@@ -31,10 +33,13 @@ public class HomeController {
     @RequestMapping(method = RequestMethod.GET, value = {"/start"})
     public String index(@AuthenticationPrincipal User user, Model model) {
         user = userService.byOpenId(user.getOpenId());
-        if (user.getCards() != null && !user.getCards().isEmpty())
+        if (user.getCards() != null && !user.getCards().isEmpty()) {
             model.addAttribute("card", user.getCards().get(0));
-        else
+            model.addAttribute("cards", user.getCards());
+        } else {
             model.addAttribute("card", null);
+            model.addAttribute("cards", new ArrayList<>());
+        }
 
         // 还有一个数字
         model.addAttribute("rate", systemService.systemBookRate(user));

@@ -60,7 +60,7 @@ public class ChanpayServiceTest extends ServiceBaseTest {
                 , null, null, randomSubBranchBank().getCode());
 
 
-        CashOrder cashOrder = orderService.newOrder(user, new BigDecimal("0.1"), UUID.randomUUID().toString());
+        CashOrder cashOrder = orderService.newOrder(user, new BigDecimal("0.1"), UUID.randomUUID().toString(), null);
         chanpayService.createOrder(cashOrder);
         chanpayService.withdrawalOrder(cashOrder);
     }

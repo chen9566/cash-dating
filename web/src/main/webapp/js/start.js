@@ -82,7 +82,25 @@ $(function () {
 
     var cardChooser = $('[name=cardChooser]');
     cardChooser.click(function () {
-        console.error($(this).closest('.card'));
+        var choseCard = $(this).closest('.card');
+        selectedCard.attr('data-id', choseCard.attr('data-id'));
+        inputCard.val(choseCard.attr('data-id'));
+        selectedCard.css('background', choseCard.css('background'));
+        $('img', selectedCard).attr('src', $('img', choseCard).attr('src'));
+        // 连续copy2个span
+        var choseSpans = $('span', choseCard);
+        var selectedSpans = $('span', selectedCard);
+        // console.log(choseSpans,choseSpans.get(0).setContent());
+        var choseSpan1 = choseSpans.filter('.banktxt');
+        var choseSpan2 = choseSpans.not('.banktxt');
+        var selectedSpan1 = selectedSpans.filter('.banktxt');
+        var selectedSpan2 = selectedSpans.not('.banktxt');
+
+        // console.log(selectedSpan1,selectedSpan2);
+        // console.log(choseSpan1,choseSpan1);
+        selectedSpan1.text(choseSpan1.text());
+        selectedSpan2.text(choseSpan2.text());
+
         all.slideUp();
         return false;
     });

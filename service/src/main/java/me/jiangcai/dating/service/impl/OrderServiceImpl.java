@@ -5,6 +5,7 @@ import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.repository.CardRepository;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
@@ -35,9 +36,11 @@ public class OrderServiceImpl implements OrderService {
     private ChanpayService chanpayService;
     @Autowired
     private SystemService systemService;
+    @Autowired
+    private CardRepository cardRepository;
 
     @Override
-    public CashOrder newOrder(User user, BigDecimal amount, String comment) {
+    public CashOrder newOrder(User user, BigDecimal amount, String comment, Long cardId) {
         if (user == null)
             throw new IllegalArgumentException("owner must not null");
         if (amount.doubleValue() <= 0) {
@@ -50,6 +53,9 @@ public class OrderServiceImpl implements OrderService {
         order.setComment(comment);
         order.setStartTime(LocalDateTime.now());
         order.setThatRateConfig(systemService.currentRateConfig(user));
+        if (cardId != null) {
+            order.setCard(cardRepository.getOne(cardId));
+        }
 
         return cashOrderRepository.save(order);
     }

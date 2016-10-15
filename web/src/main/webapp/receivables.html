@@ -23,15 +23,15 @@
                 <img src="images/addicon.png">绑定银行卡</a>
         </div>
         <div class="card selectedCard" th:if="${card!=null}" th:attr="data-id=${card.id}" data-id="1"
-        >
-            <img src="images/logo-gs.png">
+             th:styleappend="${'background:'+card.bank.background}">
+            <img src="images/logo-gs.png" th:src="@{${card.bank.imageUri}}">
             <span class="banktxt" th:text="${card.bank.name}">工商银行</span>
             <span th:text="${card.owner}+'｜尾号'+${card.tailNumber}">徐春风｜尾号3490</span>
             <a href="#" name="cardChanger">更换</a>
         </div>
-        <div class="all-cards" style="display: none;">
+        <div class="all-cards" style="display: none;" th:if="${card!=null}">
             <div class="card" th:each="theCard:${cards}" th:attr="data-id=${theCard.id}" data-id="2"
-                 th:styleappend="background=${theCard.bank.background}"
+                 th:styleappend="${'background:'+theCard.bank.background}"
                  style="background: linear-gradient(to right, #3c763d , #3c3c3c);">
                 <img src="images/logo-gs.png" th:src="@{${theCard.bank.imageUri}}">
                 <span class="banktxt" th:text="${theCard.bank.name}">人民银行（假的!）</span>
@@ -45,9 +45,9 @@
                 <span>徐夫人｜尾号8932</span>
                 <a href="#" name="cardChooser">选择</a>
             </div>
-            <div class="nocard" th:if="${card==null}">
+            <div class="nocard">
                 <a href="addcard.html" th:href="@{/card}">
-                    <img src="images/addicon.png">添加银行卡</a>
+                    <img src="images/addicon.png">添加新银行卡</a>
             </div>
 
         </div>
