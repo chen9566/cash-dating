@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:wx="http://weixin.jiangcai.me" lang="en">
 <!--/*@thymesVar id="order" type="me.jiangcai.dating.entity.CashOrder"*/-->
 <!--/*@thymesVar id="type" type="java.lang.Integer"*/-->
+<!--/*@thymesVar id="cardRequired" type="java.lang.Boolean"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
@@ -23,7 +24,7 @@
         <span th:if="${type==1}" class="pay-done-1">预计到达时间需要<b>5-10</b>分钟</span>
         <span th:if="${type==2}" class="pay-done-2">资金正在打往你指定的收款账户</span>
     </p>
-    <p class="k2">
+    <p class="k2" th:if="${cardRequired}">
         <button type="button" class="btn btn-danger btn-lg btn-block">
             <a href="addcard.html" th:href="@{/card}">绑定收款银行卡</a></button>
     </p>

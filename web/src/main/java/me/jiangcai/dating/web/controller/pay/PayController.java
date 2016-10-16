@@ -50,7 +50,8 @@ public class PayController {
         return "redirect:/order/" + order.getId();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/orderCompleted/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, value = "/orderCompleted/{id}"
+            , produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public boolean orderStatus(@PathVariable("id") String id) {
         return orderService.isComplete(id);
@@ -66,7 +67,8 @@ public class PayController {
      * @return 将来的页面
      */
     @RequestMapping(method = RequestMethod.GET, value = "/order/{id}")
-    public String orderInfo(@OpenId String openId, @PathVariable("id") String id, Model model) throws IOException, SignatureException {
+    public String orderInfo(@OpenId String openId, @PathVariable("id") String id, Model model) throws IOException
+            , SignatureException {
         CashOrder order = orderService.getOne(id);
         if (orderService.isComplete(id)) {
             // 看是不是我
@@ -93,6 +95,9 @@ public class PayController {
                 return "payOtherComplete.html";
             } else {
                 model.addAttribute("order", order);
+                // 我自己的订单 看下是否需要绑定银行卡
+                model.addAttribute("cardRequired"
+                        , order.getOwner().getCards() == null || order.getOwner().getCards().isEmpty());
                 return "payMyComplete.html";
             }
 //            return "completed.html";
