@@ -49,7 +49,7 @@ public class HomeController {
 
     @RequestMapping(method = RequestMethod.GET, value = {"/my"})
     public String my(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.by(user.getId()));
         model.addAttribute("total", statisticService.totalExpense(user.getOpenId()));
         return "my.html";
     }

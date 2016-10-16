@@ -45,6 +45,11 @@ public class WithdrawOrder extends UserOrder implements BalanceFlow {
     }
 
     @Override
+    public void paySuccess() {
+        // 不可能
+    }
+
+    @Override
     public void withdrawalSuccess() {
         setProcessStatus(WithdrawOrderStatus.completed);
     }

@@ -7,6 +7,7 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
+import me.jiangcai.dating.service.UserService;
 import me.jiangcai.wx.OpenId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -35,6 +36,8 @@ public class PayController {
     private OrderService orderService;
     @Autowired
     private ChanpayService chanpayService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 开始付款--订单开始
@@ -46,7 +49,7 @@ public class PayController {
      */
     @RequestMapping(method = RequestMethod.POST, value = "/startOrder")
     public String start(@AuthenticationPrincipal User user, BigDecimal amount, String comment, Long card) {
-        CashOrder order = orderService.newOrder(user, amount, comment, card);
+        CashOrder order = orderService.newOrder(userService.by(user.getId()), amount, comment, card);
         return "redirect:/order/" + order.getId();
     }
 

@@ -3,9 +3,17 @@
     <!--先定义所有的appender-->
     <appenders>
         <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，这个也挺有用的，适合临时测试用-->
-        <File name="file" fileName="logs/cash.log" append="true">
-            <PatternLayout pattern="%d{yyyy/MM/dd HH:mm:ss} %class{36} %L %M - %msg%xEx%n"/>
-        </File>
+        <RollingFile name="file" filename="logs/cash.log"
+                     filePattern="logs/cash/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH}-%i.log">
+            <PatternLayout>
+                <pattern>%d{yyyy/MM/dd HH:mm:ss} %class{36} %L %M - %msg%xEx%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="24" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="250 MB"/>
+            </Policies>
+        </RollingFile>
+
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>

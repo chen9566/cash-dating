@@ -2,9 +2,12 @@ package me.jiangcai.dating.service;
 
 import me.jiangcai.chanpay.event.TradeEvent;
 import me.jiangcai.chanpay.event.WithdrawalEvent;
+import me.jiangcai.dating.ThreadSafe;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
+import me.jiangcai.dating.event.MyTradeEvent;
+import me.jiangcai.dating.event.MyWithdrawalEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,11 +37,12 @@ public interface ChanpayService {
      * 建立提现订单
      *
      * @param order 对应主订单
-     * @return 已建立的提现订单
+     * @return 已建立的提现订单, 在资料不充足的情况下可能会返回null
      * @throws IOException
      * @throws SignatureException
      */
     @Transactional
+    @ThreadSafe
     ChanpayWithdrawalOrder withdrawalOrder(CashOrder order) throws IOException, SignatureException;
 
     @PostConstruct
@@ -55,11 +59,18 @@ public interface ChanpayService {
      */
     String QRCodeImageFromOrder(ChanpayOrder order) throws IllegalStateException, IOException;
 
-    @Transactional
+
     @EventListener(TradeEvent.class)
     void tradeUpdate(TradeEvent event) throws IOException, SignatureException;
 
-    @Transactional
     @EventListener(WithdrawalEvent.class)
-    void tradeUpdate(WithdrawalEvent event);
+    void withdrawalUpdate(WithdrawalEvent event);
+
+    @Transactional
+    @ThreadSafe
+    void tradeUpdate(MyTradeEvent myEvent) throws IOException, SignatureException;
+
+    @Transactional
+    @ThreadSafe
+    void withdrawalUpdate(MyWithdrawalEvent myEvent);
 }

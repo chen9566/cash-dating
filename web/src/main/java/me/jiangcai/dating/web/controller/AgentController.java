@@ -2,6 +2,7 @@ package me.jiangcai.dating.web.controller;
 
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.service.AgentService;
+import me.jiangcai.dating.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,12 +25,15 @@ public class AgentController {
 
     @Autowired
     private AgentService agentService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 总的入口,如果还不是代理商 应该去代理商申请页
      */
     @RequestMapping(method = RequestMethod.GET, value = "/agent")
     public String index(@AuthenticationPrincipal User user) {
+        user = userService.by(user.getId());
         if (user.getAgentInfo() == null) {
             return "agent.html";
         }
@@ -52,6 +56,7 @@ public class AgentController {
         if (mobile.length() < 11)
             throw new IllegalArgumentException("mobile is required");
 
+        user = userService.by(user.getId());
         agentService.newRequest(user, name, mobile);
     }
 

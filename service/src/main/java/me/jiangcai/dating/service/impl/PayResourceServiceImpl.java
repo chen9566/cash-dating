@@ -49,8 +49,11 @@ public class PayResourceServiceImpl implements PayResourceService {
         // 测试时间,每家银行 有2个支行即可
         // sql_dump生成者 需要全部添加
         // 其他时间跳过
-        for (Bank bank : Dictionary.findAll(Bank.class)) {
-            bankService.updateBank(bank.getId(), bank.getName());
+        if (!environment.acceptsProfiles("test") || Dictionary.findAll(Bank.class).size() > bankService.list().size()) {
+            // 在测试阶段只有量不够时才干这事儿
+            for (Bank bank : Dictionary.findAll(Bank.class)) {
+                bankService.updateBank(bank.getId(), bank.getName());
+            }
         }
         Set<String> stopBanks = new HashSet<>();
         for (SubBranch branch : Dictionary.findAll(SubBranch.class)) {

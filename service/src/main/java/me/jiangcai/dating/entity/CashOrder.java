@@ -55,6 +55,11 @@ public class CashOrder extends UserOrder {
     }
 
     @Override
+    public void paySuccess() {
+        setCompleted(true);
+    }
+
+    @Override
     public void withdrawalSuccess() {
         setWithdrawalCompleted(true);
     }
@@ -62,5 +67,16 @@ public class CashOrder extends UserOrder {
     @Override
     public void withdrawalFailed() {
         setWithdrawalCompleted(false);
+    }
+
+    @Override
+    public String toString() {
+        return "CashOrder{" +
+                super.toString() +
+                "withdrawalCompleted=" + withdrawalCompleted +
+                ", completed=" + completed +
+                ", card=" + card +
+                ", thatRateConfig=" + thatRateConfig +
+                "} " + super.toString();
     }
 }

@@ -2,6 +2,7 @@ package me.jiangcai.dating.web.controller;
 
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.service.StatisticService;
+import me.jiangcai.dating.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,10 +19,12 @@ public class InviteController {
 
     @Autowired
     private StatisticService statisticService;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/myInvite")
     public String index(@AuthenticationPrincipal User user, Model model){
-        model.addAttribute("user",user);
+        model.addAttribute("user", userService.by(user.getId()));
         model.addAttribute("balance", statisticService.balance(user.getOpenId()));
         model.addAttribute("flows", statisticService.balanceFlows(user.getOpenId()));
         return "mymoney.html";
@@ -29,7 +32,7 @@ public class InviteController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/myInviteCode")
     public String code(@AuthenticationPrincipal User user, Model model){
-        model.addAttribute("user",user);
+        model.addAttribute("user", userService.by(user.getId()));
         return "code.html";
     }
 

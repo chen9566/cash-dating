@@ -70,6 +70,15 @@ public class Card {
     }
 
     @Override
+    public String toString() {
+        return "Card{" +
+                "bank=" + bank +
+                ", number='" + number + '\'' +
+                ", owner='" + owner + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Card)) return false;
