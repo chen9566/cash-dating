@@ -15,6 +15,7 @@ import me.jiangcai.chanpay.model.WithdrawalStatus;
 import me.jiangcai.chanpay.service.TransactionService;
 import me.jiangcai.chanpay.service.impl.GetPayChannelHandler;
 import me.jiangcai.chanpay.service.impl.InstantTradeHandler;
+import me.jiangcai.dating.ThreadSafe;
 import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.CashOrder;
@@ -101,6 +102,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
     }
 
     @Override
+    @ThreadSafe
     public void withdrawalUpdate(MyWithdrawalEvent myEvent) {
         WithdrawalEvent event = myEvent.getEvent();
 
@@ -136,6 +138,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
     }
 
     @Override
+    @ThreadSafe
     public void tradeUpdate(MyTradeEvent myEvent) throws IOException, SignatureException {
         TradeEvent event = myEvent.getEvent();
 
@@ -195,6 +198,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
     }
 
     @Override
+    @ThreadSafe
     public ChanpayWithdrawalOrder withdrawalOrder(CashOrder order) throws IOException, SignatureException {
         // 怎么确保安全?
         // 锁定订单号

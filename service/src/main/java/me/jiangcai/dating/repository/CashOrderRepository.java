@@ -23,6 +23,6 @@ public interface CashOrderRepository extends JpaRepository<CashOrder, String> {
     @Query("select C,W from CashOrder C left join C.platformWithdrawalOrderSet W" +
             " where C.owner=?1 and C.completed=true" +
             " order by C.startTime desc,w.finishTime desc")
-    List findOrderFlow(User user);
+    List<?> findOrderFlow(User user);
 
 }

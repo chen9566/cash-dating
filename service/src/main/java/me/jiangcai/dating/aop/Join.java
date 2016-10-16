@@ -23,14 +23,14 @@ public class Join {
     @Around("threadSafe()")
     public Object aroundSave(ProceedingJoinPoint pjp) throws Throwable {
         Locker locker = (Locker) pjp.getArgs()[0];
-        log.debug("prepare invoke threadSafe for locker" + locker);
+        log.debug("prepare invoke threadSafe for locker " + locker);
         try {
             synchronized (locker.lockObject()) {
-                log.debug("entering locker" + locker);
+                log.debug("entering locker " + locker);
                 return pjp.proceed(pjp.getArgs());
             }
         } finally {
-            log.debug("releasing locker" + locker);
+            log.debug("releasing locker " + locker);
         }
 
     }

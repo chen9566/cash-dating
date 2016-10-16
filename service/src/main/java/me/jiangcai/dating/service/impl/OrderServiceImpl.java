@@ -3,8 +3,11 @@ package me.jiangcai.dating.service.impl;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
+import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.model.OrderFlow;
 import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.support.OrderFlowStatus;
 import me.jiangcai.dating.repository.CardRepository;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.service.ChanpayService;
@@ -18,6 +21,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.SignatureException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -104,5 +108,36 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<CashOrder> findOrders(String openId) {
         return cashOrderRepository.findByOwnerOrderByStartTimeDesc(userService.byOpenId(openId));
+    }
+
+    @Override
+    public List<OrderFlow> orderFlows(String openId) {
+        ArrayList<OrderFlow> flowArrayList = new ArrayList<>();
+        cashOrderRepository.findOrderFlow(userService.byOpenId(openId)).forEach(object -> {
+            Object[] objects = (Object[]) object;
+            OrderFlow flow = new OrderFlow();
+            flow.setOrder((CashOrder) objects[0]);
+            if (objects.length >= 2) {
+                PlatformWithdrawalOrder withdrawalOrder = (PlatformWithdrawalOrder) objects[1];
+                if (withdrawalOrder != null) {
+                    if (withdrawalOrder.isFinish()) {
+                        if (withdrawalOrder.isSuccess()) {
+                            flow.setStatus(OrderFlowStatus.success);
+                        } else
+                            flow.setStatus(OrderFlowStatus.failed);
+                    } else {
+                        flow.setStatus(OrderFlowStatus.transferring);
+                    }
+                    flow.setWithdrawalOrder(withdrawalOrder);
+                } else
+                    flow.setStatus(OrderFlowStatus.cardRequired);
+            } else {
+                flow.setStatus(OrderFlowStatus.cardRequired);
+            }
+
+            if (!flowArrayList.contains(flow))
+                flowArrayList.add(flow);
+        });
+        return flowArrayList;
     }
 }

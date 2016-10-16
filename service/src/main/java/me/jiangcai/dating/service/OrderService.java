@@ -3,6 +3,7 @@ package me.jiangcai.dating.service;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.model.OrderFlow;
 import me.jiangcai.dating.model.PayChannel;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,4 +60,12 @@ public interface OrderService {
     @Transactional(readOnly = true)
     List<CashOrder> findOrders(String openId);
 
+    /**
+     * 近期的订单流水
+     *
+     * @param openId 用户
+     * @return 订单流水
+     */
+    @Transactional(readOnly = true)
+    List<OrderFlow> orderFlows(String openId);
 }

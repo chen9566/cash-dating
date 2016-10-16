@@ -2,64 +2,71 @@
 <html lang="en">
 <!--/*@thymesVar id="banks" type="java.lang.Iterable<me.jiangcai.dating.entity.Bank>"*/-->
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>资金流水</title>
-<link rel="stylesheet" href="dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="dist/css/font-awesome.min.css">
-<link rel="stylesheet" href="dist/css/meiyue.css">
-<script src="dist/js/jquery.js"></script>
-<script src="dist/js/bootstrap.min.js"></script>
-<script src="dist/js/yzm.js"></script>
-<script src="dist/js/share.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>资金流水</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/yzm.js"></script>
+    <script src="dist/js/share.js"></script>
 </head>
 <body>
 <div class="addcard" data-toggle="modal" data-target="#myModal"><a href="#"> <img src="images/criicon.png">绑定收款银行卡</a>
 </div>
 <div class="order">
-    <dl>
-        <dt class="d1">收款</dt>
-        <dd><span class="d3">5000</span><span class="d4">2016 06-01 22:15</span></dd>
-        <!--<dd class="t3"><a href="addcard.html">等待绑定收款银行卡</a></dd>-->
-        <dd class="t4"><span>失败,户名跟卡号不符</span><span class="t5">点击更换银行卡</span></dd>
-    </dl>
-    <dl>
-        <dt class="d2">付款</dt>
-        <dd><span class="d3">5000</span><span class="d4">2016 06-01 22:30</span></dd>
-        <dd class="t2">成功</dd>
-    </dl>
-	<dl>
-		<dt class="d1">收款</dt>
-        <dd><span class="d3">4000</span><span class="d4">2016 06-01 22:15</span></dd>
-        <dd class="t3"><a href="addcard.html">提现</a></dd>
-	</dl>
-	<dl>
-		<dt class="d2">付款</dt>
-		<dd> <span class="d3">4000</span><span class="d4">2016 06-01 22:15</span> </dd>
-        <dd class="t2">成功</dd>
-	</dl>
-	<dl>
-		<dt class="d1">收款</dt>
-		<dd><span class="d3">9990</span><span class="d4">2016 06-01 22:12</span> </dd>
-		<dd class="t1">未到账</dd>
-	</dl>
-	<dl>
-		<dt class="d2">付款</dt>
-		<dd><span class="d3">10000</span><span class="d4">2016 06-01 22:12</span> </dd>
-		<dd class="t2">成功</dd>
-	</dl>
-	<dl>
-		<dt class="d2">收款</dt>
-		<dd> <span class="d3">9990</span><span class="d4">2016 06-01 22:11</span> </dd>
-		<dd class="t4"><span >成功,扣取10.00手续费</span><span class="t5">转入尾号7742银行卡</span> </dd>
-	</dl>
-	<dl>
-		<dt class="d2">付款</dt>
-		<dd> <span class="d3">10000</span><span class="d4">2016 06-01 22:10</span> </dd>
-		<dd class="t2">成功</dd>
-	</dl>
-	
+    <div>
+        <dl>
+            <dt class="d1">收款</dt>
+            <dd><span class="d3">5000</span><span class="d4">2016 06-01 22:15</span></dd>
+            <!--<dd class="t3"><a href="addcard.html">等待绑定收款银行卡</a></dd>-->
+            <dd class="t4"><span>失败,户名跟卡号不符</span><span class="t5">点击更换银行卡</span></dd>
+        </dl>
+        <dl>
+            <dt class="d2">付款</dt>
+            <dd><span class="d3">5000</span><span class="d4">2016 06-01 22:30</span></dd>
+            <dd class="t2">成功</dd>
+        </dl>
+    </div>
+    <div>
+        <dl>
+            <dt class="d1">收款</dt>
+            <dd><span class="d3">4000</span><span class="d4">2016 06-01 22:15</span></dd>
+            <dd class="t3"><a href="addcard.html">提现</a></dd>
+        </dl>
+        <dl>
+            <dt class="d2">付款</dt>
+            <dd><span class="d3">4000</span><span class="d4">2016 06-01 22:15</span></dd>
+            <dd class="t2">成功</dd>
+        </dl>
+    </div>
+    <div>
+        <dl>
+            <dt class="d1">收款</dt>
+            <dd><span class="d3">9990</span><span class="d4">2016 06-01 22:12</span></dd>
+            <dd class="t1">未到账</dd>
+        </dl>
+        <dl>
+            <dt class="d2">付款</dt>
+            <dd><span class="d3">10000</span><span class="d4">2016 06-01 22:12</span></dd>
+            <dd class="t2">成功</dd>
+        </dl>
+    </div>
+    <div>
+        <dl>
+            <dt class="d2">收款</dt>
+            <dd><span class="d3">9990</span><span class="d4">2016 06-01 22:11</span></dd>
+            <dd class="t4"><span>成功,扣取10.00手续费</span><span class="t5">转入尾号7742银行卡</span></dd>
+        </dl>
+        <dl>
+            <dt class="d2">付款</dt>
+            <dd><span class="d3">10000</span><span class="d4">2016 06-01 22:10</span></dd>
+            <dd class="t2">成功</dd>
+        </dl>
+    </div>
 </div>
 </body>
 </html>
