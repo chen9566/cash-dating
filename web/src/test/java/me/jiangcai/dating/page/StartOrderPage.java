@@ -6,9 +6,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.annotation.Nullable;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,10 +28,11 @@ public class StartOrderPage extends AbstractPage {
     private WebElement commentInput;
     @FindBy(id = "_btn1")
     private WebElement button;
+    private WebElement cardChanger;
 
     public StartOrderPage(WebDriver webDriver) {
         super(webDriver);
-        System.out.println(webDriver.getPageSource());
+//        System.out.println(webDriver.getPageSource());
     }
 
     @Override
@@ -59,7 +63,31 @@ public class StartOrderPage extends AbstractPage {
                 .isTrue();
     }
 
-    public void pay(double amount, String comment) {
+    public void pay(double amount, String comment, Predicate<WebElement> cardChooser) {
+        if (cardChooser != null) {
+            // 打开列表 选择卡
+            assertThat(this.cardChanger.isDisplayed())
+                    .isTrue();
+            // .all-cards
+            cardChanger.click();
+            WebElement all = webDriver.findElement(By.className("all-cards"));
+            all.findElements(By.className("card")).stream()
+                    .filter(WebElement::isDisplayed)
+                    .filter(cardChooser)
+                    .findFirst()
+                    .ifPresent(card -> card.findElement(By.name("cardChooser")).click());
+            WebDriverWait wait = new WebDriverWait(webDriver, 2);
+            wait.until(new com.google.common.base.Predicate<WebDriver>() {
+                @Override
+                public boolean apply(@Nullable WebDriver input) {
+                    if (input == null)
+                        return false;
+                    return !input.findElement(By.className("all-cards")).isDisplayed();
+                }
+            });
+            assertThat(all.isDisplayed())
+                    .isFalse();
+        }
         amountInput.clear();
 
         NumberFormat format = NumberFormat.getNumberInstance();

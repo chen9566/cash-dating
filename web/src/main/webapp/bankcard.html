@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.web.thymeleaf.CashStrings"*/-->
 <!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
 <head>
@@ -16,7 +16,8 @@
 <body>
 <div class="bankcard" th:each="card:${user.getCards()}">
     <div class="card">
-        <dl class="blue">
+        <dl class="blue" th:styleappend="${'background:'+card.bank.background}"
+            style="background: linear-gradient(to right, #3c763d , #3c3c3c);">
             <dt><img src="images/temp.jpg" class="img-circle"></dt>
             <dd class="txt" th:text="${card.bank.name}">杭州银行</dd>
             <dd class="code-n" th:text="${#cashStrings.bankCardNumber(card.number)}">**** **** **** 2222</dd>
@@ -25,13 +26,25 @@
 </div>
 <div class="bankcard" th:remove="all">
     <div class="card">
-        <dl class="blue">
+        <dl class="green">
             <dt><img src="images/temp.jpg" class="img-circle"></dt>
             <dd class="txt">杭州银行</dd>
             <dd class="code-n">**** **** **** 2222</dd>
         </dl>
     </div>
 </div>
+<div class="bankcard" th:remove="all">
+    <div class="card">
+        <dl class="yellow">
+            <dt><img src="images/temp.jpg" class="img-circle"></dt>
+            <dd class="txt">杭州银行</dd>
+            <dd class="code-n">**** **** **** 2222</dd>
+        </dl>
+    </div>
+</div>
+<div class="add-bank"><a href="addcard.html" th:href="@{/card}"><img src="images/add-bank.png">添加银行卡</a>
+</div>
+
 <!--<div class="modcard">-->
 <!--<ul>-->
 <!--<li>添加银行卡<i class="fa fa-angle-right fa-2x pull-right"></i></li>-->

@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.util.Objects;
 
 /**
  * 是指银行卡
@@ -68,4 +69,18 @@ public class Card {
         return number.substring(length - 4);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Card)) return false;
+        Card card = (Card) o;
+        return Objects.equals(bank, card.bank) &&
+                Objects.equals(number, card.number) &&
+                Objects.equals(owner, card.owner);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bank, number, owner);
+    }
 }

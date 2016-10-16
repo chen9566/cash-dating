@@ -21,6 +21,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MyBankPage extends AbstractPage {
 
     private List<BankCard> bankCards;
+    private WebElement addButton;
+
+    public MyBankPage(WebDriver webDriver) {
+        super(webDriver);
+        System.out.println(webDriver.getPageSource());
+    }
 
     /**
      * 检查 只有这么几个卡
@@ -55,6 +61,39 @@ public class MyBankPage extends AbstractPage {
         return false;
     }
 
+    /**
+     * 点击 建立新卡
+     */
+    public void toCreateNewCard() {
+        addButton.click();
+    }
+
+    @Override
+    public void validatePage() {
+
+        // 添加卡
+        webDriver.findElements(By.tagName("a")).stream()
+                .filter(WebElement::isDisplayed)
+                .filter(webElement -> webElement.getText().contains("添加"))
+                .findFirst()
+                .ifPresent(webElement -> addButton = webElement);
+
+        bankCards = webDriver.findElements(By.className("bankcard")).stream()
+                .filter(WebElement::isDisplayed)
+                .map(this::toCard)
+                .collect(Collectors.toList());
+
+        assertThat(bankCards).isNotNull();
+
+        assertThat(addButton).isNotNull();
+        assertThat(addButton.isDisplayed()).isTrue();
+    }
+
+    private BankCard toCard(WebElement element) {
+        return new BankCard(element.findElement(By.className("txt")).getText()
+                , element.findElement(By.className("code-n")).getText());
+    }
+
     @Data
     @AllArgsConstructor
     private class BankCard {
@@ -67,25 +106,5 @@ public class MyBankPage extends AbstractPage {
             String end = number.substring(number.length() - 4);
             return card.getBank().getName().equals(bankName) && card.getNumber().endsWith(end);
         }
-    }
-
-    public MyBankPage(WebDriver webDriver) {
-        super(webDriver);
-    }
-
-    @Override
-    public void validatePage() {
-        bankCards = webDriver.findElements(By.className("bankcard")).stream()
-                .filter(WebElement::isDisplayed)
-                .map(this::toCard)
-                .collect(Collectors.toList());
-
-        assertThat(bankCards)
-                .isNotEmpty();
-    }
-
-    private BankCard toCard(WebElement element) {
-        return new BankCard(element.findElement(By.className("txt")).getText()
-                , element.findElement(By.className("code-n")).getText());
     }
 }

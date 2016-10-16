@@ -52,6 +52,16 @@ public class ShowOrderPage extends AbstractPage {
                 .isNotNull();
     }
 
+    public String orderId() {
+        String url = webDriver.getCurrentUrl();
+        String id = url.substring(url.lastIndexOf("/") + 1);
+        if (id.contains("?")) {
+            int index = id.indexOf("?");
+            return id.substring(0, index);
+        }
+        return id;
+    }
+
 
     public BufferedImage scanCode() throws IOException {
         return toImage(image);

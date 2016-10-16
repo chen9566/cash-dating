@@ -79,7 +79,7 @@ public class HomeControllerTest extends LoginWebTest {
         //   76352258.18&version=1.0
         //    6491427.62 work
 
-        page.pay(amount, UUID.randomUUID().toString());
+        page.pay(amount, UUID.randomUUID().toString(), null);
 
         // 这个时候应该是到了二维码界面,在这个界面 我们可以分享它
         ShowOrderPage codePage = initPage(ShowOrderPage.class);

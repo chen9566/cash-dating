@@ -54,7 +54,7 @@ public class CardController {
 //        address.setProvince(PayResourceService.provinceById(province));
 //        address.setCity(PayResourceService.cityById(city));
 
-        userService.deleteCards(id);
+//        userService.deleteCards(id);
 
         Card card = userService.addCard(id, name, number, null, null, subBranch);
 
