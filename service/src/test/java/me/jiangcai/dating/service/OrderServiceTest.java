@@ -109,6 +109,18 @@ public class OrderServiceTest extends ServiceBaseTest {
                 .isEqualTo(withdrawalFailedOrder);
         assertThat(list.get(0).getStatus())
                 .isEqualTo(OrderFlowStatus.failed);
+
+        // 如果点击重试  那就应该再度进入交易中
+        chanpayService.withdrawalOrder(withdrawalFailedOrder);
+
+        list = orderService.orderFlows(user.getOpenId());
+        assertThat(list)
+                .hasSize(4);
+
+        assertThat(list.get(0).getOrder())
+                .isEqualTo(withdrawalFailedOrder);
+        assertThat(list.get(0).getStatus())
+                .isEqualTo(OrderFlowStatus.transferring);
     }
 
 

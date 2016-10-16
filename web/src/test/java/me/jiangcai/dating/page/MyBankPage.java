@@ -25,7 +25,7 @@ public class MyBankPage extends AbstractPage {
 
     public MyBankPage(WebDriver webDriver) {
         super(webDriver);
-        System.out.println(webDriver.getPageSource());
+//        System.out.println(webDriver.getPageSource());
     }
 
     /**

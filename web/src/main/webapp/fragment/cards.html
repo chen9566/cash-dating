@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="cards" type="java.lang.Iterable<me.jiangcai.dating.entity.Card>"*/-->
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../dist/css/bootstrap.min.css" th:href="@{/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="../dist/css/font-awesome.min.css" th:href="@{/dist/css/font-awesome.min.css}">
+    <link rel="stylesheet" href="../dist/css/meiyue.css" th:href="@{/dist/css/meiyue.css}">
+    <script src="../dist/js/jquery.js" th:src="@{/dist/js/jquery.js}"></script>
+    <script src="../dist/js/bootstrap.min.js" th:src="@{/dist/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+<div class="all-cards" th:fragment="cards">
+    <div class="card" th:each="theCard:${cards}" th:attr="data-id=${theCard.id}" data-id="2"
+         th:styleappend="${'background:'+theCard.bank.background}"
+         style="background: linear-gradient(to right, #3c763d , #3c3c3c);">
+        <img src="../images/logo-gs.png" th:src="@{${theCard.bank.imageUri}}">
+        <span class="banktxt" th:text="${theCard.bank.name}">人民银行（假的!）</span>
+        <span th:text="${theCard.owner}+'｜尾号'+${theCard.tailNumber}">徐春风｜尾号8921</span>
+        <a href="#" name="cardChooser">选择</a>
+    </div>
+    <div class="card" th:remove="all" data-id="3"
+         style="background: linear-gradient(to right, #2d6ca2 , #2aabd2);">
+        <img src="../images/logo-gs.png">
+        <span class="banktxt">建设银行</span>
+        <span>徐夫人｜尾号8932</span>
+        <a href="#" name="cardChooser">选择</a>
+    </div>
+    <div class="nocard">
+        <a href="../addcard.html" th:href="@{/card}">
+            <img src="../images/addicon.png" th:src="@{/images/addicon.png}">添加新银行卡</a>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -45,14 +45,14 @@ public abstract class ServiceBaseTest extends SpringWebTest {
     protected OrderService orderService;
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
-    private SubBranchBankRepository subBranchBankRepository;
+    protected SubBranchBankRepository subBranchBankRepository;
     @Autowired
-    private VerificationCodeService verificationCodeService;
+    protected VerificationCodeService verificationCodeService;
     @Autowired
-    private ChanpayService chanpayService;
+    protected ChanpayService chanpayService;
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
-    private CashOrderRepository cashOrderRepository;
+    protected CashOrderRepository cashOrderRepository;
 
     protected SubBranchBank randomSubBranchBank() {
         return subBranchBankRepository.findAll().stream()

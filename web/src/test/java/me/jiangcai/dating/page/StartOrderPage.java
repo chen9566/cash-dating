@@ -65,12 +65,15 @@ public class StartOrderPage extends AbstractPage {
 
     public void pay(double amount, String comment, Predicate<WebElement> cardChooser) {
         if (cardChooser != null) {
+            WebElement all = webDriver.findElement(By.className("all-cards"));
+            assertThat(all.isDisplayed())
+                    .isFalse();
             // 打开列表 选择卡
             assertThat(this.cardChanger.isDisplayed())
                     .isTrue();
             // .all-cards
             cardChanger.click();
-            WebElement all = webDriver.findElement(By.className("all-cards"));
+
             all.findElements(By.className("card")).stream()
                     .filter(WebElement::isDisplayed)
                     .filter(cardChooser)
