@@ -1,14 +1,12 @@
 package me.jiangcai.dating.page;
 
+import me.jiangcai.dating.util.Common;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.thymeleaf.util.NumberPointType;
-import org.thymeleaf.util.NumberUtils;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -69,6 +67,6 @@ public class ShowOrderPage extends AbstractPage {
 
     public void assertAmount(double amount) {
         assertThat(amountSpan.getText())
-                .isEqualTo(NumberUtils.format(amount, 1, NumberPointType.COMMA, 2, NumberPointType.POINT, Locale.CHINA));
+                .isEqualTo(Common.CurrencyFormat(amount));
     }
 }

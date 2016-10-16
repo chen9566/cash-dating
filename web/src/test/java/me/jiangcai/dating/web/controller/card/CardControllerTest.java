@@ -14,6 +14,7 @@ import me.jiangcai.dating.repository.CashOrderRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
@@ -93,8 +94,14 @@ public class CardControllerTest extends WebTest {
         Card exceptedCard = user.getCards().get(1);
 
         orderPage.pay(100, "", webElement -> {
-            String text = webElement.findElement(By.tagName("span")).getText();
-            return text.equals(exceptedCard.getBank().getName());
+            return webElement.findElements(By.tagName("span")).stream()
+                    .filter(WebElement::isDisplayed)
+                    .filter(webElement1 -> {
+                        // 要么 等于银行名称 要么 搜索到尾号
+                        return webElement1.getText().equals(exceptedCard.getBank().getName())
+                                || webElement1.getText().contains(exceptedCard.getTailNumber());
+                    })
+                    .count() == 2;
         });
 
         ShowOrderPage codePage = initPage(ShowOrderPage.class);

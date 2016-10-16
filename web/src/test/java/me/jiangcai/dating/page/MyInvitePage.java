@@ -5,6 +5,7 @@ import lombok.Data;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.service.StatisticService;
+import me.jiangcai.dating.util.Common;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -87,7 +88,7 @@ public class MyInvitePage extends AbstractPage {
      * @param statisticService
      */
     public void assertUser(User user, StatisticService statisticService) {
-        String text = String.valueOf(statisticService.balance(user.getOpenId()));
+        String text = Common.CurrencyFormat(statisticService.balance(user.getOpenId()));
         assertThat(balanceText.getText())
                 .isEqualTo(text);
 
