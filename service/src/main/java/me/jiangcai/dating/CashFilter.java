@@ -51,7 +51,7 @@ public class CashFilter extends OncePerRequestFilter {
 
     /**
      * @param request
-     * @return 获取当前的邀请者
+     * @return 获取当前的邀请者, 没有的话那就是null
      */
     public static Long inviteBy(HttpServletRequest request) {
         HttpSession session = request.getSession();

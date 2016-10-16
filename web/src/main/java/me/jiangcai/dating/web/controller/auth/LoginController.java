@@ -1,6 +1,7 @@
 package me.jiangcai.dating.web.controller.auth;
 
 import com.google.zxing.WriterException;
+import me.jiangcai.dating.CashFilter;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.QRCodeService;
@@ -57,6 +58,11 @@ public class LoginController {
         //  是否已经完成注册
         //
         if (userService.mobileRequired(detail.getOpenId())) {
+            Long invite = CashFilter.inviteBy(request);
+            if (invite != null) {
+                model.addAttribute("invite", userService.by(invite));
+            } else
+                model.addAttribute("invite", null);
             return "register.html";
         }
 //        if (userService.bankAccountRequired(detail.getOpenId())) {

@@ -143,4 +143,7 @@ public interface UserService {
      */
     @Transactional
     void deleteCards(String openId);
+
+    @Transactional(readOnly = true)
+    User by(Long id);
 }

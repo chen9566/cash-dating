@@ -259,4 +259,9 @@ public class UserServiceImpl implements UserService {
             user.getCards().clear();
     }
 
+    @Override
+    public User by(Long id) {
+        return userRepository.getOne(id);
+    }
+
 }
