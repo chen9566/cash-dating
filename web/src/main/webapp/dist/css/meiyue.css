@@ -888,8 +888,9 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.order dt.d2{background:#FDBC6B; color:#fff; font-size:15px}
 	.order dd .d4{font-weight:300; color:#b3b3b3; float:left; font-size:13px;}
 	.order dd .d3{ font-size:16px; color:#353535;display:block;}
-	.order .t4{ float:right; margin-top:-21px;line-height:20px; text-align:right}
+	.order .t4{ float:right; margin-top:-22px;line-height:20px; text-align:right}
 	.order .t5{ display:block; color:#888; }
+	 .order .t5 button{ text-align:center; line-height:22px; background:#fcfcfc;  color:#888; height:22px; border:1px solid #e0e0e0; font-size:12px; border-radius:4px; }
 	.order .t1{ float:right; margin-top:-24px; color:#F65150; line-height:44px;}
 	.order .t2{ float:right; color:#000; margin-top:-24px;line-height:44px;}
 	.order .t3{ float:right; margin-top:-15px;line-height:44px;}
