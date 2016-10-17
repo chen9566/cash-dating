@@ -14,7 +14,6 @@ import me.jiangcai.dating.page.MyInvitePage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.repository.UserRepository;
-import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.web.WebConfig;
 import me.jiangcai.lib.test.page.AbstractPage;
@@ -51,8 +50,6 @@ public abstract class WebTest extends ServiceBaseTest {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private BankService bankService;
     @Autowired
     private QRCodeService qrCodeService;
 

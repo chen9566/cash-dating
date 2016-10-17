@@ -1,6 +1,7 @@
 package me.jiangcai.dating.service;
 
 import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.OrderFlow;
@@ -68,4 +69,14 @@ public interface OrderService {
      */
     @Transactional(readOnly = true)
     List<OrderFlow> orderFlows(String openId);
+
+    /**
+     * 尝试重新提现
+     *
+     * @param orderId 主订单号
+     * @param cardId  卡号,可选,如果为null就是不改变
+     * @return 新增的提现订单
+     */
+    @Transactional
+    ChanpayWithdrawalOrder withdrawalWithCard(String orderId, Long cardId) throws IOException, SignatureException;
 }

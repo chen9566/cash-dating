@@ -7,6 +7,7 @@ import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.model.support.OrderFlowStatus;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -27,6 +28,13 @@ public class OrderFlow {
      * 最新提现订单,可选
      */
     private PlatformWithdrawalOrder withdrawalOrder;
+
+    /**
+     * @return 手续费, 只有成功才有的吧
+     */
+    public BigDecimal getCharge() {
+        return order.getAmount().subtract(order.getWithdrawalAmount());
+    }
 
     @Override
     public boolean equals(Object o) {

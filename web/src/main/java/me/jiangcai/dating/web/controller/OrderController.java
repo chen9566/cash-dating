@@ -10,7 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
+import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +37,12 @@ public class OrderController {
         model.addAttribute("orders", orderService.orderFlows(user.getOpenId()));
         model.addAttribute("cards", cards);
         return "order.html";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/touchOrder")
+    public String touch(@RequestParam String id, Long cardId) throws IOException, SignatureException {
+        orderService.withdrawalWithCard(id, cardId);
+        return "redirect:/orderList";
     }
 
 }

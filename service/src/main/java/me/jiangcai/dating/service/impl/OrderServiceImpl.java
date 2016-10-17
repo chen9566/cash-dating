@@ -2,6 +2,7 @@ package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
+import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.User;
@@ -139,5 +140,15 @@ public class OrderServiceImpl implements OrderService {
                 flowArrayList.add(flow);
         });
         return flowArrayList;
+    }
+
+    @Override
+    public ChanpayWithdrawalOrder withdrawalWithCard(String orderId, Long cardId) throws IOException, SignatureException {
+        CashOrder order = getOne(orderId);
+        if (cardId != null) {
+            order.setCard(cardRepository.getOne(cardId));
+        }
+        cashOrderRepository.save(order);
+        return chanpayService.withdrawalOrder(order);
     }
 }

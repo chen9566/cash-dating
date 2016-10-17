@@ -34,7 +34,7 @@
             </select>
             </div>
             <div class="modal-footer">
-                <div class="show-c1 cardSubmit">确定</div>
+                <div class="show-c1 cardSubmit" style="cursor: pointer">确定</div>
                 <div class="show-c2"><a href="addcard.html" th:href="@{/card}">绑定新的收款银行卡</a></div>
             </div>
         </div>
@@ -45,28 +45,43 @@
         <img src="images/criicon.png"/>绑定收款银行卡</a>
 </div>
 <div class="order">
-    <div th:each="order:${orders}" th:switch="${order.status.name()}">
+    <div th:each="order:${orders}" th:switch="${order.status.name()}" class="orderFlow"
+         data-id="1" th:attr="data-id=${order.order.id}">
         <dl th:case="'success'">
             <dt class="d2">收款</dt>
-            <dd><span class="d3">9990</span><span class="d4">2016 06-01 22:11</span></dd>
-            <dd class="t4"><span>成功,扣取10.00手续费</span><span class="t5">转入尾号7742银行卡</span></dd>
+            <dd><span class="d3" th:text="${#numbers.formatDecimal(order.order.withdrawalAmount,1,'COMMA',2,'POINT')}">9990</span>
+                <span class="d4" th:text="${{order.withdrawalOrder.finishTime}}">2016 06-01 22:11</span></dd>
+            <dd class="t4">
+                <span th:text="${'成功,扣取'+#numbers.formatDecimal(order.charge,1,'COMMA',2,'POINT')+'手续费'}">成功,扣取10.00手续费</span>
+                <span class="t5" th:text="${'转入尾号'+order.withdrawalOrder.tailNumber+'银行卡'}">转入尾号7742银行卡</span>
+            </dd>
         </dl>
         <dl th:case="'transferring'">
             <dt class="d1">收款</dt>
-            <dd><span class="d3">9990</span><span class="d4">2016 06-01 22:12</span></dd>
-            <dd class="t1">未到账</dd>
+            <dd><span class="d3" th:text="${#numbers.formatDecimal(order.order.withdrawalAmount,1,'COMMA',2,'POINT')}">9990</span>
+                <span class="d4" th:text="${{order.withdrawalOrder.startTime}}">2016 06-01 22:12</span></dd>
+            <dd class="t1">转账中……</dd>
         </dl>
         <dl th:case="'cardRequired'">
             <dt class="d1">收款</dt>
-            <dd><span class="d3">4000</span><span class="d4">2016 06-01 22:15</span></dd>
-            <dd class="t3"><a href="addcard.html">提现</a></dd>
+            <dd><span class="d3" th:text="${#numbers.formatDecimal(order.order.withdrawalAmount,1,'COMMA',2,'POINT')}">4000</span>
+                <span class="d4" th:text="${{order.order.startTime}}">2016 06-01 22:15</span>
+            </dd>
+            <dd class="t3">
+                <a href="addcard.html" th:if="${cards.isEmpty()}" th:href="@{/card}">提现</a>
+                <a href="#" th:if="${!cards.isEmpty()}" class="flow-change">提现</a>
+            </dd>
         </dl>
         <dl th:case="'failed'">
             <dt class="d1">收款</dt>
             <dd><span class="d3" th:text="${#numbers.formatDecimal(order.order.withdrawalAmount,1,'COMMA',2,'POINT')}">5000</span>
                 <span class="d4" th:text="${{order.withdrawalOrder.finishTime}}">2016 06-01 22:15</span></dd>
-            <dd class="t4"><span th:text="${order.withdrawalOrder.comment}">失败,户名跟卡号不符</span><span
-                    class="t5">点击更换银行卡</span></dd>
+            <dd class="t4"><span th:text="${order.withdrawalOrder.comment}">失败,户名跟卡号不符</span>
+                <span class="t5">
+                    <button class="flow-retry" th:if="${order.order.card!=null}">重试</button>&nbsp;
+                    <button class="flow-change">点击更换银行卡</button>
+                </span>
+            </dd>
         </dl>
         <dl>
             <dt class="d2">付款</dt>
@@ -75,13 +90,14 @@
             <dd class="t2">成功</dd>
         </dl>
     </div>
-    <div th:remove="all">
+    <div data-id="2" th:remove="all" class="orderFlow">
         <dl>
             <dt class="d1">收款</dt>
             <dd><span class="d3">5000</span><span class="d4">2016 06-01 22:15</span></dd>
-            <!--<dd class="t3"><a href="addcard.html">等待绑定收款银行卡</a></dd>-->
             <dd class="t4"><span>失败,户名跟卡号不符</span>
-                <span class="t5" data-toggle="modal" data-target="#cardsContainer">点击更换银行卡</span>
+                <span class="t5">
+                    <button class="flow-retry">重试</button>&nbsp;<button class="flow-change">点击更换银行卡</button>
+                </span>
             </dd>
         </dl>
         <dl>
@@ -90,7 +106,7 @@
             <dd class="t2">成功</dd>
         </dl>
     </div>
-    <div th:remove="all">
+    <div data-id="3" th:remove="all" class="orderFlow">
         <dl>
             <dt class="d1">收款</dt>
             <dd><span class="d3">4000</span><span class="d4">2016 06-01 22:15</span></dd>
@@ -102,11 +118,11 @@
             <dd class="t2">成功</dd>
         </dl>
     </div>
-    <div th:remove="all">
+    <div data-id="4" th:remove="all" class="orderFlow">
         <dl>
             <dt class="d1">收款</dt>
             <dd><span class="d3">9990</span><span class="d4">2016 06-01 22:12</span></dd>
-            <dd class="t1">未到账</dd>
+            <dd class="t1">转账中……</dd>
         </dl>
         <dl>
             <dt class="d2">付款</dt>
@@ -114,7 +130,7 @@
             <dd class="t2">成功</dd>
         </dl>
     </div>
-    <div th:remove="all">
+    <div data-id="5" th:remove="all" class="orderFlow">
         <dl>
             <dt class="d2">收款</dt>
             <dd><span class="d3">9990</span><span class="d4">2016 06-01 22:11</span></dd>

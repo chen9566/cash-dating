@@ -97,6 +97,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
      * @param order
      */
     protected void tradeSuccess(CashOrder order) throws IOException, SignatureException {
+        order = cashOrderRepository.getOne(order.getId());
         PlatformOrder platformOrder = orderService.preparePay(order.getId(), PayChannel.weixin);
 
         TradeEvent tradeEvent = new TradeEvent(TradeStatus.TRADE_SUCCESS);
@@ -121,6 +122,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
      * @param reason 原因
      */
     protected void withdrawalFailed(CashOrder order, WithdrawalStatus status, String reason) {
+        order = cashOrderRepository.getOne(order.getId());
         PlatformWithdrawalOrder withdrawalOrder = order.getPlatformWithdrawalOrderSet().stream()
                 .max((o1, o2) -> o1.getStartTime().compareTo(o2.getStartTime()))
                 .orElseThrow(IllegalStateException::new);

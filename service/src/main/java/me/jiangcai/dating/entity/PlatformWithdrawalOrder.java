@@ -73,6 +73,13 @@ public abstract class PlatformWithdrawalOrder {
     @Column(length = SubBranchBank.NAME_LENGTH, nullable = false)
     private String subBranch;
 
+    /**
+     * @return 尾号
+     */
+    public String getTailNumber() {
+        int length = number.length();
+        return number.substring(length - 4);
+    }
 
     /**
      * @return 是否已提现完成
