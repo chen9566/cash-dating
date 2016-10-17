@@ -17,7 +17,7 @@
 <div class="bankcard" th:each="card:${user.getCards()}">
     <div class="card">
         <dl class="blue" th:styleappend="${'background:'+card.bank.background}"
-            style="background: linear-gradient(to right, #3c763d , #3c3c3c);">
+            style="background: linear-gradient(to right, ##588CC6 , #4669B4);">
             <dt><img src="images/temp.jpg" class="img-circle"></dt>
             <dd class="txt" th:text="${card.bank.name}">杭州银行</dd>
             <dd class="code-n" th:text="${#cashStrings.bankCardNumber(card.number)}">**** **** **** 2222</dd>
