@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>银行卡</title>
+    <title>我的银行卡</title>
     <link rel="stylesheet" href="dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="dist/css/font-awesome.min.css">
     <link rel="stylesheet" href="dist/css/meiyue.css">
@@ -17,10 +17,10 @@
 <div class="bankcard" th:each="card:${user.getCards()}">
     <div class="card">
         <dl class="blue" th:styleappend="${'background:'+card.bank.background}"
-            style="background: linear-gradient(to right, #3c763d , #3c3c3c);">
+            style="background: linear-gradient(to right, ##588CC6 , #4669B4);">
             <dt><img src="images/temp.jpg" class="img-circle"></dt>
-            <dd class="txt" th:text="${card.bank.name}">杭州银行</dd>
-            <dd class="code-n" th:text="${#cashStrings.bankCardNumber(card.number)}">**** **** **** 2222</dd>
+            <dd ><span class="txt" th:text="${card.bank.name}">杭州银行</span>
+			<span class="code-n" th:text="${#cashStrings.bankCardNumber(card.number)}">罗春爱｜尾号 2222</span></dd>
         </dl>
     </div>
 </div>
@@ -28,8 +28,8 @@
     <div class="card">
         <dl class="green">
             <dt><img src="images/temp.jpg" class="img-circle"></dt>
-            <dd class="txt">杭州银行</dd>
-            <dd class="code-n">**** **** **** 2222</dd>
+            <dd ><span class="txt" th:text="${card.bank.name}">杭州银行</span>
+			<span class="code-n" th:text="${#cashStrings.bankCardNumber(card.number)}">罗春爱｜尾号 2222</span></dd>
         </dl>
     </div>
 </div>
@@ -37,8 +37,8 @@
     <div class="card">
         <dl class="yellow">
             <dt><img src="images/temp.jpg" class="img-circle"></dt>
-            <dd class="txt">杭州银行</dd>
-            <dd class="code-n">**** **** **** 2222</dd>
+            <dd ><span class="txt" th:text="${card.bank.name}">杭州银行</span>
+			<span class="code-n" th:text="${#cashStrings.bankCardNumber(card.number)}">罗春爱｜尾号 2222</span></dd>
         </dl>
     </div>
 </div>
