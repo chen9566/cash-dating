@@ -19,8 +19,8 @@
         <dl class="blue" th:styleappend="${'background:'+card.bank.background}"
             style="background: linear-gradient(to right, ##588CC6 , #4669B4);">
             <dt><img src="images/temp.jpg" class="img-circle"></dt>
-            <dd class="txt" th:text="${card.bank.name}">杭州银行</dd>
-            <dd class="code-n" th:text="${#cashStrings.bankCardNumber(card.number)}">**** **** **** 2222</dd>
+            <dd ><span class="txt" th:text="${card.bank.name}">杭州银行</span><br>
+			<span class="code-n" th:text="${#cashStrings.bankCardNumber(card.number)}">罗春爱｜尾号 2222</span></dd>
         </dl>
     </div>
 </div>
@@ -28,8 +28,8 @@
     <div class="card">
         <dl class="green">
             <dt><img src="images/temp.jpg" class="img-circle"></dt>
-            <dd class="txt">杭州银行</dd>
-            <dd class="code-n">**** **** **** 2222</dd>
+            <dd ><span class="txt" th:text="${card.bank.name}">杭州银行</span><br>
+			<span class="code-n" th:text="${#cashStrings.bankCardNumber(card.number)}">罗春爱｜尾号 2222</span></dd>
         </dl>
     </div>
 </div>
@@ -37,8 +37,8 @@
     <div class="card">
         <dl class="yellow">
             <dt><img src="images/temp.jpg" class="img-circle"></dt>
-            <dd class="txt">杭州银行</dd>
-            <dd class="code-n">**** **** **** 2222</dd>
+            <dd ><span class="txt" th:text="${card.bank.name}">杭州银行</span><br>
+			<span class="code-n" th:text="${#cashStrings.bankCardNumber(card.number)}">罗春爱｜尾号 2222</span></dd>
         </dl>
     </div>
 </div>
