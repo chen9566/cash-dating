@@ -33,32 +33,32 @@
 <p class="yjmx">佣金明细<span class="pull-right"><a href="#">导出表格</a></span></p>
 <div class="yjlist">
     <ul class="bg">
-        <li class="w1">时间</li>
-        <li class="w1">用户/项目</li>
+        <li class="w4">时间</li>
+        <li class="w4">用户/项目</li>
         <li class="w1">金额</li>
         <li class="w2">佣金</li>
     </ul>
     <ul th:each="flow:${flows}">
-        <li class="w1" th:text="${{flow.startTime}}">2016 12-01</li>
-        <li class="w1" th:text="${flow.flowName}">159****4325</li>
+        <li class="w4" th:text="${{flow.startTime}}">2016 12-01</li>
+        <li class="w4" th:text="${flow.flowName}">159****4325</li>
         <li class="w1" th:text="${#numbers.formatDecimal(flow.originalAmount,1,'COMMA',2,'POINT')}">22000</li>
         <li class="w2" th:text="${flow.flowType.toFlag()}${{flow.amount}}">+452</li>
     </ul>
     <ul th:remove="all">
-        <li class="w1">2016 12-01</li>
-        <li class="w1">159****4325</li>
+        <li class="w4">2016 12-01</li>
+        <li class="w4">159****4325</li>
         <li class="w1">22000</li>
         <li class="w2">+45</li>
     </ul>
     <ul th:remove="all">
-        <li class="w1">2016 12-01</li>
-        <li class="w1">159****4325</li>
+        <li class="w4">2016 12-01</li>
+        <li class="w4">159****4325</li>
         <li class="w1">22000</li>
         <li class="w2">+45</li>
     </ul>
     <ul th:remove="all">
-        <li class="w1">2016 12-01</li>
-        <li class="w1">159****4325</li>
+        <li class="w4">2016 12-01</li>
+        <li class="w4">159****4325</li>
         <li class="w1">22000</li>
         <li class="w2">+4544</li>
     </ul>
