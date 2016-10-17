@@ -810,9 +810,9 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
  
 	.bankcard dt{color:#fff; vertical-align:middle; float:left }
 	.bankcard dt img{ width:36px; height:36px; margin:3px 10px 30px 0 }
-	.bankcard dd{float:left ; color:#fff; line-height:20px}
-	.bankcard dd.txt{ font-size:15px;  color:#fff;display:block;}
-	.bankcard dd.code-n{text-align:left;  font-size:15px; color:#fff;}
+	.bankcard dd{float:left ; color:#fff; line-height:22px}
+	.bankcard dd .txt{ font-size:16px;  color:#fff; display:block}
+	.bankcard dd .code-n{text-align:left;  font-size:14px; color:#fff;}
 	
 .modcard{}
 	.modcard ul{}
