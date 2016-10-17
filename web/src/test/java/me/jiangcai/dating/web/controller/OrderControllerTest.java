@@ -14,6 +14,8 @@ import me.jiangcai.dating.service.OrderService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.annotation.Repeat;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author CJ
@@ -31,6 +34,51 @@ public class OrderControllerTest extends LoginWebTest {
 
     @Autowired
     private OrderService orderService;
+
+    /**
+     * 安全测试,即同时提起重试请求
+     */
+    @Test
+    @Repeat(20)
+    public void security() throws Exception {
+        User user = currentUser();
+        CashOrder withdrawalFailedOrder = orderService.newOrder(user, new BigDecimal("200"), UUID.randomUUID().toString()
+                , user.getCards().get(0).getId());
+        changeTime(withdrawalFailedOrder, LocalDateTime.now().plusHours(-2));
+        tradeSuccess(withdrawalFailedOrder);
+        withdrawalFailed(withdrawalFailedOrder, WithdrawalStatus.WITHDRAWAL_FAIL, "怀孕了?");
+
+        MockHttpSession session = new MockHttpSession();
+        mockMvc.perform(getWeixin("/start").session(session));
+        mockMvc.perform(getWeixin("/login").session(session));
+        mockMvc.perform(getWeixin("/start").session(session));
+        //
+        int times = orderService.getOne(withdrawalFailedOrder.getId()).getPlatformWithdrawalOrderSet().size();
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mockMvc.perform(postWeixin("/touchOrder").param("id", withdrawalFailedOrder.getId()).session(session))
+                            .andExpect(status().isFound());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+
+        int count = 20;
+        while (count-- > 0) {
+            Thread thread = new Thread(runnable);
+            thread.setDaemon(true);
+            thread.start();
+        }
+
+        Thread.sleep(2000);
+
+        assertThat(orderService.getOne(withdrawalFailedOrder.getId()).getPlatformWithdrawalOrderSet().size())
+                .isEqualTo(times + 1);
+    }
 
     private OrderPage bindCardOnOrderPage(String mobile, OrderPage page, SubBranchBank bank, String owner, String number) {
         page.toCreateNewCard();

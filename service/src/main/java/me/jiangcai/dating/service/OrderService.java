@@ -77,6 +77,6 @@ public interface OrderService {
      * @param cardId  卡号,可选,如果为null就是不改变
      * @return 新增的提现订单
      */
-    @Transactional
+//    @Transactional 这个并不需要开启事务,而是应该立刻提交 这样新的事务才可以获得新的数据
     ChanpayWithdrawalOrder withdrawalWithCard(String orderId, Long cardId) throws IOException, SignatureException;
 }

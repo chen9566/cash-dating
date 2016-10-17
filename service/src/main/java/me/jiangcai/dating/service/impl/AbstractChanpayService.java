@@ -198,10 +198,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
     }
 
     @Override
-    @ThreadSafe
-    public ChanpayWithdrawalOrder withdrawalOrder(CashOrder order) throws IOException, SignatureException {
-        // 怎么确保安全?
-        // 锁定订单号
+    public ChanpayWithdrawalOrder withdrawalOrderCore(CashOrder order) throws IOException, SignatureException {
         log.debug("prepare to withdrawal " + order);
         order = cashOrderRepository.getOne(order.getId());
         if (order.isWithdrawalCompleted())
@@ -264,6 +261,14 @@ public abstract class AbstractChanpayService implements ChanpayService {
             throw new IllegalStateException("提现订单被拒绝,可能是输入问题。");
 
         return withdrawalOrder;
+    }
+
+    @Override
+    @ThreadSafe
+    public ChanpayWithdrawalOrder withdrawalOrder(CashOrder order) throws IOException, SignatureException {
+        // 怎么确保安全?
+        // 锁定订单号
+        return applicationContext.getBean(ChanpayService.class).withdrawalOrderCore(order);
     }
 
     private me.jiangcai.chanpay.model.Bank toBank(Bank bank) {
