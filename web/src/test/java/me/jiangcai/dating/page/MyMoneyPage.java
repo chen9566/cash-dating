@@ -5,6 +5,7 @@ import lombok.Data;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.service.StatisticService;
+import me.jiangcai.dating.util.Common;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -66,7 +67,7 @@ public class MyMoneyPage extends AbstractPage {
 
         webFlows = webDriver.findElement(By.className("yjlist")).findElements(By.tagName("ul")).stream()
                 .filter(WebElement::isDisplayed)
-                .filter(webElement -> "bg".equals(webElement.getAttribute("css")))
+                .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
                 .map(this::toFlow)
                 .collect(Collectors.toList());
 
@@ -99,6 +100,7 @@ public class MyMoneyPage extends AbstractPage {
      * @param statisticService
      */
     public void assertUser(User user, StatisticService statisticService) {
+//        printThisPage();
         String text = NumberUtils.format(statisticService.balance(user.getOpenId()), 1, NumberPointType.COMMA, 0, NumberPointType.POINT, Locale.CHINA);
         assertThat(balanceText.getText())
                 .isEqualTo(text);
@@ -145,7 +147,7 @@ public class MyMoneyPage extends AbstractPage {
         }
 
         private boolean equalsTo(BalanceFlow balanceFlow) {
-            String dataAmount = balanceFlow.getFlowType().toFlag() + String.valueOf(balanceFlow.getAmount());
+            String dataAmount = balanceFlow.getFlowType().toFlag() + Common.CurrencyFormat(balanceFlow.getAmount());
             if (!amount.equals(dataAmount))
                 return false;
 //            if (!comment.equals(balanceFlow.getComment()))

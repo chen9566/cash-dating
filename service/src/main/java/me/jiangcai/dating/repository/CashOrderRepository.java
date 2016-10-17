@@ -17,8 +17,12 @@ public interface CashOrderRepository extends JpaRepository<CashOrder, String> {
     // 返回user作为代理商身份所获得的订单(前提是订单必须是完成的)
     List<CashOrder> findByOwner_AgentUserAndCompletedTrue(User user);
 
+    List<CashOrder> findByOwner_AgentUserAndCompletedTrueAndThatRateConfig_AgentRateGreaterThan(User user, Number x);
+
     // 返回user作为引导者身份所获得的订单(前提是订单必须是完成的)
     List<CashOrder> findByOwner_GuideUserAndCompletedTrue(User user);
+
+    List<CashOrder> findByOwner_GuideUserAndCompletedTrueAndThatRateConfig_GuideRateGreaterThan(User user, Number x);
 
     @Query("select C,W from CashOrder C left join C.platformWithdrawalOrderSet W" +
             " where C.owner=?1 and C.completed=true" +

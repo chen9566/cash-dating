@@ -2,10 +2,10 @@ package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.support.WithdrawOrderStatus;
 import me.jiangcai.dating.model.AgentCashOrderBalanceFlow;
 import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.model.GuideCashOrderBalanceFlow;
-import me.jiangcai.dating.entity.support.WithdrawOrderStatus;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.repository.WithdrawOrderRepository;
@@ -57,7 +57,7 @@ public class StatisticServiceImpl implements StatisticService {
 
         for (BalanceFlow flow : balanceFlows(openId)) {
             BigDecimal data = flow.getAmount().multiply(flow.getFlowType().toMultiply());
-            total  = total.add(data);
+            total = total.add(data);
         }
 
         return total;
@@ -70,10 +70,14 @@ public class StatisticServiceImpl implements StatisticService {
         ArrayList<BalanceFlow> flowArrayList = new ArrayList<>();
 
         // 代理商佣金部分   需要完成
-        cashOrderRepository.findByOwner_AgentUserAndCompletedTrue(user).stream()
+        cashOrderRepository.findByOwner_AgentUserAndCompletedTrueAndThatRateConfig_AgentRateGreaterThan(user
+                , BigDecimal.ZERO)
+                .stream()
                 .map(AgentCashOrderBalanceFlow::new)
                 .forEach(flowArrayList::add);
-        cashOrderRepository.findByOwner_GuideUserAndCompletedTrue(user).stream()
+        cashOrderRepository.findByOwner_GuideUserAndCompletedTrueAndThatRateConfig_GuideRateGreaterThan(user
+                , BigDecimal.ZERO)
+                .stream()
                 .map(GuideCashOrderBalanceFlow::new)
                 .forEach(flowArrayList::add);
 

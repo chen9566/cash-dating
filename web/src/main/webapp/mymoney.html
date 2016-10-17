@@ -42,7 +42,9 @@
         <li class="w4" th:text="${{flow.startTime}}">2016 12-01</li>
         <li class="w4" th:text="${flow.flowName}">159****4325</li>
         <li class="w1" th:text="${#numbers.formatDecimal(flow.originalAmount,1,'COMMA',2,'POINT')}">22000</li>
-        <li class="w2" th:text="${flow.flowType.toFlag()}${{flow.amount}}">+452</li>
+        <li class="w2" th:text="${flow.flowType.toFlag()}+${#numbers.formatDecimal(flow.amount,1,'COMMA',2,'POINT')}">
+            +452
+        </li>
     </ul>
     <ul th:remove="all">
         <li class="w4">2016 12-01</li>
