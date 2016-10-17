@@ -33,6 +33,8 @@ public class MyInviteCodePage extends AbstractPage {
 
     @Override
     public void validatePage() {
+        assertThat(webDriver.getTitle())
+                .isEqualTo("我的邀请码");
         webDriver.findElements(By.tagName("img")).stream()
                 .filter(WebElement::isDisplayed)
                 .findFirst()

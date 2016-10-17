@@ -20,6 +20,6 @@ public class GuideCashOrderBalanceFlow extends AbstractCashOrderBalanceFlow {
 
     @Override
     public String getFlowName() {
-        return "发展人佣金";
+        return getName() + "/发展人佣金";
     }
 }

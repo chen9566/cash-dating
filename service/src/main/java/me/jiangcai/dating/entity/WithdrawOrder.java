@@ -30,13 +30,18 @@ public class WithdrawOrder extends UserOrder implements BalanceFlow {
     @Override
     @Transient
     public String getFlowName() {
-        return "提现";
+        return getOwner().getRealName() + "提现";
     }
 
     @Override
     @Transient
     public FlowType getFlowType() {
         return FlowType.payout;
+    }
+
+    @Override
+    public BigDecimal getOriginalAmount() {
+        return getAmount();
     }
 
     @Override

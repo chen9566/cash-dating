@@ -54,5 +54,11 @@ public class HomeController {
         return "my.html";
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/explain")
+    public String explain(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", userService.by(user.getId()));
+        return "explain.html";
+    }
+
 
 }

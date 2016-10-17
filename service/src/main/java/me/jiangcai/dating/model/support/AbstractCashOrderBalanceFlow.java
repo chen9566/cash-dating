@@ -13,10 +13,17 @@ import java.time.LocalDateTime;
 @Data
 public abstract class AbstractCashOrderBalanceFlow implements BalanceFlow {
 
+    private final String name;
+    private final BigDecimal originalAmount;
+    private final String comment;
+    private final LocalDateTime startTime;
+    private final BigDecimal amount;
     public AbstractCashOrderBalanceFlow(CashOrder cashOrder) {
         comment = cashOrder.getComment();
         startTime = cashOrder.getStartTime();
         amount = toAmount(cashOrder);
+        name = cashOrder.getOwner().getRealName();
+        originalAmount = cashOrder.getAmount();
     }
 
     /**
@@ -24,10 +31,6 @@ public abstract class AbstractCashOrderBalanceFlow implements BalanceFlow {
      * @return 这个单子的收益
      */
     protected abstract BigDecimal toAmount(CashOrder cashOrder);
-
-    private String comment;
-    private LocalDateTime startTime;
-    private BigDecimal amount;
 
     @Override
     public FlowType getFlowType() {

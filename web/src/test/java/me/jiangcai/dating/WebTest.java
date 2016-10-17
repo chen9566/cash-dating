@@ -10,7 +10,7 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.page.BindingCardPage;
 import me.jiangcai.dating.page.BindingMobilePage;
 import me.jiangcai.dating.page.MyInviteCodePage;
-import me.jiangcai.dating.page.MyInvitePage;
+import me.jiangcai.dating.page.MyMoneyPage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.repository.UserRepository;
@@ -242,7 +242,7 @@ public abstract class WebTest extends ServiceBaseTest {
         driver.get("http://localhost/my");
         MyPage myPage = initPage(MyPage.class);
         myPage.clickMenu("我的邀请");
-        MyInvitePage invitePage = initPage(MyInvitePage.class);
+        MyMoneyPage invitePage = initPage(MyMoneyPage.class);
         invitePage.clickMyCode();
         MyInviteCodePage codePage = initPage(MyInviteCodePage.class);
 

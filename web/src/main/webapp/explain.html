@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.web.thymeleaf.CashStrings"*/-->
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -12,27 +11,25 @@
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/share.js"></script>
 </head>
 <body>
 <div class="explain-n">
-	<p class="e1"><img src="images/inforbg.png"></p>
-	<p class="e2">合伙人说明</p>
-	<p class="e3"><span>1、开户：提交合法手续后，经审核通过可成为</span><span>2、保障：买理财或推荐合伙人，送合伙人资格；</span><span>3、佣金：你及你的用户邀请加入款爷收银，利益<b>2.8</b>分成，实时提取。</span>
-</p>
-<p class="e4">
-        <button type="button" class="btn btn-danger btn-lg btn-block">
-            <a href="#" >我要邀请</a></button>
-    	</p>
-    	<p class="e5">
-        <button type="button" class="btn btn-default btn-lg btn-block">
-            <a href="#">成为合伙人</a>
+    <p class="e1"><img src="images/inforbg.png"></p>
+    <p class="e2">合伙人说明</p>
+    <p class="e3"><span>1、开户：提交合法手续后，经审核通过可成为</span><span>2、保障：买理财或推荐合伙人，送合伙人资格；</span><span>3、佣金：你及你的用户邀请加入款爷收银，利益<b>2.8</b>分成，实时提取。</span>
+    </p>
+    <p class="e4">
+        <button type="button" class="btn btn-danger btn-lg btn-block clickHref" href="code.html"
+                th:href="@{/myInviteCode}">
+            我要邀请
         </button>
-    	</p>
+    </p>
+    <p th:if="${user.agentInfo==null}" class="e5">
+        <button type="button" class="btn btn-default btn-lg btn-block">
+            <a href="agent.html" th:href="@{/agent}">成为合伙人</a>
+        </button>
+    </p>
 </div>
-<!--<div class="modcard">-->
-<!--<ul>-->
-<!--<li>添加银行卡<i class="fa fa-angle-right fa-2x pull-right"></i></li>-->
-<!--</ul>-->
-<!--</div>-->
 </body>
 </html>

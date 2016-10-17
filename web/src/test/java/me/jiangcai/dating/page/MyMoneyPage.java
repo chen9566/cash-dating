@@ -5,13 +5,15 @@ import lombok.Data;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.service.StatisticService;
-import me.jiangcai.dating.util.Common;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.thymeleaf.util.NumberPointType;
+import org.thymeleaf.util.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,13 +23,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author CJ
  */
-public class MyInvitePage extends AbstractPage {
+public class MyMoneyPage extends AbstractPage {
     private WebElement balanceText;
-    private WebElement codeButton;
+    //    private WebElement codeButton;
     private WebElement withdrawButton;
+    private WebElement explainButton;
     private List<WebFlow> webFlows;
 
-    public MyInvitePage(WebDriver webDriver) {
+    public MyMoneyPage(WebDriver webDriver) {
         super(webDriver);
 //        System.out.println(webDriver.getPageSource());
     }
@@ -49,14 +52,21 @@ public class MyInvitePage extends AbstractPage {
                 .findAny()
                 .ifPresent(element -> withdrawButton = element);
 
-        webDriver.findElements(By.tagName("button")).stream()
-                .filter(WebElement::isDisplayed)
-                .filter(element -> element.getText().equals("我的邀请码"))
-                .findAny()
-                .ifPresent(element -> codeButton = element);
+//        webDriver.findElements(By.tagName("button")).stream()
+//                .filter(WebElement::isDisplayed)
+//                .filter(element -> element.getText().equals("我的邀请码"))
+//                .findAny()
+//                .ifPresent(element -> codeButton = element);
 
-        webFlows = webDriver.findElement(By.className("balliist")).findElements(By.tagName("ul")).stream()
+        webDriver.findElements(By.tagName("a")).stream()
                 .filter(WebElement::isDisplayed)
+                .filter(element -> element.getText().contains("合伙人"))
+                .findAny()
+                .ifPresent(element -> explainButton = element);
+
+        webFlows = webDriver.findElement(By.className("yjlist")).findElements(By.tagName("ul")).stream()
+                .filter(WebElement::isDisplayed)
+                .filter(webElement -> "bg".equals(webElement.getAttribute("css")))
                 .map(this::toFlow)
                 .collect(Collectors.toList());
 
@@ -66,18 +76,19 @@ public class MyInvitePage extends AbstractPage {
                 .isTrue();
         assertThat(withdrawButton)
                 .isNotNull();
-        assertThat(codeButton)
-                .isNotNull();
+//        assertThat(codeButton)
+//                .isNotNull();
 //        assertThat(webFlows)
 //                .isNotEmpty();
     }
 
     private WebFlow toFlow(WebElement element) {
+        List<WebElement> texts = element.findElements(By.tagName("li"));
         return new WebFlow(
-                element.findElement(By.className("flow-amount")).getText()
-                , element.findElement(By.className("flow-comment")).getText()
-                , element.findElement(By.className("flow-name")).getText()
-                , element.findElement(By.className("flow-time")).getText()
+                texts.get(3).getText()
+                , null
+                , texts.get(1).getText()
+                , texts.get(0).getText()
         );
     }
 
@@ -88,7 +99,7 @@ public class MyInvitePage extends AbstractPage {
      * @param statisticService
      */
     public void assertUser(User user, StatisticService statisticService) {
-        String text = Common.CurrencyFormat(statisticService.balance(user.getOpenId()));
+        String text = NumberUtils.format(statisticService.balance(user.getOpenId()), 1, NumberPointType.COMMA, 0, NumberPointType.POINT, Locale.CHINA);
         assertThat(balanceText.getText())
                 .isEqualTo(text);
 
@@ -105,7 +116,11 @@ public class MyInvitePage extends AbstractPage {
 
 
     public void clickMyCode() {
-        codeButton.click();
+//        codeButton.click();
+        explainButton.click();
+        ExplainPage explainPage = initPage(ExplainPage.class);
+
+        explainPage.clickMyCode();
     }
 
     @Data
@@ -133,8 +148,8 @@ public class MyInvitePage extends AbstractPage {
             String dataAmount = balanceFlow.getFlowType().toFlag() + String.valueOf(balanceFlow.getAmount());
             if (!amount.equals(dataAmount))
                 return false;
-            if (!comment.equals(balanceFlow.getComment()))
-                return false;
+//            if (!comment.equals(balanceFlow.getComment()))
+//                return false;
             if (!name.equals(balanceFlow.getFlowName()))
                 return false;
             // time 就算了

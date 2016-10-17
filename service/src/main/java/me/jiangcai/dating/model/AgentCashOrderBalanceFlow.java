@@ -21,6 +21,6 @@ public class AgentCashOrderBalanceFlow extends AbstractCashOrderBalanceFlow {
 
     @Override
     public String getFlowName() {
-        return "合伙人佣金";
+        return getName() + "/合伙人佣金";
     }
 }
