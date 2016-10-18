@@ -1,114 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="banks" type="java.lang.Iterable<me.jiangcai.dating.entity.Bank>"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>申请合伙人</title>
+    <title>绑定银行卡</title>
     <link rel="stylesheet" href="dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="dist/css/font-awesome.min.css">
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/share.js"></script>
+    <script src="dist/js/add-card.js"></script>
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
 </head>
 <body>
-<div class="container">
-    <form class="form-register " id="requestForm" role="form">
-        <p class="txt">合伙人介绍:<br>
-            客服热线: 400-858-8528&nbsp;&nbsp;&nbsp;官方网址:www.kuanyes.com
-        </p>
-        <div class="row iphonebg">
-            <div class="ml10">
-                <div class="iphone col-xs-1"><i class="fa-fw"><img src="images/user-icon.svg"></i></div>
-                <div class="col-xs-9"><input type="text" required minlength="2" maxlength="20" name="name"
-                                             placeholder="请输入姓名"></div>
-                <!--<div class="col-xs-1 error"><img src="images/registericon1.png"/></div>!-->
-            </div>
-        </div>
-        <div class="row codebg m30 line-b">
-            <div class="mb">
-                <div class="iphone col-xs-1 "><i class="fa-fw"><img src="dist/css/iphone-icon.svg"></i></div>
-                <div class="col-xs-9"><input type="tel" required minlength="11" maxlength="11" name="mobile"
-                                             placeholder="请输入手机号码"></div>
-            </div>
-        </div>
-        <button type="button" class="btn btn-danger btn-lg btn-block">提交申请
-        </button>
-    </form>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                        class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">提交申请成功</h4>
-            </div>
-            <div class="modal-body">
+<form class="from-bank" action="receivables.html" th:action="@{/registerCard}" th:method="post" id="addCardForm"
+      role="form">
+    <p class="b1">合伙人介绍:<br>
+            客服热线: 400-858-8528&nbsp;&nbsp;&nbsp;官方网址:www.kuanyes.com</p>
+    <ul>
+        <li>
+            <label class="icon"><img src="images/user-icon.svg"></label>
+            <input type="text" required minlength="2" maxlength="20" name="name"placeholder="请输入姓名">
+        </li>
+       
+				</span></span></li>
+        <li class="noline">
+            <label class="icon"><img src="dist/css/iphone-icon.svg"></label>
+            <input type="tel" required minlength="11" maxlength="11" name="mobile" placeholder="请输入手机号码">
+        </li>
+    </ul>
+    
+    <p class="b2">
+        <button type="submit" class="btn btn-danger btn-lg btn-block">提交申请</button>
+    </p>
 
-                我们的客服人员将尽快与您取得联系
-            </div>
-            <div class="modal-footer">
-                <!--<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>-->
-                <button type="button" class="btn btn-primary">确定</button>
-            </div>
-        </div>
-    </div>
-</div>
+</form>
+
 <script src="mock/all.js" th:src="@{/all.js}"></script>
 <script>
     $(function () {
-
-        $('button[class~=btn-primary]').click(function () {
-            history.back();
-        });
-
-        var requestForm = $("#requestForm");
-        var validator = requestForm.validate({
-            messages: {
-                mobile: {
-                    required: "手机号码不能为空 ",
-                    minlength: " 不能少于 11 位手机号码",
-                    maxlength: " 不能多于 11 位手机号码"
-                },
-                name: {
-                    required: "姓名不能为空",
-                    minlength: "姓名至少得2个字",
-                    maxlength: "姓名太长了"
-                }
-            }
-        });
-
-        function afterSuccess() {
-            //
-            $('#myModal').modal();
-        }
-
-        $('button[class~=btn-danger]').click(function () {
-            if (validator.form()) {
-                // 只有通过以后才继续
-                if ($.prototypesMode) {
-                    afterSuccess();
-                } else
-                    $.ajax($.uriPrefix + '/agent', {
-                        method: 'post',
-                        contentType: 'application/json; charset-UTF-8',
-                        data: JSON.stringify({
-                            name: $('input[name=name]').val(),
-                            mobile: $('input[name=mobile]').val()
-                        }),
-                        success: afterSuccess,
-                        error: function (res) {
-//                        console.log(arguments);
-                            alert(res.responseText);
-                        }
-                    });
-            }
-        });
+        var validator = $("#addCardForm").validate({});
     });
+
 </script>
+<!-- Modal -->
+<div class="show-bg">填写内容不能为空</div>
 </body>
 </html>

@@ -20,21 +20,20 @@
 	<input name="cardId" type="hidden"/>
 </form>
 <!-- Modal -->
-<div class="modal fade" id="cardsContainer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div style=" margin:0 10px;" class="modal fade" id="cardsContainer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-body show-c">
-				<p class="choice">请选择
-					</h1>
-				<p class="sn"><span class="sleBG sn1"
+				<p class="choice">请选择</p>
+				<p class="sn"><span class="sleBG sn1">
               		<span class="sleHid">
 					<select name="card" title="收款银行卡" class="sn2">
 						<option value="0" th:each="card:${cards}" th:value="${card.id}"
                         th:text="${card.bank.name+' | '+card.owner+' | 尾号'+card.tailNumber}"> 建设银行 | 徐春风 | 尾号9944 </option>
 						<option value="1" th:remove="all">嵊州银行 | 徐春风 | 尾号1912</option>
 					</select>
-					</span> </p>
+					</span></span> </p>
 			</div>
 			<div class="modal-footer">
 				<div class="show-c2"><a href="addcard.html" th:href="@{/card}">绑定新银行卡</a></div>
@@ -67,7 +66,6 @@
 			<dd><span class="d3" th:text="${#numbers.formatDecimal(order.order.withdrawalAmount,1,'COMMA',2,'POINT')}">5000</span> <span class="d4" th:text="${{order.withdrawalOrder.finishTime}}">16-06-01 22:11</span></dd>
 			<dd class="t4"><span th:text="${order.withdrawalOrder.comment}">失败,户名跟卡号不符</span> <span class="t5">
 				<button class="flow-retry" th:if="${order.order.card!=null}">重试</button>
-				&nbsp;
 				<button class="flow-change">点击更换银行卡</button>
 				</span> </dd>
 		</dl>
@@ -84,7 +82,6 @@
 			<dd><span class="d3">5000</span><span class="d4">16-06-01 22:11</span></dd>
 			<dd class="t4"><span>失败,户名跟卡号不符</span> <span class="t5">
 				<button class="flow-retry">重试</button>
-				&nbsp;
 				<button class="flow-change">点击更换银行卡</button>
 				</span> </dd>
 		</dl>
