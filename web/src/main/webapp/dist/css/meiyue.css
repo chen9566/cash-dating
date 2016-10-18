@@ -869,9 +869,9 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.from-bank li{border-bottom:1px solid #dfdfdf; line-height:44px; overflow:hidden; height:44px;}
 	.from-bank li input{  background:none; height:30px; line-height:30px; margin:5px 0 ;border:0;}
 	.from-bank li select{ background:none;  height:30px;line-height:30px; margin:5px 0; border:0;}
-	.from-bank li .select {width:116%; background:none; border:none; }   
-	.from-bank li .select2 {width:116%; background:none; border:none; }  
-	.from-bank li .select3 {width:118%; text-align:center; padding-left:20px; background:none; border:none; }  
+	.from-bank li .select {width:120%; background:none; border:none; }   
+	.from-bank li .select2 {width:120%; background:none; border:none; }  
+	.from-bank li .select3 {width:120%; text-align:center; padding-left:20px; background:none; border:none; }  
 .sleHid { display:block;  overflow:hidden; }     
 .sleBG {  border-right:none; float:left; display:block;}
 	.from-bank li label{ color:#888; width:95px; font-weight:400; font-size:14px;}
@@ -912,10 +912,16 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .addcard{ margin-bottom:15px; color:#007AFF; text-align:center; background:#fff; border-bottom:1px solid #dfdfdf;  padding:20px}
 	.addcard img{ width:32px; height:32px; margin:0 auto 8px auto; display:block}
 	.addcard a{ font-size:14px; text-decoration:none; display:block;color:#007AFF;}
-.show-c{ line-height:55px; text-align:center; font-size:15px}
-.show-c1{ float:left; width:50%; border-right:1px solid #dfdfdf; line-height:44px; text-align:center; font-size:17px; color:#0079FF}
+.show-c{text-align:center; font-size:15px}
+	.show-c .choice{ font-size:15px; font-weight:300; line-height:22px;}
+
+	.show-c .sn{ height:44px; margin:15px 0 10px 0}
+	.show-c select{ padding-left:7px; font-size:14px; overflow:hidden; border:0;  height:44px; background:none; }
+	.show-c .sn1{ width:100%;border:1px solid #cacaca; z-index:999; background:url(showdown.png) no-repeat right; background-size:44px}
+	.show-c .sn2{ width:130%}
+	.show-c1{ float:left; width:50%; font-weight:600;  line-height:44px; text-align:center; font-size:17px; color:#0079FF}
 	.show-c1 a{display:block;color:#0079FF; text-decoration:none}
-.show-c2{ float:left; width:50%; font-weight:bold;  line-height:44px; text-align:center; font-size:17px; color:#0079FF; }
+.show-c2{ float:left; width:50%; border-right:1px solid #dfdfdf; line-height:44px; text-align:center; font-size:17px; color:#0079FF; }
 	.show-c2 a{ display:block;color:#0079FF; text-decoration:none}
 .form-reg-n{ margin:15px 0;}
 	.form-reg-n ul{ background:#fff; padding-left:15px; border-bottom:1px solid #dfdfdf; border-top:1px solid #dfdfdf}

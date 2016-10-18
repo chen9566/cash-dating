@@ -3,147 +3,135 @@
 <!--/*@thymesVar id="orders" type="java.lang.Iterable<me.jiangcai.dating.model.OrderFlow>"*/-->
 <!--/*@thymesVar id="cards" type="java.util.List<me.jiangcai.dating.entity.Card>"*/-->
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>资金流水</title>
-    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
-    <link rel="stylesheet" href="dist/css/meiyue.css">
-    <script src="dist/js/jquery.js"></script>
-    <script src="dist/js/bootstrap.min.js"></script>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>资金流水</title>
+<link rel="stylesheet" href="dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="dist/css/font-awesome.min.css">
+<link rel="stylesheet" href="dist/css/meiyue.css">
+<script src="dist/js/jquery.js"></script>
+<script src="dist/js/bootstrap.min.js"></script>
 </head>
 <body>
 <!--Form-->
 <form id="touchOrderForm" action="order.html" method="get" th:method="post" th:action="@{/touchOrder}">
-    <input name="id" type="hidden"/>
-    <input name="cardId" type="hidden"/>
+	<input name="id" type="hidden"/>
+	<input name="cardId" type="hidden"/>
 </form>
 <!-- Modal -->
 <div class="modal fade" id="cardsContainer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body show-c">
-                请选择<select name="card" title="收款银行卡">
-                <option value="0" th:each="card:${cards}" th:value="${card.id}"
-                        th:text="${card.bank.name+' | '+card.owner+' | 尾号'+card.tailNumber}">
-                    建设银行 | 徐春风 | 尾号9944
-                </option>
-                <option value="1" th:remove="all">嵊州银行 | 徐春风 | 尾号1912</option>
-            </select>
-            </div>
-            <div class="modal-footer">
-                <div class="show-c1 cardSubmit" style="cursor: pointer">确定</div>
-                <div class="show-c2"><a href="addcard.html" th:href="@{/card}">新的收款银行卡</a></div>
-            </div>
-        </div>
-    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body show-c">
+				<p class="choice">请选择
+					</h1>
+				<p class="sn"><span class="sleBG sn1"
+              		<span class="sleHid">
+					<select name="card" title="收款银行卡" class="sn2">
+						<option value="0" th:each="card:${cards}" th:value="${card.id}"
+                        th:text="${card.bank.name+' | '+card.owner+' | 尾号'+card.tailNumber}"> 建设银行 | 徐春风 | 尾号9944 </option>
+						<option value="1" th:remove="all">嵊州银行 | 徐春风 | 尾号1912</option>
+					</select>
+					</span> </p>
+			</div>
+			<div class="modal-footer">
+				<div class="show-c2"><a href="addcard.html" th:href="@{/card}">绑定新银行卡</a></div>
+				<div class="show-c1 cardSubmit" style="cursor: pointer">确定</div>
+			</div>
+		</div>
+	</div>
 </div>
-<div class="addcard" th:if="${cards.isEmpty()}">
-    <a href="addcard.html" th:href="@{/card}">
-        <img src="images/criicon.png"/>绑定收款银行卡</a>
-</div>
+<div class="addcard" th:if="${cards.isEmpty()}"> <a href="addcard.html" th:href="@{/card}"> <img src="images/criicon.png"/>绑定收款银行卡</a> </div>
 <div class="order">
-    <div th:each="order:${orders}" th:switch="${order.status.name()}" class="orderFlow"
+	<div th:each="order:${orders}" th:switch="${order.status.name()}" class="orderFlow"
          data-id="1" th:attr="data-id=${order.order.id}">
-        <dl th:case="'success'">
-            <dt class="d2">收款</dt>
-            <dd><span class="d3" th:text="${#numbers.formatDecimal(order.order.withdrawalAmount,1,'COMMA',2,'POINT')}">9990</span>
-                <span class="d4" th:text="${{order.withdrawalOrder.finishTime}}">16-06-01 22:11</span></dd>
-            <dd class="t4">
-                <span th:text="${'成功,扣取'+#numbers.formatDecimal(order.charge,1,'COMMA',2,'POINT')+'手续费'}">成功,扣取10.00手续费</span>
-                <span class="t5" th:text="${'转入尾号'+order.withdrawalOrder.tailNumber+'银行卡'}">转入尾号7742银行卡</span>
-            </dd>
-        </dl>
-        <dl th:case="'transferring'">
-            <dt class="d1">收款</dt>
-            <dd><span class="d3" th:text="${#numbers.formatDecimal(order.order.withdrawalAmount,1,'COMMA',2,'POINT')}">9990</span>
-                <span class="d4" th:text="${{order.withdrawalOrder.startTime}}">16-06-01 22:11</span></dd>
-            <dd class="t1">转账中…</dd>
-        </dl>
-        <dl th:case="'cardRequired'">
-            <dt class="d1">收款</dt>
-            <dd><span class="d3" th:text="${#numbers.formatDecimal(order.order.withdrawalAmount,1,'COMMA',2,'POINT')}">4000</span>
-                <span class="d4" th:text="${{order.order.startTime}}">16-06-01 22:11</span>
-            </dd>
-            <dd class="t3">
-                <a href="addcard.html" th:if="${cards.isEmpty()}" th:href="@{/card}">提现</a>
-                <a href="#" th:if="${!cards.isEmpty()}" class="flow-change">提现</a>
-            </dd>
-        </dl>
-        <dl th:case="'failed'">
-            <dt class="d1">收款</dt>
-            <dd><span class="d3" th:text="${#numbers.formatDecimal(order.order.withdrawalAmount,1,'COMMA',2,'POINT')}">5000</span>
-                <span class="d4" th:text="${{order.withdrawalOrder.finishTime}}">16-06-01 22:11</span></dd>
-            <dd class="t4"><span th:text="${order.withdrawalOrder.comment}">失败,户名跟卡号不符</span>
-                <span class="t5">
-                    <button class="flow-retry" th:if="${order.order.card!=null}">重试</button>&nbsp;
-                    <button class="flow-change">点击更换银行卡</button>
-                </span>
-            </dd>
-        </dl>
-        <dl>
-            <dt class="d2">付款</dt>
-            <dd><span class="d3" th:text="${#numbers.formatDecimal(order.order.amount,1,'COMMA',2,'POINT')}">5000</span><span
+		<dl th:case="'success'">
+			<dt class="d2">收款</dt>
+			<dd><span class="d3" th:text="${#numbers.formatDecimal(order.order.withdrawalAmount,1,'COMMA',2,'POINT')}">9990</span> <span class="d4" th:text="${{order.withdrawalOrder.finishTime}}">16-06-01 22:11</span></dd>
+			<dd class="t4"> <span th:text="${'成功,扣取'+#numbers.formatDecimal(order.charge,1,'COMMA',2,'POINT')+'手续费'}">成功,扣取10.00手续费</span> <span class="t5" th:text="${'转入尾号'+order.withdrawalOrder.tailNumber+'银行卡'}">转入尾号7742银行卡</span> </dd>
+		</dl>
+		<dl th:case="'transferring'">
+			<dt class="d1">收款</dt>
+			<dd><span class="d3" th:text="${#numbers.formatDecimal(order.order.withdrawalAmount,1,'COMMA',2,'POINT')}">9990</span> <span class="d4" th:text="${{order.withdrawalOrder.startTime}}">16-06-01 22:11</span></dd>
+			<dd class="t1">转账中…</dd>
+		</dl>
+		<dl th:case="'cardRequired'">
+			<dt class="d1">收款</dt>
+			<dd><span class="d3" th:text="${#numbers.formatDecimal(order.order.withdrawalAmount,1,'COMMA',2,'POINT')}">4000</span> <span class="d4" th:text="${{order.order.startTime}}">16-06-01 22:11</span> </dd>
+			<dd class="t3"> <a href="addcard.html" th:if="${cards.isEmpty()}" th:href="@{/card}">提现</a> <a href="#" th:if="${!cards.isEmpty()}" class="flow-change">提现</a> </dd>
+		</dl>
+		<dl th:case="'failed'">
+			<dt class="d1">收款</dt>
+			<dd><span class="d3" th:text="${#numbers.formatDecimal(order.order.withdrawalAmount,1,'COMMA',2,'POINT')}">5000</span> <span class="d4" th:text="${{order.withdrawalOrder.finishTime}}">16-06-01 22:11</span></dd>
+			<dd class="t4"><span th:text="${order.withdrawalOrder.comment}">失败,户名跟卡号不符</span> <span class="t5">
+				<button class="flow-retry" th:if="${order.order.card!=null}">重试</button>
+				&nbsp;
+				<button class="flow-change">点击更换银行卡</button>
+				</span> </dd>
+		</dl>
+		<dl>
+			<dt class="d2">付款</dt>
+			<dd><span class="d3" th:text="${#numbers.formatDecimal(order.order.amount,1,'COMMA',2,'POINT')}">5000</span><span
                     class="d4" th:text="${{order.order.startTime}}">16-06-01 22:11</span></dd>
-            <dd class="t2">成功</dd>
-        </dl>
-    </div>
-    <div data-id="2" th:remove="all" class="orderFlow">
-        <dl>
-            <dt class="d1">收款</dt>
-            <dd><span class="d3">5000</span><span class="d4">16-06-01 22:11</span></dd>
-            <dd class="t4"><span>失败,户名跟卡号不符</span>
-                <span class="t5">
-                    <button class="flow-retry">重试</button>&nbsp;<button class="flow-change">点击更换银行卡</button>
-                </span>
-            </dd>
-        </dl>
-        <dl>
-            <dt class="d2">付款</dt>
-            <dd><span class="d3">5000</span><span class="d4">16-06-01 22:11</span></dd>
-            <dd class="t2">成功</dd>
-        </dl>
-    </div>
-    <div data-id="3" th:remove="all" class="orderFlow">
-        <dl>
-            <dt class="d1">收款</dt>
-            <dd><span class="d3">4000</span><span class="d4">16-06-01 22:11</span></dd>
-            <dd class="t3"><a href="addcard.html">提现</a></dd>
-        </dl>
-        <dl>
-            <dt class="d2">付款</dt>
-            <dd><span class="d3">4000</span><span class="d4">16-06-01 22:11</span></dd>
-            <dd class="t2">成功</dd>
-        </dl>
-    </div>
-    <div data-id="4" th:remove="all" class="orderFlow">
-        <dl>
-            <dt class="d1">收款</dt>
-            <dd><span class="d3">9990</span><span class="d4">16-06-01 22:11</span></dd>
-            <dd class="t1">转账中…</dd>
-        </dl>
-        <dl>
-            <dt class="d2">付款</dt>
-            <dd><span class="d3">10000</span><span class="d4">16-06-01 22:11</span></dd>
-            <dd class="t2">成功</dd>
-        </dl>
-    </div>
-    <div data-id="5" th:remove="all" class="orderFlow">
-        <dl>
-            <dt class="d2">收款</dt>
-            <dd><span class="d3">9990</span><span class="d4">16-06-01 22:11</span></dd>
-            <dd class="t4"><span>成功,扣取10.00手续费</span><span class="t5">转入尾号7742银行卡</span></dd>
-        </dl>
-        <dl>
-            <dt class="d2">付款</dt>
-            <dd><span class="d3">10000</span><span class="d4">16-06-01 22:11</span></dd>
-            <dd class="t2">成功</dd>
-        </dl>
-    </div>
+			<dd class="t2">成功</dd>
+		</dl>
+	</div>
+	<div data-id="2" th:remove="all" class="orderFlow">
+		<dl>
+			<dt class="d1">收款</dt>
+			<dd><span class="d3">5000</span><span class="d4">16-06-01 22:11</span></dd>
+			<dd class="t4"><span>失败,户名跟卡号不符</span> <span class="t5">
+				<button class="flow-retry">重试</button>
+				&nbsp;
+				<button class="flow-change">点击更换银行卡</button>
+				</span> </dd>
+		</dl>
+		<dl>
+			<dt class="d2">付款</dt>
+			<dd><span class="d3">5000</span><span class="d4">16-06-01 22:11</span></dd>
+			<dd class="t2">成功</dd>
+		</dl>
+	</div>
+	<div data-id="3" th:remove="all" class="orderFlow">
+		<dl>
+			<dt class="d1">收款</dt>
+			<dd><span class="d3">4000</span><span class="d4">16-06-01 22:11</span></dd>
+			<dd class="t3"><a href="addcard.html">提现</a></dd>
+		</dl>
+		<dl>
+			<dt class="d2">付款</dt>
+			<dd><span class="d3">4000</span><span class="d4">16-06-01 22:11</span></dd>
+			<dd class="t2">成功</dd>
+		</dl>
+	</div>
+	<div data-id="4" th:remove="all" class="orderFlow">
+		<dl>
+			<dt class="d1">收款</dt>
+			<dd><span class="d3">9990</span><span class="d4">16-06-01 22:11</span></dd>
+			<dd class="t1">转账中…</dd>
+		</dl>
+		<dl>
+			<dt class="d2">付款</dt>
+			<dd><span class="d3">10000</span><span class="d4">16-06-01 22:11</span></dd>
+			<dd class="t2">成功</dd>
+		</dl>
+	</div>
+	<div data-id="5" th:remove="all" class="orderFlow">
+		<dl>
+			<dt class="d2">收款</dt>
+			<dd><span class="d3">9990</span><span class="d4">16-06-01 22:11</span></dd>
+			<dd class="t4"><span>成功,扣取10.00手续费</span><span class="t5">转入尾号7742银行卡</span></dd>
+		</dl>
+		<dl>
+			<dt class="d2">付款</dt>
+			<dd><span class="d3">10000</span><span class="d4">16-06-01 22:11</span></dd>
+			<dd class="t2">成功</dd>
+		</dl>
+	</div>
 </div>
-<script src="mock/all.js" th:src="@{/all.js}"></script>
+<script src="mock/all.js" th:src="@{/all.js}"></script> 
 <script src="js/order.js"></script>
 </body>
 </html>
