@@ -220,8 +220,8 @@ public class UserServiceImpl implements UserService {
                 user.setAgentUser(user.getGuideUser().getAgentUser());
 
             // user 作为一个可能存在的用户 可能存在着之前的信息 应该被清理
-            if (user.getId() != null)
-                userAgentInfoRepository.delete(user.getId());
+            if (user.getMyAgentInfo() != null)
+                userAgentInfoRepository.delete(user.getMyAgentInfo());
         }
     }
 

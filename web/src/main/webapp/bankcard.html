@@ -16,7 +16,7 @@
 <body>
 <div class="bankcard" th:each="card:${user.getCards()}">
     <div class="card">
-        <dl class="blue" th:styleappend="${'background:'+card.bank.background}"
+        <dl class="blue" th:style="${'background:'+card.bank.background}"
             style="background: linear-gradient(to right, #588CC6 , #4669B4);">
             <dt><img src="images/temp.jpg" class="img-circle"></dt>
             <dd ><span class="txt" th:text="${card.bank.name}">杭州银行</span>
@@ -28,8 +28,8 @@
     <div class="card">
         <dl class="green">
             <dt><img src="images/temp.jpg" class="img-circle"></dt>
-            <dd ><span class="txt" th:text="${card.bank.name}">杭州银行</span>
-			<span class="code-n" th:text="${#cashStrings.bankCardNumber(card.number)}">罗春爱｜尾号 2222</span></dd>
+            <dd><span class="txt">杭州银行</span>
+                <span class="code-n">罗春爱｜尾号 2222</span></dd>
         </dl>
     </div>
 </div>
@@ -37,8 +37,8 @@
     <div class="card">
         <dl class="yellow">
             <dt><img src="images/temp.jpg" class="img-circle"></dt>
-            <dd ><span class="txt" th:text="${card.bank.name}">杭州银行</span>
-			<span class="code-n" th:text="${#cashStrings.bankCardNumber(card.number)}">罗春爱｜尾号 2222</span></dd>
+            <dd><span class="txt">杭州银行</span>
+                <span class="code-n">罗春爱｜尾号 2222</span></dd>
         </dl>
     </div>
 </div>
