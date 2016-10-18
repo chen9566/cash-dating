@@ -28,8 +28,8 @@
         <li>
             <label class="pull-left">开户银行</label>
 				<span class="sleBG s2"
-                      style="background:url(images/Path.png) no-repeat right;background-size:10px 6px;"> <span
-                        class="sleHid">
+                      style="background:url(images/Path.png) no-repeat right;background-size:10px 6px;"> 
+					  <span class="sleHid">
 				<select name="bank" class="select bank-selector">
 					 <option value="" th:remove="all">默认选择</option>
                      <option value="1" th:each="bank:${banks}" th:value="${bank.code}"

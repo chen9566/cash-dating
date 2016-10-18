@@ -711,7 +711,7 @@ div.screening>ul>li {
 }
 /*我的余额*/
 .balance{ font-weight:100; text-align:center;margin-bottom:10px; padding-bottom:26px; background:#fff;border-bottom:1px solid #dfdfdf;border-top:1px solid #dfdfdf; }
-	.balance .cri{ color:#fff0f0;  padding:35px 10px; margin:0 auto 20px auto; background:#f56f6f; width:135px; height:135px; border-radius:100px}
+	.balance .cri{ color:#fff;  padding:35px 10px; margin:0 auto 20px auto; background:#f56f6f; width:135px; height:135px; border-radius:100px}
 	.balance .cri b{ font-size:30px; color:#fff; font-weight:200; display:block; line-height:40px}
 	.balance .cri small{ font-size:16px}
 	.balance .ba-btn{ width:320px; margin:0 auto}
@@ -720,9 +720,9 @@ div.screening>ul>li {
 	.balance .ba-bred{ background:#fff; color:#F75453; border:1px solid #FCB7B6}
 	.balance .ba-bglod{ background:#fcfcfc; color:#353535; border:1px solid #e0e0e0}
 	.balance .ba-btn button{ margin:0 10px}
-	.balance .yq{ width:100%; font-size:12px; color:#b3b3b3; text-align:right; margin-top:15px; padding-right:15px}
-	.balance .yq a{color:#b3b3b3; text-decoration:none}
-	.balance .yq i{ margin-right:5px;}
+	.balance .yq{ width:100%; font-size:12px; color:#888; text-align:right; margin-top:15px; padding-right:15px}
+	.balance .yq a{color:#a6a6a6; text-decoration:none}
+	.balance .yq img{ width:15px; margin:-2px 5px 0 0;}
 .balliist{}
 	.balliist ul{ overflow:hidden;padding:10px 15px; margin-left:15px;border-bottom:1px solid #dfdfdf}
 	.balliist li{ font-size:14px; line-height:20px; color:#888}
@@ -869,9 +869,11 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.from-bank li{border-bottom:1px solid #dfdfdf; line-height:44px; overflow:hidden; height:44px;}
 	.from-bank li input{  background:none; height:30px; line-height:30px; margin:5px 0 ;border:0;}
 	.from-bank li select{ background:none;  height:30px;line-height:30px; margin:5px 0; border:0;}
-	.from-bank li .select {width:116%; background:none; border:none; }   
-	.from-bank li .select2 {width:116%; background:none; border:none; }  
-	.from-bank li .select3 {width:118%; text-align:center; padding-left:20px; background:none; border:none; }  
+	.from-bank li .select {width:120%; background:none; border:none; }   
+	.from-bank li .select2 {width:120%; background:none; border:none; }  
+	.from-bank li .select3 {width:120%; text-align:center; padding-left:20px; background:none; border:none; } 
+	.from-bank .icon{ width:25px}
+	.from-bank .icon img{width: 20px;margin:-2px 0 0 0;} 
 .sleHid { display:block;  overflow:hidden; }     
 .sleBG {  border-right:none; float:left; display:block;}
 	.from-bank li label{ color:#888; width:95px; font-weight:400; font-size:14px;}
@@ -885,13 +887,13 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .order{ margin:0 0 15px 0;background:#fff;}
 	.order dl{ height:74px; border-bottom:1px solid #dfdfdf; margin:0; padding:15px}
 	.order dt{ float:left; margin-right:10px; width:44px; line-height:44px; text-align:center; height:44px; font-weight:300}
-	.order dt.d1{ background:#d1d1d1; color:#fff;font-size:13px}
-	.order dt.d2{background:#FDBC6B; color:#fff; font-size:15px}
+	.order dt.d1{ background:#f09d35; color:#fff;font-size:15px}
+	.order dt.d2{background:#afacac; color:#fff; font-size:15px}
 	.order dd .d4{font-weight:300; color:#b3b3b3; float:left; font-size:13px;}
 	.order dd .d3{ font-size:16px; color:#353535;display:block;}
-	.order .t4{ float:right; margin-top:-22px;line-height:20px; text-align:right}
-	.order .t5{ display:block; color:#888; }
-	 .order .t5 button{ text-align:center; line-height:22px; background:#fcfcfc;  color:#888; height:22px; border:1px solid #e0e0e0; font-size:12px; border-radius:4px; }
+	.order .t4{ float:right; margin-top:-23px;line-height:20px; text-align:right}
+	.order .t5{ display:block; color:#888; margin-top:2px; }
+	 .order .t5 button{ text-align:center; line-height:20px; background:#fcfcfc;  color:#888; height:22px; border:1px solid #e0e0e0; font-size:12px; border-radius:4px; }
 	.order .t1{ float:right; margin-top:-24px; color:#F65150; line-height:44px;}
 	.order .t2{ float:right; color:#000; margin-top:-24px;line-height:44px;}
 	.order .t3{ float:right; margin-top:-15px;line-height:44px;}
@@ -912,10 +914,16 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .addcard{ margin-bottom:15px; color:#007AFF; text-align:center; background:#fff; border-bottom:1px solid #dfdfdf;  padding:20px}
 	.addcard img{ width:32px; height:32px; margin:0 auto 8px auto; display:block}
 	.addcard a{ font-size:14px; text-decoration:none; display:block;color:#007AFF;}
-.show-c{ line-height:55px; text-align:center; font-size:15px}
-.show-c1{ float:left; width:50%; border-right:1px solid #dfdfdf; line-height:44px; text-align:center; font-size:17px; color:#0079FF}
+.show-c{text-align:center; font-size:15px; }
+	.show-c .choice{ font-size:15px; font-weight:300; line-height:22px;}
+
+	.show-c .sn{ height:44px; margin:15px 0 10px 0}
+	.show-c select{ padding-left:7px; font-size:14px; overflow:hidden; border:0;  height:44px; background:none; }
+	.show-c .sn1{ width:100%;border:1px solid #cacaca; z-index:999; background:url(showdown.png) no-repeat right; background-size:44px}
+	.show-c .sn2{ width:130%}
+	.show-c1{ float:left; width:50%; font-weight:600;  line-height:44px; text-align:center; font-size:17px; color:#0079FF}
 	.show-c1 a{display:block;color:#0079FF; text-decoration:none}
-.show-c2{ float:left; width:50%; font-weight:bold;  line-height:44px; text-align:center; font-size:17px; color:#0079FF; }
+.show-c2{ float:left; width:50%; border-right:1px solid #dfdfdf; line-height:44px; text-align:center; font-size:17px; color:#0079FF; }
 	.show-c2 a{ display:block;color:#0079FF; text-decoration:none}
 .form-reg-n{ margin:15px 0;}
 	.form-reg-n ul{ background:#fff; padding-left:15px; border-bottom:1px solid #dfdfdf; border-top:1px solid #dfdfdf}
@@ -952,7 +960,9 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.yjlist li.w4{ width:35%}	
 	.yjlist .bg{ background:#F8F8F8;}
 	.yjlist li select{ background:none; width:120%;  height:30px;line-height:30px; margin:5px 0; border:0;}
-	.yjlist li .e1 {width:100%; background:none; border:none; }   
+	.yjlist li .e1 {width:100%; background:none; border:none; }  
+	.yjlist .kong{ background:#fff; text-align:center; font-size:14px; padding:25px 0 40px 0; height:100%; color:#888; line-height:50px;} 
+		.yjlist .kong img{ display:block; width:200px; margin:0 auto}
 .logout{ margin:5px 15px; text-align:center}
 	.logout .l1{ line-height:27px; font-size:17px; color:#02BB00;  }
 	.logout .l1 img{ width:27px; height:27px; margin-right:15px; margin-top:-5px;}
@@ -978,3 +988,6 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .add-bank{ padding:0 15px; background:#fff; border-bottom:1px solid #dfdfdf; border-top:1px solid #dfdfdf; line-height:44px; margin-top:21px;}
 	.add-bank img{ width:15px; height:15px; margin-top:-3px; margin-right:10px;}
 	.add-bank a{ color:#007aff; font-size:14px; display:block; text-decoration:none}
+.n-404{ margin:78px 60px;text-align:center}
+	.n-404 img{ width:100%; margin:0 auto}
+.show-bg{ text-align:center; border-radius:8px; font-size:14px; background: url(sharebg.png); color:#FFF; margin:auto; line-height:22px; padding:10px 15px 12px 15px; margin:10px auto; width:142px;  }
