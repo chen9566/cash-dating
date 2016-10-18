@@ -80,14 +80,11 @@ public class OrderServiceImpl implements OrderService {
         if (order.getPlatformOrderSet() == null || order.getPlatformOrderSet().isEmpty())
             return false;
         //
-        if (order.getPlatformOrderSet().stream()
+        //            order.setCompleted(true);
+        return order.getPlatformOrderSet().stream()
                 .filter(PlatformOrder::isFinish)
                 .findAny()
-                .isPresent()) {
-            order.setCompleted(true);
-            return true;
-        } else
-            return false;
+                .isPresent();
     }
 
     @Override

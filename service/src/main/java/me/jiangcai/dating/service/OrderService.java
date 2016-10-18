@@ -39,7 +39,7 @@ public interface OrderService {
      * @param id 主订单号
      * @return 这个订单是否已完成
      */
-    @Transactional
+    @Transactional(readOnly = true)
     boolean isComplete(String id);
 
     /**
