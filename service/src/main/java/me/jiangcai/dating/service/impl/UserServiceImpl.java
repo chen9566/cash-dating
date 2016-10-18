@@ -12,6 +12,7 @@ import me.jiangcai.dating.model.CashWeixinUserDetail;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.repository.LoginTokenRepository;
 import me.jiangcai.dating.repository.SubBranchBankRepository;
+import me.jiangcai.dating.repository.UserAgentInfoRepository;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.UserService;
@@ -56,6 +57,8 @@ public class UserServiceImpl implements UserService {
     private VerificationCodeService verificationCodeService;
     @Autowired
     private SubBranchBankRepository subBranchBankRepository;
+    @Autowired
+    private UserAgentInfoRepository userAgentInfoRepository;
 
     @Override
     public boolean mobileRequired(String openId) {
@@ -144,7 +147,6 @@ public class UserServiceImpl implements UserService {
         return authentication;
     }
 
-
     @Override
     public User byOpenId(String openId) {
         return userRepository.findByOpenId(openId);
@@ -216,6 +218,10 @@ public class UserServiceImpl implements UserService {
             } else
                 //如果不是的话 就送给邀请者所在的合伙人
                 user.setAgentUser(user.getGuideUser().getAgentUser());
+
+            // user 作为一个可能存在的用户 可能存在着之前的信息 应该被清理
+            if (user.getId() != null)
+                userAgentInfoRepository.delete(user.getId());
         }
     }
 

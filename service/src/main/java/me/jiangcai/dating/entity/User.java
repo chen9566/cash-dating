@@ -24,6 +24,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.math.BigDecimal;
@@ -97,6 +98,12 @@ public class User implements WeixinUser, ProfitSplit, UserDetails {
      */
     @ManyToOne
     private User agentUser;
+    /**
+     * 所在区域所设置的扩展信息
+     */
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private UserAgentInfo myAgentInfo;
 
     // 微信信息
     @Column(length = 32)
@@ -142,6 +149,13 @@ public class User implements WeixinUser, ProfitSplit, UserDetails {
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Card> cards;
 
+    public UserAgentInfo updateMyAgentInfo() {
+        if (myAgentInfo != null)
+            return myAgentInfo;
+        UserAgentInfo userAgentInfo = new UserAgentInfo();
+        userAgentInfo.setId(getId());
+        return userAgentInfo;
+    }
 
     public void updateWeixinUserDetail(WeixinUserDetail detail) {
         setLastRefreshDetailTime(LocalDateTime.now());
