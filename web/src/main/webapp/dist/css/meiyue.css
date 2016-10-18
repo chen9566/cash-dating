@@ -989,5 +989,5 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.add-bank img{ width:15px; height:15px; margin-top:-3px; margin-right:10px;}
 	.add-bank a{ color:#007aff; font-size:14px; display:block; text-decoration:none}
 .n-404{ margin:78px 60px;text-align:center}
-	.n-404 img{ width:200px; margin:0 auto}
+	.n-404 img{ width:100%; margin:0 auto}
 .show-bg{ text-align:center; border-radius:8px; font-size:14px; background: url(sharebg.png); color:#FFF; margin:auto; line-height:22px; padding:10px 15px 12px 15px; margin:10px auto; width:60%;  }
