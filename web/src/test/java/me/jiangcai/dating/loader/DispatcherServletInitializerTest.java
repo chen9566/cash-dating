@@ -22,5 +22,12 @@ public class DispatcherServletInitializerTest extends WebTest {
                 .andDo(print());
         // 不可以是302
     }
+//
+//    @Test
+//    public void pages() throws IOException {
+//        helloNewUser(null,false);
+//        driver.get("http://localhost/"+ UUID.randomUUID().toString());
+//        System.out.println(driver.getPageSource());
+//    }
 
 }

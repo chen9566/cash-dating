@@ -13,6 +13,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.TemplateEngine;
@@ -39,6 +40,14 @@ class MVCConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private Environment environment;
+    @Autowired
+    private ThymeleafViewResolver thymeleafViewResolver;
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        super.addViewControllers(registry);
+        registry.addViewController("/404.html").setViewName("404.html");
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -69,9 +78,6 @@ class MVCConfig extends WebMvcConfigurerAdapter {
         super.addReturnValueHandlers(returnValueHandlers);
         returnValueHandlers.add(0, new ImageResolver());
     }
-
-    @Autowired
-    private ThymeleafViewResolver thymeleafViewResolver;
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {

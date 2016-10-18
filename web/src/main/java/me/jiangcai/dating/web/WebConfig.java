@@ -38,6 +38,7 @@ public class WebConfig {
                             // 安全系统无关的uri
                             mvcConfig.staticResourceAntPatterns()
                     )
+                    .antMatchers("/404.html")
                     .antMatchers("/weixin/")
                     .antMatchers("/notify/**")
                     .antMatchers("/login");
