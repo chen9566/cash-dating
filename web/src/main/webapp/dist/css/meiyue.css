@@ -843,7 +843,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .payment .explain{padding:15px; color:#b3b3b3; font-size:13px;}
 
 
-.pay-new{  margin:15px; padding:15px 15px 40px 15px; text-align:center;background:url(../images/paybg.png) no-repeat; background-size:100%;}
+.pay-new{  margin:15px; padding:15px 15px 40px 15px; text-align:center; background:url(paybg.png) no-repeat; background-size:100%;}
 	.pay-new .t1{ font-size:16px;line-height:20px}
 	.pay-new .t2{ font-size:14px; color:#888; line-height:18px;}
 	.pay-new .t3{ font-size:36px; padding-bottom:15px; line-height:30px;border-bottom:1px dashed #dfdfdf}
