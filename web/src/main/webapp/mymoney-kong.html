@@ -19,7 +19,7 @@
 </head>
 <body>
 <div class="balance">
-    <div class="yq"><i class="fa fa-question-circle "></i><a href="explain.html" th:href="@{/explain}">合伙人说明</a></div>
+    <div class="yq"><img src="images/question-icon.png"><a href="explain.html" th:href="@{/explain}">合伙人说明</a></div>
     <div class="cri"> 佣金总额<b th:text="${number}">200000
         <small th:text="${decimal}">.00</small>
     </b></div>
@@ -33,7 +33,6 @@
 <p class="yjmx">佣金明细<span class="pull-right"><a href="#">导出表格</a></span></p>
 <div class="yjlist">
    <p class="kong"> <img src="images/kong-pic.png">暂无数据</p>
-  
 </div>
 </body>
 </html>

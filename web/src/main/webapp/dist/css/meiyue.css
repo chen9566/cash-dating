@@ -720,9 +720,9 @@ div.screening>ul>li {
 	.balance .ba-bred{ background:#fff; color:#F75453; border:1px solid #FCB7B6}
 	.balance .ba-bglod{ background:#fcfcfc; color:#353535; border:1px solid #e0e0e0}
 	.balance .ba-btn button{ margin:0 10px}
-	.balance .yq{ width:100%; font-size:12px; color:#a6a6a6; text-align:right; margin-top:15px; padding-right:15px}
+	.balance .yq{ width:100%; font-size:12px; color:#888; text-align:right; margin-top:15px; padding-right:15px}
 	.balance .yq a{color:#a6a6a6; text-decoration:none}
-	.balance .yq i{ margin-right:5px;}
+	.balance .yq img{ width:15px; margin:-2px 5px 0 0;}
 .balliist{}
 	.balliist ul{ overflow:hidden;padding:10px 15px; margin-left:15px;border-bottom:1px solid #dfdfdf}
 	.balliist li{ font-size:14px; line-height:20px; color:#888}
@@ -961,7 +961,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.yjlist .bg{ background:#F8F8F8;}
 	.yjlist li select{ background:none; width:120%;  height:30px;line-height:30px; margin:5px 0; border:0;}
 	.yjlist li .e1 {width:100%; background:none; border:none; }  
-	.yjlist .kong{ background:#fff; text-align:center; font-size:18px; padding:25px 0 40px 0; height:100%; color:#888; line-height:50px;} 
+	.yjlist .kong{ background:#fff; text-align:center; font-size:14px; padding:25px 0 40px 0; height:100%; color:#888; line-height:50px;} 
 		.yjlist .kong img{ display:block; width:200px; margin:0 auto}
 .logout{ margin:5px 15px; text-align:center}
 	.logout .l1{ line-height:27px; font-size:17px; color:#02BB00;  }
