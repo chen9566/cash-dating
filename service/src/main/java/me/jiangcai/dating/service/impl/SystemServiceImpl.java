@@ -39,6 +39,7 @@ import java.util.Locale;
 public class SystemServiceImpl implements SystemService {
 
     private static final String ChannelRate = "dating.rate.channel";
+    private static final String LowestRate = "dating.rate.lowest";
     private static final String BookRate = "dating.rate.book";
     private static final String AgentRate = "dating.rate.agent";
     private static final String GuideRate = "dating.rate.guide";
@@ -68,6 +69,7 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public RateConfig currentRateConfig(ProfitSplit profitSplit) {
+        profitSplit.validateProfitSplit(this);
         // 我们系统保存2个 1 是用户手续费 2 是平台手续费
         // 剩下的则属于利润,利润分配参与者有3个 系统（贪婪获取）,合伙人,发展人
 
@@ -76,24 +78,31 @@ public class SystemServiceImpl implements SystemService {
         BigDecimal channelRate = getSystemString(ChannelRate, BigDecimal.class, new BigDecimal("0.0026"));
 
         BigDecimal profitRate = bookRate.subtract(channelRate);
-
-        profitSplit.validateProfitSplit(this);
-
-        double agentProfitRate = profitSplit.agentProfileRate(this);
-        double guideProfitRate = profitSplit.guideProfileRate(this);
-
+        // 剩余利益
         BigDecimal agentRate;
-        if (Double.isNaN(agentProfitRate)) {
-            agentRate = BigDecimal.ZERO;
-        } else {
-            agentRate = profitRate.multiply(BigDecimal.valueOf(agentProfitRate));
-        }
-
         BigDecimal guideRate;
-        if (Double.isNaN(guideProfitRate)) {
-            guideRate = BigDecimal.ZERO;
+
+        if (profitRate.compareTo(BigDecimal.ZERO) > 0) {
+            double agentProfitRate = profitSplit.agentProfileRate(this);
+            double guideProfitRate = profitSplit.guideProfileRate(this);
+
+
+            if (Double.isNaN(agentProfitRate)) {
+                agentRate = BigDecimal.ZERO;
+            } else {
+                agentRate = profitRate.multiply(BigDecimal.valueOf(agentProfitRate));
+            }
+
+
+            if (Double.isNaN(guideProfitRate)) {
+                guideRate = BigDecimal.ZERO;
+            } else {
+                guideRate = profitRate.multiply(BigDecimal.valueOf(guideProfitRate));
+            }
         } else {
-            guideRate = profitRate.multiply(BigDecimal.valueOf(guideProfitRate));
+            log.warn("negative profitRate for " + profitSplit);
+            agentRate = BigDecimal.ZERO;
+            guideRate = BigDecimal.ZERO;
         }
 
         RateConfig config = new RateConfig();
@@ -106,6 +115,12 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public BigDecimal systemBookRate(ProfitSplit profitSplit) {
+        if (profitSplit.useLowestRate()) {
+            return getSystemString(LowestRate, BigDecimal.class, new BigDecimal("0"));
+        }
+        BigDecimal rate = profitSplit.bookProfileRate(this);
+        if (rate != null)
+            return rate;
         return getSystemString(BookRate, BigDecimal.class, new BigDecimal("0.006"));
     }
 

@@ -29,7 +29,7 @@ $(function () {
         myAlert.fadeIn();
         if (lastTimeOut)
             clearTimeout(lastTimeOut);
-        
+
         lastTimeOut = setTimeout(releaseMessage, 2000);
     }
 
@@ -42,7 +42,7 @@ $(function () {
             message('姓名至少得2个字');
             return false;
         }
-        if (name.length > 7) {
+        if (name.length > 20) {
             message('姓名太长了');
             return false;
         }

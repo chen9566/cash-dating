@@ -3,6 +3,9 @@ package me.jiangcai.dating.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 申请代理商页面
@@ -13,6 +16,8 @@ public class AgentRequestPage extends AbstractPage {
     private WebElement nameInput;
     private WebElement mobileInput;
     private WebElement submitButton;
+    @FindBy(id = "myAlert")
+    private WebElement myAlert;
 
     public AgentRequestPage(WebDriver webDriver) {
         super(webDriver);
@@ -34,7 +39,7 @@ public class AgentRequestPage extends AbstractPage {
 
         webDriver.findElements(By.tagName("button")).stream()
                 .filter(WebElement::isDisplayed)
-                .filter(element -> element.getText().contains("提交"))
+                .filter(element -> element.getText().equals("提交申请"))
                 .findFirst()
                 .ifPresent(element -> submitButton = element);
     }
@@ -45,5 +50,11 @@ public class AgentRequestPage extends AbstractPage {
         mobileInput.clear();
         mobileInput.sendKeys(mobile);
         submitButton.click();
+        // 确保没有错误窗口弹出
+        if (myAlert.isDisplayed()) {
+            throw new AssertionError(myAlert.getText());
+        }
+        assertThat(myAlert.isDisplayed())
+                .isFalse();
     }
 }

@@ -22,6 +22,11 @@ public class SystemServiceTest extends ServiceBaseTest {
     public void badCurrentRateConfig() {
         RateConfig config = systemService.currentRateConfig(new ProfitSplit() {
             @Override
+            public BigDecimal bookProfileRate(SystemService systemService) {
+                return null;
+            }
+
+            @Override
             public double agentProfileRate(SystemService systemService) {
                 return 0.5;
             }
@@ -42,6 +47,11 @@ public class SystemServiceTest extends ServiceBaseTest {
 
         RateConfig config = systemService.currentRateConfig(new ProfitSplit() {
             @Override
+            public BigDecimal bookProfileRate(SystemService systemService) {
+                return null;
+            }
+
+            @Override
             public double agentProfileRate(SystemService systemService) {
                 return Double.NaN;
             }
@@ -59,6 +69,11 @@ public class SystemServiceTest extends ServiceBaseTest {
                 .isEqualByComparingTo(maxRate);
 
         config = systemService.currentRateConfig(new ProfitSplit() {
+            @Override
+            public BigDecimal bookProfileRate(SystemService systemService) {
+                return null;
+            }
+
             @Override
             public double agentProfileRate(SystemService systemService) {
                 return 0;
@@ -80,6 +95,11 @@ public class SystemServiceTest extends ServiceBaseTest {
 
         config = systemService.currentRateConfig(new ProfitSplit() {
             @Override
+            public BigDecimal bookProfileRate(SystemService systemService) {
+                return null;
+            }
+
+            @Override
             public double agentProfileRate(SystemService systemService) {
                 return 0.5;
             }
@@ -95,6 +115,11 @@ public class SystemServiceTest extends ServiceBaseTest {
                 .isEqualByComparingTo(halfRate);
 
         config = systemService.currentRateConfig(new ProfitSplit() {
+            @Override
+            public BigDecimal bookProfileRate(SystemService systemService) {
+                return null;
+            }
+
             @Override
             public double agentProfileRate(SystemService systemService) {
                 return 0;
@@ -113,6 +138,11 @@ public class SystemServiceTest extends ServiceBaseTest {
         // both
 
         config = systemService.currentRateConfig(new ProfitSplit() {
+            @Override
+            public BigDecimal bookProfileRate(SystemService systemService) {
+                return null;
+            }
+
             @Override
             public double agentProfileRate(SystemService systemService) {
                 return 0.4;

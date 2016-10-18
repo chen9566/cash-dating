@@ -43,7 +43,7 @@
                 <label><i class="fa-fw"><img src="images/yzmicon.png"></i></label>
                 <span class="mi"><img src="images/wrongicon.png" alt="米号提示"></span><input name="verificationCode"
                                                                                           maxlength="4" minlength="4"
-                                                                                          type="text" required
+                                                                                          type="tel" required
                                                                                           placeholder="请输入验证码">
                 <div id="btn-mask" class="yzm-n">获取验证吗</div>
             </li>
@@ -63,8 +63,7 @@
 <script>
 
     $().ready(function () {
-        // 提交时验证表单
-        var validator = $("#form1").validate({
+        $.yzmValidator = $("#form1").validate({
             errorLabelContainer: "#errortxt",
             wrapper: "li",
 
@@ -82,11 +81,6 @@
                 }
             }
         });
-//        $(".cancel").click(function () {
-//            validator.resetForm();
-//        });
-
-        $.yzmValidator = validator;
     });
 </script>
 

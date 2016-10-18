@@ -227,6 +227,22 @@ public class User implements WeixinUser, ProfitSplit, UserDetails {
     }
 
     @Override
+    public boolean useLowestRate() {
+        // 很少有人有
+        return manageStatus != null && (manageStatus == ManageStatus.manager || manageStatus == ManageStatus.root);
+    }
+
+    @Override
+    public BigDecimal bookProfileRate(SystemService systemService) {
+        if (myAgentInfo == null)
+            return null;
+        if (myAgentInfo.getBookLevel() == null)
+            return null;
+
+        return myAgentInfo.getBookLevel().toRate();
+    }
+
+    @Override
     public double agentProfileRate(SystemService systemService) {
         if (agentUser == null)
             return 0;
