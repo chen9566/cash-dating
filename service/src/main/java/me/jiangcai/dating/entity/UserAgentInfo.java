@@ -2,6 +2,7 @@ package me.jiangcai.dating.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.dating.entity.support.BookRateLevel;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -18,5 +19,7 @@ public class UserAgentInfo {
 
     @Id
     private Long id;
+
+    private BookRateLevel bookLevel;
 
 }
