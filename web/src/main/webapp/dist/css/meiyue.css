@@ -751,13 +751,14 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .share-btn{ margin:30px 15px}
 /*我的*/
 .my, .my-activity{background:#fff; margin-bottom:10px; border-bottom:1px solid #dfdfdf; padding:15px 0;border-top:1px solid #dfdfdf; color:#353535;}
-	.my ul{ overflow:hidden;  }
+	.my ul{ overflow:hidden; padding-left:15px;  }
 	.my li{verflow:hidden; float:left}
-	.my li img{ width:65px; height:65px; margin-right:10px }
+	.my li img{ width:55px; height:55px; margin-right:10px }
 	.my li i{ float:right; color:#cacaca}
 	.my li span{ color:#b3b3b3}
-	.my li h4{ font-size:16px; font-weight:300; font-weight:400; line-height:16px}
-	.my .ewm{ margin:15px 15px 0 0;}
+	.my li h4{ font-size:16px; font-weight:300; margin-top:7px; line-height:12px}
+	.my li b{ font-weight:200; color:#F65150}
+	.my .ewm{ margin:10px 15px 0 0;}
 	.my .ewm img{ width:16px;height:16px; float:left; margin:7px 0 0 0}
 	.my a{color:#353535; display:block}
 .my-activity{padding:10px 0;}
