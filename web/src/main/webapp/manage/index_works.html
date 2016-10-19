@@ -37,6 +37,12 @@
     </button>
 </div>
 
+<!--data-detail-formatter="detailFormatter"-->
+<!--data-detail-view="true"-->
+<!--data-show-toggle="true"-->
+<!--data-show-footer="false"-->
+<!--这几个暂时用不这-->
+
 <table id="table"
        data-toolbar="#toolbar"
        data-search="true"
@@ -91,7 +97,7 @@
                         field: 'name',
                         title: 'Item Name',
                         sortable: true,
-                        editable: true,
+//                        editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center'
                     }, {
@@ -99,9 +105,9 @@
                     title: 'Item Price',
                     sortable: true,
                     align: 'center',
-                    editable: function () {
-                        console.log(arguments);
-                    },
+//                    editable: function () {
+//                        console.log(arguments);
+//                    },
 //                    editable: {
 //                        type: 'text',
 //                        title: 'Item Price',

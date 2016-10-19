@@ -2,23 +2,56 @@ package me.jiangcai.dating.web;
 
 import me.jiangcai.dating.core.CoreConfig;
 import me.jiangcai.dating.core.Login;
+import me.jiangcai.dating.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @author CJ
  */
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @Import({CoreConfig.class, MVCConfig.class, WebConfig.Security.class})
 public class WebConfig {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    public void registerSharedAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder);
+        provider.setUserDetailsService(username -> {
+            // 在测试区域 支持登录管理员
+//            if (BuildIn_ROOT.equals(username) && environment.acceptsProfiles("test")) {
+//                Manager manager = new Manager();
+//                manager.setPassword(passwordEncoder.encode(BuildIn_Password));
+//                return manager;
+//            }
+            UserDetails userDetails = userRepository.findByOpenId(username);
+            if (userDetails == null)
+                throw new UsernameNotFoundException("没有找到用户名");
+            return userDetails;
+        });
+        auth.authenticationProvider(provider);
+    }
 
     @EnableWebSecurity
     @Order(99)//毕竟不是老大 100就让给别人了
@@ -46,6 +79,7 @@ public class WebConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
+
             // 在测试环境下 随意上传
             ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry =
                     http.antMatcher("/**")

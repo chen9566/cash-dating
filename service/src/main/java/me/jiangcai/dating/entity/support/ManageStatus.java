@@ -25,9 +25,12 @@ public enum ManageStatus {
      * 占位符
      */
     all,
+    /**
+     * 编辑
+     */
     editor,
     /**
-     *
+     * 客服
      */
     waiter,
     /**
@@ -47,6 +50,7 @@ public enum ManageStatus {
      */
     root;
 
+
     public List<String> roles() {
         List<String> list = new ArrayList<>();
         list.add(Role_Manage_Value);
@@ -54,7 +58,7 @@ public enum ManageStatus {
             case all:
                 break;
             case editor:
-                list.addAll(Arrays.asList(Role_User_Value, Role_Edit_Value));
+                list.addAll(Arrays.asList(Role_User_Value, Role_Edit_Value, Role_Agent_Value));
                 break;
             case waiter:
                 list.addAll(Collections.singletonList((Role_Order_Value)));
@@ -63,10 +67,10 @@ public enum ManageStatus {
                 list.addAll(Collections.singleton(Role_Finance_Value));
                 break;
             case general:
-                list.addAll(Arrays.asList(Role_Finance_Value, Role_Order_Value, Role_Edit_Value));
+                list.addAll(Arrays.asList(Role_Finance_Value, Role_Order_Value, Role_Edit_Value, Role_Agent_Value));
                 break;
             case manager:
-                list.addAll(Arrays.asList(Role_Finance_Value, Role_Order_Value, Role_Edit_Value, Role_Grant_Value));
+                list.addAll(Arrays.asList(Role_Finance_Value, Role_Order_Value, Role_Edit_Value, Role_Agent_Value, Role_Grant_Value));
                 break;
             case root:
                 list.addAll(Collections.singleton("ROOT"));
@@ -75,5 +79,24 @@ public enum ManageStatus {
                 throw new IllegalArgumentException("unknown of " + this);
         }
         return list;
+    }
+
+    @Override
+    public String toString() {
+        switch (this) {
+            case all:
+                return "观察员";
+            case editor:
+                return "编辑";
+            case waiter:
+                return "客服";
+            case financial:
+                return "财务";
+            case general:
+                return "主管";
+            case manager:
+                return "经理";
+        }
+        return super.toString();
     }
 }

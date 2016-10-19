@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="cards" type="java.lang.Iterable<me.jiangcai.dating.entity.Card>"*/-->
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../dist/css/bootstrap.min.css" th:href="@{/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="../dist/css/font-awesome.min.css" th:href="@{/dist/css/font-awesome.min.css}">
+    <link rel="stylesheet" href="../dist/css/meiyue.css" th:href="@{/dist/css/meiyue.css}">
+    <script src="../dist/js/jquery.js" th:src="@{/dist/js/jquery.js}"></script>
+    <script src="../dist/js/bootstrap.min.js" th:src="@{/dist/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+<script th:inline="javascript" th:fragment="code">
+    $.auths = {};
+    $.auths.agent = /*[[${#authorization.expression('hasAnyRole(''ROOT'',''AGENT'')')}]]*/ false;
+    $.auths.user = /*[[${#authorization.expression('hasAnyRole(''ROOT'',''USER'')')}]]*/ false;
+    $.auths.edit = /*[[${#authorization.expression('hasAnyRole(''ROOT'',''EDIT'')')}]]*/ false;
+    $.auths.order = /*[[${#authorization.expression('hasAnyRole(''ROOT'',''ORDER'')')}]]*/ false;
+    $.auths.finance = /*[[${#authorization.expression('hasAnyRole(''ROOT'',''FINANCE'')')}]]*/ false;
+    $.auths.grant = /*[[${#authorization.expression('hasAnyRole(''ROOT'',''GRANT'')')}]]*/ false;
+</script>
+
+</body>
+</html>

@@ -4,7 +4,7 @@
 
     <groupId>me.jiangcai.dating</groupId>
     <artifactId>cash-dating</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.4.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>cash-dating</name>
