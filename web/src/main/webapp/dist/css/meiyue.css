@@ -754,7 +754,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.my ul{ overflow:hidden; padding-left:15px;  }
 	.my li{verflow:hidden; float:left}
 	.my li img{ width:55px; height:55px; margin-right:10px }
-	.my li i{ float:right; color:#cacaca}
+	.my li i{ float:right; color:#cacaca; }
 	.my li span{ color:#b3b3b3}
 	.my li h4{ font-size:16px; font-weight:300; margin-top:7px; line-height:12px}
 	.my li b{ font-weight:200; color:#F65150}
@@ -774,7 +774,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.my-list .border-b{ border-bottom:1px solid #dfdfdf;}
 	.my-list li{ padding:15px 15px 15px 0}
 	.my-list li img{ width:22px; margin:-3px 10px 0 0}
-	.my-list li i{ color:#cacaca; vertical-align:center}
+	.my-list li i{ color:#cacaca; vertical-align:center; margin-top:-4px;}
 .mybanner{}
 .mybanner img{ width:100%}
 /*排行榜*/
