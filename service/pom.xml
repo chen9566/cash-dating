@@ -65,7 +65,13 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>6.0.2</version>
+            <version>5.1.32</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.jiangcai.jdbc</groupId>
+            <artifactId>mysql-utf8mb4</artifactId>
+            <version>1.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
