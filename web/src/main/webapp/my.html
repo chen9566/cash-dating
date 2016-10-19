@@ -3,58 +3,45 @@
 <!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
 <!--/*@thymesVar id="total" type="java.lang.Number"*/-->
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta charset="UTF-8">
-    <title>我的</title>
-    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
-    <link rel="stylesheet" href="dist/css/meiyue.css">
-    <script src="dist/js/jquery.js"></script>
-    <script src="dist/js/bootstrap.min.js"></script>
-    <script src="dist/js/share.js"></script>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta charset="UTF-8">
+<title>我的</title>
+<link rel="stylesheet" href="dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="dist/css/font-awesome.min.css">
+<link rel="stylesheet" href="dist/css/meiyue.css">
+<script src="dist/js/jquery.js"></script>
+<script src="dist/js/bootstrap.min.js"></script>
+<script src="dist/js/share.js"></script>
 </head>
 <body>
+<a href="myintroduce.html">
 <div class="my">
-    <ul>
-        <li class="col-xs-3"><img src="images/temp.jpg" th:src="${user.headImageUrl}" class="img-circle"></li>
-        <li class="col-xs-7">
-            <h4 th:text="${user.nickname}">爱莉莉</h4>
-            <span th:text="'在款爷用了'+${{total}}+'元'">在款爷用了500元</span>
-        </li>
-
-    </ul>
+	<ul>
+		<li><img src="images/temp.jpg" th:src="${user.headImageUrl}" class="img-circle"></li>
+		<li>
+			<h4 th:text="${user.nickname}">爱莉莉</h4>
+			<span th:text="'在款爷用了'+${{total}}+'元'">在款爷用了<b>500</b>元</span></li>
+		<li class="ewm pull-right"><img src="images/ewm-small.png" ><i class="fa fa-angle-right fa-2x pull-right"></i></li>
+	</ul>
 </div>
-<div class="my-activity">
-    <ul>
-        <li class="pull-left"><img src="images/mybag-32.png"></li>
-        <li class="col-xs-7">
-            <h4>邀请好友<b>赚大钱</b></h4>
-            <t>有福同享 大家一起赚大钱</t>
-        </li>
-        <li class="col-xs-2">
-            <button type="button" class="btn btn-default">查看</button>
-        </li>
-    </ul>
+</a>
+<div class="my-list">
+	<ul>
+		<!--<li class="border-b clickHref" href="receivables.html" th:href="@{/start}"><img--> 
+		<!--src="images/myicon-33.png">我要收款<i--> 
+		<!--class="fa fa-angle-right fa-2x pull-right"></i></li>-->
+		<li class="border-b clickHref" href="order.html" th:href="@{/orderList}"><img
+                src="images/myicon-02.png">我的订单<span>(5)</span><i class="fa fa-angle-right fa-2x pull-right"></i></li>
+		<li class="border-b clickHref" href="bankcard.html" th:href="@{/myBank}"><img src="images/myicon-01.png">我的银行卡<i class="fa fa-angle-right fa-2x pull-right"></i></li>
+		<!--<li class="border-b clickHref" href="kinglist.html"><img src="images/myicon-37.png">财富排行榜<i--> 
+		<!--class="fa fa-angle-right fa-2x pull-right"></i></li>-->
+		<li class="clickHref" href="mymoney.html" th:href="@{/myInvite}"><img src="images/myicon-03.png">我的邀请<i class="fa fa-angle-right fa-2x pull-right"></i></li>
+	</ul>
 </div>
-<div class="my-list ma-b">
-    <ul>
-        <!--<li class="border-b clickHref" href="receivables.html" th:href="@{/start}"><img-->
-        <!--src="images/myicon-33.png">我要收款<i-->
-        <!--class="fa fa-angle-right fa-2x pull-right"></i></li>-->
-        <li class="border-b clickHref" href="order.html" th:href="@{/orderList}"><img
-                src="images/myicon-33.png">我的订单<i
-                class="fa fa-angle-right fa-2x pull-right"></i></li>
-        <li class="border-b clickHref" href="bankcard.html" th:href="@{/myBank}"><img src="images/myicon-34.png">我的银行卡<i
-                class="fa fa-angle-right fa-2x pull-right"></i></li>
-        <!--<li class="border-b clickHref" href="kinglist.html"><img src="images/myicon-37.png">财富排行榜<i-->
-        <!--class="fa fa-angle-right fa-2x pull-right"></i></li>-->
-        <li class="border-b clickHref" href="mymoney.html" th:href="@{/myInvite}"><img src="images/38.png">我的邀请<i
-                class="fa fa-angle-right fa-2x pull-right"></i></li>
-    </ul>
-</div>
-<div class="p-15 po-fix">
-    <input value="注销" type="button" id="_btn1" class="red clickHref" href="logout.html" th:href="@{/logout}"
+<p class="mybanner ma-b"><img src="images/mybanner.png"></p>
+<div class="po-fix">
+	<input value="注销" type="button" id="_btn1" class="red clickHref" href="logout.html" th:href="@{/logout}"
            name="btn1"/>
 </div>
 </body>

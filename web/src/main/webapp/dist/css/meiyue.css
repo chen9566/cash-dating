@@ -750,13 +750,17 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.paycode .txt{  color:#888}
 .share-btn{ margin:30px 15px}
 /*我的*/
-.my, .my-activity, .my-list{background:#fff; margin-bottom:10px; border-bottom:1px solid #dfdfdf; padding:15px 0;border-top:1px solid #dfdfdf; color:#353535;}
-	.my ul{ overflow:hidden;  }
-	.my li{verflow:hidden;}
-	.my li img{ width:65px; height:65px; }
+.my, .my-activity{background:#fff; margin-bottom:10px; border-bottom:1px solid #dfdfdf; padding:15px 0;border-top:1px solid #dfdfdf; color:#353535;}
+	.my ul{ overflow:hidden; padding-left:15px;  }
+	.my li{verflow:hidden; float:left}
+	.my li img{ width:55px; height:55px; margin-right:10px }
 	.my li i{ float:right; color:#cacaca}
 	.my li span{ color:#b3b3b3}
-	.my li h4{ font-size:16px; font-weight:300; font-weight:400; line-height:16px}
+	.my li h4{ font-size:16px; font-weight:300; margin-top:7px; line-height:12px}
+	.my li b{ font-weight:200; color:#F65150}
+	.my .ewm{ margin:10px 15px 0 0;}
+	.my .ewm img{ width:16px;height:16px; float:left; margin:7px 0 0 0}
+	.my a{color:#353535; display:block}
 .my-activity{padding:10px 0;}
 	.my-activity ul{overflow:hidden;}
 	.my-activity li{}
@@ -765,12 +769,14 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.my-activity li t{ color:#888; font-size:12px;}
 	.my-activity li b{ color:#ff3f51; font-weight:300}
 	.my-activity li button{ margin-top:40%}
-.my-list{overflow:hidden; padding: 0 0 0 15px; color:#353535;}
+.my-list{overflow:hidden; padding: 0 0 0 15px; color:#353535;background:#fff; border-bottom:1px solid #dfdfdf; border-top:1px solid #dfdfdf; color:#353535;}
 	.my-list ul{ }
 	.my-list .border-b{ border-bottom:1px solid #dfdfdf;}
 	.my-list li{ padding:15px 15px 15px 0}
-	.my-list li img{ width:16px; margin:-3px 10px 0 0}
+	.my-list li img{ width:22px; margin:-3px 10px 0 0}
 	.my-list li i{ color:#cacaca; vertical-align:center}
+.mybanner{}
+.mybanner img{ width:100%}
 /*排行榜*/
 .king-list{ overflow:hidden;width:100%;height:60px;font-weight: 300;font-size: 20px;line-height: 36px;position:relative;}
 .king-line{ position:absolute; height:60px; border-bottom:1px solid #dfdfdf;  left:0; line-height:60px; text-align:center; background:#fff;  cursor:pointer;}
@@ -940,12 +946,12 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 		.form-reg-n li .mi img{ width:8px; }
 .black{ background:#ddd; border-radius:6px; width:100%; line-height:42px; height:42px; text-align:center;font-size:18px;color:#b3b3b3;text-decoration:none; }
 	.black a{ display:block; }
-.red{ background:#F65150; font-size:18px; color:#fff; border-radius:6px; width:100%; line-height:42px; height:42px; text-align:center; }
+.red{ background:#fcfcfc; font-size:16px; color:#353535;  width:100%; line-height:44px; height:44px; text-align:center; border:0; border-bottom:1px solid #dfdfdf; border-top:1px solid #dfdfdf; }
 	.red a{ display:block; text-decoration:none;color:#FFF; }
-.p-15{ padding:0 15px;}
-	.p-15 input{ border:0;}
+
 .bg-write{ background:#FFF}
-.po-fix{position:fixed; bottom:0; width:100%; margin:10px 0}
+.po-fix{position:fixed; bottom:0; width:100%; margin:20px 0}
+	
 .ma-b{ margin-bottom:65px}
 .share{ position:absolute; top:0; left:0;}
 	.share img{ width:100%;}
@@ -991,3 +997,13 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .n-404{ margin:78px 60px;text-align:center}
 	.n-404 img{ width:100%; margin:0 auto}
 .show-bg{ text-align:center; border-radius:8px; font-size:14px; background: url(sharebg.png); color:#FFF; margin:auto; line-height:22px; padding:10px 15px 12px 15px; margin:10px auto; width:142px;  }
+
+.introduce{ text-align:center}
+	.introduce .nc{ margin:30px 0 10px 0; }
+	.introduce .nc img{ width:64px; height:64px; border-radius:64px; margin:0 auto}
+	.introduce .nctxt{ font-size:18px; font-weight:200; }
+	.introduce .txt{ color:#888;  font-size:14px; display:block; font-weight:200}
+	.introduce .ewm{ margin:20px 90px 15px 90px}
+	.introduce .ewm img{ width:100%}
+	.introduce .ss{ color:#F65150; font-size:16px;}
+
