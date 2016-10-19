@@ -81,6 +81,10 @@ public enum ManageStatus {
         return list;
     }
 
+    public boolean isRoot() {
+        return this == root;
+    }
+
     @Override
     public String toString() {
         switch (this) {

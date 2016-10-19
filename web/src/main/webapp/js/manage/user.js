@@ -2,8 +2,53 @@
  * Created by CJ on 19/10/2016.
  */
 
-
 $(function () {
+    var grantDialog = $('#grantDialog');
+    var manageStatusInput = $('#manageStatusInput');
+
+    manageStatusInput.selectmenu();
+
+    grantDialog.dialog({
+        autoOpen: false,
+        show: {
+            effect: "blind",
+            duration: 1000
+        },
+        hide: {
+            effect: "explode",
+            duration: 1000
+        }
+    });
+
+    manageStatusInput.selectmenu({
+        select: function (event, ui) {
+            if (grantDialog.dialog("isOpen")) {
+                // console.log(ui.item.value);
+                grantDialog.dialog('close');
+                // 执行一个请求 来做这个事儿
+                // refresh
+                var success = function () {
+                    table.bootstrapTable('refresh');
+                    // alert('完成');
+                };
+                if ($.prototypesMode) {
+                    success();
+                } else {
+                    $.ajax($.uriPrefix + '/manage/grant/' + grantDialog.id, {
+                        method: 'put',
+                        data: ui.item.value,
+                        dataType: 'json',
+                        error: function () {
+                            alert('更改失败');
+                        },
+                        success: success
+                    });
+                }
+            }
+
+        }
+    });
+
     var grant = $('#grant');
     var remove = $('#remove');
     var table = $('#table');
@@ -70,19 +115,26 @@ $(function () {
             alert('同时只可以修改一个人的管理权');
             return;
         }
-        // 执行一个请求 来做这个事儿
-        // refresh
-        var success = function () {
-            table.bootstrapTable('refresh');
-            alert('完成');
-        };
-        // if ($.prototypesMode) {
-        //     success();
-        // } else {
-        //     $.ajax($.uriPrefix+'/manage/grant',{
-        //
-        //     });
-        // }
+
+        var id = ids[0];
+
+        var row = table.bootstrapTable('getRowByUniqueId', id);
+
+        // console.error(row, row.manageStatus);
+        if (row.manageStatus) {
+            $('option', manageStatusInput).each(function () {
+                if ($(this).text() == row.manageStatus) {
+                    manageStatusInput.val($(this).attr('value'));
+                }
+            });
+        } else {
+            manageStatusInput.val('');
+        }
+        manageStatusInput.selectmenu('refresh');
+
+        grantDialog.id = id;
+
+        grantDialog.dialog('open');
     })
 
 });

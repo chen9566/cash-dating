@@ -50,6 +50,7 @@ $(function () {
 
         ele.bootstrapTable({
             idField: idField,
+            uniqueId: idField,
             pagination: true,
             sidePagination: 'server',
             responseHandler: function (res) {

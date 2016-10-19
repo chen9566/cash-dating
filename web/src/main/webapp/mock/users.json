@@ -11,7 +11,7 @@
       "headImageUrl": "http://wx.qlogo.cn/mmopen/PiajxSqBRaEJfuxMjibOevO1BcNSEic9fy2XmYKvFP88eA8wMotB1JstiaATZODEcY3ibzOPTlpmibtoUiaFbvYsSbICQ/0",
       "gender": "",
       "city": "杭州",
-      "manageStatus": null
+      "manageStatus": "超管"
     },
     {
       "id": 2,
@@ -35,7 +35,7 @@
       "headImageUrl": "http://wx.qlogo.cn/mmopen/PiajxSqBRaEJfuxMjibOevO1BcNSEic9fy2XmYKvFP88eA8wMotB1JstiaATZODEcY3ibzOPTlpmibtoUiaFbvYsSbICQ/0",
       "gender": "",
       "city": "杭州",
-      "manageStatus": null
+      "manageStatus": "主管"
     },
     {
       "id": 4,

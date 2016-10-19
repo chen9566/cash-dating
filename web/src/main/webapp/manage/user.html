@@ -24,6 +24,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/editable/bootstrap-table-editable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/export/bootstrap-table-export.min.js"></script>
 
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/eggplant/jquery-ui.css">
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
     <script src="../dist/js/share.js" th:src="@{/dist/js/share.js}"></script>
     <script src="../mock/all.js" th:src="@{/all.js}"></script>
     <script th:replace="fragment/auth.html::code"></script>
@@ -32,6 +35,22 @@
 </head>
 <body>
 <div class="header"></div>
+
+<div id="grantDialog" title="更变管理权">
+    <p>更变管理权是一个危险的操作,请谨慎进行。</p>
+    <label for="manageStatusInput">选择一个管理等级</label>
+    <select name="manageStatusInput" id="manageStatusInput">
+        <option value="">--置空——</option>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <option th:each="state:${T(me.jiangcai.dating.entity.support.ManageStatus).values()}"
+                th:if="${!state.root}"
+                th:value="${state.name()}"
+                th:text="${state}" value="bj">编辑
+        </option>
+        <option th:remove="all" value="zg">主管</option>
+        <option th:remove="all" value="cg">超管</option>
+    </select>
+</div>
 
 <div id="toolbar">
     <button id="remove" class="btn btn-danger" disabled>

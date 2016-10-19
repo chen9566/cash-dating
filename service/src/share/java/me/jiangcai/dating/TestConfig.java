@@ -36,7 +36,7 @@ import java.net.URLEncoder;
 /**
  * @author CJ
  */
-@Import({TestConfig.Config.class, WeixinTestConfig.class, MysqlConfig.class, ChanpayTestSpringConfig.class})
+@Import({TestConfig.Config.class, WeixinTestConfig.class, DSConfig.class, ChanpayTestSpringConfig.class})
 @ImportResource("classpath:/datasource_local.xml")
 public class TestConfig {
 

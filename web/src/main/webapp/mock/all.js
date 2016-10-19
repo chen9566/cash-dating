@@ -6,7 +6,7 @@ if ($) {
     $.prototypesMode = true;
     $.testMode = true;
     $.unitTestMode= false;
-    $.uriPrefix = '/cash-dating/web/src/main/webapp/';
+    $.uriPrefix = '/cash-dating/web/src/main/webapp';
     $.weixinEnabled = true;
     // if ($.testMode) {
     //     $.ajaxSetup({
