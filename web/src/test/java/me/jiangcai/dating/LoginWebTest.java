@@ -7,6 +7,7 @@ import me.jiangcai.wx.test.WeixinUserMocker;
 import org.junit.Before;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
@@ -31,6 +32,14 @@ public abstract class LoginWebTest extends WebTest {
     @Before
     public void forLogin() {
         detail = createNewUser();
+    }
+
+    protected MockHttpSession mvcLogin() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        mockMvc.perform(getWeixin("/start").session(session));
+        mockMvc.perform(getWeixin("/login").session(session));
+        mockMvc.perform(getWeixin("/start").session(session));
+        return session;
     }
 
     static class Config {

@@ -138,7 +138,7 @@ public class UserServiceImpl implements UserService {
         HttpRequestResponseHolder holder = new HttpRequestResponseHolder(request, response);
         SecurityContext context = httpSessionSecurityContextRepository.loadContext(holder);
 
-        final WeixinAuthentication authentication = new WeixinAuthentication(user);
+        final WeixinAuthentication authentication = new WeixinAuthentication(user, this);
         context.setAuthentication(authentication);
 //
         SecurityContextHolder.getContext().setAuthentication(authentication);

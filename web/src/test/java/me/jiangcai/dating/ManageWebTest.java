@@ -25,6 +25,7 @@ public abstract class ManageWebTest extends LoginWebTest {
         user.setManageStatus(asManage.value());
         userRepository.save(user);
 
-        driver.get("http://localhost/manage");
+//        driver.get("http://localhost/logout");
+        driver.get("http://localhost/manage/");
     }
 }

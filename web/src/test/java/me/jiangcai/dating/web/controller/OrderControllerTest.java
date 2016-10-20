@@ -48,10 +48,7 @@ public class OrderControllerTest extends LoginWebTest {
         tradeSuccess(withdrawalFailedOrder);
         withdrawalFailed(withdrawalFailedOrder, WithdrawalStatus.WITHDRAWAL_FAIL, "怀孕了?");
 
-        MockHttpSession session = new MockHttpSession();
-        mockMvc.perform(getWeixin("/start").session(session));
-        mockMvc.perform(getWeixin("/login").session(session));
-        mockMvc.perform(getWeixin("/start").session(session));
+        MockHttpSession session = mvcLogin();
         //
         int times = orderService.getOne(withdrawalFailedOrder.getId()).getPlatformWithdrawalOrderSet().size();
 

@@ -86,6 +86,12 @@ public abstract class WebTest extends ServiceBaseTest {
         return builder;
     }
 
+    protected MockHttpServletRequestBuilder putWeixin(String urlTemplate, Object... urlVariables) {
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put(urlTemplate, urlVariables);
+        builder.header("user-agent", "MicroMessenger");
+        return builder;
+    }
+
     @Override
     protected void createWebDriver() {
         driver = MockMvcHtmlUnitDriverBuilder
