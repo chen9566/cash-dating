@@ -6,7 +6,6 @@ import me.jiangcai.dating.entity.support.ManageStatus;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpSession;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -15,25 +14,39 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AsManage(ManageStatus.all)
 public class UserControllerTest extends ManageWebTest {
 
+
     @Test
     public void userData() throws Exception {
         MockHttpSession session = mvcLogin();
 
-        mockMvc.perform(getWeixin("/manage/data/user")
+        String content = mockMvc.perform(getWeixin("/manage/data/user")
                 .param("sort", "nickname")
                 .param("order", "asc")
                 .param("offset", "0")
                 .param("limit", "10").session(session))
-                .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(simliarDataJsonAs("/mock/users.json"))
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(content);
 
-        mockMvc.perform(getWeixin("/manage/data/user")
+        content = mockMvc.perform(getWeixin("/manage/data/user")
                 .param("sort", "nickname")
                 .param("order", "desc")
                 .param("offset", "0")
                 .param("limit", "10").session(session))
-                .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(content);
+
+        content = mockMvc.perform(getWeixin("/manage/data/user")
+                .param("sort", "nickname")
+                .param("order", "desc")
+                .param("search", "5")
+                .param("offset", "0")
+                .param("limit", "10").session(session))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(content);
 
     }
 

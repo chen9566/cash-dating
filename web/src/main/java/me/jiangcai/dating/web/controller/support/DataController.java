@@ -2,6 +2,8 @@ package me.jiangcai.dating.web.controller.support;
 
 import me.jiangcai.dating.core.Login;
 import me.jiangcai.dating.entity.User;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.persistence.internal.jpa.querydef.OrderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -9,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,9 +20,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +39,8 @@ import java.util.stream.Collectors;
 @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Manage_Value + "')")
 public abstract class DataController<T> {
 
+    private static final Log log = LogFactory.getLog(DataController.class);
+
     @Autowired
     private EntityManager entityManager;
 
@@ -42,15 +51,20 @@ public abstract class DataController<T> {
 
     protected abstract List<DataField> fieldList();
 
-    protected Predicate dataFilter(User user) {
+    protected Predicate dataFilter(User user, CriteriaBuilder criteriaBuilder, Root<T> root) {
         return null;
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     @Transactional(readOnly = true)
     public Object data(@AuthenticationPrincipal User user, String search, String sort, Sort.Direction order
             , int offset, int limit) {
+        final List<DataField> dataFields = fieldList();
+        if (dataFields.size() < 2) {
+            log.error("DataController can not work with less fields");
+            throw new RuntimeException();
+        }
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<?> query = criteriaBuilder.createQuery();
         CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
@@ -59,10 +73,9 @@ public abstract class DataController<T> {
         Root<T> countRoot = countQuery.from(type());
 
         // select
-        final List<DataField> dataFields = fieldList();
         query = query.multiselect(dataFields.stream()
                 .map(dataField
-                        -> root.get(dataField.name()))
+                        -> dataField.select(root))
                 .collect(Collectors.toList()));
 
         countQuery = countQuery.select(criteriaBuilder.count(countRoot));
@@ -86,11 +99,23 @@ public abstract class DataController<T> {
                 .setMaxResults(limit)
                 .getResultList();
 
+        // to json
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("total", total);
+        result.put("rows", list.stream()
+                .map(o -> {
+                    Object[] data = (Object[]) o;
+                    HashMap<String, Object> row = new HashMap<>();
+                    if (data == null)
+                        return null;
+                    for (int i = 0; i < data.length; i++) {
+                        DataField name = dataFields.get(i);
+                        row.put(name.name(), name.export(data[i], MediaType.APPLICATION_JSON));
+                    }
+                    return row;
+                }).collect(Collectors.toList()));
 
-        System.out.println(total);
-        System.out.println(list);
-
-        return null;
+        return result;
     }
 
     private <X> CriteriaQuery<X> where(User user
@@ -99,7 +124,7 @@ public abstract class DataController<T> {
             , CriteriaQuery<X> query
             , Root<T> root
             , List<DataField> dataFields) {
-        Predicate predicate1 = dataFilter(user);
+        Predicate predicate1 = dataFilter(user, criteriaBuilder, root);
 
         if (StringUtils.isEmpty(search)) {
             if (predicate1 != null)
@@ -108,6 +133,7 @@ public abstract class DataController<T> {
             List<Predicate> conditions = dataFields.stream()
                     .filter(DataField::searchSupport)
                     .map(dataField -> dataField.searchPredicate(criteriaBuilder, root, search))
+                    .filter(predicate -> predicate != null)
                     .collect(Collectors.toList());
 
             Predicate condition = criteriaBuilder.or(conditions.toArray(new Predicate[conditions.size()]));
@@ -122,6 +148,17 @@ public abstract class DataController<T> {
 
     protected interface DataField {
 
+        static Predicate stringLike(CriteriaBuilder criteriaBuilder, String word, Path<String> path) {
+            if (!word.startsWith("%"))
+                word = "%" + word;
+            if (!word.endsWith("%"))
+                word = word + "%";
+            return criteriaBuilder.like(path, word);
+        }
+
+        /**
+         * @return 字段名, 必须跟原Entity名保持一致?不再需要了
+         */
         String name();
 
         boolean searchSupport();
@@ -129,18 +166,69 @@ public abstract class DataController<T> {
         Predicate searchPredicate(CriteriaBuilder criteriaBuilder, Root<?> root, String word);
 
         Order order(Sort.Direction direction, Root<?> root);
+
+        Object export(Object origin, MediaType type);
+
+        Selection<?> select(Root<?> root);
     }
 
-    protected class StringField implements DataField {
-        private final String name;
+    protected abstract class ClassicsField implements DataField {
 
-        public StringField(String name) {
+        protected final String name;
+
+        public ClassicsField(String name) {
             this.name = name;
+        }
+
+        protected Expression<?> selectExpression(Root<?> root) {
+            return root.get(name());
+        }
+
+        @Override
+        public Selection<?> select(Root<?> root) {
+            return selectExpression(root);
         }
 
         @Override
         public String name() {
             return name;
+        }
+
+        @Override
+        public Order order(Sort.Direction direction, Root<?> root) {
+            return new OrderImpl(selectExpression(root), direction == Sort.Direction.ASC);
+        }
+
+        @Override
+        public Object export(Object origin, MediaType type) {
+            return origin;
+        }
+    }
+
+    protected class UnsearchableField extends ClassicsField {
+
+        public UnsearchableField(String name) {
+            super(name);
+        }
+
+        @Override
+        public boolean searchSupport() {
+            return false;
+        }
+
+        @Override
+        public Predicate searchPredicate(CriteriaBuilder criteriaBuilder, Root<?> root, String word) {
+            return null;
+        }
+    }
+
+    protected class NumberField extends ClassicsField {
+
+        private final Class<? extends Number> numberType;
+
+        public NumberField(String name, Class<? extends Number> numberType) {
+            super(name);
+            this.numberType = numberType;
         }
 
         @Override
@@ -150,18 +238,45 @@ public abstract class DataController<T> {
 
         @Override
         public Predicate searchPredicate(CriteriaBuilder criteriaBuilder, Root<?> root, String word) {
-            if (!word.startsWith("%"))
-                word = "%" + word;
-            if (!word.endsWith("%"))
-                word = word + "%";
+            try {
+                return criteriaBuilder.equal(selectExpression(root), NumberUtils.parseNumber(word, numberType));
+            } catch (Exception ignored) {
+                return null;
+            }
+        }
+    }
 
-            return criteriaBuilder.like(root.get(name()), word);
+    protected class EnumField extends UnsearchableField {
+
+        public EnumField(String name) {
+            super(name);
+        }
+    }
+
+    protected class BooleanField extends UnsearchableField {
+
+        public BooleanField(String name) {
+            super(name);
+        }
+    }
+
+    protected class StringField extends ClassicsField {
+
+        public StringField(String name) {
+            super(name);
         }
 
         @Override
-        public Order order(Sort.Direction direction, Root<?> root) {
-            return new OrderImpl(root.get(name()), direction == Sort.Direction.ASC);
+        public boolean searchSupport() {
+            return true;
         }
+
+        @Override
+        public Predicate searchPredicate(CriteriaBuilder criteriaBuilder, Root<?> root, String word) {
+            @SuppressWarnings("unchecked") final Path<String> path = (Path<String>) selectExpression(root);
+            return DataField.stringLike(criteriaBuilder, word, path);
+        }
+
     }
 
 

@@ -18,13 +18,18 @@ import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.web.WebConfig;
 import me.jiangcai.lib.test.page.AbstractPage;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.io.Resource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
 import org.springframework.test.web.servlet.htmlunit.webdriver.WebConnectionHtmlUnitDriver;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -46,12 +51,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = {WebTest.Config.class, WebConfig.class})
 public abstract class WebTest extends ServiceBaseTest {
 
+    private static final Log log = LogFactory.getLog(WebTest.class);
     protected final ObjectMapper objectMapper = new ObjectMapper();
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private QRCodeService qrCodeService;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     private static <T> Iterable<T> IterableIterator(Iterator<T> iterator) {
         return () -> iterator;
@@ -135,6 +143,28 @@ public abstract class WebTest extends ServiceBaseTest {
                 .isTrue();
         assertThat(actual.fieldNames())
                 .containsAll(IterableIterator(excepted.fieldNames()));
+    }
+
+    protected ResultMatcher simliarDataJsonAs(String resource) {
+        return result -> {
+            Resource resource1 = applicationContext.getResource(resource);
+            try (InputStream inputStream = resource1.getInputStream()) {
+                JsonNode actual = objectMapper.readTree(result.getResponse().getContentAsByteArray());
+                assertThat(actual.get("total").isNumber())
+                        .isTrue();
+                JsonNode rows = actual.get("rows");
+                assertThat(rows.isArray())
+                        .isTrue();
+                if (rows.size() == 0) {
+                    log.warn("响应的rows为空,无法校验");
+                    return;
+                }
+                JsonNode exceptedAll = objectMapper.readTree(inputStream);
+                JsonNode excepted = exceptedAll.get("rows").get(0);
+
+                assertSimilarJsonObject(rows.get(0), excepted);
+            }
+        };
     }
 
     /**

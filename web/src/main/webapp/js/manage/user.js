@@ -37,7 +37,7 @@ $(function () {
                     $.ajax($.uriPrefix + '/manage/grant/' + grantDialog.id, {
                         method: 'put',
                         data: ui.item.value,
-                        dataType: 'json',
+                        contentType: 'text/plain',
                         error: function () {
                             alert('更改失败');
                         },
