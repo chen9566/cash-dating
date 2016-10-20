@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * 管理
  * 入口就是/manage
- * http://localhost:63342/cash-dating/web/src/main/webapp/mock/users.json?search=ok&sort=city&order=asc&offset=0&limit=10
+ *
  *
  * @author CJ
  */

@@ -9,6 +9,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.Formatter;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -24,7 +27,9 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import java.text.ParseException;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author CJ
@@ -43,6 +48,25 @@ class MVCConfig extends WebMvcConfigurerAdapter {
     private Environment environment;
     @Autowired
     private ThymeleafViewResolver thymeleafViewResolver;
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        super.addFormatters(registry);
+        registry.addFormatterForFieldType(Sort.Direction.class, new Formatter<Sort.Direction>() {
+
+            @Override
+            public String print(Sort.Direction object, Locale locale) {
+                if (object == null)
+                    return null;
+                return object.name().toLowerCase(Locale.ENGLISH);
+            }
+
+            @Override
+            public Sort.Direction parse(String text, Locale locale) throws ParseException {
+                return Sort.Direction.fromStringOrNull(text);
+            }
+        });
+    }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
