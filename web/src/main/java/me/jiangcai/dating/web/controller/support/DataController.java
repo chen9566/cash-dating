@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.persistence.internal.jpa.querydef.OrderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,11 +44,13 @@ public abstract class DataController<T> {
 
     @Autowired
     private EntityManager entityManager;
-
-    protected abstract Class<T> type();
+    @Autowired
+    private ConversionService conversionService;
 
 //    @Autowired
 //    private JpaSpecificationExecutor<T> jpaSpecificationExecutor;
+
+    protected abstract Class<T> type();
 
     protected abstract List<DataField> fieldList();
 
@@ -144,7 +147,6 @@ public abstract class DataController<T> {
         }
         return query;
     }
-
 
     protected interface DataField {
 
@@ -243,6 +245,21 @@ public abstract class DataController<T> {
             } catch (Exception ignored) {
                 return null;
             }
+        }
+    }
+
+    protected class ToStringField extends UnsearchableField {
+
+        public ToStringField(String name) {
+            super(name);
+        }
+
+        @Override
+        public Object export(Object origin, MediaType type) {
+            if (origin == null)
+                return null;
+            return conversionService.convert(origin, String.class);
+//            return super.export(origin, type);
         }
     }
 

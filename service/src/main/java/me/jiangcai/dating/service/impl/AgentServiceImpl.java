@@ -58,4 +58,24 @@ public class AgentServiceImpl implements AgentService {
         user = userRepository.save(user);
         return user.getAgentInfo();
     }
+
+    @Override
+    public void declineRequest(User user, long id, String comment) {
+        AgentRequest request = agentRequestRepository.getOne(id);
+
+        request.setProcessStatus(AgentRequestStatus.reject);
+        request.setComment(comment);
+        agentRequestRepository.save(request);
+    }
+
+    @Override
+    public void approveRequest(User user, long id, String comment) {
+        AgentRequest request = agentRequestRepository.getOne(id);
+
+        request.setProcessStatus(AgentRequestStatus.accept);
+        request.setComment(comment);
+        agentRequestRepository.save(request);
+
+        makeAgent(request.getFrom());
+    }
 }

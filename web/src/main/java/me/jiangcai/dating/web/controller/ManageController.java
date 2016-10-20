@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * 管理
  * 入口就是/manage
  *
- *
  * @author CJ
  */
 @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Manage_Value + "')")
@@ -35,16 +34,21 @@ public class ManageController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(method = RequestMethod.GET, value = {"/manage", "/manage/"})
+    @RequestMapping(method = RequestMethod.GET, value = {"/manage", "/manage/", "/manage/user"})
     public String index(@AuthenticationPrincipal User user) {
-        if (user.getManageStatus() == null) {
-            // 非管理员无法进入
-            return "redirect:/start";
-        }
-
+//        if (user.getManageStatus() == null) {
+//            // 非管理员无法进入
+//            return "redirect:/start";
+//        }
         return "manage/user.html";
     }
 
+    @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Agent_Value + "')")
+    @RequestMapping(method = RequestMethod.GET, value = {"/manage/agentRequest"})
+    public String agentRequest() {
+        return "manage/agentRequest.html";
+    }
+    
     @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Grant_Value + "')")
     @RequestMapping(method = RequestMethod.PUT, value = "/manage/grant/{id}")
     @ResponseStatus(HttpStatus.OK)

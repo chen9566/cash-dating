@@ -10,19 +10,26 @@ $(function () {
     header.empty();
     header.append('<h1>款爷后台管理</h1>');
     var menus = '<ul class="feature">';
-    menus = menus + '<li>用户</li>';
+    var hrefUser = 'user.html';
+    if (!$.prototypesMode)
+        hrefUser = $.uriPrefix + '/manage/user';
+    menus = menus + '<li><a href="' + hrefUser + '">用户</a></li>';
+
+    var hrefAgentRequest = 'agentRequest.html';
+    if (!$.prototypesMode)
+        hrefAgentRequest = $.uriPrefix + '/manage/agentRequest';
     if ($.prototypesMode || $.auths.agent)
-        menus = menus + '<li>合伙人请求</li>';
-    if ($.prototypesMode || $.auths.agent)
-        menus = menus + '<li>合伙人</li>';
-    if ($.prototypesMode || $.auths.edit)
-        menus = menus + '<li>银行</li>';
-    if ($.prototypesMode || $.auths.finance)
-        menus = menus + '<li>设置</li>';
-    if ($.prototypesMode || $.auths.order)
-        menus = menus + '<li>订单</li>';
-    if ($.prototypesMode || $.auths.finance)
-        menus = menus + '<li>汇总</li>';
+        menus = menus + '<li><a href="' + hrefAgentRequest + '">合伙人请求</a></li>';
+    // if ($.prototypesMode || $.auths.agent)
+    //     menus = menus + '<li>合伙人</li>';
+    // if ($.prototypesMode || $.auths.edit)
+    //     menus = menus + '<li>银行</li>';
+    // if ($.prototypesMode || $.auths.finance)
+    //     menus = menus + '<li>设置</li>';
+    // if ($.prototypesMode || $.auths.order)
+    //     menus = menus + '<li>订单</li>';
+    // if ($.prototypesMode || $.auths.finance)
+    //     menus = menus + '<li>汇总</li>';
     menus = menus + '</ul>';
     header.append(menus);
     header.append('<h2>' + document.title + '</h2>');

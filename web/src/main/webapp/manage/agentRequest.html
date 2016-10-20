@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>审批合伙人</title>
+    <link rel="stylesheet" href="../css/manage.css" th:href="@{/css/manage.css}">
+    <link rel="stylesheet" href="../css/iconfont.css" th:href="@{/css/iconfont.css}">
+    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table-locale-all.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/editable/bootstrap-table-editable.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/export/bootstrap-table-export.min.js"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/eggplant/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <script src="../dist/js/share.js" th:src="@{/dist/js/share.js}"></script>
+    <script src="../mock/all.js" th:src="@{/all.js}"></script>
+    <script th:replace="fragment/auth.html::code"></script>
+    <script src="../js/manage.js" th:src="@{/js/manage.js}"></script>
+
+</head>
+<body>
+<div class="header"></div>
+
+<div id="approveDialog" title="批准申请">
+    <p>点击确定,相关成员将立即获得合伙人的身份。</p>
+    <label for="commentInput">备注</label>
+    <input id="commentInput" type="text" style="color: #5d5d5d"/>
+    <button class="btn btn-ok">确定</button>
+</div>
+<div id="declineDialog" title="拒绝申请">
+    <p>点击确定,这个界面将不会再出现相关请求。</p>
+    <label for="declineCommentInput">备注</label>
+    <input id="declineCommentInput" type="text" style="color: #5d5d5d"/>
+    <button class="btn btn-ok">确定</button>
+</div>
+
+<div id="toolbar">
+    <button id="declineButton" class="btn btn-danger" disabled>
+        <i class="iconfont icon-decline"></i> 拒绝
+    </button>
+    <button id="approveButton" class="btn btn-danger" disabled>
+        <i class="iconfont icon-approve"></i> 同意
+    </button>
+</div>
+
+<table id="table"
+       data-url="../mock/agentRequest.json"
+       th:attr="data-url=@{/manage/data/agentRequest/pending}"
+       data-page-list="[10, 25, 50]"
+       data-toolbar="#toolbar"
+></table>
+
+<script src="../js/manage/agentRequest.js" th:src="@{/js/manage/agentRequest.js}"></script>
+<script>
+
+</script>
+
+</body>
+</html>

@@ -43,4 +43,24 @@ public interface AgentService {
      */
     @Transactional
     AgentInfo makeAgent(User user);
+
+    /**
+     * 拒绝申请
+     *
+     * @param user    处理者
+     * @param id      请求id
+     * @param comment 备注
+     */
+    @Transactional
+    void declineRequest(User user, long id, String comment);
+
+    /**
+     * 批准申请
+     *
+     * @param user    处理者
+     * @param id      请求id
+     * @param comment 备注
+     */
+    @Transactional
+    void approveRequest(User user, long id, String comment);
 }
