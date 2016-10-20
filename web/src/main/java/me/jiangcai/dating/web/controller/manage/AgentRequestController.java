@@ -1,4 +1,4 @@
-package me.jiangcai.dating.web.controller;
+package me.jiangcai.dating.web.controller.manage;
 
 import me.jiangcai.dating.core.Login;
 import me.jiangcai.dating.entity.AgentRequest;

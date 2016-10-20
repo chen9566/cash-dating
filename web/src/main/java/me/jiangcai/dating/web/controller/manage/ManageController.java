@@ -1,4 +1,4 @@
-package me.jiangcai.dating.web.controller;
+package me.jiangcai.dating.web.controller.manage;
 
 import me.jiangcai.dating.core.Login;
 import me.jiangcai.dating.entity.User;
@@ -48,7 +48,13 @@ public class ManageController {
     public String agentRequest() {
         return "manage/agentRequest.html";
     }
-    
+
+    @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Agent_Value + "')")
+    @RequestMapping(method = RequestMethod.GET, value = {"/manage/agent"})
+    public String agent() {
+        return "manage/agent.html";
+    }
+
     @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Grant_Value + "')")
     @RequestMapping(method = RequestMethod.PUT, value = "/manage/grant/{id}")
     @ResponseStatus(HttpStatus.OK)

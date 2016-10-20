@@ -20,8 +20,11 @@ $(function () {
         hrefAgentRequest = $.uriPrefix + '/manage/agentRequest';
     if ($.prototypesMode || $.auths.agent)
         menus = menus + '<li><a href="' + hrefAgentRequest + '">合伙人请求</a></li>';
-    // if ($.prototypesMode || $.auths.agent)
-    //     menus = menus + '<li>合伙人</li>';
+    var agentRequest = 'agent.html';
+    if (!$.prototypesMode)
+        agentRequest = $.uriPrefix + '/manage/agent';
+    if ($.prototypesMode || $.auths.agent)
+        menus = menus + '<li><a href="' + agentRequest + '">合伙人</a></li>';
     // if ($.prototypesMode || $.auths.edit)
     //     menus = menus + '<li>银行</li>';
     // if ($.prototypesMode || $.auths.finance)
