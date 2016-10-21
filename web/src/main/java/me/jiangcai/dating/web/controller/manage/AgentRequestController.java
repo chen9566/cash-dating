@@ -1,10 +1,12 @@
 package me.jiangcai.dating.web.controller.manage;
 
+import me.jiangcai.dating.DataField;
 import me.jiangcai.dating.core.Login;
 import me.jiangcai.dating.entity.AgentRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.AgentRequestStatus;
 import me.jiangcai.dating.service.AgentService;
+import me.jiangcai.dating.service.DataService;
 import me.jiangcai.dating.web.controller.support.DataController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,7 +64,7 @@ public class AgentRequestController extends DataController<AgentRequest> {
     }
 
     @Override
-    protected Predicate dataFilter(User user, CriteriaBuilder criteriaBuilder, Root<AgentRequest> root) {
+    public Predicate dataFilter(User user, CriteriaBuilder criteriaBuilder, Root<AgentRequest> root) {
         final Path<Object> status = root.get("processStatus");
         return criteriaBuilder.or(
                 criteriaBuilder.isNull(status),
@@ -74,26 +76,26 @@ public class AgentRequestController extends DataController<AgentRequest> {
     @Override
     protected List<DataField> fieldList() {
         return Arrays.asList(
-                new NumberField("id", Long.class)
-                , new StringField("headImageUrl") {
+                new DataService.NumberField("id", Long.class)
+                , new DataService.StringField("headImageUrl") {
                     @Override
                     protected Expression<?> selectExpression(Root<?> root) {
                         return root.join("from", JoinType.LEFT).get("headImageUrl");
                     }
-                }, new StringField("city") {
+                }, new DataService.StringField("city") {
                     @Override
                     protected Expression<?> selectExpression(Root<?> root) {
                         return root.join("from", JoinType.LEFT).get("city");
                     }
-                }, new StringField("nickname") {
+                }, new DataService.StringField("nickname") {
                     @Override
                     protected Expression<?> selectExpression(Root<?> root) {
                         return root.join("from", JoinType.LEFT).get("nickname");
                     }
-                }, new StringField("name")
-                , new StringField("mobileNumber")
+                }, new DataService.StringField("name")
+                , new DataService.StringField("mobileNumber")
                 , new ToStringField("createdTime")
-                , new EnumField("processStatus") {
+                , new DataService.EnumField("processStatus") {
                     @Override
                     public Object export(Object origin, MediaType type) {
                         if (origin == null)
@@ -111,7 +113,7 @@ public class AgentRequestController extends DataController<AgentRequest> {
                         }
                     }
                 }, new ToStringField("processTime")
-                , new StringField("comment")
+                , new DataService.StringField("comment")
         );
     }
 }

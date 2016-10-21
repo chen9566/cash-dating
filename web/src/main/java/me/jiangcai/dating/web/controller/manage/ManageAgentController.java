@@ -1,7 +1,9 @@
 package me.jiangcai.dating.web.controller.manage;
 
+import me.jiangcai.dating.DataField;
 import me.jiangcai.dating.core.Login;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.service.DataService;
 import me.jiangcai.dating.web.controller.support.DataController;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -27,17 +29,17 @@ public class ManageAgentController extends DataController<User> {
     }
 
     @Override
-    protected Predicate dataFilter(User user, CriteriaBuilder criteriaBuilder, Root<User> root) {
+    public Predicate dataFilter(User user, CriteriaBuilder criteriaBuilder, Root<User> root) {
         return criteriaBuilder.isNotNull(root.get("agentInfo"));
     }
 
     @Override
     protected List<DataField> fieldList() {
         return Arrays.asList(
-                new NumberField("id", Long.class)
-                , new StringField("city")
-                , new StringField("nickname")
-                , new StringField("mobileNumber")
+                new DataService.NumberField("id", Long.class)
+                , new DataService.StringField("city")
+                , new DataService.StringField("nickname")
+                , new DataService.StringField("mobileNumber")
                 , new ToStringField("joinTime") {
                     @Override
                     protected Expression<?> selectExpression(Root<?> root) {

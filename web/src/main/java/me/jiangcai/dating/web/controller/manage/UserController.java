@@ -1,7 +1,9 @@
 package me.jiangcai.dating.web.controller.manage;
 
+import me.jiangcai.dating.DataField;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.ManageStatus;
+import me.jiangcai.dating.service.DataService;
 import me.jiangcai.dating.web.controller.support.DataController;
 import me.jiangcai.wx.model.Gender;
 import org.springframework.http.MediaType;
@@ -23,7 +25,7 @@ import java.util.List;
 @RequestMapping(value = "/manage/data/user")
 public class UserController extends DataController<User> {
     @Override
-    protected Predicate dataFilter(User user, CriteriaBuilder criteriaBuilder, Root<User> root) {
+    public Predicate dataFilter(User user, CriteriaBuilder criteriaBuilder, Root<User> root) {
         return criteriaBuilder.or(criteriaBuilder.notEqual(root.get("manageStatus"), ManageStatus.root),
                 criteriaBuilder.isNull(root.get("manageStatus")));
     }
@@ -36,24 +38,24 @@ public class UserController extends DataController<User> {
     @Override
     protected List<DataField> fieldList() {
         return Arrays.asList(
-                new NumberField("id", Long.class)
-                , new BooleanField("enabled")
-                , new StringField("mobileNumber")
-                , new StringField("guide") {
+                new DataService.NumberField("id", Long.class)
+                , new DataService.BooleanField("enabled")
+                , new DataService.StringField("mobileNumber")
+                , new DataService.StringField("guide") {
                     @Override
                     protected Expression<?> selectExpression(Root<?> root) {
                         return root.join("guideUser", JoinType.LEFT).get("nickname");
                     }
                 }
-                , new StringField("agent") {
+                , new DataService.StringField("agent") {
                     @Override
                     protected Expression<?> selectExpression(Root<?> root) {
                         return root.join("agentUser", JoinType.LEFT).get("nickname");
                     }
                 }
-                , new StringField("nickname")
-                , new StringField("headImageUrl")
-                , new EnumField("gender") {
+                , new DataService.StringField("nickname")
+                , new DataService.StringField("headImageUrl")
+                , new DataService.EnumField("gender") {
                     @Override
                     public Object export(Object origin, MediaType type) {
                         if (origin == null)
@@ -69,8 +71,8 @@ public class UserController extends DataController<User> {
                         }
                     }
                 }
-                , new StringField("city")
-                , new EnumField("manageStatus") {
+                , new DataService.StringField("city")
+                , new DataService.EnumField("manageStatus") {
                     @Override
                     public Object export(Object origin, MediaType type) {
                         if (origin == null)

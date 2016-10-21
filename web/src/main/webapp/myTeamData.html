@@ -1,11 +1,33 @@
-<ul xmlns:th="http://www.thymeleaf.org" th:remove="all">
+<ul xmlns:th="http://www.thymeleaf.org" th:each="member:${list}" data-id="1" th:attr="data-id=${member.id}">
     <!--/*@thymesVar id="list" type="java.util.List<me.jiangcai.dating.web.model.TeamMember>"*/-->
+	<li class="w3" th:text="${member.name}">徐春锋</li>
+	<li class="w3" th:text="${member.mobile}">13399876542</li>
+    <li class="w3">
+		<span class="sleBG e1"
+			  style="background:url(images/Path.png) no-repeat 60px 19px;background-size:10px 6px;">
+			<span class="sleHid">
+			<select class="levelSelect" name="bookLevel" title="选择手续费">
+			<!--suppress ThymeleafVariablesResolveInspection -->
+        		<option th:each="state:${T(me.jiangcai.dating.entity.support.BookRateLevel).values()}"
+						th:value="${state.name()}"
+						th:selected="${state==member.level}"
+						th:text="${state}" value="a">0.35%
+				</option>
+				<option th:remove="all" value="b">0.4%</option>
+				<option th:remove="all" value="c">0.25</option>
+			</select>
+			</span>
+			</span>
+    </li>
+</ul>
+<ul xmlns:th="http://www.thymeleaf.org" th:remove="all" data-id="2">
     <li class="w3">徐春锋</li>
-    <li class="w3">13399876542</li>
+    <li class="w3">手机号码</li>
     <li class="w3">
 		<span class="sleBG e1"
               style="background:url(images/Path.png) no-repeat 60px 19px;background-size:10px 6px;"> <span
-                class="sleHid"><select name="">
+				class="sleHid">
+			<select class="levelSelect" name="bookLevel" title="选择手续费">
 			<option>0.35%</option>
 			<option>0.4%</option>
 			<option>0.25</option>
@@ -14,28 +36,14 @@
 		</span>
     </li>
 </ul>
-<ul xmlns:th="http://www.thymeleaf.org" th:remove="all">
+<ul xmlns:th="http://www.thymeleaf.org" th:remove="all" data-id="3">
     <li class="w3">徐春锋</li>
     <li class="w3">手机号码</li>
     <li class="w3">
 		<span class="sleBG e1"
               style="background:url(images/Path.png) no-repeat 60px 19px;background-size:10px 6px;"> <span
-                class="sleHid"><select name="">
-			<option>0.35%</option>
-			<option>0.4%</option>
-			<option>0.25</option>
-		</select>
-		</span>
-		</span>
-    </li>
-</ul>
-<ul xmlns:th="http://www.thymeleaf.org" th:remove="all">
-    <li class="w3">徐春锋</li>
-    <li class="w3">手机号码</li>
-    <li class="w3">
-		<span class="sleBG e1"
-              style="background:url(images/Path.png) no-repeat 60px 19px;background-size:10px 6px;"> <span
-                class="sleHid"><select name="">
+				class="sleHid">
+			<select class="levelSelect" name="bookLevel" title="选择手续费">
 			<option>0.35%</option>
 			<option>0.4%</option>
 			<option>0.25</option>

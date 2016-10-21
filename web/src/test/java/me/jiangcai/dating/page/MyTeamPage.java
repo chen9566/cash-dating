@@ -1,12 +1,15 @@
 package me.jiangcai.dating.page;
 
+import com.google.common.base.Predicate;
 import lombok.Data;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.BookRateLevel;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,15 +28,30 @@ public class MyTeamPage extends AbstractPage {
 
     public void assertMember(int index, User user) {
         MyTeamMember myTeamMember = memberList.get(index);
-        assertThat(myTeamMember.name.getText())
-                .isEqualTo(user.getNickname());
-        assertThat(myTeamMember.mobile.getText())
-                .isEqualTo(user.getMobileNumber());
+        if (user.getNickname() == null)
+            assertThat(myTeamMember.name.getText())
+                    .isEmpty();
+        else
+            assertThat(myTeamMember.name.getText())
+                    .isEqualTo(user.getNickname());
+
+        if (user.getMobileNumber() == null)
+            assertThat(myTeamMember.mobile.getText()).isEmpty();
+        else
+            assertThat(myTeamMember.mobile.getText())
+                    .isEqualTo(user.getMobileNumber());
+        // 手续费
+        String showed = myTeamMember.select.findElements(By.tagName("option")).stream()
+                .filter(WebElement::isSelected)
+                .findFirst()
+                .orElse(null)
+                .getText();
+//        String showed = myTeamMember.select.getText();
         if (user.getMyAgentInfo() == null) {
             // 默认的
-            assertThat(myTeamMember.select.getText()).isEqualTo("0.6%");
+            assertThat(showed).isEqualTo("0.6%");
         } else {
-            assertThat(myTeamMember.select.getText()).isEqualTo(user.getMyAgentInfo().getBookLevel().toString());
+            assertThat(showed).isEqualTo(user.getMyAgentInfo().getBookLevel().toString());
         }
     }
 
@@ -47,8 +65,8 @@ public class MyTeamPage extends AbstractPage {
         List<WebElement> lis = webElement.findElements(By.tagName("li"));
         MyTeamMember member = new MyTeamMember();
         member.name = lis.get(0);
-        member.mobile = lis.get(0);
-        member.select = lis.get(0);
+        member.mobile = lis.get(1);
+        member.select = lis.get(2);
         return member;
     }
 
@@ -59,9 +77,20 @@ public class MyTeamPage extends AbstractPage {
         assertThat(webDriver.getTitle())
                 .isEqualTo("合伙佣金");
 
+        // 等待 知道没有 a 为止
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        wait.until(new Predicate<WebDriver>() {
+            @Override
+            public boolean apply(@Nullable WebDriver input) {
+                return input != null && input.findElements(By.cssSelector("a.next")).isEmpty();
+            }
+        });
+
+        printThisPage();
+
         webDriver.findElements(By.tagName("ul")).stream()
                 .filter(WebElement::isDisplayed)
-                .filter(webElement -> !"bg" .equalsIgnoreCase(webElement.getAttribute("class")))
+                .filter(webElement -> !"bg".equalsIgnoreCase(webElement.getAttribute("class")))
                 .map(this::To)
                 .forEach(memberList::add);
     }

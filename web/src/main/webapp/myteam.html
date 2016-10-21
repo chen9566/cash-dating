@@ -20,18 +20,12 @@
     <ul class="bg">
         <li class="w3">姓名</li>
         <li class="w3">手机号码</li>
-        <li class="w3">佣金比例</li>
+        <li class="w3">手续费</li>
     </ul>
     <a href="myTeamData.html" class="next" th:href="@{/myTeamData(offset=0)}">&nbsp;</a>
 </div>
 
-<script>
-    $(function () {
-        $('.yjlist').jscroll({
-            loadingHtml: '<img src="images/loading.gif" alt="Loading" /> 载入...',
-            nextSelector: 'a.next:last'
-        });
-    })
-</script>
+<script src="mock/all.js" th:src="@{/all.js}"></script>
+<script src="js/team.js"></script>
 </body>
 </html>
