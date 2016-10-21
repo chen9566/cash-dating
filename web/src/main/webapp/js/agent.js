@@ -7,7 +7,7 @@ $(function () {
     var myAlert = $('#myAlert');
     myAlert.hide();
 
-    $('button[class~=btn-primary]').click(function () {
+    $('.ok-request').click(function () {
         history.back();
     });
 
