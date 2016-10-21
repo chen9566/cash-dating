@@ -824,7 +824,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.modcard ul{}
 	.modcard li{ background:#fff; color:#888; line-height:44px; padding:0 15px;}
 	.modcard i{ color:#cacaca; margin-top:7px}
-.modal{ top:15%}
+.modal{ padding:100px 20px 0 20px}
 
 .payment{}
 	.payment .card{background: -webkit-linear-gradient(left, #E75C65 , #E8507D); /* Safari 5.1 - 6.0 */
