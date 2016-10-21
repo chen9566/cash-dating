@@ -42,4 +42,11 @@ public interface StatisticService {
      */
     @Transactional(readOnly = true)
     List<BalanceFlow> balanceFlows(String openId);
+
+    /**
+     * @param openId 用户openId
+     * @return 成功提现订单的数量
+     */
+    @Transactional(readOnly = true)
+    long countCashOrder(String openId);
 }

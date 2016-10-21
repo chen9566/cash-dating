@@ -29,4 +29,6 @@ public interface CashOrderRepository extends JpaRepository<CashOrder, String> {
             " order by C.startTime desc,W.startTime desc")
     List<?> findOrderFlow(User user);
 
+    long countByOwner_OpenIdAndCompletedTrue(String openId);
+
 }

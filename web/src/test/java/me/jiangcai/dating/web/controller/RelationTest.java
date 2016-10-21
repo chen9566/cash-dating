@@ -64,7 +64,7 @@ public class RelationTest extends WebTest {
         page.clickMenu("我的邀请");
         MyMoneyPage myMoneyPage = PageFactory.initElements(oldDriver, MyMoneyPage.class);
         myMoneyPage.validatePage();
-        myMoneyPage.assertNoTeam();
+        myMoneyPage.assertTeam();
 
         myMoneyPage.assertUser(invite, statisticService);
     }

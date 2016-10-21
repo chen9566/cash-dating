@@ -89,4 +89,9 @@ public class StatisticServiceImpl implements StatisticService {
 
         return flowArrayList;
     }
+
+    @Override
+    public long countCashOrder(String openId) {
+        return cashOrderRepository.countByOwner_OpenIdAndCompletedTrue(openId);
+    }
 }

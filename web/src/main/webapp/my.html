@@ -28,13 +28,14 @@
 </a>
 <div class="my-list">
 	<ul>
-		<!--<li class="border-b clickHref" href="receivables.html" th:href="@{/start}"><img--> 
-		<!--src="images/myicon-33.png">我要收款<i--> 
+		<!--<li class="border-b clickHref" href="receivables.html" th:href="@{/start}"><img-->
+		<!--src="images/myicon-33.png">我要收款<i-->
 		<!--class="fa fa-angle-right fa-2x pull-right"></i></li>-->
 		<li class="border-b clickHref" href="order.html" th:href="@{/orderList}"><img
-                src="images/myicon-02.png">我的订单<span>(5)</span><i class="fa fa-angle-right fa-2x pull-right"></i></li>
+				src="images/myicon-02.png">我的订单<!--/*@thymesVar id="orders" type="java.lang.Number"*/-->
+			<span th:text="${'('+orders+')'}">(5)</span><i class="fa fa-angle-right fa-2x pull-right"></i></li>
 		<li class="border-b clickHref" href="bankcard.html" th:href="@{/myBank}"><img src="images/myicon-01.png">我的银行卡<i class="fa fa-angle-right fa-2x pull-right"></i></li>
-		<!--<li class="border-b clickHref" href="kinglist.html"><img src="images/myicon-37.png">财富排行榜<i--> 
+		<!--<li class="border-b clickHref" href="kinglist.html"><img src="images/myicon-37.png">财富排行榜<i-->
 		<!--class="fa fa-angle-right fa-2x pull-right"></i></li>-->
 		<li class="clickHref" href="mymoney.html" th:href="@{/myInvite}"><img src="images/myicon-03.png">我的邀请<i class="fa fa-angle-right fa-2x pull-right"></i></li>
 	</ul>

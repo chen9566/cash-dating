@@ -51,6 +51,7 @@ public class HomeController {
     public String my(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", userService.by(user.getId()));
         model.addAttribute("total", statisticService.totalExpense(user.getOpenId()));
+        model.addAttribute("orders", statisticService.countCashOrder(user.getOpenId()));
         return "my.html";
     }
 

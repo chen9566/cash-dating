@@ -1,6 +1,7 @@
 package me.jiangcai.dating.web.controller.manage;
 
 import me.jiangcai.dating.DataField;
+import me.jiangcai.dating.DataFilter;
 import me.jiangcai.dating.core.Login;
 import me.jiangcai.dating.entity.AgentRequest;
 import me.jiangcai.dating.entity.User;
@@ -20,11 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +46,7 @@ public class AgentRequestController extends DataController<AgentRequest> {
     public void change(@AuthenticationPrincipal User user, @RequestBody Map<String, Object> data) {
         String comment = (String) data.get("comment");
         @SuppressWarnings("unchecked") List<Number> targets = (List<Number>) data.get("targets");
-        if ("approve" .equals(data.get("type"))) {
+        if ("approve".equals(data.get("type"))) {
             for (Number number : targets) {
                 agentService.approveRequest(user, number.longValue(), comment);
             }
@@ -61,16 +60,6 @@ public class AgentRequestController extends DataController<AgentRequest> {
     @Override
     protected Class<AgentRequest> type() {
         return AgentRequest.class;
-    }
-
-    @Override
-    public Predicate dataFilter(User user, CriteriaBuilder criteriaBuilder, Root<AgentRequest> root) {
-        final Path<Object> status = root.get("processStatus");
-        return criteriaBuilder.or(
-                criteriaBuilder.isNull(status),
-                criteriaBuilder.equal(status, AgentRequestStatus.requested)
-                , criteriaBuilder.equal(status, AgentRequestStatus.forward)
-        );
     }
 
     @Override
@@ -115,5 +104,17 @@ public class AgentRequestController extends DataController<AgentRequest> {
                 }, new ToStringField("processTime")
                 , new DataService.StringField("comment")
         );
+    }
+
+    @Override
+    protected DataFilter<AgentRequest> dataFilter() {
+        return (user, criteriaBuilder, root) -> {
+            final Path<Object> status = root.get("processStatus");
+            return criteriaBuilder.or(
+                    criteriaBuilder.isNull(status),
+                    criteriaBuilder.equal(status, AgentRequestStatus.requested)
+                    , criteriaBuilder.equal(status, AgentRequestStatus.forward)
+            );
+        };
     }
 }

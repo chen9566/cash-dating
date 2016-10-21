@@ -85,7 +85,10 @@ public class MyPage extends AbstractPage {
     }
 
     public void clickMenu(String text) {
-        menus.get(text).click();
+        menus.forEach((name, ele) -> {
+            if (name.startsWith(text))
+                ele.click();
+        });
     }
 
     /**

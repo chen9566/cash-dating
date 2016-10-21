@@ -5,10 +5,11 @@ import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.AgentInfo;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.page.LogoutPage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.PCLoginPage;
-import me.jiangcai.dating.page.StartOrderPage;
+import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.AgentService;
 import me.jiangcai.dating.service.QRCodeService;
 import org.junit.Test;
@@ -36,6 +37,9 @@ public class LoginControllerTest extends WebTest {
     private QRCodeService qrCodeService;
     @Autowired
     private AgentService agentService;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     public void pcLogin() throws IOException, InterruptedException {
@@ -70,7 +74,10 @@ public class LoginControllerTest extends WebTest {
         String url = qrCodeService.scanImage(loginPage.codeImage());
 
         // 好了 一会儿让我们的
-        helloNewUser(url, null, true);
+        User user = helloNewUser(url, null, true);
+        // 这里其实应该分2种情况 一种管理员 另一种 非管理员
+        user.setManageStatus(ManageStatus.all);
+        user = userRepository.save(user);
 
         driver.get(url);
         // 好了 关注我们的pcDriver
@@ -83,18 +90,24 @@ public class LoginControllerTest extends WebTest {
             @Override
             public boolean apply(@Nullable WebDriver input) {
                 try {
-                    StartOrderPage page = PageFactory.initElements(input, StartOrderPage.class);
-                    // 应该没有管理权 所以是这个
-                    page.validatePage();
+                    if (input == null)
+                        return false;
+                    assertThat(input.getTitle())
+                            .isEqualTo("管理会员");
+//                    System.out.println(input.getTitle());
+//                    System.out.println(input.getPageSource());
+//                    StartOrderPage page = PageFactory.initElements(input, StartOrderPage.class);
+//                    // 应该没有管理权 所以是这个
+//                    page.validatePage();
                     return true;
-                } catch (Exception ex) {
+                } catch (Throwable ex) {
                     return false;
                 }
             }
         });
-        StartOrderPage page = PageFactory.initElements(pcDriver, StartOrderPage.class);
-        // 应该没有管理权 所以是这个
-        page.validatePage();
+//        StartOrderPage page = PageFactory.initElements(pcDriver, StartOrderPage.class);
+//        // 应该没有管理权 所以是这个
+//        page.validatePage();
 
 //        driver.get("http://localhost/start");
 //        System.out.println(driver.getPageSource());

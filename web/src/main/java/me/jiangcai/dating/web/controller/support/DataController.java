@@ -27,7 +27,7 @@ import java.util.List;
  * @author CJ
  */
 @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Manage_Value + "')")
-public abstract class DataController<T> implements DataFilter<T> {
+public abstract class DataController<T> {
 
     private static final Log log = LogFactory.getLog(DataController.class);
 
@@ -43,12 +43,15 @@ public abstract class DataController<T> implements DataFilter<T> {
 
     protected abstract List<DataField> fieldList();
 
+    protected abstract DataFilter<T> dataFilter();
+
+    @SuppressWarnings("unchecked")
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     @Transactional(readOnly = true)
     public Object data(@AuthenticationPrincipal User user, String search, String sort, Sort.Direction order
             , int offset, int limit) {
-        return dataService.data(user, search, sort, order, offset, limit, type(), fieldList(), this);
+        return dataService.data(user, search, sort, order, offset, limit, type(), fieldList(), dataFilter());
     }
 
     protected class ToStringField extends DataService.UnsearchableField {
