@@ -60,6 +60,16 @@ public class CashFilter extends OncePerRequestFilter {
         return (Long) session.getAttribute(SESSION_KEY);
     }
 
+    /**
+     * 让这个请求变成这个人所邀请产生的
+     *
+     * @param request 请求
+     * @param id      会员id
+     */
+    public static void makeRequestBelongTo(HttpServletRequest request, Long id) {
+        request.getSession(true).setAttribute(SESSION_KEY, id);
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -67,7 +77,7 @@ public class CashFilter extends OncePerRequestFilter {
         if (request.getMethod().equalsIgnoreCase("get")) {
             Long id = guideUserFromURL(request.getRequestURL().toString(), request);
             if (id != null) {
-                request.getSession(true).setAttribute(SESSION_KEY, id);
+                makeRequestBelongTo(request, id);
             }
         }
         filterChain.doFilter(request, response);

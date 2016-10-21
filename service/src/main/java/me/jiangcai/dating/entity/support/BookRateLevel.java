@@ -31,7 +31,8 @@ public enum BookRateLevel {
 
     public BigDecimal toRate() {
         String x = message.substring(0, message.length() - 1);
+        return new BigDecimal(x).movePointLeft(2);
         //noinspection BigDecimalMethodWithoutRoundingCalled
-        return new BigDecimal(x).divide(BigDecimal.valueOf(100L));
+//        return new BigDecimal(x).divide(BigDecimal.valueOf(100L));
     }
 }

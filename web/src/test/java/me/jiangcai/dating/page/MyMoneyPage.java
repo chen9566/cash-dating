@@ -7,6 +7,7 @@ import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.service.StatisticService;
 import me.jiangcai.dating.util.Common;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.thymeleaf.util.NumberPointType;
@@ -29,6 +30,7 @@ public class MyMoneyPage extends AbstractPage {
     //    private WebElement codeButton;
     private WebElement withdrawButton;
     private WebElement explainButton;
+    private WebElement teamButton;
     private List<WebFlow> webFlows;
 
     public MyMoneyPage(WebDriver webDriver) {
@@ -59,6 +61,12 @@ public class MyMoneyPage extends AbstractPage {
 //                .findAny()
 //                .ifPresent(element -> codeButton = element);
 
+        webDriver.findElements(By.tagName("button")).stream()
+                .filter(WebElement::isDisplayed)
+                .filter(element -> element.getText().equals("合伙佣金"))
+                .findAny()
+                .ifPresent(element -> teamButton = element);
+
         webDriver.findElements(By.tagName("a")).stream()
                 .filter(WebElement::isDisplayed)
                 .filter(element -> element.getText().contains("合伙人"))
@@ -67,7 +75,7 @@ public class MyMoneyPage extends AbstractPage {
 
         webFlows = webDriver.findElement(By.className("yjlist")).findElements(By.tagName("ul")).stream()
                 .filter(WebElement::isDisplayed)
-                .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
+                .filter(webElement -> !"bg" .equals(webElement.getAttribute("class")))
                 .map(this::toFlow)
                 .collect(Collectors.toList());
 
@@ -123,6 +131,26 @@ public class MyMoneyPage extends AbstractPage {
         ExplainPage explainPage = initPage(ExplainPage.class);
 
         explainPage.clickMyCode();
+    }
+
+    public void assertNoTeam() {
+        if (teamButton != null) {
+            try {
+                assertThat(teamButton.isDisplayed())
+                        .isFalse();
+            } catch (NoSuchElementException ignored) {
+
+            }
+        }
+    }
+
+    public void assertTeam() {
+        assertThat(teamButton.isDisplayed())
+                .isTrue();
+    }
+
+    public void clickMyTeam() {
+        teamButton.click();
     }
 
     @Data

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,6 +59,13 @@ public class AgentController {
 
         user = userService.by(user.getId());
         agentService.newRequest(user, name, mobile);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/myTeam")
+    public String teamPage(@AuthenticationPrincipal User user, Model model) {
+
+
+        return "myteam.html";
     }
 
 }

@@ -1,0 +1,51 @@
+<ul xmlns:th="http://www.thymeleaf.org" th:remove="all">
+    <!--/*@thymesVar id="list" type="java.util.List<me.jiangcai.dating.web.model.TeamMember>"*/-->
+    <li class="w3">徐春锋</li>
+    <li class="w3">13399876542</li>
+    <li class="w3">
+		<span class="sleBG e1"
+              style="background:url(images/Path.png) no-repeat 60px 19px;background-size:10px 6px;"> <span
+                class="sleHid"><select name="">
+			<option>0.35%</option>
+			<option>0.4%</option>
+			<option>0.25</option>
+		</select>
+		</span>
+		</span>
+    </li>
+</ul>
+<ul xmlns:th="http://www.thymeleaf.org" th:remove="all">
+    <li class="w3">徐春锋</li>
+    <li class="w3">手机号码</li>
+    <li class="w3">
+		<span class="sleBG e1"
+              style="background:url(images/Path.png) no-repeat 60px 19px;background-size:10px 6px;"> <span
+                class="sleHid"><select name="">
+			<option>0.35%</option>
+			<option>0.4%</option>
+			<option>0.25</option>
+		</select>
+		</span>
+		</span>
+    </li>
+</ul>
+<ul xmlns:th="http://www.thymeleaf.org" th:remove="all">
+    <li class="w3">徐春锋</li>
+    <li class="w3">手机号码</li>
+    <li class="w3">
+		<span class="sleBG e1"
+              style="background:url(images/Path.png) no-repeat 60px 19px;background-size:10px 6px;"> <span
+                class="sleHid"><select name="">
+			<option>0.35%</option>
+			<option>0.4%</option>
+			<option>0.25</option>
+		</select>
+		</span>
+		</span>
+    </li>
+</ul>
+<a xmlns:th="http://www.thymeleaf.org" class="next" th:if="${!list.isEmpty()}" href="myTeamData.html"
+   th:href="@{/myTeamData(offset=${offset+list.size()})}">
+    <!--/*@thymesVar id="offset" type="java.lang.Long"*/-->
+    <!--/*@thymesVar id="list" type="java.util.List<me.jiangcai.dating.web.model.TeamMember>"*/-->
+    &nbsp;</a>
