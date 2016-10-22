@@ -36,7 +36,7 @@ public class Bank {
      * @since 1.3
      */
     @Column(length = 100)
-    private String background = "linear-gradient(to right, #E75C65 , #E8507D);";
+    private String background = "linear-gradient(to right, #E75C65 , #E8507D)";
 
     public static boolean containsHanScript(String s) {
         return s.codePoints().anyMatch(
