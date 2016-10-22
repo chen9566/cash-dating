@@ -25,8 +25,11 @@ $(function () {
         agentRequest = $.uriPrefix + '/manage/agent';
     if ($.prototypesMode || $.auths.agent)
         menus = menus + '<li><a href="' + agentRequest + '">合伙人</a></li>';
-    // if ($.prototypesMode || $.auths.edit)
-    //     menus = menus + '<li>银行</li>';
+    var bank = 'bank.html';
+    if (!$.prototypesMode)
+        bank = $.uriPrefix + '/manage/bank';
+    if ($.prototypesMode || $.auths.edit)
+        menus = menus + '<li><a href="' + bank + '">银行</a></li>';
     // if ($.prototypesMode || $.auths.finance)
     //     menus = menus + '<li>设置</li>';
     // if ($.prototypesMode || $.auths.order)

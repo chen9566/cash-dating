@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="banks" type="java.lang.Iterable<me.jiangcai.dating.entity.Bank>"*/-->
+<head>
+    <meta charset="UTF-8">
+    <title>银行管理</title>
+    <link rel="stylesheet" href="../css/manage.css" th:href="@{/css/manage.css}">
+    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+    <style>
+        .bank-name {
+            height: 60px;
+            font-size: 30px;
+            float: right;
+            padding-top: 10px;
+            padding-right: 30px;
+            color: white;
+        }
+
+        .bank-info {
+            float: right;
+            padding-top: 20px;
+            padding-right: 10px;
+        }
+
+        .bank-info label {
+            color: white;
+        }
+    </style>
+    <script src="../mock/all.js" th:src="@{/all.js}"></script>
+    <script th:replace="fragment/auth.html::code"></script>
+    <script src="../js/manage.js" th:src="@{/js/manage.js}"></script>
+    <!--<link rel="stylesheet" href="../dist/css/meiyue.css">-->
+</head>
+<body>
+<div class="header"></div>
+
+<div class="bank" th:each="bank:${banks}">
+    <section data-id="2"
+             style="background: linear-gradient(to right, #3c763d , #3c3c3c);"
+             th:attr="data-id=${bank.code}"
+             th:style="${'background:'+bank.background}">
+        <img src="../images/logo-gs.png" th:src="@{${bank.imageUri}}" width="60"/>
+        <div class="bank-info">
+            <label>
+                背景色
+                <input class="background-input" size="45" type="text"
+                       value="linear-gradient(to right, #3c763d , #3c3c3c)"
+                       th:value="${bank.background}"
+                />
+                <button class="background-submit">更新</button>
+            </label>
+        </div>
+        <div class="bank-name" th:text="${bank.name}">
+            中国工商银行
+        </div>
+    </section>
+    <br/>
+</div>
+<div th:remove="all">
+    <section data-id="3"
+             style="background: linear-gradient(to right, #02BB00 , #3c763d);">
+        <img src="../images/logo-gs.png" width="60"/>
+        <div class="bank-info">
+            <label>
+                背景色
+                <input class="background-input" size="45" type="text"
+                       value="linear-gradient(to right, #02BB00 , #3c763d)"/>
+                <button class="background-submit">更新</button>
+            </label>
+        </div>
+        <div class="bank-name">
+            中国某个银行
+        </div>
+    </section>
+    <br/>
+</div>
+
+
+<script src="../js/manage/bank.js" th:src="@{/js/manage/bank.js}"></script>
+</body>
+</html>

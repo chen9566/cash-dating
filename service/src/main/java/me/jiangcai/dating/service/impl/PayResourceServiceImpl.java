@@ -52,7 +52,7 @@ public class PayResourceServiceImpl implements PayResourceService {
         if (!environment.acceptsProfiles("test") || Dictionary.findAll(Bank.class).size() > bankService.list().size()) {
             // 在测试阶段只有量不够时才干这事儿
             for (Bank bank : Dictionary.findAll(Bank.class)) {
-                bankService.updateBank(bank.getId(), bank.getName());
+                bankService.updateBank(bank.getId(), bank.getName(), null);
             }
         }
         Set<String> stopBanks = new HashSet<>();

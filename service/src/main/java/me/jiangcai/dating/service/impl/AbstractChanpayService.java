@@ -86,7 +86,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
 
             final Consumer<PayChannel> payChannelConsumer = payChannel -> {
                 log.debug("get bank info " + payChannel);
-                bankService.updateBank(payChannel.getCode(), payChannel.getName());
+                bankService.updateBank(payChannel.getCode(), payChannel.getName(), null);
             };
             channels = channels.stream()
                     .filter(payChannel -> payChannel.getMode() == PayMode.ONLINE_BANK)

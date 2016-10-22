@@ -18,13 +18,16 @@ public class BankServiceImpl implements BankService {
     private BankRepository bankRepository;
 
     @Override
-    public Bank updateBank(String code, String name) {
+    public Bank updateBank(String code, String name, String background) {
         Bank bank = bankRepository.findOne(code);
         if (bank == null) {
             bank = new Bank();
             bank.setCode(code);
         }
-        bank.setName(name);
+        if (name != null)
+            bank.setName(name);
+        if (background != null)
+            bank.setBackground(background);
         return bankRepository.save(bank);
     }
 
