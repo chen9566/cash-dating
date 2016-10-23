@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="banks" type="java.lang.Iterable<me.jiangcai.dating.entity.Bank>"*/-->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>基本信息</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/share.js"></script>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+</head>
+<body>
+<form class="from-personal" id="" role="form">
+   
+    <ul>
+        <li class="bo-b">
+            <label class="icon"><img src="images/user-icon.svg"></label>
+            <input type="text" name="name" placeholder="请输入姓名">
+        </li>
+        <li class="noline">
+            <label class="icon"><img src="images/myicon-07.png"></label>
+            <input type="tel" name="mobile" placeholder="请输入身份证号码">
+        </li>
+    </ul>
+
+    <p class="p-15">
+        <button type="submit" class="btn btn-danger btn-lg btn-block">下一步</button>
+    </p>
+
+</form>
+
+<script src="mock/all.js" th:src="@{/all.js}"></script>
+<script src="js/agent.js"></script>
+
+<div class="show-bg" id="myAlert">填写内容不能为空</div>
+</body>
+</html>

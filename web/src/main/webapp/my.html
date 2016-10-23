@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
-<!--/*@thymesVar id="total" type="java.lang.Number"*/-->
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -15,35 +13,67 @@
 <script src="dist/js/share.js"></script>
 </head>
 <body>
-<a href="myintroduce.html">
-<div class="my">
+<div class="my-n" onclick="javascript:window.location.href='mydata.html'" >
 	<ul>
-		<li><img src="images/temp.jpg" th:src="${user.headImageUrl}" class="img-circle"></li>
+		<li class="avatar"><img src="images/51.png" ></li>
 		<li>
-			<h4 th:text="${user.nickname}">爱莉莉</h4>
-			<span th:text="'在款爷用了'+${{total}}+'元'">在款爷用了<b>500</b>元</span></li>
-		<li class="ewm pull-right"><img src="images/ewm-small.png" ><i class="fa fa-angle-right fa-2x pull-right"></i></li>
+			<h1>昵称</h1>
+			<span>在款爷赚了500元</span> </li>
+		<li class="pull-right m-top"><span class="ewm-s"><img src="images/ewm-small.png"></span><span class="right-w"><img src="images/right-w.png" ></span></li>
 	</ul>
 </div>
-</a>
-<div class="my-list">
+<div class="mylist">
 	<ul>
-		<!--<li class="border-b clickHref" href="receivables.html" th:href="@{/start}"><img-->
-		<!--src="images/myicon-33.png">我要收款<i-->
-		<!--class="fa fa-angle-right fa-2x pull-right"></i></li>-->
-		<li class="border-b clickHref" href="order.html" th:href="@{/orderList}"><img
-				src="images/myicon-02.png">我的订单<!--/*@thymesVar id="orders" type="java.lang.Number"*/-->
-			<span th:text="${'('+orders+')'}">(5)</span><i class="fa fa-angle-right fa-2x pull-right"></i></li>
-		<li class="border-b clickHref" href="bankcard.html" th:href="@{/myBank}"><img src="images/myicon-01.png">我的银行卡<i class="fa fa-angle-right fa-2x pull-right"></i></li>
-		<!--<li class="border-b clickHref" href="kinglist.html"><img src="images/myicon-37.png">财富排行榜<i-->
-		<!--class="fa fa-angle-right fa-2x pull-right"></i></li>-->
-		<li class="clickHref" href="mymoney.html" th:href="@{/myInvite}"><img src="images/myicon-03.png">我的邀请<i class="fa fa-angle-right fa-2x pull-right"></i></li>
+		<a href="wealth .html"><li class="bo-r">
+			<p><img src="images/my-icon03.png" ></p>
+			<p class="txt">款爷理财</p>
+		</li>
+		</a>
+		<a href="loan.html">
+		<li class="bo-r">
+			<p><img src="images/my-icon02.png" ></p>
+			<p class="txt">款爷借款</p>
+		</li>
+		</a>
+		<a href="#">
+		<li>
+			<p><img src="images/my-icon01.png" ></p>
+			<p class="txt">信用卡还款</p>
+		</li>
+		</a>
 	</ul>
 </div>
-<p class="mybanner"><img src="images/mybanner.png"></p>
-<div class="po-fix">
-	<input value="注销" type="button" id="_btn1" class="red clickHref" href="logout.html" th:href="@{/logout}"
-           name="btn1"/>
+<div class="mykey">
+	<ul>
+		<li class="bo-b">
+			<a href="myorder.html">
+				<span class="bt"><img src="images/myicon-04.png" ></span>
+				我的订单
+				<span class="pull-right f-l"><img src="images/blackright-r.png"></span>
+			</a>
+		</li>
+		<li class="bo-b">
+			<a href="financialdetails.html">
+				<span class="bt"><img src="images/myicon-09.png" ></span>
+				资金流水
+				<span class="pull-right f-l"><img src="images/blackright-r.png"></span>
+			</a>
+		</li>
+		<li class="bo-b">
+			<a href="bankcard.html">
+				<span class="bt"><img src="images/myicon-06.png" ></span>
+				我的银行卡
+				<span class="pull-right f-l"><img src="images/blackright-r.png"></span>
+			</a>
+		</li>
+		<li>
+			<a href="mymoney.html">
+			<span class="bt"><img src="images/myicon-05.png" ></span>
+			合伙赚钱
+			<span class="pull-right f-l"><img src="images/blackright-r.png"></span>
+			</a>
+		</li>
+	</ul>
 </div>
 </body>
 </html>

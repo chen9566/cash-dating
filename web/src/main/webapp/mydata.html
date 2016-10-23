@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta charset="UTF-8">
+<title>我的</title>
+<link rel="stylesheet" href="dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="dist/css/font-awesome.min.css">
+<link rel="stylesheet" href="dist/css/meiyue.css">
+<script src="dist/js/jquery.js"></script>
+<script src="dist/js/bootstrap.min.js"></script>
+<script src="dist/js/share.js"></script>
+</head>
+<body>
+	<div class="mydata">
+		<ul>
+			<li class="h-l bo-b">
+			<span class="pull-right av-d"><img src="images/50.png" ></span>头像
+			</li>
+			<li class="bo-b">
+			<span class="pull-right">目黑瞳</span>头像
+			</li>
+			<li class="bo-b">
+			<span class="pull-right">122323232323</span>手机号码
+			</li>
+			<li><a href="payewm.html">
+			<span class="pull-right bright-w"><img src="images/blackright-r.png"></span><span class="pull-right  bewm-s"><img src="images/ewmblack.png"></span>收款二维码</a>
+			</li>
+		</ul>
+	</div>
+	<div class="po-fix">
+    <input value="注销" type="button" id="_btn1" class="red clickHref" href="logout.html" th:href="@{/logout}"
+name="btn1"/>
+</div>
+</body>
+</html>
