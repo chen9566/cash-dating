@@ -1064,8 +1064,8 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .wealth{background: -webkit-linear-gradient(right, #F84F52 , #FF7446); /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(left, #F84F52 , #FF7446 ); /* Opera 11.1 - 12.0 */
   background: -moz-linear-gradient(left, #F84F52 , #FF7446 ); /* Firefox 3.6 - 15 */
-  background: linear-gradient(to left, #F84F52 , #FF7446 ); height:261px; position:relative; text-align:center }
-  	.wealth img{ width:190px; margin:15px auto 20px auto}
+  background: linear-gradient(to left, #F84F52 , #FF7446 );   position:relative; text-align:center }
+  	.wealth img{ width:60%; margin:15px auto 82px auto}
 .wealth-abs{ position:absolute; bottom:0; height:68px;background:url(sharebgtwo.png); width:100%; padding-top:8px;}
 	.wealth-abs ul{ overflow:hidden; }
 	.wealth-abs li{ float:left; width:50%; text-align:center}
