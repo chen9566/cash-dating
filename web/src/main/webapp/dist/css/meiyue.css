@@ -1077,7 +1077,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.loan p{ margin:0}
 	.loan .jk{ border-bottom:1px solid #dfdfdf; padding:0 15px; height:65px; line-height:65px; }
 		.loan .jk input[type="number"]{-moz-appearance:textfield;border: 0;background:none;width:90%;font-size:40px; line-height:50px;height:50px; margin:7px 0 0 0;  font-weight:300;padding-left:5px;}
-		.loan .jk img{ width:18px; padding:10px 0 15px 0; margin-right:10px; margin-top:-11px;  }
+		.loan .jk img{ width:18px; height:24px; padding:10px 0 15px 0; margin-right:10px; margin-top:-11px;  }
 	.loan ul{padding-left:15px; overflow:hidden}
 	.loan li{ line-height:44px; padding-right:15px; color:#888; font-size:14px; }
 	.loan li.bo-b{ border-bottom:1px solid #dfdfdf}
