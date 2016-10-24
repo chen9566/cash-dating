@@ -1061,7 +1061,17 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.pay-ewm t{ color:#888; font-size:16px;}
 	.pay-ewm .ewm-b{ margin-top:20px }
 		.pay-ewm .ewm-b img{width:180px; height:180px}
-.wealth{ background:url(lcbig01.png) no-repeat; background-size:261px; height:261px;}
+.wealth{background: -webkit-linear-gradient(right, #F84F52 , #FF7446); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(left, #F84F52 , #FF7446 ); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(left, #F84F52 , #FF7446 ); /* Firefox 3.6 - 15 */
+  background: linear-gradient(to left, #F84F52 , #FF7446 ); height:261px; position:relative; text-align:center }
+  	.wealth img{ width:190px; margin:15px auto 20px auto}
+.wealth-abs{ position:absolute; bottom:0; height:68px;background:url(sharebgtwo.png); width:100%; padding-top:8px;}
+	.wealth-abs ul{ overflow:hidden; }
+	.wealth-abs li{ float:left; width:50%; text-align:center}
+	.wealth-abs .f12{ color:#fbd0c6; font-size:12px;}
+	.wealth-abs .f25{color:#fff; font-size:25px; display:block; font-weight:300}
+	.wealth-abs .bo-r{ background:url(bordered-right.png) no-repeat right 14px; background-size:1px 30px}
 .loan{ background:#fff; padding-top:15px;}
 	.loan .t1{ font-size:14px; padding-left:15px; color:#353535}
 	.loan p{ margin:0}
