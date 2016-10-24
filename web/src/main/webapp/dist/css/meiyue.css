@@ -1075,10 +1075,10 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .loan{ background:#fff; padding-top:15px;}
 	.loan .t1{ font-size:14px; padding-left:15px; color:#353535}
 	.loan p{ margin:0}
-	.loan .jk{ border-bottom:1px solid #dfdfdf; padding:0 15px; height:70px; margin-top:12px;}
-		.loan .jk input[type="number"]{-moz-appearance:textfield;border: 0;background: none}
+	.loan .jk{ border-bottom:1px solid #dfdfdf; padding:0 15px; height:75px; margin-top:12px;}
+		.loan .jk input[type="number"]{-moz-appearance:textfield;background: none;display:block; border:0; width:90%;font-size:46px; line-height:50px;height:50px; margin-bottom:0;  font-weight:300}
 		.loan .jk img{ width:18px; padding:10px 0 15px 0; margin-right:10px; margin-top:-11px;  }
-		.loan .jk input{ border:0; width:90%;font-size:50px; line-height:50px;height:50px; margin-bottom:0;  font-weight:300}
+	
 	.loan ul{padding-left:15px; overflow:hidden}
 	.loan li{ line-height:44px; padding-right:15px; color:#888; font-size:14px; }
 	.loan li.bo-b{ border-bottom:1px solid #dfdfdf}
