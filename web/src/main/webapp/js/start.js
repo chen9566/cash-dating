@@ -30,21 +30,21 @@ $(function () {
         if (!str || str.length == 0) {
             button.attr('disabled', 'disabled');
             button.addClass('black');
-            button.removeClass('red');
+            button.removeClass('redremove');
             return;
         }
         var value = parseFloat(str);
         if (value <= 0) {
             button.attr('disabled', 'disabled');
             button.addClass('black');
-            button.removeClass('red');
+            button.removeClass('redremove');
             return;
         }
         //最高可以刷的金额是 9,999,999.99
 
         button.removeAttr('disabled');
         button.removeClass('black');
-        button.addClass('red');
+        button.addClass('redremove');
 
         var money = value * (parseFloat(1) - $.bookRate);
         var myRate = value - money;
