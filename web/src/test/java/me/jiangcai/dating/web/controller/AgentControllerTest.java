@@ -50,10 +50,11 @@ public class AgentControllerTest extends LoginWebTest {
         teamPage.assertTeamSize(0);
 
         // 然后我们获得一个成员
-        User user = createMember(currentUser);
+        User user = createMember(currentUser, true);
         assertThat(user.getAgentUser())
                 .isEqualTo(currentUser);
         teamPage.refresh();
+        teamPage.assertTeamSize(1);
         teamPage.assertMember(0, user);
 
         // 我们更改一个等级 再下一个单 检查下手续费
@@ -66,13 +67,20 @@ public class AgentControllerTest extends LoginWebTest {
         CashOrder order = orderService.newOrder(user, new BigDecimal("100"), UUID.randomUUID().toString(), null);
         assertThat(order.getThatRateConfig().getBookRate())
                 .isEqualByComparingTo(level.toRate());
+
+        // 添加一个无效的用户
+        createMember(currentUser, false);
+        teamPage.refresh();
+        teamPage.assertTeamSize(1);
     }
 
-    private User createMember(User owner) {
+    private User createMember(User owner, boolean active) {
         MockHttpServletRequest request = new MockHttpServletRequest();
         CashFilter.makeRequestBelongTo(request, owner.getId());
 
         User user = userService.newUser(UUID.randomUUID().toString().replaceAll("-", ""), request);
+        if (!active)
+            return user;
         user.setNickname(randomString(7));
         user.setMobileNumber(randomMobile());
         return userRepository.save(user);

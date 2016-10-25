@@ -117,7 +117,10 @@ public class AgentController {
                     }
                 }
                 )
-                , (user1, criteriaBuilder, root) -> criteriaBuilder.equal(root.get("agentUser"), user1)
+                , (user1, criteriaBuilder, root)
+                        -> criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("agentUser"), user1)
+                        , criteriaBuilder.isNotNull(root.get("mobileNumber")))
         ).get("rows")).stream()
                 .map(TeamMember::To)
                 .collect(Collectors.toList());
