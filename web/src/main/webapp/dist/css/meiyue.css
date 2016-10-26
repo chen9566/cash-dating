@@ -1192,6 +1192,13 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 -webkit-box-shadow:0px 0px 6px #d9d9d9; 
 box-shadow:0px 0px 6px #d9d9d9;  }
 .huanbei-banner{}
-	.huanbei-banner img{ width:100%}		
+	.huanbei-banner img{ width:100%}	
+.payment-n{ text-align:center;margin:30px 0 0 0; font-size:17px;}
+	.payment-n img{ width:70px; height:70px; margin:0 auto 15px auto; border-radius:70px; display:block; }
+.payment-n2{ margin:20px 0 30px 0; background:#fff; border-bottom:1px solid #dfdfdf; border-top:1px solid #dfdfdf; padding:15px 15px 10px 15px; }	
+	.payment-n2 .f14{ font-size:14px;}
+	.payment-n2 input[type="number"]{-moz-appearance:textfield;border: 0;background: none}
+	.payment-n2 input{ background:none; font-weight:300; font-size:40px;width:80%; padding-left:12px; height:50px; line-height:50px; border:0;}
+	.payment-n2 img{ width:18px; height:24px; vertical-align:center; margin-top:-15px }
 
 	
