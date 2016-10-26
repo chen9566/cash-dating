@@ -1,7 +1,9 @@
 package me.jiangcai.dating.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
+import lombok.ToString;
 import org.springframework.security.crypto.codec.Hex;
 
 import javax.persistence.Column;
@@ -10,6 +12,7 @@ import javax.persistence.Id;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 /**
  * 银行,总得管理下它们吧
@@ -17,7 +20,9 @@ import java.security.NoSuchAlgorithmException;
  * @author CJ
  */
 @Entity
-@Data
+@Setter
+@Getter
+@ToString
 public class Bank {
 
     @Id
@@ -37,6 +42,12 @@ public class Bank {
      */
     @Column(length = 100)
     private String background = "linear-gradient(to right, #E75C65 , #E8507D)";
+    /**
+     * 是否已被禁用
+     *
+     * @since 1.5
+     */
+    private boolean disabled;
 
     public static boolean containsHanScript(String s) {
         return s.codePoints().anyMatch(
@@ -51,6 +62,20 @@ public class Bank {
         byte[] data = input.getBytes("UTF-8");
         MessageDigest messageDigest = MessageDigest.getInstance("MD5");
         return new String(Hex.encode(messageDigest.digest(data)));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Bank)) return false;
+        Bank bank = (Bank) o;
+        return Objects.equals(code, bank.code) &&
+                Objects.equals(name, bank.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, name);
     }
 
     /**

@@ -18,7 +18,7 @@ public class BankServiceImpl implements BankService {
     private BankRepository bankRepository;
 
     @Override
-    public Bank updateBank(String code, String name, String background) {
+    public Bank updateBank(String code, String name, String background, Boolean disabled) {
         Bank bank = bankRepository.findOne(code);
         if (bank == null) {
             bank = new Bank();
@@ -28,12 +28,14 @@ public class BankServiceImpl implements BankService {
             bank.setName(name);
         if (background != null)
             bank.setBackground(background);
+        if (disabled != null)
+            bank.setDisabled(disabled);
         return bankRepository.save(bank);
     }
 
     @Override
     public List<Bank> list() {
-        return bankRepository.findAll(new Sort(Sort.Direction.DESC, "weight"));
+        return bankRepository.findByDisabledFalse(new Sort(Sort.Direction.DESC, "weight"));
     }
 
     @Override

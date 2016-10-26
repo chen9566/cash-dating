@@ -25,6 +25,11 @@
         .bank-info label {
             color: white;
         }
+
+        .bank-button {
+            float: left;
+            margin-top: 23px;
+        }
     </style>
     <script src="../mock/all.js" th:src="@{/all.js}"></script>
     <script th:replace="fragment/auth.html::code"></script>
@@ -40,6 +45,7 @@
              th:attr="data-id=${bank.code}"
              th:style="${'background:'+bank.background}">
         <img src="../images/logo-gs.png" th:src="@{${bank.imageUri}}" width="60" height="60"/>
+        <button class="bank-button">禁用</button>
         <div class="bank-info">
             <label>
                 背景色
@@ -60,6 +66,7 @@
     <section data-id="3"
              style="background: linear-gradient(to right, #02BB00 , #3c763d);">
         <img src="../images/logo-gs.png" width="60" height="60"/>
+        <button class="bank-button">禁用</button>
         <div class="bank-info">
             <label>
                 背景色

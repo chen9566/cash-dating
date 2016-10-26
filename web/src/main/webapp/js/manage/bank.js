@@ -17,5 +17,22 @@ $(function () {
             contentType: 'text/plain',
             data: $('.background-input', target).val()
         });
-    })
+    });
+
+    $('.bank-button').click(function () {
+        var target = $(this).closest('section');
+        var success = function () {
+            window.location.reload();
+        };
+
+        $.ajax($.uriPrefix + '/manage/bank/' + target.attr('data-id') + '/disabled', {
+            method: 'put',
+            contentType: 'application/json',
+            data: 'true',
+            success: success
+        });
+
+        if ($.prototypesMode)
+            success();
+    });
 });

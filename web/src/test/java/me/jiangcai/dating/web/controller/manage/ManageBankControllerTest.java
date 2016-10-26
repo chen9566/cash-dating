@@ -50,6 +50,17 @@ public class ManageBankControllerTest extends ManageWebTest {
 
         assertThat(bankService.byCode(bank.getCode()).getBackground())
                 .isEqualTo(background);
+
+        mockMvc.perform(putWeixin("/manage/bank/{0}/disabled", bank.getCode()).session(session)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("true")
+        )
+                .andExpect(status().isNoContent());
+        assertThat(bankService.list())
+                .doesNotContain(bank);
+        bankService.updateBank(bank.getCode(), null, null, false);
+        assertThat(bankService.list())
+                .contains(bank);
     }
 
 }
