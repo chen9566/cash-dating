@@ -77,6 +77,7 @@ public class OrderControllerTest extends LoginWebTest {
                 .isEqualTo(times + 1);
     }
 
+    // 1.5 以后更换之前的卡
     private OrderPage bindCardOnOrderPage(String mobile, OrderPage page, SubBranchBank bank, String owner, String number) {
         page.toCreateNewCard();
 

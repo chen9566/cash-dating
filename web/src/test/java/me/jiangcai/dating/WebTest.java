@@ -253,6 +253,7 @@ public abstract class WebTest extends ServiceBaseTest {
         return user;
     }
 
+    // 1.5 以后更换之前的卡
     public StartOrderPage bindCardOnOrderPage(String mobile, StartOrderPage startOrderPage
             , SubBranchBank subBranchBank, String owner, String number) {
         startOrderPage.toCreateNewOneCard();

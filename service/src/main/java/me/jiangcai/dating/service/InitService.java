@@ -2,6 +2,7 @@ package me.jiangcai.dating.service;
 
 import me.jiangcai.dating.Version;
 import me.jiangcai.dating.entity.Bank;
+import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.lib.jdbc.ConnectionConsumer;
 import me.jiangcai.lib.jdbc.ConnectionProvider;
@@ -52,6 +53,10 @@ public class InitService {
             @Override
             public void upgradeToVersion(Version version) throws Exception {
                 switch (version) {
+                    case v105000:
+                        jdbcService.tableAlterAddColumn(Card.class, "disabled", "0");
+                        jdbcService.tableAlterAddColumn(Bank.class, "disabled", "0");
+                        break;
                     case v103000:
                         jdbcService.tableAlterAddColumn(Bank.class, "background", "linear-gradient(to right, #E75C65 , #E8507D);");
                         jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {

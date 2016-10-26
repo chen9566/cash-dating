@@ -46,6 +46,7 @@ public class Bank {
      * 是否已被禁用
      *
      * @since 1.5
+     * @see me.jiangcai.dating.Version#v105000
      */
     private boolean disabled;
 

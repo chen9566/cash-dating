@@ -70,11 +70,12 @@ public class MyBankPage extends AbstractPage {
 
     @Override
     public void validatePage() {
-
+        assertThat(webDriver.getTitle())
+                .isEqualTo("我的银行卡");
         // 添加卡
         webDriver.findElements(By.tagName("a")).stream()
                 .filter(WebElement::isDisplayed)
-                .filter(webElement -> webElement.getText().contains("添加"))
+                .filter(webElement -> webElement.getText().contains("更换"))
                 .findFirst()
                 .ifPresent(webElement -> addButton = webElement);
 

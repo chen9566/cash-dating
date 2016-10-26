@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 开始收款页面
+ * 1.5 更新至可以换卡,但不可以加卡,同样无需把卡号传过来,所谓更换就是禁用原卡
  *
  * @author CJ
  */
