@@ -2,9 +2,9 @@ package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
-import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.repository.SubBranchBankRepository;
 import me.jiangcai.dating.repository.UserRepository;
@@ -83,7 +83,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card recommend(CashOrder order) {
+    public Card recommend(UserOrder order) {
         if (order.getCard() != null && !order.getCard().isDisabled())
             return order.getCard();
         if (order.getOwner().getCards() == null)

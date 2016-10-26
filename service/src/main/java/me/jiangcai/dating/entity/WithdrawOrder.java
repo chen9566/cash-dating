@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 @Getter
 public class WithdrawOrder extends UserOrder implements BalanceFlow {
 
-    private WithdrawOrderStatus processStatus = WithdrawOrderStatus.requested;
+    private WithdrawOrderStatus processStatus = WithdrawOrderStatus.cancelled;
     @Column(columnDefinition = "datetime")
     private LocalDateTime processTime;
 
@@ -56,11 +56,13 @@ public class WithdrawOrder extends UserOrder implements BalanceFlow {
 
     @Override
     public void withdrawalSuccess() {
+        setWithdrawalCompleted(true);
         setProcessStatus(WithdrawOrderStatus.completed);
     }
 
     @Override
     public void withdrawalFailed() {
+        setWithdrawalCompleted(false);
         setProcessStatus(WithdrawOrderStatus.cancelled);
     }
 }

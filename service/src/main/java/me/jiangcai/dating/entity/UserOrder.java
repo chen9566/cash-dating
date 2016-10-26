@@ -11,9 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * 用户订单,面向用户的订单
@@ -43,6 +45,24 @@ public abstract class UserOrder implements Locker {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     private User owner;
+
+    /**
+     * 提现是否完成的冗余标记
+     *
+     * @since 1.5
+     */
+    private boolean withdrawalCompleted;
+    /**
+     * @since 1.5
+     */
+    @ManyToOne
+    private Card card;
+
+    /**
+     * @since 1.5
+     */
+    @OneToMany(mappedBy = "userOrder", orphanRemoval = true, cascade = CascadeType.ALL)
+    private Set<PlatformWithdrawalOrder> platformWithdrawalOrderSet;
 
     /**
      * @return 以提现的立场来说, 它的金额应该是多少
@@ -82,6 +102,7 @@ public abstract class UserOrder implements Locker {
     @Override
     public String toString() {
         return "id='" + id + '\'' +
+                ", withdrawalCompleted=" + withdrawalCompleted +
                 ", amount=" + amount +
                 ", comment='" + comment + '\'' +
                 ", startTime=" + startTime +

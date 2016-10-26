@@ -8,7 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.util.Set;
@@ -30,17 +29,10 @@ public class CashOrder extends UserOrder {
     private boolean completed;
 
     /**
-     * 另一个,呵呵
-     */
-    private boolean withdrawalCompleted;
-
-    /**
      * 当时的几率配置
      */
     private RateConfig thatRateConfig;
 
-    @ManyToOne
-    private Card card;
 
     /**
      * 为什么是 1对多?
@@ -49,8 +41,6 @@ public class CashOrder extends UserOrder {
     @OneToMany(mappedBy = "cashOrder", orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<PlatformOrder> platformOrderSet;
 
-    @OneToMany(mappedBy = "userOrder", orphanRemoval = true, cascade = CascadeType.ALL)
-    private Set<PlatformWithdrawalOrder> platformWithdrawalOrderSet;
 
     @Override
     public BigDecimal getWithdrawalAmount() {
@@ -76,9 +66,8 @@ public class CashOrder extends UserOrder {
     public String toString() {
         return "CashOrder{" +
                 super.toString() +
-                "withdrawalCompleted=" + withdrawalCompleted +
+//                "withdrawalCompleted=" + withdrawalCompleted +
                 ", completed=" + completed +
-                ", card=" + card +
                 ", thatRateConfig=" + thatRateConfig +
                 "} " + super.toString();
     }

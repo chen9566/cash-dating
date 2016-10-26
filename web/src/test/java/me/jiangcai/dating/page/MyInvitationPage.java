@@ -40,6 +40,10 @@ public class MyInvitationPage extends AbstractPage {
 
     @Override
     public void validatePage() {
+
+        assertThat(webDriver.getTitle())
+                .isEqualTo("我的邀请");
+
         webDriver.findElements(By.className("cri")).stream()
                 .filter(WebElement::isDisplayed)
                 .findAny()

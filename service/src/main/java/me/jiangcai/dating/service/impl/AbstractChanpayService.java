@@ -22,6 +22,7 @@ import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
 import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
+import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.event.MyTradeEvent;
 import me.jiangcai.dating.event.MyWithdrawalEvent;
 import me.jiangcai.dating.repository.CashOrderRepository;
@@ -29,6 +30,7 @@ import me.jiangcai.dating.repository.ChanpayOrderRepository;
 import me.jiangcai.dating.repository.ChanpayWithdrawalOrderRepository;
 import me.jiangcai.dating.repository.UserOrderRepository;
 import me.jiangcai.dating.service.BankService;
+import me.jiangcai.dating.service.CardService;
 import me.jiangcai.dating.service.ChanpayService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,6 +74,8 @@ public abstract class AbstractChanpayService implements ChanpayService {
     private ChanpayWithdrawalOrderRepository chanpayWithdrawalOrderRepository;
     @Autowired
     private UserOrderRepository userOrderRepository;
+    @Autowired
+    private CardService cardService;
 
     @PostConstruct
     @Transactional
@@ -198,9 +202,9 @@ public abstract class AbstractChanpayService implements ChanpayService {
     }
 
     @Override
-    public ChanpayWithdrawalOrder withdrawalOrderCore(CashOrder order) throws IOException, SignatureException {
+    public ChanpayWithdrawalOrder withdrawalOrderCore(UserOrder order) throws IOException, SignatureException {
         log.debug("prepare to withdrawal " + order);
-        order = cashOrderRepository.getOne(order.getId());
+        order = userOrderRepository.getOne(order.getId());
         if (order.isWithdrawalCompleted())
             throw new IllegalStateException("提现已完成。");
         if (order.getPlatformWithdrawalOrderSet() != null && !order.getPlatformWithdrawalOrderSet().isEmpty()) {
@@ -215,7 +219,9 @@ public abstract class AbstractChanpayService implements ChanpayService {
             }
         }
 
-        if (order.getCard() == null) {
+        Card card = cardService.recommend(order);
+
+        if (card == null) {
             // 不再是一个例外 而是一个正常逻辑 所以这里无需抛出错误
             log.debug("no card for withdrawal!");
             return null;
@@ -227,18 +233,17 @@ public abstract class AbstractChanpayService implements ChanpayService {
             order.setPlatformWithdrawalOrderSet(new HashSet<>());
         }
 
-        Card card = order.getCard();
         log.debug("ready to withdrawal " + order + " to:" + card);
         ChanpayWithdrawalOrder withdrawalOrder = new ChanpayWithdrawalOrder();
         withdrawalOrder.setId(UUID.randomUUID().toString().replaceAll("-", ""));
         withdrawalOrder.setStartTime(LocalDateTime.now());
         withdrawalOrder.setUserOrder(order);
 
-        beforeExecute(order, withdrawalOrder, card);
+        beforeExecuteWithdrawal(order, withdrawalOrder, card);
 
         order.getPlatformWithdrawalOrderSet().add(withdrawalOrder);
 
-        cashOrderRepository.save(order);
+        userOrderRepository.save(order);
         // 先保存,失败自然回滚
 
         PaymentToCard paymentToCard = new PaymentToCard();
@@ -265,7 +270,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
 
     @Override
     @ThreadSafe
-    public ChanpayWithdrawalOrder withdrawalOrder(CashOrder order) throws IOException, SignatureException {
+    public ChanpayWithdrawalOrder withdrawalOrder(UserOrder order) throws IOException, SignatureException {
         // 怎么确保安全?
         // 锁定订单号
         return applicationContext.getBean(ChanpayService.class).withdrawalOrderCore(order);
@@ -280,5 +285,5 @@ public abstract class AbstractChanpayService implements ChanpayService {
 
     protected abstract void beforeExecute(CashOrder order, CreateInstantTrade request);
 
-    protected abstract void beforeExecute(CashOrder order, ChanpayWithdrawalOrder withdrawalOrder, Card card);
+    protected abstract void beforeExecuteWithdrawal(UserOrder order, ChanpayWithdrawalOrder withdrawalOrder, Card card);
 }

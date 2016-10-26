@@ -2,8 +2,8 @@ package me.jiangcai.dating.service;
 
 import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
-import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +52,7 @@ public interface CardService {
      * @return null 表示无卡可用
      */
     @Transactional(readOnly = true)
-    Card recommend(CashOrder order);
+    Card recommend(UserOrder order);
 
     /**
      * 这个用户默认的收款帐号

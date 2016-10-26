@@ -1,10 +1,12 @@
 package me.jiangcai.dating.service;
 
+import me.jiangcai.dating.ThreadSafe;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
 import me.jiangcai.dating.entity.PayToUserOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.WithdrawOrder;
 import me.jiangcai.dating.model.OrderFlow;
 import me.jiangcai.dating.model.PayChannel;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,4 +96,15 @@ public interface OrderService {
      */
     @Transactional
     PayToUserOrder newPayToOrder(String openid, HttpServletRequest request, User user, BigDecimal amount, String comment);
+
+    /**
+     * 创建提现订单
+     *
+     * @param user   用户
+     * @param amount 金额
+     * @param cardId 可选的卡号
+     * @return 新建的订单
+     */
+    @ThreadSafe
+    WithdrawOrder newWithdrawOrder(User user, BigDecimal amount, Long cardId) throws IOException, SignatureException;
 }

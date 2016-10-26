@@ -1,5 +1,6 @@
 package me.jiangcai.dating.service.impl;
 
+import me.jiangcai.dating.ThreadSafe;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
@@ -7,14 +8,19 @@ import me.jiangcai.dating.entity.PayToUserOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.UserOrder;
+import me.jiangcai.dating.entity.WithdrawOrder;
+import me.jiangcai.dating.entity.support.WithdrawOrderStatus;
 import me.jiangcai.dating.model.OrderFlow;
 import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.model.support.OrderFlowStatus;
 import me.jiangcai.dating.repository.CardRepository;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.PayToUserOrderRepository;
+import me.jiangcai.dating.repository.WithdrawOrderRepository;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
+import me.jiangcai.dating.service.StatisticService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +54,10 @@ public class OrderServiceImpl implements OrderService {
     private CardRepository cardRepository;
     @Autowired
     private PayToUserOrderRepository payToUserOrderRepository;
+    @Autowired
+    private WithdrawOrderRepository withdrawOrderRepository;
+    @Autowired
+    private StatisticService statisticService;
 
     @Override
     public CashOrder newOrder(User user, BigDecimal amount, String comment, Long cardId) {
@@ -58,6 +68,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void forNewCashOrder(User user, BigDecimal amount, String comment, Long cardId, CashOrder order) {
+        forNewUserOrder(user, amount, comment, cardId, order);
+        order.setThatRateConfig(systemService.currentRateConfig(user));
+    }
+
+    private void forNewUserOrder(User user, BigDecimal amount, String comment, Long cardId, UserOrder order) {
         if (user == null)
             throw new IllegalArgumentException("owner must not null");
         if (amount.doubleValue() <= 0) {
@@ -69,7 +84,6 @@ public class OrderServiceImpl implements OrderService {
         order.setAmount(amount);
         order.setComment(comment);
         order.setStartTime(LocalDateTime.now());
-        order.setThatRateConfig(systemService.currentRateConfig(user));
         if (cardId != null) {
             order.setCard(cardRepository.getOne(cardId));
         }
@@ -170,5 +184,29 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setFrom(from);
         return payToUserOrderRepository.save(order);
+    }
+
+    @Override
+    @ThreadSafe
+    public WithdrawOrder newWithdrawOrder(User user, BigDecimal amount, Long cardId) throws IOException, SignatureException {
+        //  应该是通过最安全的方式检查余额
+        if (statisticService.balance(user.getOpenId()).compareTo(amount) == -1) {
+            throw new IllegalStateException("余额不足");
+        }
+        WithdrawOrder order = new WithdrawOrder();
+        forNewUserOrder(user, amount, "提现", cardId, order);
+        order = withdrawOrderRepository.save(order);
+        // 提现
+        ChanpayWithdrawalOrder chanpayWithdrawalOrder = chanpayService.withdrawalOrder(order);
+        if (chanpayWithdrawalOrder == null) {
+            // 这就很尴尬了!!!
+            withdrawOrderRepository.delete(order);
+            throw new IllegalStateException("卡尚未绑定,无法提现");
+        } else {
+            order = withdrawOrderRepository.getOne(order.getId());
+            order.setProcessStatus(WithdrawOrderStatus.requested);
+            withdrawOrderRepository.save(order);
+            return order;
+        }
     }
 }

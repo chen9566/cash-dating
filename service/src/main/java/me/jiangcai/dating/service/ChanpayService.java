@@ -6,6 +6,7 @@ import me.jiangcai.dating.ThreadSafe;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
+import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.event.MyTradeEvent;
 import me.jiangcai.dating.event.MyWithdrawalEvent;
 import org.springframework.context.event.EventListener;
@@ -44,11 +45,11 @@ public interface ChanpayService {
      * @throws SignatureException
      */
     @ThreadSafe
-    ChanpayWithdrawalOrder withdrawalOrder(CashOrder order) throws IOException, SignatureException;
+    ChanpayWithdrawalOrder withdrawalOrder(UserOrder order) throws IOException, SignatureException;
 
     // 内部方法 请勿调用!!
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
-    ChanpayWithdrawalOrder withdrawalOrderCore(CashOrder order) throws IOException, SignatureException;
+    ChanpayWithdrawalOrder withdrawalOrderCore(UserOrder order) throws IOException, SignatureException;
 
     @PostConstruct
     @Transactional

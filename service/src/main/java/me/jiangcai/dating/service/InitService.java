@@ -4,6 +4,7 @@ import me.jiangcai.dating.Version;
 import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.lib.jdbc.ConnectionConsumer;
 import me.jiangcai.lib.jdbc.ConnectionProvider;
 import me.jiangcai.lib.jdbc.JdbcService;
@@ -48,12 +49,38 @@ public class InitService {
         if (json != null)
             weixinService.menus(json, supplier.findByHost(null));
 
+        // 这里多了 1 是卡号 如果存在关系 还应该先解除关系
+        try {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         upgradeService.systemUpgrade(new VersionUpgrade<Version>() {
             @Override
             public void upgradeToVersion(Version version) throws Exception {
                 switch (version) {
                     case v105000:
+                        jdbcService.tableAlterAddColumn(UserOrder.class, "withdrawalCompleted", "0");
+                        jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {
+                            @Override
+                            public void accept(ConnectionProvider connection) throws SQLException {
+                                try (Statement statement = connection.getConnection().createStatement()) {
+                                    statement.execute("ALTER TABLE userorder ADD CARD_ID BIGINT(20) NULL");
+                                    statement.executeUpdate("UPDATE userorder AS uo " +
+                                            " INNER JOIN cashorder AS co ON co.id = uo.id" +
+                                            " SET uo.WITHDRAWALCOMPLETED = co.WITHDRAWALCOMPLETED");
+                                    statement.executeUpdate("UPDATE userorder AS uo " +
+                                            " INNER JOIN cashorder AS co ON co.id = uo.id" +
+                                            " SET uo.CARD_ID = co.CARD_ID");
+
+                                    statement.execute("ALTER TABLE cashorder DROP CARD_ID");
+                                    statement.execute("ALTER TABLE cashorder DROP WITHDRAWALCOMPLETED");
+                                }
+                            }
+                        });
+
+                        jdbcService.tableAlterAddColumn(User.class, "settlementRevenue", "0");
                         jdbcService.tableAlterAddColumn(Card.class, "disabled", "0");
                         jdbcService.tableAlterAddColumn(Bank.class, "disabled", "0");
                         jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {

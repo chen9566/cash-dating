@@ -8,6 +8,7 @@ import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
+import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.service.BankService;
@@ -65,7 +66,7 @@ public class TestConfig {
             }
 
             @Override
-            protected void beforeExecute(CashOrder order, ChanpayWithdrawalOrder withdrawalOrder, Card card) {
+            protected void beforeExecuteWithdrawal(UserOrder order, ChanpayWithdrawalOrder withdrawalOrder, Card card) {
                 // 为了确保提现成功 我们使用测试的数据
                 Address address = new Address();
                 address.setProvince(Dictionary.findByName(Province.class, "上海市"));

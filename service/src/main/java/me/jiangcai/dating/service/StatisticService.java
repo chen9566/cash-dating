@@ -35,6 +35,13 @@ public interface StatisticService {
     BigDecimal balance(String openId);
 
     /**
+     * @param openId 用户openId
+     * @return 实时总收入
+     */
+    @Transactional(readOnly = true)
+    BigDecimal revenue(String openId);
+
+    /**
      * 应该是按照时间的降序排列的
      *
      * @param openId 用户openId

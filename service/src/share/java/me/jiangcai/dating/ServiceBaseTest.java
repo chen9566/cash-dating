@@ -10,10 +10,13 @@ import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.SubBranchBank;
+import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.SubBranchBankRepository;
+import me.jiangcai.dating.repository.UserOrderRepository;
 import me.jiangcai.dating.service.CardService;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
@@ -56,6 +59,9 @@ public abstract class ServiceBaseTest extends SpringWebTest {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     protected CashOrderRepository cashOrderRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    protected UserOrderRepository userOrderRepository;
 
     protected SubBranchBank randomSubBranchBank() {
         return subBranchBankRepository.findAll().stream()
@@ -71,10 +77,17 @@ public abstract class ServiceBaseTest extends SpringWebTest {
      * @return 建立新的用户
      */
     protected WeixinUserDetail createNewUser() {
+        return createNewUser(null);
+    }
+
+    /**
+     * @return 建立新的用户
+     */
+    protected WeixinUserDetail createNewUser(User guide) {
         WeixinUserDetail detail = WeixinUserMocker.randomWeixinUserDetail();
         String mobile = randomMobile();
         verificationCodeService.sendCode(mobile, VerificationType.register);
-        userService.registerMobile(null, detail.getOpenId(), mobile, "1234", null);
+        userService.registerMobile(null, detail.getOpenId(), mobile, "1234", guide == null ? null : guide.getInviteCode());
 //        verificationCodeService.sendCode(mobile, Function.identity()); 现在不用发验证码了
         // 16
         String card = randomBankCard();
@@ -124,8 +137,8 @@ public abstract class ServiceBaseTest extends SpringWebTest {
      * @param status 转移状态
      * @param reason 原因
      */
-    protected void withdrawalFailed(CashOrder order, WithdrawalStatus status, String reason) {
-        order = cashOrderRepository.getOne(order.getId());
+    protected void withdrawalFailed(UserOrder order, WithdrawalStatus status, String reason) {
+        order = userOrderRepository.getOne(order.getId());
         PlatformWithdrawalOrder withdrawalOrder = order.getPlatformWithdrawalOrderSet().stream()
                 .max((o1, o2) -> o1.getStartTime().compareTo(o2.getStartTime()))
                 .orElseThrow(IllegalStateException::new);
@@ -146,7 +159,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
      *
      * @param order
      */
-    protected void withdrawalSuccess(CashOrder order) throws IOException, SignatureException {
+    protected void withdrawalSuccess(UserOrder order) throws IOException, SignatureException {
         withdrawalFailed(order, WithdrawalStatus.WITHDRAWAL_SUCCESS, null);
     }
 

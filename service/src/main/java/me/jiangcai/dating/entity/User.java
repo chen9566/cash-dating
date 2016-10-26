@@ -3,6 +3,7 @@ package me.jiangcai.dating.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.dating.Locker;
 import me.jiangcai.dating.ProfitSplit;
 import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.model.BalanceFlow;
@@ -49,7 +50,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"mobileNumber", "openId", "inviteCode"})})
-public class User implements WeixinUser, ProfitSplit, UserDetails {
+public class User implements WeixinUser, ProfitSplit, UserDetails, Locker {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,6 +73,13 @@ public class User implements WeixinUser, ProfitSplit, UserDetails {
      */
     @Column(scale = 2, precision = 20)
     private BigDecimal settlementBalance = BigDecimal.ZERO;
+    /**
+     * 不同于{@link #settlementBalance 余额},这个表示所有赚来的钱
+     *
+     * @since 1.5
+     */
+    @Column(scale = 2, precision = 20)
+    private BigDecimal settlementRevenue = BigDecimal.ZERO;
     /**
      * 跟上面那个一样,不过这里是开支
      */
@@ -313,5 +321,10 @@ public class User implements WeixinUser, ProfitSplit, UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    @Override
+    public Object lockObject() {
+        return ("UserLock-" + getId()).intern();
     }
 }
