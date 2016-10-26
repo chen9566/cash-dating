@@ -2,12 +2,14 @@ package me.jiangcai.dating.service;
 
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
+import me.jiangcai.dating.entity.PayToUserOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.OrderFlow;
 import me.jiangcai.dating.model.PayChannel;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.SignatureException;
@@ -79,4 +81,17 @@ public interface OrderService {
      */
 //    @Transactional 这个并不需要开启事务,而是应该立刻提交 这样新的事务才可以获得新的数据
     ChanpayWithdrawalOrder withdrawalWithCard(String orderId, Long cardId) throws IOException, SignatureException;
+
+    /**
+     * 创建支付给他人的订单
+     *
+     * @param openid  付款方
+     * @param request 当前http请求
+     * @param user    收款方
+     * @param amount  金额
+     * @param comment 事由
+     * @return 新增的订单
+     */
+    @Transactional
+    PayToUserOrder newPayToOrder(String openid, HttpServletRequest request, User user, BigDecimal amount, String comment);
 }

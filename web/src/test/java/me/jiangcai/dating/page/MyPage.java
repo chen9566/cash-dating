@@ -22,6 +22,7 @@ public class MyPage extends AbstractPage {
     private WebElement headImage;
     private WebElement title;
     private WebElement message;
+    private WebElement toPayButton;
 
     public MyPage(WebDriver webDriver) {
         super(webDriver);
@@ -30,14 +31,14 @@ public class MyPage extends AbstractPage {
     @Override
     public void validatePage() {
 //        System.out.println(webDriver.getPageSource());
-        WebElement my = webDriver.findElement(By.className("my"));
+        WebElement my = webDriver.findElement(By.className("my-n"));
 
         my.findElements(By.tagName("img")).stream()
                 .filter(WebElement::isDisplayed)
                 .findFirst()
                 .ifPresent(element -> headImage = element);
 
-        my.findElements(By.tagName("h4")).stream()
+        my.findElements(By.tagName("h1")).stream()
                 .filter(WebElement::isDisplayed)
                 .findFirst()
                 .ifPresent(element -> title = element);
@@ -47,15 +48,24 @@ public class MyPage extends AbstractPage {
                 .findFirst()
                 .ifPresent(element -> message = element);
 
+        my.findElements(By.tagName("a")).stream()
+                .filter(WebElement::isDisplayed)
+                .filter(webElement -> "toPay".equals(webElement.getAttribute("name")))
+                .findFirst()
+                .ifPresent(element -> toPayButton = element);
 
-        WebElement list = webDriver.findElement(By.className("my-list"));
-        list.findElements(By.tagName("li")).stream()
+        webDriver.findElement(By.className("mykey")).findElements(By.tagName("li")).stream()
+                .filter(WebElement::isDisplayed)
+                .forEach(element -> menus.put(element.getText(), element));
+        webDriver.findElement(By.className("mylist")).findElements(By.tagName("li")).stream()
                 .filter(WebElement::isDisplayed)
                 .forEach(element -> menus.put(element.getText(), element));
 
         assertThat(headImage)
                 .isNotNull();
         assertThat(headImage.isDisplayed())
+                .isTrue();
+        assertThat(toPayButton.isDisplayed())
                 .isTrue();
         assertThat(title)
                 .isNotNull();
@@ -86,8 +96,11 @@ public class MyPage extends AbstractPage {
 
     public void clickMenu(String text) {
         menus.forEach((name, ele) -> {
-            if (name.startsWith(text))
-                ele.click();
+            if (name.startsWith(text)) {
+                ele.findElements(By.tagName("a")).forEach(WebElement::click);
+//                ele.click();
+            }
+
         });
     }
 
@@ -101,5 +114,9 @@ public class MyPage extends AbstractPage {
                 .findFirst()
                 .orElseThrow(NullPointerException::new)
                 .click();
+    }
+
+    public void clickMyData() {
+        headImage.click();
     }
 }

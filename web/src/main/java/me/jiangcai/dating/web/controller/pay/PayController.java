@@ -1,13 +1,17 @@
 package me.jiangcai.dating.web.controller.pay;
 
+import com.google.zxing.WriterException;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
+import me.jiangcai.dating.entity.PayToUserOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
+import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.UserService;
+import me.jiangcai.dating.web.controller.GlobalController;
 import me.jiangcai.wx.OpenId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,8 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.security.SignatureException;
 import java.time.LocalDateTime;
 
@@ -38,6 +45,45 @@ public class PayController {
     private ChanpayService chanpayService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private QRCodeService qrCodeService;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/toImage")
+    public BufferedImage payToQRCode(long id, String comment, HttpServletRequest request)
+            throws IOException, WriterException {
+        StringBuilder builder = GlobalController.contextUrlBuilder(request);
+        builder.append("/to/").append(id);
+        if (comment != null) {
+            builder.append("?comment=");
+            builder.append(URLEncoder.encode(comment, "UTF-8"));
+        }
+
+        return qrCodeService.generateQRCode(builder.toString());
+    }
+
+    /**
+     * 其他方向用户支付的页面
+     *
+     * @param openid  付款方微信openId
+     * @param id      收款方用户id
+     * @param comment 备注,用户可以随意更改
+     * @param model   model
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/to/{id}")
+    public String payTo(@OpenId String openid, @PathVariable("id") long id, String comment, Model model) {
+        model.addAttribute("user", userService.by(id));
+        model.addAttribute("openId", openid);
+        model.addAttribute("comment", comment);
+        return "payewm.html";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/to")
+    public String submitPayTo(BigDecimal amount, String comment, String openid, long id, HttpServletRequest request
+            , Model model) throws IOException, SignatureException {
+        PayToUserOrder order = orderService.newPayToOrder(openid, request, userService.by(id), amount, comment);
+        return showPayCode(model, order);
+    }
 
     /**
      * 开始付款--订单开始
@@ -110,7 +156,11 @@ public class PayController {
 //            return "redirect:/";
 //        }
         // 直接建立订单
-        PlatformOrder platformOrder = orderService.preparePay(id, PayChannel.weixin);
+        return showPayCode(model, order);
+    }
+
+    private String showPayCode(Model model, CashOrder order) throws IOException, SignatureException {
+        PlatformOrder platformOrder = orderService.preparePay(order.getId(), PayChannel.weixin);
 
         if (platformOrder instanceof ChanpayOrder) {
             model.addAttribute("qrUrl", chanpayService.QRCodeImageFromOrder((ChanpayOrder) platformOrder));
