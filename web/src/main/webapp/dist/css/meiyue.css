@@ -1044,7 +1044,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.mylist li img{ width:34px; height:34px}
 	.mylist .txt{ font-size:15px; margin-top:-2px; }
 	.mylist .bo-r{ background:url(border-right.png) no-repeat right 7px; background-size:1px 50px}
-	.mylist a{ color:#353535}
+	.mylist a{ color:#353535; text-decoration:none; display:block}
 .mykey{ background:#fff; border-bottom:1px solid #dfdfdf; border-top:1px solid #dfdfdf; padding-left:15px; margin-bottom:15px;}
 	.mykey ul{}
 	.mykey li{ line-height:44px;font-size:15px;}	
