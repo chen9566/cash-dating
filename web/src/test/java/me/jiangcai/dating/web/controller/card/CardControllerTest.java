@@ -13,11 +13,10 @@ import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -72,7 +71,7 @@ public class CardControllerTest extends WebTest {
         // 添加
         bankPage = bindCardOnBankPage(user.getMobileNumber(), bankPage, subBranchBank, owner, number);
         user = userService.byOpenId(user.getOpenId());
-        bankPage.assertCard(user.getCards());
+        bankPage.assertCard(user.getCards().stream().filter(card -> !card.isDisabled()).collect(Collectors.toList()));
         // again
         subBranchBank = randomSubBranchBank();
 
@@ -81,9 +80,11 @@ public class CardControllerTest extends WebTest {
         // 添加
         bankPage = bindCardOnBankPage(user.getMobileNumber(), bankPage, subBranchBank, owner, number);
         user = userService.byOpenId(user.getOpenId());
-        bankPage.assertCard(user.getCards());
-        assertThat(user.getCards())
-                .hasSize(2);
+        assertThat(cardService.recommend(user).getNumber())
+                .isEqualTo(number);
+//        bankPage.assertCard(user.getCards());
+//        assertThat(user.getCards())
+//                .hasSize(2);
 
         // 好了 再去刷卡
         driver.get("http://localhost/start");
@@ -91,18 +92,21 @@ public class CardControllerTest extends WebTest {
 
         // 选择卡
         orderPage.assertHaveCard();
-        Card exceptedCard = user.getCards().get(1);
+        Card exceptedCard = cardService.recommend(user);
 
-        orderPage.pay(100, "", webElement -> {
-            return webElement.findElements(By.tagName("span")).stream()
-                    .filter(WebElement::isDisplayed)
-                    .filter(webElement1 -> {
-                        // 要么 等于银行名称 要么 搜索到尾号
-                        return webElement1.getText().equals(exceptedCard.getBank().getName())
-                                || webElement1.getText().contains(exceptedCard.getTailNumber());
-                    })
-                    .count() == 2;
-        });
+        // 1.5 不再有选卡的功能
+        orderPage.pay(100, "", null);
+
+//        orderPage.pay(100, "", webElement -> {
+//            return webElement.findElements(By.tagName("span")).stream()
+//                    .filter(WebElement::isDisplayed)
+//                    .filter(webElement1 -> {
+//                        // 要么 等于银行名称 要么 搜索到尾号
+//                        return webElement1.getText().equals(exceptedCard.getBank().getName())
+//                                || webElement1.getText().contains(exceptedCard.getTailNumber());
+//                    })
+//                    .count() == 2;
+//        });
 
         ShowOrderPage codePage = initPage(ShowOrderPage.class);
         // 应该去检查这个订单信息 以确保卡号是一致了
@@ -112,6 +116,7 @@ public class CardControllerTest extends WebTest {
                 .isEqualTo(exceptedCard);
     }
 
+    // 1.5开始 绑卡就是更换之前的卡
     private MyBankPage bindCardOnBankPage(String mobile, MyBankPage page, SubBranchBank bank, String owner, String number) {
         page.toCreateNewCard();
 

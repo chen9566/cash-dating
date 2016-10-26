@@ -32,6 +32,12 @@ public class ManageBankController {
     @RequestMapping(method = RequestMethod.PUT, value = "/manage/bank/{code}/background")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void change(@RequestBody String background, @PathVariable("code") String code) {
-        bankService.updateBank(code, null, background);
+        bankService.updateBank(code, null, background, null);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/manage/bank/{code}/disabled")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void disabled(@RequestBody boolean disabled, @PathVariable("code") String code) {
+        bankService.updateBank(code, null, null, disabled);
     }
 }

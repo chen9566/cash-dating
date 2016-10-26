@@ -18,10 +18,11 @@ public interface BankService {
      * @param code       code
      * @param name       可选的name
      * @param background 可选的背景色
+     * @param disabled
      * @return 新的银行
      */
     @Transactional
-    Bank updateBank(String code, String name, String background);
+    Bank updateBank(String code, String name, String background, Boolean disabled);
 
     @Transactional(readOnly = true)
     List<Bank> list();

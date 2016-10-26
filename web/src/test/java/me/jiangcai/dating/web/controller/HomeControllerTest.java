@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -62,7 +63,7 @@ public class HomeControllerTest extends LoginWebTest {
 
 
     private void bank(MyBankPage page) {
-        page.assertCard(currentUser().getCards());
+        page.assertCard(currentUser().getCards().stream().filter(card -> !card.isDisabled()).collect(Collectors.toList()));
     }
 
     @Test

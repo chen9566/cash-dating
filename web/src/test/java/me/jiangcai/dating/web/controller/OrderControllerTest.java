@@ -77,6 +77,7 @@ public class OrderControllerTest extends LoginWebTest {
                 .isEqualTo(times + 1);
     }
 
+    // 1.5 以后更换之前的卡
     private OrderPage bindCardOnOrderPage(String mobile, OrderPage page, SubBranchBank bank, String owner, String number) {
         page.toCreateNewCard();
 
@@ -95,7 +96,7 @@ public class OrderControllerTest extends LoginWebTest {
     @Test
     public void withoutCard() {
         User user = currentUser();
-        userService.deleteCards(user.getOpenId());
+        cardService.deleteCards(user.getOpenId());
 
         CashOrder success1Order = orderService.newOrder(user, new BigDecimal("100"), UUID.randomUUID().toString()
                 , null);

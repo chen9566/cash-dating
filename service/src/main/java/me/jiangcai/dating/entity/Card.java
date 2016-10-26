@@ -62,6 +62,13 @@ public class Card {
     private String subBranch;
 
     /**
+     * 是否已禁用（被替换）
+     * @since 1.5
+     * @see me.jiangcai.dating.Version#v105000
+     */
+    private boolean disabled;
+
+    /**
      * @return 尾号
      */
     public String getTailNumber() {

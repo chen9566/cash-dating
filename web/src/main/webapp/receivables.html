@@ -27,7 +27,8 @@
             <img src="images/logo-gs.png" th:src="@{${card.bank.imageUri}}">
             <span class="banktxt" th:text="${card.bank.name}">工商银行</span>
             <span th:text="${card.owner}+'｜尾号'+${card.tailNumber}">徐春风｜尾号3490</span>
-            <a href="#" name="cardChanger">更换</a>
+            <!--href="#" name="cardChanger"-->
+            <a href="addcard.html" th:href="@{/card}">更换</a>
         </div>
         <div class="all-cards" style="display: none;" th:if="${card!=null}" th:include="fragment/cards.html::cards">
             <div class="card" th:each="theCard:${cards}" th:attr="data-id=${theCard.id}" data-id="2"

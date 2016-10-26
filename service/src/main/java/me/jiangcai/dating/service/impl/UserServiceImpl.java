@@ -1,20 +1,14 @@
 package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.CashFilter;
-import me.jiangcai.dating.entity.Bank;
-import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.LoginToken;
-import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
-import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.CashWeixinUserDetail;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.repository.LoginTokenRepository;
-import me.jiangcai.dating.repository.SubBranchBankRepository;
 import me.jiangcai.dating.repository.UserAgentInfoRepository;
 import me.jiangcai.dating.repository.UserRepository;
-import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.service.VerificationCodeService;
 import me.jiangcai.dating.util.WeixinAuthentication;
@@ -37,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 /**
  * @author CJ
@@ -56,22 +49,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private VerificationCodeService verificationCodeService;
     @Autowired
-    private SubBranchBankRepository subBranchBankRepository;
-    @Autowired
     private UserAgentInfoRepository userAgentInfoRepository;
 
     @Override
     public boolean mobileRequired(String openId) {
         User user = userRepository.findByOpenId(openId);
         return user == null || StringUtils.isEmpty(user.getMobileNumber());
-    }
-
-    @Override
-    public boolean bankAccountRequired(String openId) {
-        User user = userRepository.findByOpenId(openId);
-        if (user == null)
-            return true;
-        return user.getCards() == null || user.getCards().isEmpty();
     }
 
     @Override
@@ -90,40 +73,6 @@ public class UserServiceImpl implements UserService {
         }
         user.setMobileNumber(mobileNumber);
         return userRepository.save(user);
-    }
-
-    @Override
-    public Card addCard(String openId, String name, String number, Bank bank, Address address, String subBranch) {
-//        verificationCodeService.verify(mobile, code, VerificationType.card);
-
-        User user = userRepository.findByOpenId(openId);
-
-        SubBranchBank branchBank = subBranchBankRepository.getOne(subBranch);
-
-        Card card = new Card();
-        card.setNumber(number);
-        card.setOwner(name);
-        card.setBank(branchBank.getBank());
-
-        Address address1 = new Address();
-        address1.setCity(PayResourceService.cityById(branchBank.getCityCode()));
-        address1.setProvince(PayResourceService.provinceByCity(address1.getCity()));
-
-        card.setAddress(address1);
-
-        card.setSubBranchBank(branchBank);
-        card.setSubBranch(branchBank.getName());
-//        card.setSubBranch(subBranch);
-
-        if (user.getCards() == null) {
-            user.setCards(new ArrayList<>());
-        }
-        user.getCards().add(card);
-        user = userRepository.save(user);
-        return user.getCards().stream()
-                .filter(card1 -> card1.getNumber().equals(number))
-                .findAny()
-                .orElseThrow(IllegalStateException::new);
     }
 
     @Override
@@ -255,14 +204,6 @@ public class UserServiceImpl implements UserService {
             loginTokenRepository.delete(token);
         } else
             throw new IllegalStateException();
-    }
-
-    @Override
-    public void deleteCards(String openId) {
-        User user = userRepository.findByOpenId(openId);
-
-        if (user.getCards() != null)
-            user.getCards().clear();
     }
 
     @Override

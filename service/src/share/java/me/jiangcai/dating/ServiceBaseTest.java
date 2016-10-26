@@ -14,6 +14,7 @@ import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.SubBranchBankRepository;
+import me.jiangcai.dating.service.CardService;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.UserService;
@@ -41,6 +42,8 @@ import java.util.UUID;
 public abstract class ServiceBaseTest extends SpringWebTest {
     @Autowired
     protected UserService userService;
+    @Autowired
+    protected CardService cardService;
     @Autowired
     protected OrderService orderService;
     @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -75,7 +78,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
 //        verificationCodeService.sendCode(mobile, Function.identity()); 现在不用发验证码了
         // 16
         String card = randomBankCard();
-        userService.addCard(detail.getOpenId(), detail.getNickname(), card
+        cardService.addCard(detail.getOpenId(), detail.getNickname(), card
                 , null, null, randomSubBranchBank().getCode());
         return detail;
     }

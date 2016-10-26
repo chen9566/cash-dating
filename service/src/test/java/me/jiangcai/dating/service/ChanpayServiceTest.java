@@ -56,7 +56,7 @@ public class ChanpayServiceTest extends ServiceBaseTest {
 //        verificationCodeService.sendCode(mobile, Function.identity()); 现在不用发验证码了
         // 16
         String card = randomBankCard();
-        userService.addCard(detail.getOpenId(), detail.getNickname(), card
+        cardService.addCard(detail.getOpenId(), detail.getNickname(), card
                 , null, null, randomSubBranchBank().getCode());
 
 
