@@ -3,7 +3,6 @@ package me.jiangcai.dating.web.controller;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.service.StatisticService;
 import me.jiangcai.dating.service.UserService;
-import me.jiangcai.dating.util.Common;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -26,18 +25,18 @@ public class InviteController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/myInvite")
+    @RequestMapping(method = RequestMethod.GET, value = {"/myInvite", "/myInvitation"})
     public String index(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", userService.by(user.getId()));
         final BigDecimal balance = statisticService.balance(user.getOpenId());
         model.addAttribute("balance", balance);
-        // 分开
-        String text = Common.CurrencyFormat(balance);
-        int point = text.indexOf(".");
-        model.addAttribute("number", text.substring(0, point));
-        model.addAttribute("decimal", text.substring(point));
+//        // 分开
+//        String text = Common.CurrencyFormat(balance);
+//        int point = text.indexOf(".");
+//        model.addAttribute("number", text.substring(0, point));
+//        model.addAttribute("decimal", text.substring(point));
         model.addAttribute("flows", statisticService.balanceFlows(user.getOpenId()));
-        return "mymoney.html";
+        return "myinvitation.html";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/myInviteCode")

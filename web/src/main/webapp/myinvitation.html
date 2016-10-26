@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:wx="http://weixin.jiangcai.me" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
+<!--/*@thymesVar id="balance" type="java.lang.Number"*/-->
+<!--/*@thymesVar id="numbers" type="java.lang.Integer"*/-->
+<!--/*@thymesVar id="flows" type="java.util.List<me.jiangcai.dating.model.BalanceFlow>"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
@@ -11,14 +14,19 @@
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/share.js"></script>
 </head>
 <body>
 <div class="myin">
-	<p class="m"><a href="#"><img src="images/48.png">目黑瞳<span class="pull-right r">成为超级合伙人<img src="images/blackrightw-r.png"></span></a></p>
-	<p class="t">在款爷共赚</p>
-	<p class="num">1000.00<span class="num-s">元</span><span class="tx"><a href="#">提现</a></span></p>
-	<p class="t">成功邀请人数</p>
-	<p class="num">200<span class="num-s">人</span></p>
+    <p class="m"><a href="agent.html" th:href="@{${user.agentInfo!=null?'#':'/agent'}}">
+        <img src="images/48.png" th:src="${user.headImageUrl}"/><span th:text="${user.nickname}">目黑瞳</span>
+        <span class="pull-right r" th:if="${user.agentInfo==null}">成为超级合伙人<img
+                src="images/blackrightw-r.png"></span></a></p>
+    <p class="t">在款爷共赚</p>
+    <p class="num" th:text="${#numbers.formatDecimal(balance,0,'COMMA',2,'POINT')}">1000.00<span
+            class="num-s">元</span><span class="tx"><a href="#">提现</a></span></p>
+    <p class="t">成功邀请人数</p>
+    <p class="num" th:text="${{numbers}}">200<span class="num-s">人</span></p>
 </div>
 <p class="yjmx">佣金明细<span class="pull-right"><a href="#" class="dcbg">导出表格</a></span></p>
 <div class="yjlist">
@@ -57,24 +65,26 @@
     </ul>
 </div>
 <p class="txgz"><a href="#">提现规则</a></p>
-<div class="yjbl"><input name="" type="button" value="调整佣金比例" onclick="javascript:window.location.href='myteam.html'"></div>
-<!-- Modal -->
-<div style="margin:0 10px;" class="modal fade" id="cardsContainer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-body show-c">
-				
-				<p class="sn"><input name="" type="text" placeholder="请输入需要导出的邮箱地址"> </p>
-			</div>
-			<div class="modal-footer">
-				<div class="show-c2"><a href="#" data-dismiss="modal">取消</a></div>
-				<div class="show-c1 cardSubmit" style="cursor: pointer">确定</div>
-			</div>
-		</div>
-	</div>
+<div class="yjbl"><input name="" type="button" value="调整佣金比例" class="clickHref" href="myteam.html">
 </div>
-<script src="mock/all.js" th:src="@{/all.js}"></script> 
+<!-- Modal -->
+<div style="margin:0 10px;" class="modal fade" id="cardsContainer" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body show-c">
+
+                <p class="sn"><input name="" type="text" placeholder="请输入需要导出的邮箱地址"></p>
+            </div>
+            <div class="modal-footer">
+                <div class="show-c2"><a href="#" data-dismiss="modal">取消</a></div>
+                <div class="show-c1 cardSubmit" style="cursor: pointer">确定</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="mock/all.js" th:src="@{/all.js}"></script>
 <script src="js/order.js"></script>
 </body>
 </html>

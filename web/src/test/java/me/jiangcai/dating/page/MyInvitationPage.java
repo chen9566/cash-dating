@@ -26,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author CJ
  */
 public class MyInvitationPage extends AbstractPage {
+    private WebElement requestAgent;
     private WebElement balanceText;
     //    private WebElement codeButton;
     private WebElement withdrawButton;
@@ -43,6 +44,11 @@ public class MyInvitationPage extends AbstractPage {
 
         assertThat(webDriver.getTitle())
                 .isEqualTo("我的邀请");
+
+        requestAgent = webDriver.findElements(By.tagName("span")).stream()
+//                .filter(WebElement::isDisplayed)
+                .filter(webElement -> webElement.getText().contains("成为超级合伙人"))
+                .findFirst().orElse(null);
 
         webDriver.findElements(By.className("cri")).stream()
                 .filter(WebElement::isDisplayed)
@@ -79,7 +85,7 @@ public class MyInvitationPage extends AbstractPage {
 
         webFlows = webDriver.findElement(By.className("yjlist")).findElements(By.tagName("ul")).stream()
                 .filter(WebElement::isDisplayed)
-                .filter(webElement -> !"bg" .equals(webElement.getAttribute("class")))
+                .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
                 .map(this::toFlow)
                 .collect(Collectors.toList());
 
@@ -112,6 +118,12 @@ public class MyInvitationPage extends AbstractPage {
      * @param statisticService
      */
     public void assertUser(User user, StatisticService statisticService) {
+
+        if (user.getAgentInfo() != null)
+            assertThat(requestAgent).isNull();
+        else
+            assertThat(requestAgent.isDisplayed()).isTrue();
+
 //        printThisPage();
         String text = NumberUtils.format(statisticService.balance(user.getOpenId()), 1, NumberPointType.COMMA, 0, NumberPointType.POINT, Locale.CHINA);
         assertThat(balanceText.getText())
