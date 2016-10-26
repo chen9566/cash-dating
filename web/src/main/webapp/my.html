@@ -1,80 +1,85 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
+<!--/*@thymesVar id="total" type="java.lang.Number"*/-->
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta charset="UTF-8">
-<title>我的</title>
-<link rel="stylesheet" href="dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="dist/css/font-awesome.min.css">
-<link rel="stylesheet" href="dist/css/meiyue.css">
-<script src="dist/js/jquery.js"></script>
-<script src="dist/js/bootstrap.min.js"></script>
-<script src="dist/js/share.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <title>我的</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/share.js"></script>
 </head>
 <body>
 <div class="my-n">
-	<ul>
-		<li class="avatar"><a href="mydata.html"><img src="images/51.png" ></a></li>
-		<li><a href="mydata.html">
-			<h1>昵称</h1>
-			<span>在款爷赚了500元</span> </a></li>
-		<li class="pull-right m-top"><a href="payewm.html"><span class="ewm-s"><img src="images/ewm-small.png"></span><span class="right-w"><img src="images/right-w.png" ></span></a></li>
-	</ul>
+    <ul>
+        <li class="avatar"><a href="mydata.html" th:href="@{/myData}"><img src="images/51.png"
+                                                                           th:src="${user.headImageUrl}"/></a></li>
+        <li><a href="mydata.html" th:href="@{/myData}">
+            <h1 th:text="${user.nickname}">昵称</h1>
+            <span th:text="'在款爷用了'+${{total}}+'元'">在款爷赚了500元</span> </a></li>
+        <li class="pull-right m-top"><a href="payewm.html" th:href="@{/payToMe}" name="toPay"><span class="ewm-s"><img
+                src="images/ewm-small.png"></span><span class="right-w"><img src="images/right-w.png"></span></a></li>
+    </ul>
 </div>
 <div class="mylist">
-	<ul>
-		<a href="wealth.html"><li class="bo-r">
-			<p><img src="images/my-icon03.png" ></p>
-			<p class="txt">款爷理财</p>
-		</li>
-		</a>
-		<a href="loan.html">
-		<li class="bo-r">
-			<p><img src="images/my-icon02.png" ></p>
-			<p class="txt">款爷借款</p>
-		</li>
-		</a>
-		<a href="#">
-		<li>
-			<p><img src="images/my-icon01.png" ></p>
-			<p class="txt">款爷办卡</p>
-		</li>
-		</a>
-	</ul>
+    <ul>
+        <li class="bo-r">
+            <a href="wealth.html">
+                <p><img src="images/my-icon03.png"></p>
+                <p class="txt">款爷理财</p>
+            </a>
+        </li>
+        <li class="bo-r">
+            <a href="loan.html">
+                <p><img src="images/my-icon02.png"></p>
+                <p class="txt">款爷借款</p>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <p><img src="images/my-icon01.png"></p>
+                <p class="txt">款爷办卡</p>
+            </a>
+        </li>
+    </ul>
 </div>
 <div class="mykey">
-	<ul>
-		<li class="bo-b">
-			<a href="myorder.html">
-				<span class="bt"><img src="images/myicon-04.png" ></span>
-				我的订单
-				<span class="pull-right f-l"><img src="images/blackright-r.png"></span>
-			</a>
-		</li>
-		<li class="bo-b">
-			<a href="financialdetails.html">
-				<span class="bt"><img src="images/myicon-09.png" ></span>
-				资金流水
-				<span class="pull-right f-l"><img src="images/blackright-r.png"></span>
-			</a>
-		</li>
-		<li class="bo-b">
-			<a href="bankcard.html">
-				<span class="bt"><img src="images/myicon-06.png" ></span>
-				我的银行卡
-				<span class="pull-right f-l"><img src="images/blackright-r.png"></span>
-			</a>
-		</li>
-		<li>
-			<a href="myinvitation.html">
-			<span class="bt"><img src="images/myicon-05.png" ></span>
-			合伙赚钱
-			<span class="pull-right f-l"><img src="images/blackright-r.png"></span>
-			</a>
-		</li>
-	</ul>
+    <ul>
+        <li class="bo-b">
+            <a href="myorder.html" th:href="@{/orderList}">
+                <span class="bt"><img src="images/myicon-04.png"></span>
+                我的订单
+                <span class="pull-right f-l"><img src="images/blackright-r.png"></span>
+            </a>
+        </li>
+        <li class="bo-b">
+            <a href="financialdetails.html" th:href="@{/orderList}">
+                <span class="bt"><img src="images/myicon-09.png"></span>
+                资金流水
+                <span class="pull-right f-l"><img src="images/blackright-r.png"></span>
+            </a>
+        </li>
+        <li class="bo-b">
+            <a href="bankcard.html" th:href="@{/myBank}">
+                <span class="bt"><img src="images/myicon-06.png"></span>
+                我的银行卡
+                <span class="pull-right f-l"><img src="images/blackright-r.png"></span>
+            </a>
+        </li>
+        <li>
+            <a href="myinvitation.html" th:href="@{myInvitation}">
+                <span class="bt"><img src="images/myicon-05.png"></span>
+                合伙赚钱
+                <span class="pull-right f-l"><img src="images/blackright-r.png"></span>
+            </a>
+        </li>
+    </ul>
 </div>
-<p class="huanbei-banner"><a href="#"><img src="images/hbanbei-banner.png" ></a></p>
+<p class="huanbei-banner"><a href="#"><img src="images/hbanbei-banner.png"></a></p>
 </body>
 </html>
