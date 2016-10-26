@@ -736,12 +736,18 @@ ul#navlist li{float: left; height:20px; border: 0px solid #dfdfdf; width: 100%;}
 ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -15px;}
 #navlist a{ display: block;color: #bbb;text-decoration: none;padding: 6px 5px;width: 100%;text-align: center;}
 /*我的邀请码*/
-.code{ padding:40px 15px; text-align:center;background:#fff;border-bottom:1px solid #dfdfdf;border-top:1px solid #dfdfdf;  }
-	.code img{ width:50%; height:50%}
+.code{ text-align:center; }
+	.code a{ text-decoration:none; font-size:12px; margin-bottom:30px}
 	.code h4{ line-height:60px; font-weight:200}
 	.code .nun{ font-size:36px}
 	.code button{ margin-bottom:15px;}
 	.code .agent{ border:1px solid #F65150; color:#F65150}
+	.code .pbanner{ margin-bottom:10px;}
+		.code .pbanner img{ width:100%;}
+	.code .ewmbg{ background:#fff; padding:20px; color:#888; font-size:15px;}
+		.code .ewmbg img{ width:60%; height:60%; margin:10px 0}
+	.code .mb-b{ margin-bottom:30px}
+		
 /*我的收款码*/
 .paycode{ padding:20px 15px; margin:22px 22px 0 22px; text-align:center;background:#fff;border-bottom:1px solid #dfdfdf;border-top:1px solid #dfdfdf;  }
 	.paycode img{ width:80%; height:80%; margin:10px 0 20px 0}
@@ -926,6 +932,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.show-c .choice{ font-size:15px; font-weight:300; line-height:22px;}
 
 	.show-c .sn{ height:44px; margin:15px 0 10px 0}
+	.show-c input{ height:44px; width:100%; border:1px solid #cacaca; padding-left:10px}
 	.show-c select{ padding-left:7px; font-size:14px; overflow:hidden; border:0;  height:44px; background:none; }
 	.show-c .sn1{ width:100%;border:1px solid #cacaca; z-index:999; background:url(showdown.png) no-repeat right; background-size:44px}
 	.show-c .sn2{ width:130%}
@@ -969,6 +976,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.yjlist li.w2{ width:10%}	
 	.yjlist li.w3{ width:33.3%}	
 	.yjlist li.w4{ width:35%}	
+	.yjlist li.w5{ width:15%}
 	.yjlist .bg{ background:#F8F8F8;}
 	.yjlist li select{ background:none; width:120%;  height:30px;line-height:30px; margin:5px 0; border:0;}
 	.yjlist li .e1 {width:100%; background:none; border:none; }  
@@ -1015,9 +1023,11 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
   background: -o-linear-gradient(top, #EB3842 , #FD5959 ); /* Opera 11.1 - 12.0 */
   background: -moz-linear-gradient(top, #EB3842 , #FD5959 ); /* Firefox 3.6 - 15 */
   background: linear-gradient(to top, #EB3842 , #FD5959 ); height:84px; padding:0 15px;}
+	.my-n a{ display:block; color:#fff; text-decoration:none; }
 	.my-n ul{ padding:12px 0}
-	.my-n li{ float:left; color:#fff}
-	.my-n li.m-top{ margin-top:15px}
+	.my-n li{ float:left; color:#fff;}
+	.my-n li.m-top{  }
+	.my-n li.m-top a{ display:block; height:55px; padding-top:15px; padding-left:30px }
 	.my-n h1{ font-size:17px; font-weight:300; margin-top:8px; line-height:14px;}
 	.my-n span{ font-size:14px; font-weight:200; margin-top:-5px;}
 	.my-n .avatar{ margin-right:10px}
@@ -1034,7 +1044,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.mylist .txt{ font-size:15px; margin-top:-2px; }
 	.mylist .bo-r{ background:url(border-right.png) no-repeat right 7px; background-size:1px 50px}
 	.mylist a{ color:#353535}
-.mykey{ background:#fff; border-bottom:1px solid #dfdfdf; border-top:1px solid #dfdfdf; padding-left:15px;}
+.mykey{ background:#fff; border-bottom:1px solid #dfdfdf; border-top:1px solid #dfdfdf; padding-left:15px; margin-bottom:15px;}
 	.mykey ul{}
 	.mykey li{ line-height:44px;font-size:15px;}	
 	.mykey .bt{ margin:0 9px 0 0;}
@@ -1159,6 +1169,28 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 		.products .f15{font-size:15px; margin-top:24px; padding:3px 0 8px 0}
 	.products .b60{width:60%;}
 		.products .b60 img{ width:37px; height:37px; float:left; margin:30px 10px 0 15px}
-	
+.myin{background: -webkit-linear-gradient(right, #fd5959 , #EB3842); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(left, #EB3842,  #fd5959 ); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(left, #EB3842,  #fd5959); /* Firefox 3.6 - 15 */
+  background: linear-gradient(to left, #EB3842,  #fd5959 );color:#fff; height:230px; padding:0 15px }
+  .myin .m{ line-height:44px; font-size:13px; border-bottom:1px solid #fb8688; }
+  	.myin .m img{ width:30px; height:30px; border-radius:30px; margin-right:8px; margin-top:-2px}
+	.myin .m a{ display:block; color:#fff; text-decoration:none}
+	.myin .r{ opacity:0.6 }
+	.myin .r img{ width:8px; height:13px; margin-left:8px; margin-right:0; text-align:right}
+	.myin .t{font-size:13px; font-weight:100; margin-top:20px; opacity:0.6}
+	.myin .num{ font-size:32px; font-weight:300}
+	.myin .num-s{ font-size:14px; margin-left:10px}
+	.myin p{ margin:0}
+	.myin .tx{float:right; margin-top:24px}
+	.myin .tx a{ background:none; border-radius:4px; color:#fff; width:60px; height:28px; line-height:26px; font-size:13px; text-align:center; border:1px solid #fff; opacity:0.7; margin:-17px 0 0 0; text-decoration:none; display:block}
+.txgz{ font-size:12px; text-align:center; margin:15px 0 60px 0; overflow:hidden}
+	.txgz a{ color:#5F7593}
+.yjbl{ position:fixed; bottom:0; left:0; width:100%}
+	.yjbl input{width:100%; border:0; background:#fff; line-height:42px; height:42px; color:#F65150; font-size:18px;-moz-box-shadow:0px 0px 6px #d9d9d9; 
+-webkit-box-shadow:0px 0px 6px #d9d9d9; 
+box-shadow:0px 0px 6px #d9d9d9;  }
+.huanbei-banner{}
+	.huanbei-banner img{ width:100%}		
 
 	

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:wx="http://weixin.jiangcai.me" lang="en">
+<!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>我的邀请</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="myin">
+	<p class="m"><a href="#"><img src="images/48.png">目黑瞳<span class="pull-right r">成为超级合伙人<img src="images/blackrightw-r.png"></span></a></p>
+	<p class="t">在款爷共赚</p>
+	<p class="num">1000.00<span class="num-s">元</span><span class="tx"><a href="#">提现</a></span></p>
+	<p class="t">成功邀请人数</p>
+	<p class="num">200<span class="num-s">人</span></p>
+</div>
+<p class="yjmx">佣金明细<span class="pull-right"><a href="#" class="dcbg">导出表格</a></span></p>
+<div class="yjlist">
+    <p class="kong" th:if="${flows.isEmpty()}"><img src="images/kong-pic.png">暂无数据</p>
+    <ul class="bg" th:if="${!flows.isEmpty()}">
+        <li class="w4">时间</li>
+        <li class="w4">用户/项目</li>
+        <li class="w1">金额</li>
+        <li class="w2">佣金</li>
+    </ul>
+    <ul th:each="flow:${flows}">
+        <li class="w4" th:text="${{flow.startTime}}">2016 12-01</li>
+        <li class="w4" th:text="${flow.flowName}">159****4325</li>
+        <li class="w1" th:text="${#numbers.formatDecimal(flow.originalAmount,1,'COMMA',2,'POINT')}">22000</li>
+        <li class="w2" th:text="${flow.flowType.toFlag()}+${#numbers.formatDecimal(flow.amount,1,'COMMA',2,'POINT')}">
+            +452
+        </li>
+    </ul>
+    <ul th:remove="all">
+        <li class="w4">2016 12-01</li>
+        <li class="w4">159****4325</li>
+        <li class="w1">22000</li>
+        <li class="w2">+45</li>
+    </ul>
+    <ul th:remove="all">
+        <li class="w4">2016 12-01</li>
+        <li class="w4">159****4325</li>
+        <li class="w1">22000</li>
+        <li class="w2">+45</li>
+    </ul>
+    <ul th:remove="all">
+        <li class="w4">2016 12-01</li>
+        <li class="w4">159****4325</li>
+        <li class="w1">22000</li>
+        <li class="w2">+4544</li>
+    </ul>
+</div>
+<p class="txgz"><a href="#">提现规则</a></p>
+<div class="yjbl"><input name="" type="button" value="调整佣金比例"></div>
+<!-- Modal -->
+<div style="margin:0 10px;" class="modal fade" id="cardsContainer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body show-c">
+				
+				<p class="sn"><input name="" type="text" placeholder="请输入需要导出的邮箱地址"> </p>
+			</div>
+			<div class="modal-footer">
+				<div class="show-c2"><a href="#" data-dismiss="modal">取消</a></div>
+				<div class="show-c1 cardSubmit" style="cursor: pointer">确定</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="mock/all.js" th:src="@{/all.js}"></script> 
+<script src="js/order.js"></script>
+</body>
+</html>
