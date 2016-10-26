@@ -54,9 +54,10 @@ public class MyPage extends AbstractPage {
                 .findFirst()
                 .ifPresent(element -> toPayButton = element);
 
-
-        WebElement list = webDriver.findElement(By.className("my-list"));
-        list.findElements(By.tagName("li")).stream()
+        webDriver.findElement(By.className("mykey")).findElements(By.tagName("li")).stream()
+                .filter(WebElement::isDisplayed)
+                .forEach(element -> menus.put(element.getText(), element));
+        webDriver.findElement(By.className("mylist")).findElements(By.tagName("li")).stream()
                 .filter(WebElement::isDisplayed)
                 .forEach(element -> menus.put(element.getText(), element));
 
@@ -95,8 +96,11 @@ public class MyPage extends AbstractPage {
 
     public void clickMenu(String text) {
         menus.forEach((name, ele) -> {
-            if (name.startsWith(text))
-                ele.click();
+            if (name.startsWith(text)) {
+                ele.findElements(By.tagName("a")).forEach(WebElement::click);
+//                ele.click();
+            }
+
         });
     }
 
@@ -110,5 +114,9 @@ public class MyPage extends AbstractPage {
                 .findFirst()
                 .orElseThrow(NullPointerException::new)
                 .click();
+    }
+
+    public void clickMyData() {
+        headImage.click();
     }
 }
