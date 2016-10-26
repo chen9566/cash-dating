@@ -56,6 +56,14 @@ public class InitService {
                     case v105000:
                         jdbcService.tableAlterAddColumn(Card.class, "disabled", "0");
                         jdbcService.tableAlterAddColumn(Bank.class, "disabled", "0");
+                        jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {
+                            @Override
+                            public void accept(ConnectionProvider connection) throws SQLException {
+                                try (Statement statement = connection.getConnection().createStatement()) {
+                                    statement.execute("ALTER TABLE cashorder ADD DTYPE VARCHAR(31) DEFAULT 'CashOrder' NOT NULL");
+                                }
+                            }
+                        });
                         break;
                     case v103000:
                         jdbcService.tableAlterAddColumn(Bank.class, "background", "linear-gradient(to right, #E75C65 , #E8507D);");

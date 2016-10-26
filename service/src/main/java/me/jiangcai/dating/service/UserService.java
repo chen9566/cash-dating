@@ -48,7 +48,7 @@ public interface UserService {
 
     /**
      * @param openId openId
-     * @return 呵呵
+     * @return null or User
      */
     @Transactional(readOnly = true)
     User byOpenId(String openId);

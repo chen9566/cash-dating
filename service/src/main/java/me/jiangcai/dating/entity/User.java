@@ -27,6 +27,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -148,6 +151,17 @@ public class User implements WeixinUser, ProfitSplit, UserDetails {
     // 银行卡信息
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Card> cards;
+
+    /**
+     * 有效用户的谓语
+     *
+     * @param criteriaBuilder cb
+     * @param userPath
+     * @return 谓语
+     */
+    public static Predicate validUserPredicate(CriteriaBuilder criteriaBuilder, Path<User> userPath) {
+        return criteriaBuilder.isNotNull(userPath.get("mobileNumber"));
+    }
 
     public UserAgentInfo updateMyAgentInfo() {
         if (myAgentInfo != null)

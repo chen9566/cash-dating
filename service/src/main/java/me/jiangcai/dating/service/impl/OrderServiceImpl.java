@@ -3,6 +3,7 @@ package me.jiangcai.dating.service.impl;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
+import me.jiangcai.dating.entity.PayToUserOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.User;
@@ -11,6 +12,7 @@ import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.model.support.OrderFlowStatus;
 import me.jiangcai.dating.repository.CardRepository;
 import me.jiangcai.dating.repository.CashOrderRepository;
+import me.jiangcai.dating.repository.PayToUserOrderRepository;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.SystemService;
@@ -18,6 +20,7 @@ import me.jiangcai.dating.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.SignatureException;
@@ -43,15 +46,24 @@ public class OrderServiceImpl implements OrderService {
     private SystemService systemService;
     @Autowired
     private CardRepository cardRepository;
+    @Autowired
+    private PayToUserOrderRepository payToUserOrderRepository;
 
     @Override
     public CashOrder newOrder(User user, BigDecimal amount, String comment, Long cardId) {
+        CashOrder order = new CashOrder();
+        forNewCashOrder(user, amount, comment, cardId, order);
+
+        return cashOrderRepository.save(order);
+    }
+
+    private void forNewCashOrder(User user, BigDecimal amount, String comment, Long cardId, CashOrder order) {
         if (user == null)
             throw new IllegalArgumentException("owner must not null");
         if (amount.doubleValue() <= 0) {
             throw new IllegalArgumentException("金额不可以是负数。");
         }
-        CashOrder order = new CashOrder();
+
         order.setId(UUID.randomUUID().toString().replace("-", ""));
         order.setOwner(user);
         order.setAmount(amount);
@@ -61,8 +73,6 @@ public class OrderServiceImpl implements OrderService {
         if (cardId != null) {
             order.setCard(cardRepository.getOne(cardId));
         }
-
-        return cashOrderRepository.save(order);
     }
 
     @Override
@@ -147,5 +157,18 @@ public class OrderServiceImpl implements OrderService {
         }
         cashOrderRepository.save(order);
         return chanpayService.withdrawalOrder(order);
+    }
+
+    @Override
+    public PayToUserOrder newPayToOrder(String openid, HttpServletRequest request, User user, BigDecimal amount
+            , String comment) {
+        PayToUserOrder order = new PayToUserOrder();
+        forNewCashOrder(user, amount, comment, null, order);
+        User from = userService.byOpenId(openid);
+        if (from == null) {
+            from = userService.newUser(openid, request);
+        }
+        order.setFrom(from);
+        return payToUserOrderRepository.save(order);
     }
 }

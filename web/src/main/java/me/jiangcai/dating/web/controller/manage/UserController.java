@@ -79,7 +79,10 @@ public class UserController extends DataController<User> {
 
     @Override
     protected DataFilter<User> dataFilter() {
-        return (user, criteriaBuilder, root) -> criteriaBuilder.or(criteriaBuilder.notEqual(root.get("manageStatus"), ManageStatus.root),
-                criteriaBuilder.isNull(root.get("manageStatus")));
+        // 过滤掉所有非正式注册的用户 就是手机号码为空的
+        return (user, criteriaBuilder, root) -> criteriaBuilder.and(
+                criteriaBuilder.or(criteriaBuilder.notEqual(root.get("manageStatus"), ManageStatus.root),
+                        criteriaBuilder.isNull(root.get("manageStatus")))
+                , User.validUserPredicate(criteriaBuilder, root));
     }
 }

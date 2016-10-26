@@ -104,6 +104,9 @@ public class WebConfig {
                     .antMatchers("/inviteQR/**").permitAll()
                     .antMatchers("/order/**").permitAll()
                     .antMatchers("/orderCompleted/**").permitAll()
+                    // 给他人支付
+                    .antMatchers("/to/**").permitAll()
+                    .antMatchers("/to").permitAll()
 //                    .antMatchers("/toPay/**").permitAll()
 //                    .antMatchers("/toPayQR/**").permitAll()
                     // 有几个事情是没有登录也可以做的 比如说 忘记密码 注册
