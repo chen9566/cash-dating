@@ -5,7 +5,7 @@ import me.jiangcai.dating.LoginWebTest;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.BookRateLevel;
-import me.jiangcai.dating.page.MyMoneyPage;
+import me.jiangcai.dating.page.MyInvitationPage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.MyTeamPage;
 import me.jiangcai.dating.repository.UserRepository;
@@ -39,8 +39,8 @@ public class AgentControllerTest extends LoginWebTest {
 
         driver.get("http://localhost/my");
         MyPage myPage = initPage(MyPage.class);
-        myPage.clickMenu("我的邀请");
-        MyMoneyPage invitePage = initPage(MyMoneyPage.class);
+        myPage.clickMenu("合伙赚钱");
+        MyInvitationPage invitePage = initPage(MyInvitationPage.class);
         invitePage.assertTeam();
 
         invitePage.clickMyTeam();

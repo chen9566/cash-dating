@@ -3,8 +3,8 @@ package me.jiangcai.dating.web.controller;
 import me.jiangcai.dating.LoginWebTest;
 import me.jiangcai.dating.entity.AgentRequest;
 import me.jiangcai.dating.page.AgentRequestPage;
+import me.jiangcai.dating.page.MyInvitationPage;
 import me.jiangcai.dating.page.MyInviteCodePage;
-import me.jiangcai.dating.page.MyMoneyPage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.service.AgentService;
 import me.jiangcai.dating.service.QRCodeService;
@@ -35,14 +35,14 @@ public class InviteControllerTest extends LoginWebTest {
         MyPage page = initPage(MyPage.class);
 
 
-        page.clickMenu("我的邀请");
-        invite(initPage(MyMoneyPage.class));
+        page.clickMenu("合伙赚钱");
+        invite(initPage(MyInvitationPage.class));
         driver.get("http://localhost/my");
         page.reloadPageInfo();
     }
 
 
-    private void invite(MyMoneyPage page) throws IOException {
+    private void invite(MyInvitationPage page) throws IOException {
         page.assertUser(currentUser(), statisticService);
 
         // TODO 提现

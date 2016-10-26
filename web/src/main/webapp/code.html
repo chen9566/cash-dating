@@ -17,11 +17,13 @@
 	<p class="pbanner"><img src="images/pannerbanner.png"></p>
 	<div class="ewmbg">
 		<p>扫一扫下方的二维码<br>注册成为合伙人一起赚大钱</p>
-		<p><img src="images/temp2.png"></p>
+        <p><img src="images/temp2.png" name="myShareQRCode" th:src="@{/inviteQR/{id}(id=${user.id})}"></p>
+        <h4 th:text="'邀请码：'+${user.inviteCode}">邀请码：8387373</h4>
 		<p class="mb-b"><a href="#">查看赚钱规则</a></p>
 		 <button type="button" class="btn btn-danger btn-lg btn-block weixinShare">立即邀请</button>
-    <button th:if="${user.agentInfo==null}" type="button" class="btn btn-default btn-lg btn-block agent clickHref"
-            href="agent.html" th:href="@{/agent}">我的邀请</button>
+        <button type="button" class="btn btn-default btn-lg btn-block agent clickHref"
+                href="myinvitation.html" th:href="@{/myInvitation}">我的邀请
+        </button>
 	</div>
 	
 </div>

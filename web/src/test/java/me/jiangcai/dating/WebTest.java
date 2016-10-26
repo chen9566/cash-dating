@@ -10,8 +10,6 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.page.BindingCardPage;
 import me.jiangcai.dating.page.BindingMobilePage;
 import me.jiangcai.dating.page.MyInviteCodePage;
-import me.jiangcai.dating.page.MyMoneyPage;
-import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.QRCodeService;
@@ -276,11 +274,15 @@ public abstract class WebTest extends ServiceBaseTest {
      * @throws IOException
      */
     protected String currentUserInviteURL() throws IOException {
-        driver.get("http://localhost/my");
-        MyPage myPage = initPage(MyPage.class);
-        myPage.clickMenu("我的邀请");
-        MyMoneyPage invitePage = initPage(MyMoneyPage.class);
-        invitePage.clickMyCode();
+
+        // http://app.kuanyes.com/cash/login?code=0218IKrs0MS6Wb1ofros0omPrs08IKrK&state=
+        // http://app.kuanyes.com/cash/login?code=0218IKrs0MS6Wb1ofros0omPrs08IKrK&state=
+        // /myInviteCode
+        driver.get("http://localhost/myInviteCode");
+//        MyPage myPage = initPage(MyPage.class);
+//        myPage.clickMenu("我的邀请");
+//        MyInvitationPage invitePage = initPage(MyInvitationPage.class);
+//        invitePage.clickMyCode();
         MyInviteCodePage codePage = initPage(MyInviteCodePage.class);
 
         WebDriverWait wait = new WebDriverWait(driver, 10);

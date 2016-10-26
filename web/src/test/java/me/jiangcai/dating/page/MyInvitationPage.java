@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author CJ
  */
-public class MyMoneyPage extends AbstractPage {
+public class MyInvitationPage extends AbstractPage {
     private WebElement balanceText;
     //    private WebElement codeButton;
     private WebElement withdrawButton;
@@ -33,7 +33,7 @@ public class MyMoneyPage extends AbstractPage {
     private WebElement teamButton;
     private List<WebFlow> webFlows;
 
-    public MyMoneyPage(WebDriver webDriver) {
+    public MyInvitationPage(WebDriver webDriver) {
         super(webDriver);
 //        System.out.println(webDriver.getPageSource());
     }

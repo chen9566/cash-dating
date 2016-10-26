@@ -24,7 +24,7 @@ public class MyInviteCodePage extends AbstractPage {
     private WebElement qrCode;
     private WebElement message;
     private WebElement inviteButton;
-    private WebElement requestButton;
+//    private WebElement requestButton;
 
     public MyInviteCodePage(WebDriver webDriver) {
         super(webDriver);
@@ -34,9 +34,10 @@ public class MyInviteCodePage extends AbstractPage {
     @Override
     public void validatePage() {
         assertThat(webDriver.getTitle())
-                .isEqualTo("我的邀请码");
+                .isEqualTo("我的邀请");
         webDriver.findElements(By.tagName("img")).stream()
                 .filter(WebElement::isDisplayed)
+                .filter(webElement -> "myShareQRCode".equals(webElement.getAttribute("name")))
                 .findFirst()
                 .ifPresent(element -> qrCode = element);
 
@@ -47,15 +48,15 @@ public class MyInviteCodePage extends AbstractPage {
 
         webDriver.findElements(By.tagName("button")).stream()
                 .filter(WebElement::isDisplayed)
-                .filter(element -> element.getText().equals("邀请"))
+                .filter(element -> element.getText().equals("我的邀请"))
                 .findFirst()
                 .ifPresent(element -> inviteButton = element);
 
-        webDriver.findElements(By.tagName("button")).stream()
-                .filter(WebElement::isDisplayed)
-                .filter(element -> element.getText().contains("合伙人"))
-                .findFirst()
-                .ifPresent(element -> requestButton = element);
+//        webDriver.findElements(By.tagName("button")).stream()
+//                .filter(WebElement::isDisplayed)
+//                .filter(element -> element.getText().contains("合伙人"))
+//                .findFirst()
+//                .ifPresent(element -> requestButton = element);
 
         assertThat(qrCode)
                 .isNotNull();
@@ -87,9 +88,9 @@ public class MyInviteCodePage extends AbstractPage {
         assertThat(message.getText())
                 .endsWith(user.getInviteCode());
 
-        if (user.getAgentInfo() == null)
-            assertThat(requestButton)
-                    .isNotNull();
+//        if (user.getAgentInfo() == null)
+//            assertThat(requestButton)
+//                    .isNotNull();
     }
 
     public BufferedImage getQRCodeImage() throws IOException {
@@ -97,6 +98,7 @@ public class MyInviteCodePage extends AbstractPage {
     }
 
     public void requestAgent() {
-        requestButton.click();
+//        requestButton.click();
+        throw new RuntimeException("这里没法支持申请合伙人。");
     }
 }
