@@ -11,14 +11,17 @@
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
+	<script src="js/start.js"></script>
 </head>
 <body>
 <div class="payment-n"><img src="images/50.png" >向商家用户欣欣殿下付款</div>
 <div class="payment-n2">
 	<p class="f14">收款金额(元)</p>
 	<p><img src="images/1.png" >
-	<input name="" type="num" placeholder="0.00"></p>
+	<input  placeholder="0.00" type="number" id="_content" name="amount"></p>
 </div>
-<p class="p-15"> <button type="button" class="btn btn-danger btn-lg btn-block weixinShare">付款</button></p>
+<div class="p-15">
+            <input value="下一步" type="submit" id="_btn1" class="black" name="btn1" disabled="disabled"  />
+        </div>
 </body>
 </html>
