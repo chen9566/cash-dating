@@ -976,9 +976,10 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.yjlist li.w2{ width:10%}	
 	.yjlist li.w3{ width:33.3%}	
 	.yjlist li.w4{ width:35%}	
-	.yjlist li.w5{ width:15%}
+	.yjlist li.w5{ width:30%}
+	.yjlist li.w6{ width:25%}
 	.yjlist .bg{ background:#F8F8F8;}
-	.yjlist li select{ background:none; width:120%;  height:30px;line-height:30px; margin:5px 0; border:0;}
+	.yjlist li select{ background:none; width:140%;  height:30px;line-height:30px; margin:5px 0; border:0;}
 	.yjlist li .e1 {width:100%; background:none; border:none; }  
 	.yjlist .kong{ background:#fff; text-align:center; font-size:14px; padding:25px 0 40px 0; height:100%; color:#888; line-height:50px;} 
 		.yjlist .kong img{ display:block; width:200px; margin:0 auto}
@@ -1140,7 +1141,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.myorder img{ width:8px; margin-left:8px; }
 	.myorder .f17{ font-size:17px; line-height:16px !important;}
 	.myorder .top-m{ margin-top:8px; font-size:14px;}
-	.myorder .fred{ color:#F65150}
+	.myorder .fred{ color:#F65150; background:#F65150; color:#fff; text-align:center; width:65px; height:22px; border-radius:4px;}
 .financial{background: -webkit-linear-gradient(buttom, #FD5959 , #EB3842); /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(top, #EB3842 , #FD5959 ); /* Opera 11.1 - 12.0 */
   background: -moz-linear-gradient(top, #EB3842 , #FD5959 ); /* Firefox 3.6 - 15 */
