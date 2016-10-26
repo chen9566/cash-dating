@@ -108,12 +108,14 @@ public class MyPage extends AbstractPage {
      * 登出
      */
     public void logout() {
-        webDriver.findElements(By.tagName("input")).stream()
-                .filter(WebElement::isDisplayed)
-                .filter(webElement -> "注销".equals(webElement.getAttribute("value")))
-                .findFirst()
-                .orElseThrow(NullPointerException::new)
-                .click();
+        clickMyData();
+        initPage(MyDataPage.class).logout();
+//        webDriver.findElements(By.tagName("input")).stream()
+//                .filter(WebElement::isDisplayed)
+//                .filter(webElement -> "注销".equals(webElement.getAttribute("value")))
+//                .findFirst()
+//                .orElseThrow(NullPointerException::new)
+//                .click();
     }
 
     public void clickMyData() {

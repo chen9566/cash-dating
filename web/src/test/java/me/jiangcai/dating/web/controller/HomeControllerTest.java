@@ -4,6 +4,7 @@ import me.jiangcai.chanpay.test.mock.MockPay;
 import me.jiangcai.dating.LoginWebTest;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.page.MyBankPage;
+import me.jiangcai.dating.page.MyDataPage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.PayCompletedPage;
 import me.jiangcai.dating.page.ShowOrderPage;
@@ -60,7 +61,11 @@ public class HomeControllerTest extends LoginWebTest {
         page.reloadPageInfo();
 
         page.clickMyData();
+        myData(initPage(MyDataPage.class));
+    }
 
+    private void myData(MyDataPage dataPage) {
+        dataPage.assertUser(currentUser());
     }
 
 

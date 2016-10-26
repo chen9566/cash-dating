@@ -1,7 +1,6 @@
 package me.jiangcai.dating.web.controller;
 
 import me.jiangcai.dating.entity.User;
-import me.jiangcai.dating.service.StatisticService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +23,6 @@ import java.util.ArrayList;
 public class HomeController {
 
     @Autowired
-    private StatisticService statisticService;
-    @Autowired
     private UserService userService;
     @Autowired
     private SystemService systemService;
@@ -45,14 +42,6 @@ public class HomeController {
         model.addAttribute("rate", systemService.systemBookRate(user));
 
         return "receivables.html";
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = {"/my"})
-    public String my(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("user", userService.by(user.getId()));
-        model.addAttribute("total", statisticService.totalExpense(user.getOpenId()));
-        model.addAttribute("orders", statisticService.countCashOrder(user.getOpenId()));
-        return "my.html";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/explain")
