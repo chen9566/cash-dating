@@ -2,6 +2,7 @@ package me.jiangcai.dating.web.controller.card;
 
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.service.BankService;
+import me.jiangcai.dating.service.CardService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.wx.OpenId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ public class CardController {
     @Autowired
     private UserService userService;
     @Autowired
+    private CardService cardService;
+    @Autowired
     private BankService bankService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/card")
@@ -56,7 +59,7 @@ public class CardController {
 
 //        userService.deleteCards(id);
 
-        Card card = userService.addCard(id, name, number, null, null, subBranch);
+        Card card = cardService.addCard(id, name, number, null, null, subBranch);
 
         String url = (String) session.getAttribute(RedirectSessionKey);
         if (StringUtils.isEmpty(url))

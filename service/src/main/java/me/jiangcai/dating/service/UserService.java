@@ -1,10 +1,7 @@
 package me.jiangcai.dating.service;
 
-import me.jiangcai.dating.entity.Bank;
-import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.LoginToken;
 import me.jiangcai.dating.entity.User;
-import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,12 +21,6 @@ public interface UserService {
      * @return 这个用户需要输入手机号码
      */
     boolean mobileRequired(String openId);
-
-    /**
-     * @param openId
-     * @return 这个用户需要绑定银行卡
-     */
-    boolean bankAccountRequired(String openId);
 
     /**
      * 绑定手机号码
@@ -54,21 +45,6 @@ public interface UserService {
      * @param user
      */
     void loginAs(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException;
-
-    /**
-     * 增加银行卡
-     *
-     * @param openId    openId
-     * @param name      持卡人
-     * @param number    卡号
-     * @param bank
-     * @param address
-     * @param subBranch 支行,可以是code也可以是name
-     * @return 新增加的银行
-     * @throws IllegalVerificationCodeException 验证码无效
-     */
-    @Transactional
-    Card addCard(String openId, String name, String number, Bank bank, Address address, String subBranch);
 
     /**
      * @param openId openId
@@ -136,13 +112,6 @@ public interface UserService {
     @Transactional
     void checkRequestLogin(long id, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 
-    /**
-     * 清空银行卡
-     *
-     * @param openId openId
-     */
-    @Transactional
-    void deleteCards(String openId);
 
     @Transactional(readOnly = true)
     User by(Long id);

@@ -95,7 +95,7 @@ public class OrderControllerTest extends LoginWebTest {
     @Test
     public void withoutCard() {
         User user = currentUser();
-        userService.deleteCards(user.getOpenId());
+        cardService.deleteCards(user.getOpenId());
 
         CashOrder success1Order = orderService.newOrder(user, new BigDecimal("100"), UUID.randomUUID().toString()
                 , null);
