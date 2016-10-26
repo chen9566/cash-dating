@@ -29,5 +29,11 @@ $(function () {
         $('#cardsContainer').modal();
         return false;
     });
+	 $('.dcbg').click(function () {
+        var target = $(this).closest('div.orderFlow').attr('data-id');
+        orderIdInput.val(target);
+        $('#cardsContainer').modal();
+        return false;
+    });
 
 });
