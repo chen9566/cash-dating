@@ -1160,10 +1160,12 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .month{ padding:15px 15px 8px 15px; color:#888; font-size:14px;}
 .finlist{ background:#fff;border-top:1px solid #dfdfdf}
 	.finlist ul{}
-	.finlist li{ height:60px; padding:10px 15px;border-bottom:1px solid #dfdfdf}
-	.finlist .f15{ font-size:15px;display:block; }
+	.finlist li{ padding:10px 15px; line-height:21px;border-bottom:1px solid #dfdfdf}
+	.finlist .f15{ font-size:15px;display:block; font-weight:300 }
 	.finlist .f17{ font-size:17px;display:block; }
-	.finlist .f12{font-size:12px; color:#888; display:block}
+	.finlist .f12{font-size:12px; color:#888; }
+	.finlist .f13{font-size:13px; color:#888; }
+	.finlist p{ margin:0}
 	.finlist .f-right{ text-align:right; }
 .products{ margin-top:15px; background:#fff; padding-left:15px;border-bottom:1px solid #dfdfdf;border-top:1px solid #dfdfdf }
 	.products ul{ overflow:hidden; }
