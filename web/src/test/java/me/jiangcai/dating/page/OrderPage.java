@@ -2,6 +2,7 @@ package me.jiangcai.dating.page;
 
 import com.google.common.base.Predicate;
 import me.jiangcai.dating.entity.Card;
+import me.jiangcai.dating.entity.CashOrder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -26,7 +27,7 @@ public class OrderPage extends AbstractPage {
     public void validatePage() {
         System.out.println(webDriver.getPageSource());
         assertThat(webDriver.getTitle())
-                .isEqualTo("资金流水");
+                .isEqualTo("我的订单");
 
         webDriver.findElements(By.className("addcard")).stream()
                 .filter(WebElement::isDisplayed)
@@ -132,4 +133,23 @@ public class OrderPage extends AbstractPage {
                             .ifPresent(WebElement::click);
                 });
     }
+
+    public void assertSuccessOrder(int index, CashOrder order) {
+        WebElement element = checkOrder(index, order);
+        assertThat(element.findElements(By.tagName("span")).stream()
+                .filter(webElement -> webElement.getText().contains("到账"))
+                .findAny()
+                .orElse(null)
+        ).isNotNull();
+    }
+
+    private WebElement checkOrder(int index, CashOrder order) {
+        WebElement element = webDriver.findElements(By.tagName("li")).get(index);
+        System.out.println(element.findElement(By.className("f17")).getText());
+        System.out.println(element.getAttribute("href"));
+        assertThat(element.getAttribute("href"))
+                .endsWith(order.getId());
+        return element;
+    }
+
 }

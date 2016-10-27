@@ -156,14 +156,17 @@ public class OrderControllerTest extends LoginWebTest {
 
         tradeSuccess(success1Order);
         orderPage.refresh();
+        orderPage.assertTransferringOrder(0, success1Order);
         withdrawalSuccess(success1Order);
         orderPage.refresh();
+        orderPage.assertSuccessOrder(0, success1Order);
 
         tradeSuccess(workingOrder);
         tradeSuccess(noCardOrder);
         tradeSuccess(withdrawalFailedOrder);
         withdrawalFailed(withdrawalFailedOrder, WithdrawalStatus.WITHDRAWAL_FAIL, "怀孕了?");
         orderPage.refresh();
+
 
         orderPage.choseCard(noCardOrder.getId(), user.getCards().get(0));
         orderPage.reloadPageInfo();

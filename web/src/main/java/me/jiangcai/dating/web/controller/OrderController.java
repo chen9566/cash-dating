@@ -1,6 +1,5 @@
 package me.jiangcai.dating.web.controller;
 
-import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.service.CardService;
 import me.jiangcai.dating.service.OrderService;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.security.SignatureException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author CJ
@@ -37,13 +34,13 @@ public class OrderController {
             // 这个时候去绑卡,并且设定回调
             return "redirect:/card?nextAction=/orderList";
         }
-        List<Card> cards = userService.byOpenId(user.getOpenId()).getCards();
-        if (cards == null) {
-            cards = new ArrayList<>();
-        }
+//        List<Card> cards = userService.byOpenId(user.getOpenId()).getCards();
+//        if (cards == null) {
+//            cards = new ArrayList<>();
+//        }
         model.addAttribute("orders", orderService.orderFlows(user.getOpenId()));
-        model.addAttribute("cards", cards);
-        return "order.html";
+//        model.addAttribute("cards", cards);
+        return "myorder.html";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/touchOrder")
