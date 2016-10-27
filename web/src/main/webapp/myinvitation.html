@@ -67,7 +67,7 @@
 </div>
 <p class="txgz"><a href="#">提现规则</a></p>
 <div class="yjbl" th:if="${user.agentInfo!=null}"><input name="" type="button" value="调整佣金比例" class="clickHref"
-                                                         href="myteam.html">
+                                                         href="myteam.html" th:href="@{/myTeam}">
 </div>
 <!-- Modal -->
 <div style="margin:0 10px;" class="modal fade" id="cardsContainer" tabindex="-1" role="dialog"
