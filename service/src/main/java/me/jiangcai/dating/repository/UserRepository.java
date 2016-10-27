@@ -13,4 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByMobileNumber(String mobile);
 
     User findByInviteCode(String code);
+
+    long countByGuideUser_OpenIdAndMobileNumberNotNull(String openId);
 }
