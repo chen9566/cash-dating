@@ -1079,15 +1079,20 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .wealth{background: -webkit-linear-gradient(right, #F84F52 , #FF7446); /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(left, #F84F52 , #FF7446 ); /* Opera 11.1 - 12.0 */
   background: -moz-linear-gradient(left, #F84F52 , #FF7446 ); /* Firefox 3.6 - 15 */
-  background: linear-gradient(to left, #F84F52 , #FF7446 );   position:relative; text-align:center }
-  	.wealth img{ width:60%; margin:15px auto 82px auto}
+  background: linear-gradient(to left, #F84F52 , #FF7446 ); text-align:center }
+  	.wealth img{width:60%; margin:15px auto}
 	.wealth p{ margin:0}
-.wealth-abs{ position:absolute; bottom:0; height:68px;background:url(sharebgtwo.png); width:100%; padding-top:8px;}
+	.wealth .card-b{ margin:-17px 0 0 0}
+.wealth-abs{ height:68px;background:url(sharebgtwo.png); width:100%; padding-top:8px;}
 	.wealth-abs ul{ overflow:hidden; }
 	.wealth-abs li{ float:left; width:50%; text-align:center}
 	.wealth-abs .f12{ color:#fbd0c6; font-size:12px;}
 	.wealth-abs .f25{color:#fff; font-size:25px; display:block; font-weight:300}
 	.wealth-abs .bo-r{ background:url(bordered-right.png) no-repeat right 14px; background-size:1px 30px}
+.card-abs{  text-align:center; height:68px;background:url(sharebgtwo.png); width:100%; padding-top:8px; }	
+	.card-abs .f12{ color:#fbd0c6; font-size:12px;}
+	.card-abs .f25{color:#fff; font-size:25px; display:block; font-weight:300}
+.mar30{ margin-top:30px}
 .loan{ background:#fff; padding-top:15px;}
 	.loan .t1{ font-size:14px; padding-left:15px; color:#353535}
 	.loan p{ margin:0}
@@ -1139,9 +1144,11 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.myorder li{ height:65px;  border-bottom:1px solid #dfdfdf; padding:12px 15px;}
 	.myorder .time{ font-size:12px; color:#888; display:block; line-height:24px;}
 	.myorder img{ width:8px; margin-left:8px; }
-	.myorder .f17{ font-size:17px; line-height:16px !important;}
+	.myorder .f17{ font-size:17px; line-height:18px !important;height:18px }
 	.myorder .top-m{ margin-top:8px; font-size:14px;}
-	.myorder .fred{ color:#F65150; background:#F65150; color:#fff; text-align:center; width:65px; height:22px; border-radius:4px;}
+	.myorder .fred{ color:#F65150; background:#F65150; color:#fff; text-align:center; width:60px; height:23px; border-radius:4px;}
+	.myorder .small-e{ border-radius:3px; border:1px solid #10BA0E; padding:2px 3px; font-size:10px; text-align:center; color:#10BA0E; margin-left:11px; margin-bottom:4px; }
+	.myorder .small-s{ border-radius:3px; border:1px solid #3F82DB; padding:2px 3px; font-size:10px; text-align:center; color:#3F82DB; margin-left:11px;}
 .financial{background: -webkit-linear-gradient(buttom, #FD5959 , #EB3842); /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(top, #EB3842 , #FD5959 ); /* Opera 11.1 - 12.0 */
   background: -moz-linear-gradient(top, #EB3842 , #FD5959 ); /* Firefox 3.6 - 15 */
@@ -1158,18 +1165,25 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.finlist .f17{ font-size:17px;display:block; }
 	.finlist .f12{font-size:12px; color:#888; display:block}
 	.finlist .f-right{ text-align:right; }
-.products{ background:#fff; padding-left:15px;border-bottom:1px solid #dfdfdf;border-top:1px solid #dfdfdf }
-	.products  ul{ overflow:hidden; }
-	.products  li{ font-weight:300; float:left; height:96px; padding:}
+.products{ margin-top:15px; background:#fff; padding-left:15px;border-bottom:1px solid #dfdfdf;border-top:1px solid #dfdfdf }
+	.products ul{ overflow:hidden; }
+	.products li{ font-weight:300; float:left; height:96px; padding:}
 	.products p{ margin:0}
 	.products .bm-b{border-bottom:1px solid #dfdfdf;}
-	.products .b40{ width:40%; background:url(border-right.png) no-repeat right 30px; background-size:1px 40px}
-		.products .f32{ font-size:32px; color:#F65150; margin-top:12px}
+	.products .b40{ width:35%; background:url(border-right.png) no-repeat right 30px; background-size:1px 40px}
+		.products .f32{ font-size:32px; color:#F65150; text-align:center; margin-top:12px; margin-right:15px; font-weight:300}
 		.products .f21{ font-size:21px; color:#F65150}
 		.products .f12{ font-size:12px; color:#888; line-height:16px }
 		.products .f15{font-size:15px; margin-top:24px; padding:3px 0 8px 0}
-	.products .b60{width:60%;}
+	.products .b60{width:65%;}
 		.products .b60 img{ width:37px; height:37px; float:left; margin:30px 10px 0 15px}
+	.products .ltxt{ color:#888; border-bottom:1px solid #dfdfdf; margin-left:-15px;padding:12px 15px;}
+		.products .ltxt img{ width:8px; height:13px; margin-left:8px; margin-top:-2px}
+		.products .ltxt a{ padding:10px 0; text-decoration:none; text-decoration:none; color:#888}
+		.products .pa-l{ padding:0 15px; overflow:hidden}
+		.products .lt{ color:#888;  margin-left:-15px;padding:12px 15px;}
+	.products .loacbtn{ margin-right:10px; margin-bottom:100px}
+		.products .loacbtn button{ margin:30px auto}
 .myin{background: -webkit-linear-gradient(right, #fd5959 , #EB3842); /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(left, #EB3842,  #fd5959 ); /* Opera 11.1 - 12.0 */
   background: -moz-linear-gradient(left, #EB3842,  #fd5959); /* Firefox 3.6 - 15 */
@@ -1199,6 +1213,6 @@ box-shadow:0px 0px 6px #d9d9d9;  }
 	.payment-n2 .f14{ font-size:14px;}
 	.payment-n2 input[type="number"]{-moz-appearance:textfield;border: 0;background: none}
 	.payment-n2 input{ background:none; font-weight:300; font-size:40px;width:80%; padding-left:12px; height:50px; line-height:50px; border:0;}
-	.payment-n2 img{ width:18px; height:24px; vertical-align:center; margin-top:-15px }
+	.payment-n2 img{ width:18px; height:24px; vertical-align:center; margin-top:-15px;  }
 
 	
