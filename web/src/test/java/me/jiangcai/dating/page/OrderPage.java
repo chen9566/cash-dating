@@ -38,23 +38,23 @@ public class OrderPage extends AbstractPage {
                 });
     }
 
-    /**
-     * 目前没有银行卡
-     */
-    public void assertWithoutCards() {
-        assertThat(addCardLink)
-                .isNotNull();
-        assertThat(addCardLink.isDisplayed())
-                .isTrue();
-    }
+//    /**
+//     * 目前没有银行卡
+//     */
+//    public void assertWithoutCards() {
+//        assertThat(addCardLink)
+//                .isNotNull();
+//        assertThat(addCardLink.isDisplayed())
+//                .isTrue();
+//    }
 
-    /**
-     * 这会儿有卡了
-     */
-    public void assertCards() {
-        assertThat(webDriver.findElements(By.className("addcard")))
-                .isEmpty();
-    }
+//    /**
+//     * 这会儿有卡了
+//     */
+//    public void assertCards() {
+//        assertThat(webDriver.findElements(By.className("addcard")))
+//                .isEmpty();
+//    }
 
     /**
      * 点击加卡链接

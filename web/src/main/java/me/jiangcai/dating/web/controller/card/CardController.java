@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 public class CardController {
 
     private static final String RedirectSessionKey = "me.jc.dating.card.redirect";
+    private static final String NextActionSessionKey = "me.jc.dating.card.nextAction";
 
     @Autowired
     private UserService userService;
@@ -36,7 +37,12 @@ public class CardController {
     private BankService bankService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/card")
-    public String start(@RequestHeader("Referer") String redirectUrl, HttpSession session, Model model) {
+    public String start(@RequestHeader("Referer") String redirectUrl, String nextAction, HttpSession session, Model model) {
+        if (StringUtils.isEmpty(nextAction)) {
+            session.removeAttribute(NextActionSessionKey);
+        } else
+            session.setAttribute(NextActionSessionKey, nextAction);
+
         if (StringUtils.isEmpty(redirectUrl)) {
             session.removeAttribute(RedirectSessionKey);
         } else
@@ -58,9 +64,14 @@ public class CardController {
 //        address.setCity(PayResourceService.cityById(city));
 
 //        userService.deleteCards(id);
+        // 禁用原卡
+        cardService.disableRecommendCard(id);
 
         Card card = cardService.addCard(id, name, number, null, null, subBranch);
 
+        String action = (String) session.getAttribute(NextActionSessionKey);
+        if (!StringUtils.isEmpty(action))
+            return "redirect:" + action;
         String url = (String) session.getAttribute(RedirectSessionKey);
         if (StringUtils.isEmpty(url))
             return "redirect:/start";

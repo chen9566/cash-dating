@@ -26,7 +26,6 @@ public class CardServiceImpl implements CardService {
     private static final Log log = LogFactory.getLog(CardServiceImpl.class);
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private SubBranchBankRepository subBranchBankRepository;
 
@@ -36,7 +35,7 @@ public class CardServiceImpl implements CardService {
         User user = userRepository.findByOpenId(openId);
         if (user == null)
             return true;
-        return user.getCards() == null || user.getCards().isEmpty();
+        return recommend(user) == null;
     }
 
     @Override
@@ -86,17 +85,25 @@ public class CardServiceImpl implements CardService {
     public Card recommend(UserOrder order) {
         if (order.getCard() != null && !order.getCard().isDisabled())
             return order.getCard();
-        if (order.getOwner().getCards() == null)
-            return null;
         return recommend(order.getOwner());
     }
 
     @Override
     public Card recommend(User user) {
+        if (user.getCards() == null)
+            return null;
         return user.getCards().stream()
                 .filter(card -> !card.isDisabled())
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public void disableRecommendCard(String openId) {
+        Card card = recommend(userRepository.findByOpenId(openId));
+        if (card != null) {
+            card.setDisabled(true);
+        }
     }
 
 

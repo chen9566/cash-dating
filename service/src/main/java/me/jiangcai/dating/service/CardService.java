@@ -62,4 +62,12 @@ public interface CardService {
      */
     @Transactional(readOnly = true)
     Card recommend(User user);
+
+    /**
+     * 禁用默认的收款帐号,没有就算了
+     *
+     * @param openId 用户
+     */
+    @Transactional
+    void disableRecommendCard(String openId);
 }

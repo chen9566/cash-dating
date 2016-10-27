@@ -62,6 +62,7 @@ public class HomeControllerTest extends LoginWebTest {
 
         page.clickMyData();
         myData(initPage(MyDataPage.class));
+
     }
 
     private void myData(MyDataPage dataPage) {
