@@ -147,4 +147,9 @@ public class StatisticServiceImpl implements StatisticService {
     public long countCashOrder(String openId) {
         return cashOrderRepository.countByOwner_OpenIdAndCompletedTrue(openId);
     }
+
+    @Override
+    public long guides(String openId) {
+        return userRepository.countByGuideUser_OpenIdAndMobileNumberNotNull(openId);
+    }
 }

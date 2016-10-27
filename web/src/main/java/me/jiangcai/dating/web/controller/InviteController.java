@@ -30,6 +30,8 @@ public class InviteController {
         model.addAttribute("user", userService.by(user.getId()));
         final BigDecimal balance = statisticService.balance(user.getOpenId());
         model.addAttribute("balance", balance);
+
+        model.addAttribute("numbers", statisticService.guides(user.getOpenId()));
 //        // 分开
 //        String text = Common.CurrencyFormat(balance);
 //        int point = text.indexOf(".");

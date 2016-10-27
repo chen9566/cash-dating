@@ -18,15 +18,16 @@
 </head>
 <body>
 <div class="myin">
-    <p class="m"><a href="agent.html" th:href="@{${user.agentInfo!=null?'#':'/agent'}}">
+    <p class="m"><a href="explain.html" th:href="@{${user.agentInfo!=null?'#':'/explain'}}">
         <img src="images/48.png" th:src="${user.headImageUrl}"/><span th:text="${user.nickname}">目黑瞳</span>
         <span class="pull-right r" th:if="${user.agentInfo==null}">成为超级合伙人<img
                 src="images/blackrightw-r.png"></span></a></p>
     <p class="t">在款爷共赚</p>
-    <p class="num" th:text="${#numbers.formatDecimal(balance,0,'COMMA',2,'POINT')}">1000.00<span
+    <p class="num"><span th:text="${#numbers.formatDecimal(balance,1,'COMMA',2,'POINT')}"
+                         th:name="balance">1000.00</span><span
             class="num-s">元</span><span class="tx"><a href="#">提现</a></span></p>
     <p class="t">成功邀请人数</p>
-    <p class="num" th:text="${{numbers}}">200<span class="num-s">人</span></p>
+    <p class="num"><span th:text="${{numbers}}" th:name="numbers">200</span><span class="num-s">人</span></p>
 </div>
 <p class="yjmx">佣金明细<span class="pull-right"><a href="#" class="dcbg">导出表格</a></span></p>
 <div class="yjlist">

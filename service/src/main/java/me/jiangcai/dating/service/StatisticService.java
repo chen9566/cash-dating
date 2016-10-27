@@ -56,4 +56,11 @@ public interface StatisticService {
      */
     @Transactional(readOnly = true)
     long countCashOrder(String openId);
+
+    /**
+     * @param openId openId
+     * @return 我发展的会员数量
+     */
+    @Transactional(readOnly = true)
+    long guides(String openId);
 }
