@@ -1156,7 +1156,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.financial .smt{ color:#fbb9bb; font-size:13px;}
 	.financial p{ margin:0}
 	.financial .money{ font-size:32px; color:#fff; font-weight:300}
-	.financial a{ text-decoration:none; display:block; text-align:center; color:#fff; border:1px solid #fab8ba; border-radius:4px; background:#f4595e; width:60px; line-height:28px; margin-top:13px}
+	.financial a{ text-decoration:none; display:block; text-align:center; color:#fff; border:1px solid #fff; border-radius:4px; background:#f4595e; opacity:0.7; width:60px; line-height:28px; margin-top:13px}
 .month{ padding:15px 15px 8px 15px; color:#888; font-size:14px;}
 .finlist{ background:#fff;border-top:1px solid #dfdfdf}
 	.finlist ul{}
