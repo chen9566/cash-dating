@@ -54,6 +54,10 @@ public class RelationTest extends WebTest {
         assertThat(newOne.getGuideUser())
                 .isEqualTo(invite);
 
+        // 新用户也可以看
+        noTeamPage();
+
+
         CashOrder order = orderService.newOrder(newOne, new BigDecimal(100), UUID.randomUUID().toString(), newOne.getCards().get(0).getId());
         tradeSuccess(order);
 
@@ -67,5 +71,13 @@ public class RelationTest extends WebTest {
         myInvitationPage.assertTeam();
 
         myInvitationPage.assertUser(invite, statisticService);
+    }
+
+    private void noTeamPage() {
+        driver.get("http://localhost/my");
+        MyPage page = initPage(MyPage.class);
+        page.clickMenu("合伙赚钱");
+        MyInvitationPage invitationPage = initPage(MyInvitationPage.class);
+        invitationPage.assertNoTeam();
     }
 }

@@ -39,7 +39,7 @@ public class MyInvitationPage extends AbstractPage {
 
     public MyInvitationPage(WebDriver webDriver) {
         super(webDriver);
-        System.out.println(webDriver.getPageSource());
+//        System.out.println(webDriver.getPageSource());
     }
 
     @Override
