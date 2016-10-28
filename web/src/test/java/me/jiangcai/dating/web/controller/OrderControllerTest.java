@@ -166,9 +166,9 @@ public class OrderControllerTest extends LoginWebTest {
         tradeSuccess(withdrawalFailedOrder);
         withdrawalFailed(withdrawalFailedOrder, WithdrawalStatus.WITHDRAWAL_FAIL, "怀孕了?");
         orderPage.refresh();
+        orderPage.assertFailedOrder(0, withdrawalFailedOrder);
 
-
-        orderPage.choseCard(noCardOrder.getId(), user.getCards().get(0));
+        orderPage.retry(noCardOrder.getId());
         orderPage.reloadPageInfo();
         List<OrderFlow> flowList = orderService.orderFlows(user.getOpenId());
 

@@ -69,6 +69,7 @@ public class OrderPage extends AbstractPage {
      *
      * @param orderId 订单号
      * @param card    卡
+     * @deprecated 没了
      */
     public void choseCard(String orderId, Card card) {
         WebElement chooser = webDriver.findElement(By.id("cardsContainer"));
@@ -121,17 +122,24 @@ public class OrderPage extends AbstractPage {
      * @param orderId 订单号
      */
     public void retry(String orderId) {
-        webDriver.findElements(By.className("orderFlow")).stream()
+//        webDriver.findElements(By.className("orderFlow")).stream()
+//                .filter(WebElement::isDisplayed)
+//                .filter(webElement -> orderId.equals(webElement.getAttribute("data-id")))
+//                .findFirst()
+//                .ifPresent(webElement -> {
+//                    webElement.findElements(By.tagName("button")).stream()
+//                            .filter(WebElement::isDisplayed)
+//                            .filter(webElement1 -> webElement1.getText().contains("重试"))
+//                            .findFirst()
+//                            .ifPresent(WebElement::click);
+//                });
+        webDriver.findElements(By.tagName("li")).stream()
                 .filter(WebElement::isDisplayed)
-                .filter(webElement -> orderId.equals(webElement.getAttribute("data-id")))
+                .filter(webElement -> webElement.getAttribute("href").endsWith(orderId))
                 .findFirst()
-                .ifPresent(webElement -> {
-                    webElement.findElements(By.tagName("button")).stream()
-                            .filter(WebElement::isDisplayed)
-                            .filter(webElement1 -> webElement1.getText().contains("重试"))
-                            .findFirst()
-                            .ifPresent(WebElement::click);
-                });
+                .orElseThrow(IllegalStateException::new)
+                .click();
+        System.out.println("1");
     }
 
     public void assertSuccessOrder(int index, CashOrder order) {
@@ -152,4 +160,21 @@ public class OrderPage extends AbstractPage {
         return element;
     }
 
+    public void assertTransferringOrder(int index, CashOrder order) {
+        WebElement element = checkOrder(index, order);
+        assertThat(element.findElements(By.tagName("span")).stream()
+                .filter(webElement -> webElement.getText().contains("转账中"))
+                .findAny()
+                .orElse(null)
+        ).isNotNull();
+    }
+
+    public void assertFailedOrder(int index, CashOrder order) {
+        WebElement element = checkOrder(index, order);
+        assertThat(element.findElements(By.tagName("span")).stream()
+                .filter(webElement -> webElement.getText().contains("未到账"))
+                .findAny()
+                .orElse(null)
+        ).isNotNull();
+    }
 }
