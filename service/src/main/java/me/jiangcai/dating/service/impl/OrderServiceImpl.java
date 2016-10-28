@@ -12,6 +12,7 @@ import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.entity.WithdrawOrder;
 import me.jiangcai.dating.entity.support.WithdrawOrderStatus;
 import me.jiangcai.dating.model.OrderFlow;
+import me.jiangcai.dating.model.OrderFlows;
 import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.model.support.OrderFlowStatus;
 import me.jiangcai.dating.repository.CardRepository;
@@ -32,11 +33,11 @@ import java.math.BigDecimal;
 import java.security.SignatureException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,7 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
 
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy年M月", Locale.CHINA);
     @Autowired
     private CashOrderRepository cashOrderRepository;
     @Autowired
@@ -138,8 +140,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderFlow> orderFlows(String openId) {
+        final List<?> list = cashOrderRepository.findOrderFlow(userService.byOpenId(openId));
+        return toOrderFlowList(list);
+    }
+
+    private List<OrderFlow> toOrderFlowList(List<?> list) {
         ArrayList<OrderFlow> flowArrayList = new ArrayList<>();
-        cashOrderRepository.findOrderFlow(userService.byOpenId(openId)).forEach(object -> {
+        list.forEach(object -> {
             Object[] objects = (Object[]) object;
             OrderFlow flow = new OrderFlow();
             flow.setOrder((CashOrder) objects[0]);
@@ -168,20 +175,34 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Map<LocalDate, List<OrderFlow>> orderFlowsMonthly(String openId) {
+    public List<OrderFlow> finishedOrderFlows(String openId) {
+        final List<?> list = cashOrderRepository.findFinishedOrderFlow(userService.byOpenId(openId));
+        return toOrderFlowList(list);
+    }
+
+    @Override
+    public List<OrderFlows> orderFlowsMonthly(String openId) {
         final List<OrderFlow> flows = orderFlows(openId);
 
-        HashMap<LocalDate, List<OrderFlow>> result = new HashMap<>();
+        return toMonthly(flows);
+    }
+
+    private List<OrderFlows> toMonthly(List<OrderFlow> flows) {
+        ArrayList<OrderFlows> result = new ArrayList<>();
         flows.stream()
                 .map(orderFlow -> LocalDate.of(orderFlow.getOrder().getStartTime().getYear(), orderFlow.getOrder().getStartTime().getMonth(), 1))
                 .distinct()
                 .forEach(localDate -> {
-                    result.put(localDate, flows.stream()
+                    result.add(new OrderFlows(flows.stream()
                             .filter(orderFlow -> orderFlow.getOrder().getStartTime().getYear() == localDate.getYear() && orderFlow.getOrder().getStartTime().getMonth() == localDate.getMonth())
-                            .collect(Collectors.toList()));
+                            .collect(Collectors.toList()), formatter.format(localDate)));
                 });
-//        cashOrderRepository.findOrderFlowMonthly(userService.byOpenId(openId));
         return result;
+    }
+
+    @Override
+    public List<OrderFlows> finishedOrderFlowsMonthly(String openId) {
+        return toMonthly(finishedOrderFlows(openId));
     }
 
     @Override

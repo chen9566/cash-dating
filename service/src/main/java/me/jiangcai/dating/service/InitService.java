@@ -81,6 +81,7 @@ public class InitService {
                         });
 
                         jdbcService.tableAlterAddColumn(User.class, "settlementRevenue", "0");
+                        jdbcService.tableAlterAddColumn(User.class, "settlementWithdrawal", "0");
                         jdbcService.tableAlterAddColumn(Card.class, "disabled", "0");
                         jdbcService.tableAlterAddColumn(Bank.class, "disabled", "0");
                         jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {

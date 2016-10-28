@@ -80,6 +80,15 @@ public class User implements WeixinUser, ProfitSplit, UserDetails, Locker {
      */
     @Column(scale = 2, precision = 20)
     private BigDecimal settlementRevenue = BigDecimal.ZERO;
+
+    /**
+     * 不同于{@link #settlementBalance 余额},这个表示所有成功的提现
+     *
+     * @since 1.5
+     */
+    @Column(scale = 2, precision = 20)
+    private BigDecimal settlementWithdrawal = BigDecimal.ZERO;
+
     /**
      * 跟上面那个一样,不过这里是开支
      */

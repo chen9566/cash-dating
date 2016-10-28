@@ -6,6 +6,7 @@ import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.service.CardService;
 import me.jiangcai.dating.service.OrderService;
+import me.jiangcai.dating.service.StatisticService;
 import me.jiangcai.dating.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,6 +32,8 @@ public class OrderController {
     private UserService userService;
     @Autowired
     private CardService cardService;
+    @Autowired
+    private StatisticService statisticService;
 
     // 订单详情
     @RequestMapping(method = RequestMethod.GET, value = "/orderDetail/{id}")
@@ -60,8 +63,21 @@ public class OrderController {
 //            cards = new ArrayList<>();
 //        }
         model.addAttribute("orders", orderService.orderFlows(user.getOpenId()));
+
 //        model.addAttribute("cards", cards);
         return "myorder.html";
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "/financialList")
+    public String financial(@AuthenticationPrincipal User user, Model model) {
+        if (cardService.bankAccountRequired(user.getOpenId())) {
+            return "redirect:/card?nextAction=/financialList";
+        }
+        model.addAttribute("orders", orderService.finishedOrderFlowsMonthly(user.getOpenId()));
+        model.addAttribute("total", statisticService.withdrawal(user.getOpenId()));
+
+        return "financialdetails.html";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/touchOrder")

@@ -10,10 +10,8 @@ import me.jiangcai.wx.model.WeixinUserDetail;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -127,7 +125,7 @@ public class OrderServiceTest extends ServiceBaseTest {
                 .isEqualTo(OrderFlowStatus.transferring);
 
         //分组
-        Map<LocalDate, List<OrderFlow>> map = orderService.orderFlowsMonthly(user.getOpenId());
+        Object map = orderService.orderFlowsMonthly(user.getOpenId());
         System.out.println(map);
     }
 

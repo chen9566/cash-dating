@@ -8,6 +8,7 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.OrderFlow;
 import me.jiangcai.dating.model.support.OrderFlowStatus;
 import me.jiangcai.dating.page.BindingCardPage;
+import me.jiangcai.dating.page.FinancialListPage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.OrderPage;
 import me.jiangcai.dating.service.OrderService;
@@ -180,6 +181,11 @@ public class OrderControllerTest extends LoginWebTest {
         List<OrderFlow> flowList = orderService.orderFlows(user.getOpenId());
         assertThat(flowList.get(0).getStatus())
                 .isEqualByComparingTo(OrderFlowStatus.transferring);
+
+        driver.get("http://localhost/my");
+        myPage = initPage(MyPage.class);
+        myPage.clickMenu("资金流水");
+        FinancialListPage financialListPage = initPage(FinancialListPage.class);
 
     }
 

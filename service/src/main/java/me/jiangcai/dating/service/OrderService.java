@@ -8,6 +8,7 @@ import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.WithdrawOrder;
 import me.jiangcai.dating.model.OrderFlow;
+import me.jiangcai.dating.model.OrderFlows;
 import me.jiangcai.dating.model.PayChannel;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,9 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.SignatureException;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 订单和支付系统
@@ -77,12 +76,30 @@ public interface OrderService {
     List<OrderFlow> orderFlows(String openId);
 
     /**
+     * 已完成的订单流水
+     *
+     * @param openId 用户
+     * @return 订单流水
+     */
+    @Transactional(readOnly = true)
+    List<OrderFlow> finishedOrderFlows(String openId);
+
+    /**
      * 近期的订单流水
      * @param openId 用户
      * @return 按月分组的订单流水
      */
     @Transactional(readOnly = true)
-    Map<LocalDate, List<OrderFlow>> orderFlowsMonthly(String openId);
+    List<OrderFlows> orderFlowsMonthly(String openId);
+
+    /**
+     * 近期的订单流水
+     *
+     * @param openId 用户
+     * @return 按月分组的订单流水
+     */
+    @Transactional(readOnly = true)
+    List<OrderFlows> finishedOrderFlowsMonthly(String openId);
 
     /**
      * 尝试重新提现

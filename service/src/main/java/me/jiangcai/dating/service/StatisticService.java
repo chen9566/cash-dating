@@ -35,6 +35,14 @@ public interface StatisticService {
     BigDecimal balance(String openId);
 
     /**
+     *
+     * @param openId 用户openId
+     * @return 总提现金额
+     */
+    @Transactional(readOnly = true)
+    BigDecimal withdrawal(String openId);
+
+    /**
      * @param openId 用户openId
      * @return 实时总收入
      */

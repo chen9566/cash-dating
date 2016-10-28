@@ -6,6 +6,7 @@ import me.jiangcai.dating.entity.support.WithdrawOrderStatus;
 import me.jiangcai.dating.model.AgentCashOrderBalanceFlow;
 import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.model.GuideCashOrderBalanceFlow;
+import me.jiangcai.dating.model.WithdrawalBalanceFlow;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.PayToUserOrderRepository;
 import me.jiangcai.dating.repository.UserRepository;
@@ -39,9 +40,13 @@ public class StatisticServiceImpl implements StatisticService {
      */
     private static int TypePay = 1 << 2;
     /**
-     * 提现开支
+     * 提现开支,用户提出的提现
      */
     private static int TypeWithdraw = 1 << 4;
+    /**
+     * 提现收入（指的是用户收到的提现）
+     */
+    private static int TypeWithdrawIncoming = 1 << 5;
     /**
      * 所有收入
      */
@@ -91,6 +96,21 @@ public class StatisticServiceImpl implements StatisticService {
     }
 
     @Override
+    public BigDecimal withdrawal(String openId) {
+        // 总提现金额
+        User user = userRepository.findByOpenId(openId);
+        BigDecimal total = BigDecimal.ZERO;
+        total = total.add(user.getSettlementWithdrawal());
+
+        for (BalanceFlow flow : balanceFlows(openId, TypeWithdrawIncoming)) {
+            BigDecimal data = flow.getAmount().multiply(flow.getFlowType().toMultiply());
+            total = total.add(data);
+        }
+
+        return total;
+    }
+
+    @Override
     public BigDecimal revenue(String openId) {
         User user = userRepository.findByOpenId(openId);
         BigDecimal total = BigDecimal.ZERO;
@@ -127,6 +147,11 @@ public class StatisticServiceImpl implements StatisticService {
 //                    .map(GuideCashOrderBalanceFlow::new)
 //                    .forEach(flowArrayList::add);
 //        }
+        if ((flag & TypeWithdrawIncoming) > 0)
+            cashOrderRepository.findByOwnerAndCompletedTrueAndWithdrawalCompletedTrue(user)
+                    .stream()
+                    .map(WithdrawalBalanceFlow::new)
+                    .forEach(flowArrayList::add);
 
         if ((flag & TypeWithdraw) > 0)
             withdrawOrderRepository.findByOwnerOrderByStartTimeDesc(user).stream()
