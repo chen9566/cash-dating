@@ -2,7 +2,6 @@ package me.jiangcai.dating.web.controller.card;
 
 import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.Card;
-import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.page.BindingCardPage;
@@ -110,10 +109,11 @@ public class CardControllerTest extends WebTest {
 
         ShowOrderPage codePage = initPage(ShowOrderPage.class);
         // 应该去检查这个订单信息 以确保卡号是一致了
-        CashOrder order = cashOrderRepository.getOne(codePage.orderId());
-        assertThat(order.getCard())
-                .isNotNull()
-                .isEqualTo(exceptedCard);
+        // 没有意义了
+//        CashOrder order = cashOrderRepository.getOne(codePage.orderId());
+//        assertThat(order.getCard())
+//                .isNotNull()
+//                .isEqualTo(exceptedCard);
     }
 
     // 1.5开始 绑卡就是更换之前的卡
