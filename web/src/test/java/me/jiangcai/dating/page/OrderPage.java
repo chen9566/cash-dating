@@ -139,7 +139,9 @@ public class OrderPage extends AbstractPage {
                 .findFirst()
                 .orElseThrow(IllegalStateException::new)
                 .click();
-        System.out.println("1");
+
+        OrderDetailPage detailPage = initPage(OrderDetailPage.class);
+        detailPage.retry();
     }
 
     public void assertSuccessOrder(int index, CashOrder order) {
@@ -149,6 +151,11 @@ public class OrderPage extends AbstractPage {
                 .findAny()
                 .orElse(null)
         ).isNotNull();
+        element.click();
+        OrderDetailPage detailPage = initPage(OrderDetailPage.class);
+        detailPage.assertSuccess(order);
+        webDriver.navigate().back();
+        reloadPageInfo();
     }
 
     private WebElement checkOrder(int index, CashOrder order) {
@@ -167,6 +174,12 @@ public class OrderPage extends AbstractPage {
                 .findAny()
                 .orElse(null)
         ).isNotNull();
+
+        element.click();
+        OrderDetailPage detailPage = initPage(OrderDetailPage.class);
+        detailPage.assertTransferring(order);
+        webDriver.navigate().back();
+        reloadPageInfo();
     }
 
     public void assertFailedOrder(int index, CashOrder order) {
@@ -176,5 +189,11 @@ public class OrderPage extends AbstractPage {
                 .findAny()
                 .orElse(null)
         ).isNotNull();
+
+        element.click();
+        OrderDetailPage detailPage = initPage(OrderDetailPage.class);
+        detailPage.assertFailed(order);
+        webDriver.navigate().back();
+        reloadPageInfo();
     }
 }

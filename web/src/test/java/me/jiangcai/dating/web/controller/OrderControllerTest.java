@@ -168,16 +168,16 @@ public class OrderControllerTest extends LoginWebTest {
         orderPage.refresh();
         orderPage.assertFailedOrder(0, withdrawalFailedOrder);
 
-        orderPage.retry(noCardOrder.getId());
-        orderPage.reloadPageInfo();
-        List<OrderFlow> flowList = orderService.orderFlows(user.getOpenId());
-
-        assertThat(flowList.get(1).getStatus())
-                .isEqualByComparingTo(OrderFlowStatus.transferring);
+//        orderPage.retry(noCardOrder.getId());
+//        orderPage.reloadPageInfo();
+//        List<OrderFlow> flowList = orderService.orderFlows(user.getOpenId());
+//
+//        assertThat(flowList.get(1).getStatus())
+//                .isEqualByComparingTo(OrderFlowStatus.transferring);
 
         orderPage.retry(withdrawalFailedOrder.getId());
         orderPage.reloadPageInfo();
-        flowList = orderService.orderFlows(user.getOpenId());
+        List<OrderFlow> flowList = orderService.orderFlows(user.getOpenId());
         assertThat(flowList.get(0).getStatus())
                 .isEqualByComparingTo(OrderFlowStatus.transferring);
 
