@@ -80,18 +80,29 @@ public class InitService {
                             }
                         });
 
-                        jdbcService.tableAlterAddColumn(User.class, "settlementRevenue", "0");
-                        jdbcService.tableAlterAddColumn(User.class, "settlementWithdrawal", "0");
-                        jdbcService.tableAlterAddColumn(Card.class, "disabled", "0");
-                        jdbcService.tableAlterAddColumn(Bank.class, "disabled", "0");
                         jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {
                             @Override
                             public void accept(ConnectionProvider connection) throws SQLException {
                                 try (Statement statement = connection.getConnection().createStatement()) {
-                                    statement.execute("ALTER TABLE cashorder ADD DTYPE VARCHAR(31) DEFAULT 'CashOrder' NOT NULL");
+                                    statement.execute("ALTER TABLE `user` ADD SETTLEMENTREVENUE DECIMAL(20,2) DEFAULT 0");
+                                    statement.execute("ALTER TABLE `user` ADD SETTLEMENTWITHDRAWAL DECIMAL(20,2) DEFAULT 0");
                                 }
                             }
                         });
+//                        jdbcService.tableAlterAddColumn(User.class, "settlementRevenue", "0");
+//                        jdbcService.tableAlterAddColumn(User.class, "settlementWithdrawal", "0");
+                        jdbcService.tableAlterAddColumn(Card.class, "disabled", "0");
+                        jdbcService.tableAlterAddColumn(Bank.class, "disabled", "0");
+//                        jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {
+//                            @Override
+//                            public void accept(ConnectionProvider connection) throws SQLException {
+//                                try (Statement statement = connection.getConnection().createStatement()) {
+//                                    statement.execute("ALTER TABLE cashorder ADD DTYPE VARCHAR(31) NULL");
+//                                    // CashOrder
+//                                    statement.executeUpdate("UPDATE cashorder SET DTYPE='CashOrder'");
+//                                }
+//                            }
+//                        });
                         break;
                     case v103000:
                         jdbcService.tableAlterAddColumn(Bank.class, "background", "linear-gradient(to right, #E75C65 , #E8507D);");

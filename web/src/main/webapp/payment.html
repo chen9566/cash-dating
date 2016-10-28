@@ -19,10 +19,12 @@
     <input name="comment" type="hidden" th:value="${comment}"/>
     <input name="openid" type="hidden" th:value="${openId}"/>
     <input name="id" type="hidden" th:value="${user.id}"/>
-    <div class="payment-n"><img src="images/50.png" th:src="${user.headImageUrl}">向商家用户欣欣殿下付款</div>
+    <div class="payment-n"><img src="images/50.png" th:src="${user.headImageUrl}"/><span
+            th:text="${'向'+user.nickname+'付款'}">向商家用户欣欣殿下付款</span>
+    </div>
     <div class="payment-n2">
         <p class="f14">收款金额(元)</p>
-        <p><img src="images/1.png">
+        <p><img src="images/1.png" th:src="@{/images/1.png}">
             <input placeholder="0.00" type="number" id="_content" name="amount"></p>
     </div>
     <div class="p-15">
