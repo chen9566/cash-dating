@@ -121,4 +121,8 @@ public class MyPage extends AbstractPage {
     public void clickMyData() {
         headImage.click();
     }
+
+    public void clickPayToMe() {
+        toPayButton.click();
+    }
 }

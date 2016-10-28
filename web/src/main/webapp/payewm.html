@@ -1,24 +1,67 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta charset="UTF-8">
-<title>我的</title>
-<link rel="stylesheet" href="dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="dist/css/font-awesome.min.css">
-<link rel="stylesheet" href="dist/css/meiyue.css">
-<script src="dist/js/jquery.js"></script>
-<script src="dist/js/bootstrap.min.js"></script>
-<script src="dist/js/share.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <title>付款码</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/share.js"></script>
 </head>
 <body class="bg-write">
-	<div class="pay-ewm">
-		<p class="av-p"><img src="images/404-pic.png"></p>
-		<h1>昵称</h1>
-		<t>扫二维码向我付款</t>
-		<p class="ewm-b"><a href="payment.html"><img src="images/temp2.png"></a></p>
-	</div>
-	
+<div class="pay-ewm">
+    <p class="av-p"><img src="images/404-pic.png" th:src="${user.headImageUrl}"></p>
+    <h1 th:text="${user.nickname}">昵称</h1>
+    <t>扫二维码向我付款</t>
+    <p class="ewm-b"><img name="qrCode" src="images/temp2.png"></p>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="newNameContainer" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body show-c">
+                <p class="sn"><input name="name" type="text" placeholder="此处新的名字"></p>
+            </div>
+            <div class="modal-footer">
+                <div class="show-c2"><a href="#" data-dismiss="modal">取消</a></div>
+                <div class="show-c1 nameSubmit" style="cursor: pointer">确定</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    $(function () {
+        var newImage = function (comment) {
+            var imageUrl = /*[[@{/toImage(id=${user.id})}]]*/ 'images/temp2.png?1=1';
+            if (!comment)
+                comment = '';
+            imageUrl = imageUrl + '&comment=' + encodeURIComponent(comment);
+            $('img[name=qrCode]').attr('src', imageUrl);
+        };
+        var dlg = $('#newNameContainer');
+        var h1 = $('h1');
+        $('.nameSubmit').click(function () {
+            var text = $('input[name=name]').val();
+            if (text.length > 0) {
+                h1.text(text);
+                newImage(text);
+                dlg.modal('hide');
+            }
+        });
+
+        h1.dblclick(function () {
+            dlg.modal();
+        });
+
+        newImage(h1.text());
+    })
+</script>
 </body>
 </html>

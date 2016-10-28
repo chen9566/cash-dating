@@ -1,6 +1,8 @@
 package me.jiangcai.dating.page;
 
 import com.gargoylesoftware.htmlunit.html.HtmlImage;
+import me.jiangcai.dating.WebTest;
+import me.jiangcai.dating.entity.CashOrder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -31,11 +33,26 @@ public abstract class AbstractPage extends me.jiangcai.lib.test.page.AbstractPag
         super(webDriver);
     }
 
+    /**
+     * 模拟微信支付
+     *
+     * @param orderId 我方订单号
+     * @param payCode 支付码
+     */
+    void mockWeixinPay(String orderId, BufferedImage payCode) throws Exception {
+        WebTest webTest = (WebTest) getTestInstance();
+        CashOrder order = webTest.getOrderService().getOne(orderId);
+        String url = webTest.getQrCodeService().scanImage(payCode);
+        webTest.getPay().pay(order.getPlatformOrderSet().iterator().next().getId(), url);
+        Thread.sleep(2500);
+    }
+
     protected void assertAlert(String text) {
     }
 
     /**
      * 你懂的
+     *
      * @param element
      * @return
      * @throws IOException

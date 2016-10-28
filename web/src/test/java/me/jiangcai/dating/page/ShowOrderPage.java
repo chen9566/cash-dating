@@ -69,4 +69,12 @@ public class ShowOrderPage extends AbstractPage {
         assertThat(amountSpan.getText())
                 .isEqualTo(Common.CurrencyFormat(amount));
     }
+
+    /**
+     * 支付这个订单
+     */
+    public void pay() throws Exception {
+        mockWeixinPay(orderId(), scanCode());
+    }
+
 }

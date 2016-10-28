@@ -71,4 +71,11 @@ public class CashOrder extends UserOrder {
                 ", thatRateConfig=" + thatRateConfig +
                 "} " + super.toString();
     }
+
+    /**
+     * @return 本订单是否由本人收银台发起的
+     */
+    public boolean isCashOrder() {
+        return !(this instanceof PayToUserOrder);
+    }
 }

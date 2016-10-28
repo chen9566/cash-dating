@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import me.jiangcai.dating.entity.CashOrder;
-import me.jiangcai.dating.entity.PayToUserOrder;
 import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.model.support.OrderFlowStatus;
 
@@ -37,8 +36,12 @@ public class OrderFlow {
         return order.getAmount().subtract(order.getWithdrawalAmount());
     }
 
+    /**
+     * @return
+     * @see CashOrder#isCashOrder()
+     */
     public boolean isCashOrder() {
-        return !(order instanceof PayToUserOrder);
+        return order.isCashOrder();
     }
 
     @Override

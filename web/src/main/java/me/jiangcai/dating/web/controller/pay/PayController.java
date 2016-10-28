@@ -48,6 +48,13 @@ public class PayController {
     @Autowired
     private QRCodeService qrCodeService;
 
+    @RequestMapping(method = RequestMethod.GET, value = "/payToMe")
+    public String payToMe(@AuthenticationPrincipal User user, Model model) {
+        user = userService.by(user.getId());
+        model.addAttribute("user", user);
+        return "payewm.html";
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/toImage")
     public BufferedImage payToQRCode(long id, String comment, HttpServletRequest request)
             throws IOException, WriterException {
@@ -75,14 +82,15 @@ public class PayController {
         model.addAttribute("user", userService.by(id));
         model.addAttribute("openId", openid);
         model.addAttribute("comment", comment);
-        return "payewm.html";
+        return "payment.html";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/to")
     public String submitPayTo(BigDecimal amount, String comment, String openid, long id, HttpServletRequest request
             , Model model) throws IOException, SignatureException {
         PayToUserOrder order = orderService.newPayToOrder(openid, request, userService.by(id), amount, comment);
-        return showPayCode(model, order);
+//        return showPayCode(model, order);
+        return "redirect:/order/" + order.getId();
     }
 
     /**

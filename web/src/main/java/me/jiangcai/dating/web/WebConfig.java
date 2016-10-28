@@ -94,6 +94,9 @@ public class WebConfig {
 //            }
 
             registry
+                    //测试
+                    .antMatchers("/qrUrl").permitAll()
+                    //
                     .antMatchers("/provinceList").permitAll()
                     .antMatchers("/subBranchList").permitAll()
                     // 所有的

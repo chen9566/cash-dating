@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.google.common.base.Predicate;
+import me.jiangcai.chanpay.test.mock.MockPay;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
@@ -12,6 +13,7 @@ import me.jiangcai.dating.page.BindingMobilePage;
 import me.jiangcai.dating.page.MyInviteCodePage;
 import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.repository.UserRepository;
+import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.web.WebConfig;
 import me.jiangcai.lib.test.page.AbstractPage;
@@ -56,11 +58,26 @@ public abstract class WebTest extends ServiceBaseTest {
     private UserRepository userRepository;
     @Autowired
     private QRCodeService qrCodeService;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private MockPay pay;
     @Autowired
     private ApplicationContext applicationContext;
 
     private static <T> Iterable<T> IterableIterator(Iterator<T> iterator) {
         return () -> iterator;
+    }
+
+    public OrderService getOrderService() {
+        return orderService;
+    }
+
+    public QRCodeService getQrCodeService() {
+        return qrCodeService;
+    }
+
+    public MockPay getPay() {
+        return pay;
     }
 
     @Override
