@@ -151,12 +151,12 @@ public class MyInvitationPage extends AbstractPage {
     }
 
 
-    public void clickMyCode() {
+    public void toRequestAgentPage() {
 //        codeButton.click();
         explainElement.click();
         ExplainPage explainPage = initPage(ExplainPage.class);
 
-        explainPage.clickMyCode();
+        explainPage.requestAgent();
     }
 
     public void assertNoTeam() {

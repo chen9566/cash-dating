@@ -39,21 +39,21 @@ public class InviteControllerTest extends LoginWebTest {
         invite(initPage(MyInvitationPage.class));
         driver.get("http://localhost/my");
         page.reloadPageInfo();
-    }
 
-
-    private void invite(MyInvitationPage page) throws IOException {
-        page.assertUser(currentUser(), statisticService);
-
-        // TODO 提现
-
-        page.clickMyCode();
+        driver.get("http://localhost/myInviteCode");
         MyInviteCodePage codePage = initPage(MyInviteCodePage.class);
 
         codePage.assertUser(currentUser(), qrCodeService);
 
         // TODO 显然还有已经申请了代理商的呢?
         codePage.requestAgent();
+    }
+
+
+    private void invite(MyInvitationPage page) throws IOException {
+        page.assertUser(currentUser(), statisticService);
+        // TODO 提现
+        page.toRequestAgentPage();
         AgentRequestPage requestPage = initPage(AgentRequestPage.class);
 
         final String mobile = randomMobile();

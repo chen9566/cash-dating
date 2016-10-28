@@ -282,7 +282,7 @@ public abstract class WebTest extends ServiceBaseTest {
 //        MyPage myPage = initPage(MyPage.class);
 //        myPage.clickMenu("我的邀请");
 //        MyInvitationPage invitePage = initPage(MyInvitationPage.class);
-//        invitePage.clickMyCode();
+//        invitePage.requestAgent();
         MyInviteCodePage codePage = initPage(MyInviteCodePage.class);
 
         WebDriverWait wait = new WebDriverWait(driver, 10);

@@ -25,6 +25,9 @@ public class AgentRequestPage extends AbstractPage {
 
     @Override
     public void validatePage() {
+        assertThat(webDriver.getTitle())
+                .isEqualTo("升级合伙人");
+        printThisPage();
         webDriver.findElements(By.tagName("input")).stream()
                 .filter(WebElement::isDisplayed)
                 .filter(element -> "name".equals(element.getAttribute("name")))

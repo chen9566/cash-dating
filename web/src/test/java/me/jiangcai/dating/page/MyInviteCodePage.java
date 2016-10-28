@@ -99,6 +99,11 @@ public class MyInviteCodePage extends AbstractPage {
 
     public void requestAgent() {
 //        requestButton.click();
-        throw new RuntimeException("这里没法支持申请合伙人。");
+//        throw new RuntimeException("这里没法支持申请合伙人。");
+        inviteButton.click();
+        MyInvitationPage invitationPage = initPage(MyInvitationPage.class);
+        invitationPage.assertNoTeam();
+
+        invitationPage.toRequestAgentPage();
     }
 }
