@@ -29,6 +29,12 @@ public interface CashOrderRepository extends JpaRepository<CashOrder, String> {
             " order by C.startTime desc,W.startTime desc")
     List<?> findOrderFlow(User user);
 
+//    @Query("select concat(FUNC('year',C.startTime),FUNC('month',C.startTime)),C,W from CashOrder C left join C.platformWithdrawalOrderSet W" +
+//            " where C.owner=?1 and C.completed=true" +
+//            " group by concat(FUNC('year',C.startTime),FUNC('month',C.startTime)) " +
+//            " order by C.startTime desc,W.startTime desc")
+//    List<?> findOrderFlowMonthly(User user);
+
     long countByOwner_OpenIdAndCompletedTrue(String openId);
 
 }

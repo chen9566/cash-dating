@@ -30,11 +30,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.SignatureException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author CJ
@@ -161,6 +165,23 @@ public class OrderServiceImpl implements OrderService {
                 flowArrayList.add(flow);
         });
         return flowArrayList;
+    }
+
+    @Override
+    public Map<LocalDate, List<OrderFlow>> orderFlowsMonthly(String openId) {
+        final List<OrderFlow> flows = orderFlows(openId);
+
+        HashMap<LocalDate, List<OrderFlow>> result = new HashMap<>();
+        flows.stream()
+                .map(orderFlow -> LocalDate.of(orderFlow.getOrder().getStartTime().getYear(), orderFlow.getOrder().getStartTime().getMonth(), 1))
+                .distinct()
+                .forEach(localDate -> {
+                    result.put(localDate, flows.stream()
+                            .filter(orderFlow -> orderFlow.getOrder().getStartTime().getYear() == localDate.getYear() && orderFlow.getOrder().getStartTime().getMonth() == localDate.getMonth())
+                            .collect(Collectors.toList()));
+                });
+//        cashOrderRepository.findOrderFlowMonthly(userService.byOpenId(openId));
+        return result;
     }
 
     @Override

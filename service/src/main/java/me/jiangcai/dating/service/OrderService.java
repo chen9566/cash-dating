@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.SignatureException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 订单和支付系统
@@ -75,6 +77,14 @@ public interface OrderService {
     List<OrderFlow> orderFlows(String openId);
 
     /**
+     * 近期的订单流水
+     * @param openId 用户
+     * @return 按月分组的订单流水
+     */
+    @Transactional(readOnly = true)
+    Map<LocalDate, List<OrderFlow>> orderFlowsMonthly(String openId);
+
+    /**
      * 尝试重新提现
      *
      * @param orderId 主订单号
@@ -107,4 +117,5 @@ public interface OrderService {
      */
     @ThreadSafe
     WithdrawOrder newWithdrawOrder(User user, BigDecimal amount, Long cardId) throws IOException, SignatureException;
+
 }
