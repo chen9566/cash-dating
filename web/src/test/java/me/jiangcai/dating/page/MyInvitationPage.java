@@ -80,7 +80,7 @@ public class MyInvitationPage extends AbstractPage {
 
         webDriver.findElements(By.tagName("input")).stream()
                 .filter(WebElement::isDisplayed)
-                .filter(element -> "调整佣金比例".equals(element.getAttribute("value")))
+                .filter(element -> "调整手续费".equals(element.getAttribute("value")))
                 .findAny()
                 .ifPresent(element -> teamButton = element);
 

@@ -41,10 +41,12 @@ public class MyTeamPage extends AbstractPage {
             assertThat(myTeamMember.mobile.getText())
                     .isEqualTo(user.getMobileNumber());
         // 手续费
+//        printThisPage();
+//        System.out.println(myTeamMember.select.getText());
         String showed = myTeamMember.select.findElements(By.tagName("option")).stream()
                 .filter(WebElement::isSelected)
                 .findFirst()
-                .orElse(null)
+                .orElseThrow(IllegalStateException::new)
                 .getText();
 //        String showed = myTeamMember.select.getText();
         if (user.getMyAgentInfo() == null) {

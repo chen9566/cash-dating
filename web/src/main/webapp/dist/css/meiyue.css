@@ -972,7 +972,10 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .yjlist{ margin-top:15px;}
 	.yjlist ul{ border-top:1px solid #dfdfdf;background:#fff;overflow:hidden;padding:0 15px;  line-height:40px;  }
 	.yjlist li{ float:left;line-height:40px; width:25% ; font-size:12px; color:#353535}
-	.yjlist li.w1{ width:20%}
+
+.yjlist li.w1 {
+	width: 44%
+}
 	.yjlist li.w2{ width:10%}	
 	.yjlist li.w3{ width:33.3%}	
 	.yjlist li.w4{ width:35%}	
