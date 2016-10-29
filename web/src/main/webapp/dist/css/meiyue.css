@@ -1110,6 +1110,10 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.loan li{ line-height:44px; padding-right:15px; color:#888; font-size:14px; }
 	.loan li.bo-b{ border-bottom:1px solid #dfdfdf}
 	.loan li img{ width:8px; margin-left:8px; }
+	.loan select{ border:0; height:22px; line-height:22px; width:70%;border: 0px;border: none;outline:none; background:none;-moz-appearance: none;-webkit-appearance:none;color:#353535 ;
+            appearance:none; text-align:right ; }
+	.loan .right-pos{color:#888 ; position:absolute;background:none;  z-index:-1; top:0}
+	.loan .right-img{position:absolute;background:none;  z-index:-1; top:15px; right:15px;}
 	.agree{ padding:10px 15px; margin-bottom:30px; font-size:14px; overflow:hidden}
 		.agree .input_check{ width:22px; height:22px; vertical-align:bottom; margin-right:10px; background:#fff; color:#F65150;}
 		.agree a{ text-decoration:none; color:#007AFF; }
@@ -1123,9 +1127,9 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.from-personal li input{  background:none; height:30px; line-height:30px; margin:5px 0 ;border:0;}
 	.from-personal .icon{ width:25px}
 	.from-personal .icon img{width: 20px;margin:-2px 0 0 0;} 
-	.from-personal .bo-b{border-bottom:1px solid #dfdfdf;}
+	.from-personal .bo-b{border-bottom:1px solid #dfdfdf; text-align:left}
 	.from-personal .b1{ font-size:13px; color:#888; padding-left:15px;  }
-.f-per select{ background:none;  height:30px;line-height:30px; margin:5px 0; border:0;}
+.f-per select{ background:none; text-align:left !important; height:30px;line-height:30px; margin:5px 0; border:0;}
 	.f-per .select {width:120%; background:none; border:none; }   
 	.f-per .select2 {width:120%; background:none; border:none; }  
 	.f-per .select3 {width:120%; text-align:center; padding-left:20px; background:none; border:none; } 
@@ -1134,13 +1138,14 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .sleHid { display:block;  overflow:hidden; }     
 .sleBG {  border-right:none; float:left; display:block;}
 	.f-per label{ color:#888; width:95px; font-weight:400; font-size:14px;}
-	.f-per .s1{ width:33%;}
+	.f-per .s1{ width:33%; }
 	.f-per .s2{ width:66%;}
 	.f-per .s3{ width:33%;text-align:right; padding-right:15px;}
 .infor{ color:#888;  }
-	.infor select{ border:0; height:30px; line-height:30px; width:100%;border: 0px;border: none;outline:none; background:none;-moz-appearance: none;-webkit-appearance:none;
-            appearance:none;  }
-	.infor .right-pos{color:#353535 ; position:absolute;background:none; right:15px; z-index:-1; top:0}
+	.infor select{ border:0; height:30px; line-height:30px; width:100%;border: 0px;border: none;outline:none; background:none;-moz-appearance: none;-webkit-appearance:none;color:#353535 ;
+            appearance:none; text-align:right ; padding-right:15px;}
+	.infor .right-pos{color:#888 ; position:absolute;background:none;  z-index:-1; top:0}
+	.infor .right-img{position:absolute;background:none;  z-index:-1; top:15px; right:15px;}
 	.infor img{ width:8px; margin-left:8px;}
 	.infor span{ color:#353535}
 	.infor a{ color:#888; display:block; font-size:14px; text-decoration:none;  }
