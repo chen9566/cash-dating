@@ -88,7 +88,8 @@ public class PayController {
     @RequestMapping(method = RequestMethod.POST, value = "/to")
     public String submitPayTo(BigDecimal amount, String comment, String openid, long id, HttpServletRequest request
             , Model model) throws IOException, SignatureException {
-        PayToUserOrder order = orderService.newPayToOrder(openid, request, userService.by(id), amount, comment);
+        // 这里的comment 可能会是微信的昵称什么的 会导致支付报错;这里暂时先去掉
+        PayToUserOrder order = orderService.newPayToOrder(openid, request, userService.by(id), amount, null);
 //        return showPayCode(model, order);
         return "redirect:/order/" + order.getId();
     }
