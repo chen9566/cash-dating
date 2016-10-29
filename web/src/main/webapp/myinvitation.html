@@ -33,36 +33,36 @@
 <div class="yjlist">
     <p class="kong" th:if="${flows.isEmpty()}"><img src="images/kong-pic.png">暂无数据</p>
     <ul class="bg" th:if="${!flows.isEmpty()}">
-        <li class="w4">时间</li>
-        <li class="w4">用户/项目</li>
-        <li class="w1">金额</li>
-        <li class="w2">佣金</li>
+        <li class="w7">时间</li>
+        <li class="w5">用户/项目</li>
+        <li class="w8">金额</li>
+        <li class="w9">佣金</li>
     </ul>
     <ul th:each="flow:${flows}">
-        <li class="w4" th:text="${{flow.startTime}}">2016 12-01</li>
-        <li class="w4" th:text="${flow.flowName}">159****4325</li>
-        <li class="w1" th:text="${#numbers.formatDecimal(flow.originalAmount,1,'COMMA',2,'POINT')}">22000</li>
-        <li class="w2" th:text="${flow.flowType.toFlag()}+${#numbers.formatDecimal(flow.amount,1,'COMMA',2,'POINT')}">
+        <li class="w7" th:text="${{flow.startTime}}">16-12-01 上午10:00</li>
+        <li class="w5" th:text="${flow.flowName}">合伙人佣金</li>
+        <li class="w8" th:text="${#numbers.formatDecimal(flow.originalAmount,1,'COMMA',2,'POINT')}">22000</li>
+        <li class="w9" th:text="${flow.flowType.toFlag()}+${#numbers.formatDecimal(flow.amount,1,'COMMA',2,'POINT')}">
             +452
         </li>
     </ul>
     <ul th:remove="all">
-        <li class="w4">2016 12-01</li>
-        <li class="w4">159****4325</li>
-        <li class="w1">22000</li>
-        <li class="w2">+45</li>
+        <li class="w7">16-12-01 上午10:00</li>
+        <li class="w5">合伙人佣金</li>
+        <li class="w8">220</li>
+        <li class="w9">+45</li>
     </ul>
     <ul th:remove="all">
-        <li class="w4">2016 12-01</li>
-        <li class="w4">159****4325</li>
-        <li class="w1">22000</li>
-        <li class="w2">+45</li>
+        <li class="w7">16-12-01 上午10:00</li>
+        <li class="w5">合伙人佣金</li>
+        <li class="w8">22</li>
+        <li class="w9">+45</li>
     </ul>
     <ul th:remove="all">
-        <li class="w4">2016 12-01</li>
-        <li class="w4">159****4325</li>
-        <li class="w1">22000</li>
-        <li class="w2">+4544</li>
+        <li class="w7">16-12-01 上午10:00</li>
+        <li class="w5">合伙人佣金</li>
+        <li class="w8">2</li>
+        <li class="w9">+4544</li>
     </ul>
 </div>
 <p class="txgz"><a href="#">提现规则</a></p>
