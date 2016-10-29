@@ -17,7 +17,8 @@
 <body>
 <div class="my-n">
     <ul>
-        <li class="avatar"><a href="mydata.html" th:href="@{/myData}"><img src="images/51.png" th:src="${user.headImageUrl}"/></a></li>
+        <li class="avatar"><a href="mydata.html" th:href="@{/myData}"><img src="images/51.png"
+                                                                           th:src="${user.headImageUrl}"/></a></li>
         <li><a href="mydata.html" th:href="@{/myData}">
             <h1 th:text="${user.nickname}">昵称</h1>
             <span th:text="'在款爷用了'+${{total}}+'元'">在款爷赚了500元</span> </a></li>
@@ -27,27 +28,28 @@
 </div>
 <div class="mylist">
 
-	<ul>
-		<li class="bo-r">
-			<a href="wealth.html">
-			<p><img src="images/my-icon03.png" ></p>
-			<p class="txt">款爷理财</p>
-			</a>
-		</li>	
-		<li class="bo-r">
-			<a href="loanmain.html">
-			<p><img src="images/my-icon02.png" ></p>
-			<p class="txt">款爷借款</p>
-			</a>
-		</li>		
-		<li>
-		<a href="bancard.html">
-			<p><img src="images/my-icon01.png" ></p>
-			<p class="txt">款爷办卡</p>
-		</a>
-		</li>
-		
-	</ul>
+    <ul>
+        <li class="bo-r">
+            <a href="wealth.html">
+                <p><img src="images/my-icon03.png"></p>
+                <p class="txt">款爷理财</p>
+            </a>
+        </li>
+        <li class="bo-r">
+            <!--<a href="loanmain.html">-->
+            <a href="loan.html">
+                <p><img src="images/my-icon02.png"></p>
+                <p class="txt">款爷借款</p>
+            </a>
+        </li>
+        <li>
+            <a href="bancard.html">
+                <p><img src="images/my-icon01.png"></p>
+                <p class="txt">款爷办卡</p>
+            </a>
+        </li>
+
+    </ul>
 
 
 </div>

@@ -80,6 +80,9 @@ class MVCConfig extends WebMvcConfigurerAdapter {
         for (String path : STATIC_RESOURCE_PATHS) {
             registry.addResourceHandler("/" + path + "/**").addResourceLocations("/" + path + "/");
         }
+
+        registry.addResourceHandler("/loan.html").addResourceLocations("/");
+        registry.addResourceHandler("/personalok.html").addResourceLocations("/");
     }
 
     String[] staticResourceAntPatterns() {
