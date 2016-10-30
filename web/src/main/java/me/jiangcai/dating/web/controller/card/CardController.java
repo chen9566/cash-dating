@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Collections;
 
 /**
@@ -43,7 +44,11 @@ public class CardController {
     public String index(@AuthenticationPrincipal User user, Model model) {
         final User user1 = userService.byOpenId(user.getOpenId());
         model.addAttribute("user", user1);
-        model.addAttribute("cards", Collections.singletonList(cardService.recommend(user1)));
+        final Card recommend = cardService.recommend(user1);
+        if (recommend != null)
+            model.addAttribute("cards", Collections.singletonList(recommend));
+        else
+            model.addAttribute("cards", new ArrayList<>());
         return "bankcard.html";
     }
 
