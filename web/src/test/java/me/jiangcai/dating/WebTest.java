@@ -15,6 +15,7 @@ import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.QRCodeService;
+import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.web.WebConfig;
 import me.jiangcai.lib.test.page.AbstractPage;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -63,6 +64,8 @@ public abstract class WebTest extends ServiceBaseTest {
     private MockPay pay;
     @Autowired
     private ApplicationContext applicationContext;
+    @Autowired
+    private SystemService systemService;
 
     private static <T> Iterable<T> IterableIterator(Iterator<T> iterator) {
         return () -> iterator;
@@ -325,6 +328,10 @@ public abstract class WebTest extends ServiceBaseTest {
             codePage.printThisPage();
             throw exception;
         }
+    }
+
+    public SystemService getSystemService() {
+        return systemService;
     }
 
     @ComponentScan({"me.jiangcai.dating.test"})

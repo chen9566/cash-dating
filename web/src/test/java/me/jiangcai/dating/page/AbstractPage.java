@@ -3,6 +3,7 @@ package me.jiangcai.dating.page;
 import com.gargoylesoftware.htmlunit.html.HtmlImage;
 import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.service.SystemService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -104,5 +105,9 @@ public abstract class AbstractPage extends me.jiangcai.lib.test.page.AbstractPag
                 return;
             }
         }
+    }
+
+    protected SystemService getSystemService() {
+        return ((WebTest) (getTestInstance())).getSystemService();
     }
 }

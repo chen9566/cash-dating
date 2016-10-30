@@ -18,6 +18,7 @@ public class MyDataPage extends AbstractPage {
     private WebElement nameSpan;
     private WebElement mobileSpan;
     private WebElement toPayButton;
+    private WebElement bookRateSpan;
 
     public MyDataPage(WebDriver webDriver) {
         super(webDriver);
@@ -33,12 +34,14 @@ public class MyDataPage extends AbstractPage {
         headImage = rights.get(0).findElements(By.tagName("img")).get(0);
         nameSpan = rights.get(1);
         mobileSpan = rights.get(2);
-        toPayButton = rights.get(3);// 有疑问
+        bookRateSpan = rights.get(3);
+        toPayButton = rights.get(4);// 有疑问
 
 
         assertThat(headImage.isDisplayed()).isTrue();
         assertThat(nameSpan.isDisplayed()).isTrue();
         assertThat(mobileSpan.isDisplayed()).isTrue();
+        assertThat(bookRateSpan.isDisplayed()).isTrue();
         assertThat(toPayButton.isDisplayed()).isTrue();
     }
 
@@ -61,5 +64,8 @@ public class MyDataPage extends AbstractPage {
                 .isEqualTo(user.getMobileNumber());
         assertThat(headImage.getAttribute("src"))
                 .isEqualTo(user.getHeadImageUrl());
+        assertThat(bookRateSpan.getText())
+                .isEqualTo(getSystemService().systemBookRate(user).movePointRight(2).toString() + "%");
     }
+
 }

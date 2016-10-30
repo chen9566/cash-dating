@@ -35,7 +35,7 @@ import java.util.Locale;
  *
  * @author CJ
  */
-@Service
+@Service("systemService")
 public class SystemServiceImpl implements SystemService {
 
     private static final String ChannelRate = "dating.rate.channel";

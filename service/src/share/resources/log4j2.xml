@@ -7,7 +7,7 @@
     </appenders>
     <loggers>
         <logger name="org.springframework.web" level="debug"/>
-        <logger name="org.apache.http" level="debug"/>
+        <!--<logger name="org.apache.http" level="debug"/>-->
         <!--<logger name="org.springframework.security" level="debug"/>-->
         <!--<logger name="org.springframework.orm.jpa" level="debug"/>-->
         <logger name="me.jiangcai.dating" level="debug"/>
