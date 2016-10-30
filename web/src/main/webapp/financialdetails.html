@@ -34,7 +34,10 @@
                 <p class="f13">已扣手续费<span class="pull-right f15"
                                           th:text="${'¥-'+#numbers.formatDecimal(flow.charge,1,'COMMA',2,'POINT')}">¥-50.00</span>
                 </p>
-                <p class="f12"><span>9月12日 11:45:45</span><span class="f12 pull-right">收款成功</span></p>
+                <p class="f12">
+                    <span th:text="${{flow.withdrawalOrder.startTime}}">9月12日 11:45:45</span>
+                    <span class="f12 pull-right">收款成功</span>
+                </p>
             </li>
             <li th:remove="all">
                 <p>二维码收款<span class="pull-right f15">¥1950.00</span></p>

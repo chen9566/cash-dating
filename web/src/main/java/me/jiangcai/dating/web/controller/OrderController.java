@@ -75,7 +75,7 @@ public class OrderController {
             return "redirect:/card?nextAction=/financialList";
         }
         model.addAttribute("orders", orderService.finishedOrderFlowsMonthly(user.getOpenId()));
-        model.addAttribute("total", statisticService.withdrawal(user.getOpenId()));
+//        model.addAttribute("total", statisticService.withdrawal(user.getOpenId()));
 
         return "financialdetails.html";
     }
