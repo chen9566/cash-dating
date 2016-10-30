@@ -51,7 +51,6 @@ public class HomeControllerTest extends LoginWebTest {
 
 //        page.clickMenu("我要收款");
 //        initPage(StartOrderPage.class);
-        // TODO 替换为流水测试
         driver.get("http://localhost/my");
         page.reloadPageInfo();
 

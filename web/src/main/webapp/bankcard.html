@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.web.thymeleaf.CashStrings"*/-->
 <!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
+<!--/*@thymesVar id="cards" type="java.lang.Iterable<me.jiangcai.dating.entity.Card>"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
@@ -14,7 +15,7 @@
     <script src="dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="bankcard" th:each="card:${user.getCards()}" th:if="${!card.isDisabled()}">
+<div class="bankcard" th:each="card:${cards}">
     <div class="card">
         <dl class="blue" th:style="${'background:'+card.bank.background}"
             style="background: linear-gradient(to right, #588CC6 , #4669B4);">

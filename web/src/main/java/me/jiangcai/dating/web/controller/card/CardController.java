@@ -1,11 +1,13 @@
 package me.jiangcai.dating.web.controller.card;
 
 import me.jiangcai.dating.entity.Card;
+import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.CardService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.wx.OpenId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
 
 /**
  * 银行卡相关控制器
@@ -35,6 +38,14 @@ public class CardController {
     private CardService cardService;
     @Autowired
     private BankService bankService;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/myBank")
+    public String index(@AuthenticationPrincipal User user, Model model) {
+        final User user1 = userService.byOpenId(user.getOpenId());
+        model.addAttribute("user", user1);
+        model.addAttribute("cards", Collections.singletonList(cardService.recommend(user1)));
+        return "bankcard.html";
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/card")
     public String start(@RequestHeader("Referer") String redirectUrl, String nextAction, HttpSession session, Model model) {
