@@ -1,6 +1,7 @@
 package me.jiangcai.dating.web.controller;
 
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.service.CardService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,14 @@ public class HomeController {
     private UserService userService;
     @Autowired
     private SystemService systemService;
+    @Autowired
+    private CardService cardService;
 
     @RequestMapping(method = RequestMethod.GET, value = {"/start"})
     public String index(@AuthenticationPrincipal User user, Model model) {
         user = userService.byOpenId(user.getOpenId());
         if (user.getCards() != null && !user.getCards().isEmpty()) {
-            model.addAttribute("card", user.getCards().get(0));
+            model.addAttribute("card", cardService.recommend(user));
             model.addAttribute("cards", user.getCards());
         } else {
             model.addAttribute("card", null);

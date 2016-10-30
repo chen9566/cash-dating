@@ -14,7 +14,7 @@
     <script src="dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="bankcard" th:each="card:${user.getCards()}">
+<div class="bankcard" th:each="card:${user.getCards()}" th:if="${!card.isDisabled()}">
     <div class="card">
         <dl class="blue" th:style="${'background:'+card.bank.background}"
             style="background: linear-gradient(to right, #588CC6 , #4669B4);">
