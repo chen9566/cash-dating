@@ -944,7 +944,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.form-reg-n ul{ background:#fff; padding-left:15px; border-bottom:1px solid #dfdfdf; border-top:1px solid #dfdfdf}
 	.form-reg-n li{ border-bottom:1px solid #dfdfdf;line-height:44px; overflow:hidden; height:44px;}
 	.form-reg-n li i img{ width:22px; height:22px; vertical-align:center; margin-top:-2px; margin-right:5px;}
-	.form-reg-n li input{ font-size:14px; background:none; height:30px; line-height:30px; margin:5px 0 ;border:0; width:80% }
+	.form-reg-n li input{ font-size:14px; background:none; height:30px; line-height:30px; margin:5px 0 ;border:0; width:70% }
 	.form-reg-n li.noline{border-bottom:0;}
 	.form-reg-n .yamput{}
 		.form-reg-n .yamput input{ width:50%}
