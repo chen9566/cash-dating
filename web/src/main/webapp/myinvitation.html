@@ -22,7 +22,7 @@
         <img src="images/48.png" th:src="${user.headImageUrl}"/><span th:text="${user.nickname}">目黑瞳</span>
         <span class="pull-right r" th:if="${user.agentInfo==null}">成为超级合伙人<img
                 src="images/blackrightw-r.png"></span></a></p>
-    <p class="t">在款爷共赚</p>
+    <p class="t">可提金额</p>
     <p class="num"><span th:text="${#numbers.formatDecimal(balance,1,'COMMA',2,'POINT')}"
                          th:name="balance">1000.00</span><span
             class="num-s">元</span><span class="tx"><a href="#">提现</a></span></p>
