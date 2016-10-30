@@ -740,11 +740,11 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.code a{ text-decoration:none; font-size:12px; margin-bottom:30px}
 	.code h4{line-height:30px; font-weight:200}
 	.code .nun{ font-size:36px}
-	.code button{ margin-bottom:15px;}
+	.code button{ margin:0 15px 15px 15px}
 	.code .agent{ border:1px solid #F65150; color:#F65150}
 	.code .pbanner{ margin-bottom:10px;}
 		.code .pbanner img{ width:100%;}
-	.code .ewmbg{ background:#fff; padding:20px 0 0 0; color:#888; font-size:15px;}
+	.code .ewmbg{ background:#fff; padding:20px 0 20px 0; color:#888; font-size:15px;}
 		.code .ewmbg img{ width:60%; height:60%; }
 	.code .mb-b{ margin-bottom:30px}
 		
