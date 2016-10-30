@@ -3,6 +3,7 @@ package me.jiangcai.dating.web.controller;
 import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.page.CodePage;
 import me.jiangcai.dating.page.MyInvitationPage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.service.AgentService;
@@ -66,7 +67,10 @@ public class RelationTest extends WebTest {
         MyPage page = PageFactory.initElements(oldDriver, MyPage.class);
         page.validatePage();
         page.clickMenu("合伙赚钱");
-        MyInvitationPage myInvitationPage = PageFactory.initElements(oldDriver, MyInvitationPage.class);
+        CodePage codePage = PageFactory.initElements(oldDriver, CodePage.class);
+        codePage.setTestInstance(this);
+        codePage.validatePage();
+        MyInvitationPage myInvitationPage = codePage.toMyInvitationPage();
         myInvitationPage.validatePage();
         myInvitationPage.assertTeam();
 
@@ -77,7 +81,8 @@ public class RelationTest extends WebTest {
         driver.get("http://localhost/my");
         MyPage page = initPage(MyPage.class);
         page.clickMenu("合伙赚钱");
-        MyInvitationPage invitationPage = initPage(MyInvitationPage.class);
+        CodePage codePage = initPage(CodePage.class);
+        MyInvitationPage invitationPage = codePage.toMyInvitationPage();
         invitationPage.assertNoTeam();
     }
 }

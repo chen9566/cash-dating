@@ -260,12 +260,13 @@ public class MyInvitationPage extends AbstractPage {
         }
 
         private boolean equalsTo(BalanceFlow balanceFlow) {
-            String dataAmount = balanceFlow.getFlowType().toFlag() + Common.CurrencyFormat(balanceFlow.getAmount());
+//            String dataAmount = balanceFlow.getFlowType().toFlag() + Common.CurrencyFormat(balanceFlow.getAmount());
+            String dataAmount = "返佣" + Common.CurrencyFormat(balanceFlow.getAmount()) + "元";
             if (!amount.equals(dataAmount))
                 return false;
 //            if (!comment.equals(balanceFlow.getComment()))
 //                return false;
-            if (!name.equals(balanceFlow.getFlowName()))
+            if (!name.equals(balanceFlow.getOwner().getNickname()))
                 return false;
             // time 就算了
             return true;

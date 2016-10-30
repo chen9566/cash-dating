@@ -38,7 +38,8 @@ public class InviteControllerTest extends LoginWebTest {
 
 
         page.clickMenu("合伙赚钱");
-        invite(initPage(MyInvitationPage.class));
+        CodePage codePage1 = initPage(CodePage.class);
+        invite(codePage1.toMyInvitationPage());
         driver.get("http://localhost/my");
         page.reloadPageInfo();
 
