@@ -738,14 +738,14 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 /*我的邀请码*/
 .code{ text-align:center; }
 	.code a{ text-decoration:none; font-size:12px; margin-bottom:30px}
-	.code h4{ line-height:60px; font-weight:200}
+	.code h4{line-height:30px; font-weight:200}
 	.code .nun{ font-size:36px}
 	.code button{ margin-bottom:15px;}
 	.code .agent{ border:1px solid #F65150; color:#F65150}
 	.code .pbanner{ margin-bottom:10px;}
 		.code .pbanner img{ width:100%;}
-	.code .ewmbg{ background:#fff; padding:20px; color:#888; font-size:15px;}
-		.code .ewmbg img{ width:60%; height:60%; margin:10px 0}
+	.code .ewmbg{ background:#fff; padding:20px 0 0 0; color:#888; font-size:15px;}
+		.code .ewmbg img{ width:60%; height:60%; }
 	.code .mb-b{ margin-bottom:30px}
 		
 /*我的收款码*/
@@ -967,9 +967,10 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .ma-b{ margin-bottom:65px}
 .share{ position:absolute; top:0; left:0;}
 	.share img{ width:100%;}
-.yjmx{ font-size:13px; color:#888; margin:15px 15px 0 15px;}
+.yjmx{ font-size:13px; color:#888; height:36px; margin:20px 15px 0 15px;}
 	.yjmx a{ width:65px; margin-top:-3px; text-align:center; line-height:22px; background:#fcfcfc; text-decoration:none; color:#353535; height:25px; border:1px solid #e0e0e0; font-size:12px; border-radius:4px; display:block }
-.yjlist{ margin-top:15px;}
+.yjmx .yj{ float:left; margin-right:15px}
+.yjlist{}
 	.yjlist ul{ border-top:1px solid #dfdfdf;background:#fff;overflow:hidden;padding:0 15px;  line-height:40px;  }
 	.yjlist li{ float:left;line-height:40px; width:25% ; font-size:12px; color:#353535}
 
@@ -981,7 +982,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.yjlist li.w4{ width:35%}	
 	.yjlist li.w5{ width:30%}
 	.yjlist li.w6{ width:25%}
-	.yjlist li.w7{ width:40%}
+	.yjlist li.w7{ width:50%}
 	.yjlist li.w8{ width:20%;}
 	.yjlist li.w9{ width:10%;}
 	.yjlist .bg{ background:#F8F8F8;}
@@ -989,6 +990,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.yjlist li .e1 {width:100%; background:none; border:none; }  
 	.yjlist .kong{ background:#fff; text-align:center; font-size:14px; padding:25px 0 40px 0; height:100%; color:#888; line-height:50px;} 
 		.yjlist .kong img{ display:block; width:200px; margin:0 auto}
+	.yjlist .mb-b{ margin-bottom:60px}
 .logout{ margin:5px 15px; text-align:center}
 	.logout .l1{ line-height:27px; font-size:17px; color:#02BB00;  }
 	.logout .l1 img{ width:27px; height:27px; margin-right:15px; margin-top:-5px;}
@@ -1191,6 +1193,9 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.finlist .f13{font-size:13px; color:#888; }
 	.finlist p{ margin:0}
 	.finlist .f-right{ text-align:right; }
+	.finlist .kong{ background:#fff; text-align:center; font-size:14px; padding:25px 0 40px 0; height:100%; color:#888; line-height:50px; border-bottom:1px solid #dfdfdf} 
+		.finlist .kong img{ display:block; width:200px; margin:0 auto}
+.mb60{ margin-bottom:70px; overflow:hidden}
 .products{ margin-top:15px; background:#fff; padding-left:15px;border-bottom:1px solid #dfdfdf;border-top:1px solid #dfdfdf }
 	.products ul{ overflow:hidden; }
 	.products li{ font-weight:300; float:left; height:96px; padding:}
