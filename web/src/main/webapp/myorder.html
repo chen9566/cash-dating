@@ -26,7 +26,7 @@
                 <span class="f17"
                       th:text="${#numbers.formatDecimal(order.order.amount,1,'COMMA',2,'POINT')}">4000.00</span>
                 <span class="small-e" th:class="${order.cashOrder?'small-e':'small-s'}"
-                      th:text="${order.cashOrder?'二维码收款':'收银台收款'}">二维码收款</span>
+                      th:text="${order.cashOrder?'收银台收款':'二维码收款'}">二维码收款</span>
                 <span class="time" th:text="${{order.order.startTime}}">2016-12-19 11:45:45</span>
             </p>
         </li>
