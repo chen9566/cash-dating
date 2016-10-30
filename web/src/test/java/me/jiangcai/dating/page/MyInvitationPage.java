@@ -91,17 +91,7 @@ public class MyInvitationPage extends AbstractPage {
 //                .findAny()
 //                .ifPresent(element -> explainButton = element);
 
-        webFlows = webDriver.findElement(By.id("yj")).findElements(By.tagName("li")).stream()
-                .filter(WebElement::isDisplayed)
-                .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
-                .map(this::toFlow)
-                .collect(Collectors.toList());
 
-        withdrawFlows = webDriver.findElement(By.id("tx")).findElements(By.tagName("ul")).stream()
-                .filter(WebElement::isDisplayed)
-                .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
-                .map(this::toWithdrawFlow)
-                .collect(Collectors.toList());
 
 
         assertThat(balanceText)
@@ -156,6 +146,13 @@ public class MyInvitationPage extends AbstractPage {
         assertThat(numbersText.getText())
                 .startsWith("" + statisticService.guides(user.getOpenId()));
 
+        webDriver.findElement(By.cssSelector(".yj[name=yj]")).click();
+        webFlows = webDriver.findElement(By.id("yj")).findElements(By.tagName("li")).stream()
+                .filter(WebElement::isDisplayed)
+                .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
+                .map(this::toFlow)
+                .collect(Collectors.toList());
+
         List<BalanceFlow> list = statisticService.commissionFlows(user.getOpenId());
         // 流水
         assertThat(webFlows)
@@ -165,6 +162,13 @@ public class MyInvitationPage extends AbstractPage {
         assertThat(webFlowArrayList.stream()
                 .filter(webFlow -> !webFlow.inList(list))
                 .count()).isEqualTo(0);
+
+        webDriver.findElement(By.cssSelector(".yj[name=tx]")).click();
+        withdrawFlows = webDriver.findElement(By.id("tx")).findElements(By.tagName("ul")).stream()
+                .filter(WebElement::isDisplayed)
+                .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
+                .map(this::toWithdrawFlow)
+                .collect(Collectors.toList());
 
         List<BalanceFlow> withdrawalList = statisticService.withdrawalFlows(user.getOpenId());
         // 流水

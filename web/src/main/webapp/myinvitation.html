@@ -4,6 +4,7 @@
 <!--/*@thymesVar id="balance" type="java.lang.Number"*/-->
 <!--/*@thymesVar id="numbers" type="java.lang.Integer"*/-->
 <!--/*@thymesVar id="flows" type="java.util.List<me.jiangcai.dating.model.BalanceFlow>"*/-->
+<!--/*@thymesVar id="withdrawalFlows" type="java.util.List<me.jiangcai.dating.model.BalanceFlow>"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
@@ -77,18 +78,18 @@
 <!--佣金明细  end!-->
 <!--提现明细!-->
 <div class="yjlist mb60" id="tx">
-    <p class="kong" th:if="${flows.isEmpty()}"><img src="images/kong-pic.png">暂无数据</p>
-    <ul class="bg">
+    <p class="kong" th:if="${withdrawalFlows.isEmpty()}"><img src="images/kong-pic.png">暂无数据</p>
+    <ul class="bg" th:if="${!withdrawalFlows.isEmpty()}">
         <li class="w7">时间</li>
         <li class="w5">提现金额</li>
         <li class="w8">状态</li>
     </ul>
-    <ul>
-        <li class="w7">16-12-01 上午10:00</li>
-        <li class="w5">2000</li>
-        <li class="w8">进行中</li>
+    <ul th:each="flow:${withdrawalFlows}">
+        <li class="w7" th:text="${{flow.startTime}}">16-12-01 上午10:00</li>
+        <li class="w5" th:text="${#numbers.formatDecimal(flow.amount,1,'COMMA',2,'POINT')}">2000</li>
+        <li class="w8" th:text="${flow.status}">进行中</li>
     </ul>
-    <ul>
+    <ul th:remove="all">
         <li class="w7">16-12-01 上午10:00</li>
         <li class="w5">2000</li>
         <li class="w8">进行中</li>
