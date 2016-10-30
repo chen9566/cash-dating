@@ -1,5 +1,6 @@
 package me.jiangcai.dating.model;
 
+import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.support.FlowType;
 
 import java.math.BigDecimal;
@@ -35,4 +36,14 @@ public interface BalanceFlow {
      * @return 干的事情的备注
      */
     String getComment();
+
+    /**
+     * @return 现在的状态
+     */
+    String getStatus();
+
+    /**
+     * @return 这个流水的核心发起者
+     */
+    User getOwner();
 }

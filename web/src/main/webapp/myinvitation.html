@@ -18,7 +18,7 @@
 </head>
 <body>
 <div class="myin">
-    <p class="m"><a href="agent.html" th:href="@{${user.agentInfo!=null?'#':'/explain'}}">
+    <p class="m"><a href="agent.html" th:href="@{${user.agentInfo!=null?'#':'/agent'}}">
         <img src="images/48.png" th:src="${user.headImageUrl}"/><span th:text="${user.nickname}">目黑瞳</span>
         <span class="pull-right r" th:if="${user.agentInfo==null}">成为超级合伙人<img
                 src="images/blackrightw-r.png"></span></a></p>
@@ -29,64 +29,74 @@
     <p class="t">成功邀请人数</p>
     <p class="num"><span th:text="${{numbers}}" th:name="numbers">200</span><span class="num-s">人</span></p>
 </div>
-<p class="yjmx"><a href="#" class="yj">佣金明细</a><a href="#" class="yj">提现明细</a><span class="pull-right"><a href="#" class="dcbg">导出表格</a></span></p>
+<p class="yjmx">
+    <a href="#" class="yj" name="yj">佣金明细</a>
+    <a href="#" class="yj" name="tx">提现明细</a>
+    <span class="pull-right"><a href="#" class="dcbg">导出表格</a></span>
+</p>
 <!--佣金明细!-->
-<div class="finlist mb60">
-		<p class="kong" th:if="${flows.isEmpty()}"><img src="images/kong-pic.png">暂无数据</p>
-        <ul>
-            <li>
-                <p><span >昵称</span>
-                    <span class="pull-right f15">返拥50元</span>
-                </p>
-                <p class="f13">13388616917</p>
-                <p class="f12"><span>9月12日 11:45:45</span><span class="f12 pull-right">收款：5000元</span></p>
-            </li>
-            <li th:remove="all">
-                <p><span >昵称</span>
-                    <span class="pull-right f15">返拥50元</span>
-                </p>
-                <p class="f13">13388616917</p>
-                <p class="f12"><span>9月12日 11:45:45</span><span class="f12 pull-right">收款：5000元</span></p>
-            </li>
-            <li th:remove="all">
-               <p><span >昵称</span>
-                    <span class="pull-right f15">返拥50元</span>
-                </p>
-                <p class="f13">13388616917</p>
-                <p class="f12"><span>9月12日 11:45:45</span><span class="f12 pull-right">收款：5000元</span></p>
-            </li>
-            <li th:remove="all">
-                <p><span >昵称</span>
-                    <span class="pull-right f15">返拥50元</span>
-                </p>
-                <p class="f13">13388616917</p>
-                <p class="f12"><span>9月12日 11:45:45</span><span class="f12 pull-right">收款：5000元</span></p>
-            </li>
-        </ul>
-    </div>
+<div class="finlist mb60" id="yj">
+    <p class="kong" th:if="${flows.isEmpty()}"><img src="images/kong-pic.png">暂无数据</p>
+    <ul th:if="${!flows.isEmpty()}">
+        <li th:each="flow:${flows}">
+            <p>
+                <span th:text="${flow.owner.nickname}">昵称</span>
+                <span class="pull-right f15"
+                      th:text="${'返佣'+#numbers.formatDecimal(flow.amount,1,'COMMA',2,'POINT')+'元'}">返拥50元</span>
+            </p>
+            <p class="f13" th:text="${flow.owner.mobileNumber}">13388616917</p>
+            <p class="f12">
+                <span th:text="${{flow.startTime}}">9月12日 11:45:45</span>
+                <span class="f12 pull-right"
+                      th:text="${'收款：'+#numbers.formatDecimal(flow.originalAmount,1,'COMMA',2,'POINT')+'元'}">收款：5000元</span>
+            </p>
+        </li>
+        <li th:remove="all">
+            <p><span>昵称</span>
+                <span class="pull-right f15">返拥50元</span>
+            </p>
+            <p class="f13">13388616917</p>
+            <p class="f12"><span>9月12日 11:45:45</span><span class="f12 pull-right">收款：5000元</span></p>
+        </li>
+        <li th:remove="all">
+            <p><span>昵称</span>
+                <span class="pull-right f15">返拥50元</span>
+            </p>
+            <p class="f13">13388616917</p>
+            <p class="f12"><span>9月12日 11:45:45</span><span class="f12 pull-right">收款：5000元</span></p>
+        </li>
+        <li th:remove="all">
+            <p><span>昵称</span>
+                <span class="pull-right f15">返拥50元</span>
+            </p>
+            <p class="f13">13388616917</p>
+            <p class="f12"><span>9月12日 11:45:45</span><span class="f12 pull-right">收款：5000元</span></p>
+        </li>
+    </ul>
+</div>
 <!--佣金明细  end!-->
 <!--提现明细!-->
-<div class="yjlist mb60">
+<div class="yjlist mb60" id="tx">
     <p class="kong" th:if="${flows.isEmpty()}"><img src="images/kong-pic.png">暂无数据</p>
     <ul class="bg">
         <li class="w7">时间</li>
         <li class="w5">提现金额</li>
-		<li class="w8">状态</li>
+        <li class="w8">状态</li>
     </ul>
-	 <ul >
+    <ul>
         <li class="w7">16-12-01 上午10:00</li>
-        <li class="w5" >2000</li>
-        <li class="w8" >进行中</li>
+        <li class="w5">2000</li>
+        <li class="w8">进行中</li>
     </ul>
-	 <ul >
+    <ul>
         <li class="w7">16-12-01 上午10:00</li>
-        <li class="w5" >2000</li>
-        <li class="w8" >进行中</li>
+        <li class="w5">2000</li>
+        <li class="w8">进行中</li>
     </ul>
 </div>
 <!--提现明细 end!-->
 <div class="yjbl" th:if="${user.agentInfo!=null}"><input name="" type="button" value="调整手续费" class="clickHref"
-href="myteam.html" th:href="@{/myTeam}">
+                                                         href="myteam.html" th:href="@{/myTeam}">
 </div>
 <!-- Modal -->
 <div class="modal fade" id="cardsContainer" tabindex="-1" role="dialog"
@@ -106,6 +116,18 @@ href="myteam.html" th:href="@{/myTeam}">
     </div>
 </div>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
-<script src="js/order.js"></script>
+<script>
+    $(function () {
+        var yj = $('#yj');
+        var tx = $('#tx');
+        tx.hide();
+
+        $('.yj').click(function () {
+            yj.hide();
+            tx.hide();
+            $('#' + $(this).attr('name')).show();
+        })
+    })
+</script>
 </body>
 </html>

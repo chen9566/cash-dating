@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * @author CJ
  */
@@ -18,6 +20,9 @@ public class ExplainPage extends AbstractPage {
 
     @Override
     public void validatePage() {
+        assertThat(webDriver.getTitle())
+                .isEqualTo("合伙人说明");
+
         webDriver.findElements(By.tagName("button")).stream()
                 .filter(WebElement::isDisplayed)
                 .filter(element -> element.getText().contains("邀请"))

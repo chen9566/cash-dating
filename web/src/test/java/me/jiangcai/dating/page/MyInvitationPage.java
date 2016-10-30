@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author CJ
  */
 public class MyInvitationPage extends AbstractPage {
-    private WebElement explainElement;
+    private WebElement agentElement;
     @FindBy(css = "span[name=balance]")
     private WebElement balanceText;
     //    private WebElement codeButton;
@@ -36,6 +36,7 @@ public class MyInvitationPage extends AbstractPage {
     private List<WebFlow> webFlows;
     @FindBy(css = "span[name=numbers]")
     private WebElement numbersText;
+    private List<WithdrawFlow> withdrawFlows;
 
     public MyInvitationPage(WebDriver webDriver) {
         super(webDriver);
@@ -48,7 +49,7 @@ public class MyInvitationPage extends AbstractPage {
         assertThat(webDriver.getTitle())
                 .isEqualTo("我的邀请");
 
-        explainElement = webDriver.findElements(By.tagName("span")).stream()
+        agentElement = webDriver.findElements(By.tagName("span")).stream()
 //                .filter(WebElement::isDisplayed)
                 .filter(webElement -> webElement.getText().contains("成为超级合伙人"))
                 .findFirst().orElse(null);
@@ -90,11 +91,18 @@ public class MyInvitationPage extends AbstractPage {
 //                .findAny()
 //                .ifPresent(element -> explainButton = element);
 
-        webFlows = webDriver.findElement(By.className("yjlist")).findElements(By.tagName("ul")).stream()
+        webFlows = webDriver.findElement(By.id("yj")).findElements(By.tagName("li")).stream()
                 .filter(WebElement::isDisplayed)
                 .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
                 .map(this::toFlow)
                 .collect(Collectors.toList());
+
+        withdrawFlows = webDriver.findElement(By.id("tx")).findElements(By.tagName("ul")).stream()
+                .filter(WebElement::isDisplayed)
+                .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
+                .map(this::toWithdrawFlow)
+                .collect(Collectors.toList());
+
 
         assertThat(balanceText)
                 .isNotNull();
@@ -108,13 +116,22 @@ public class MyInvitationPage extends AbstractPage {
 //                .isNotEmpty();
     }
 
-    private WebFlow toFlow(WebElement element) {
+    private WithdrawFlow toWithdrawFlow(WebElement element) {
         List<WebElement> texts = element.findElements(By.tagName("li"));
-        return new WebFlow(
-                texts.get(3).getText()
-                , null
+        return new WithdrawFlow(
+                texts.get(0).getText()
                 , texts.get(1).getText()
+                , texts.get(2).getText()
+        );
+    }
+
+    private WebFlow toFlow(WebElement element) {
+        List<WebElement> texts = element.findElements(By.tagName("span"));
+        return new WebFlow(
+                element.findElement(By.className("f15")).getText()
+                , null
                 , texts.get(0).getText()
+                , texts.get(2).getText()
         );
     }
 
@@ -127,9 +144,9 @@ public class MyInvitationPage extends AbstractPage {
     public void assertUser(User user, StatisticService statisticService) {
 
         if (user.getAgentInfo() != null)
-            assertThat(explainElement).isNull();
+            assertThat(agentElement).isNull();
         else
-            assertThat(explainElement.isDisplayed()).isTrue();
+            assertThat(agentElement.isDisplayed()).isTrue();
 
 //        printThisPage();
         String text = NumberUtils.format(statisticService.balance(user.getOpenId()), 1, NumberPointType.COMMA, 2, NumberPointType.POINT, Locale.CHINA);
@@ -139,7 +156,7 @@ public class MyInvitationPage extends AbstractPage {
         assertThat(numbersText.getText())
                 .startsWith("" + statisticService.guides(user.getOpenId()));
 
-        List<BalanceFlow> list = statisticService.balanceFlows(user.getOpenId());
+        List<BalanceFlow> list = statisticService.commissionFlows(user.getOpenId());
         // 流水
         assertThat(webFlows)
                 .hasSize(list.size());
@@ -148,15 +165,27 @@ public class MyInvitationPage extends AbstractPage {
         assertThat(webFlowArrayList.stream()
                 .filter(webFlow -> !webFlow.inList(list))
                 .count()).isEqualTo(0);
+
+        List<BalanceFlow> withdrawalList = statisticService.withdrawalFlows(user.getOpenId());
+        // 流水
+        assertThat(withdrawFlows)
+                .hasSize(withdrawalList.size());
+
+        ArrayList<WithdrawFlow> withdrawFlows = new ArrayList<>(this.withdrawFlows);
+        assertThat(withdrawFlows.stream()
+                .filter(webFlow -> !webFlow.inList(withdrawalList))
+                .count()).isEqualTo(0);
+
+
     }
 
 
     public void toRequestAgentPage() {
 //        codeButton.click();
-        explainElement.click();
-        ExplainPage explainPage = initPage(ExplainPage.class);
-
-        explainPage.requestAgent();
+        agentElement.click();
+//        ExplainPage explainPage = initPage(ExplainPage.class);
+//
+//        explainPage.requestAgent();
     }
 
     public void assertNoTeam() {
@@ -177,6 +206,36 @@ public class MyInvitationPage extends AbstractPage {
 
     public void clickMyTeam() {
         teamButton.click();
+    }
+
+    /**
+     * 提现明细
+     */
+    @Data
+    @AllArgsConstructor
+    private class WithdrawFlow {
+        private String time;
+        private String amount;
+        private String status;
+
+        boolean inList(List<BalanceFlow> list) {
+            return list.stream()
+                    .filter(this::equalsTo)
+                    .findAny()
+                    .isPresent();
+        }
+
+        private boolean equalsTo(BalanceFlow flow) {
+            // 金额 状态
+            if (!amount.equals(Common.CurrencyFormat(flow.getAmount())))
+                return false;
+//            if (!comment.equals(balanceFlow.getComment()))
+//                return false;
+            if (!status.equals(flow.getStatus()))
+                return false;
+            // time 就算了
+            return true;
+        }
     }
 
     @Data

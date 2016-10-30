@@ -10,7 +10,7 @@ import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.page.BindingCardPage;
 import me.jiangcai.dating.page.BindingMobilePage;
-import me.jiangcai.dating.page.MyInviteCodePage;
+import me.jiangcai.dating.page.CodePage;
 import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.OrderService;
@@ -303,7 +303,7 @@ public abstract class WebTest extends ServiceBaseTest {
 //        myPage.clickMenu("我的邀请");
 //        MyInvitationPage invitePage = initPage(MyInvitationPage.class);
 //        invitePage.requestAgent();
-        MyInviteCodePage codePage = initPage(MyInviteCodePage.class);
+        CodePage codePage = initPage(CodePage.class);
 
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(new Predicate<WebDriver>() {

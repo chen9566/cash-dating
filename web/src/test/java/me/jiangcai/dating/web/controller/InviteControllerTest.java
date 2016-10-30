@@ -2,9 +2,10 @@ package me.jiangcai.dating.web.controller;
 
 import me.jiangcai.dating.LoginWebTest;
 import me.jiangcai.dating.entity.AgentRequest;
+import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.page.AgentRequestPage;
+import me.jiangcai.dating.page.CodePage;
 import me.jiangcai.dating.page.MyInvitationPage;
-import me.jiangcai.dating.page.MyInviteCodePage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.service.AgentService;
 import me.jiangcai.dating.service.QRCodeService;
@@ -14,6 +15,7 @@ import org.openqa.selenium.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,19 +43,31 @@ public class InviteControllerTest extends LoginWebTest {
         page.reloadPageInfo();
 
         driver.get("http://localhost/myInviteCode");
-        MyInviteCodePage codePage = initPage(MyInviteCodePage.class);
+        CodePage codePage = initPage(CodePage.class);
 
         codePage.assertUser(currentUser(), qrCodeService);
 
-        // TODO 显然还有已经申请了代理商的呢?
         codePage.requestAgent();
+
+        // 这里已经申请过了 所有应该先删除
+        User user = currentUser();
+        agentService.waitingList().stream()
+                .filter(agentRequest -> agentRequest.getFrom().equals(user))
+                .forEach(
+                        agentRequest -> agentService.declineRequest(null, agentRequest.getId(), UUID.randomUUID().toString())
+                );
+
+        doRequestAgent();
     }
 
 
     private void invite(MyInvitationPage page) throws IOException {
         page.assertUser(currentUser(), statisticService);
-        // TODO 提现
         page.toRequestAgentPage();
+        doRequestAgent();
+    }
+
+    private void doRequestAgent() {
         AgentRequestPage requestPage = initPage(AgentRequestPage.class);
 
         final String mobile = randomMobile();

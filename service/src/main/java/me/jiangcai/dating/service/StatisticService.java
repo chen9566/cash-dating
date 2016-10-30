@@ -35,7 +35,6 @@ public interface StatisticService {
     BigDecimal balance(String openId);
 
     /**
-     *
      * @param openId 用户openId
      * @return 总提现金额
      */
@@ -57,6 +56,20 @@ public interface StatisticService {
      */
     @Transactional(readOnly = true)
     List<BalanceFlow> balanceFlows(String openId);
+
+    /**
+     * @param openId 用户openId
+     * @return 用户所有的佣金进账流水
+     */
+    @Transactional(readOnly = true)
+    List<BalanceFlow> commissionFlows(String openId);
+
+    /**
+     * @param openId 用户openId
+     * @return 用户所有的余额提现流水
+     */
+    @Transactional(readOnly = true)
+    List<BalanceFlow> withdrawalFlows(String openId);
 
     /**
      * @param openId 用户openId

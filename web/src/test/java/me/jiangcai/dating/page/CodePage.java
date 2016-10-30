@@ -15,18 +15,20 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * 合伙賺钱页面
  * @author CJ
  */
-public class MyInviteCodePage extends AbstractPage {
+public class CodePage extends AbstractPage {
 
-    private static final Log log = LogFactory.getLog(MyInviteCodePage.class);
+    private static final Log log = LogFactory.getLog(CodePage.class);
 
     private WebElement qrCode;
     private WebElement message;
     private WebElement inviteButton;
+    private WebElement explainButton;
 //    private WebElement requestButton;
 
-    public MyInviteCodePage(WebDriver webDriver) {
+    public CodePage(WebDriver webDriver) {
         super(webDriver);
 //        System.out.println(webDriver.getPageSource());
     }
@@ -34,7 +36,7 @@ public class MyInviteCodePage extends AbstractPage {
     @Override
     public void validatePage() {
         assertThat(webDriver.getTitle())
-                .isEqualTo("我的邀请");
+                .isEqualTo("合伙赚钱");
         webDriver.findElements(By.tagName("img")).stream()
                 .filter(WebElement::isDisplayed)
                 .filter(webElement -> "myShareQRCode".equals(webElement.getAttribute("name")))
@@ -51,6 +53,8 @@ public class MyInviteCodePage extends AbstractPage {
                 .filter(element -> element.getText().equals("我的邀请"))
                 .findFirst()
                 .ifPresent(element -> inviteButton = element);
+
+        explainButton = webDriver.findElement(By.className("pbanner")).findElement(By.tagName("a"));
 
 //        webDriver.findElements(By.tagName("button")).stream()
 //                .filter(WebElement::isDisplayed)
@@ -100,10 +104,17 @@ public class MyInviteCodePage extends AbstractPage {
     public void requestAgent() {
 //        requestButton.click();
 //        throw new RuntimeException("这里没法支持申请合伙人。");
-        inviteButton.click();
-        MyInvitationPage invitationPage = initPage(MyInvitationPage.class);
-        invitationPage.assertNoTeam();
+        explainButton.click();
+        ExplainPage explainPage = initPage(ExplainPage.class);
+        explainPage.requestAgent();
+//        MyInvitationPage invitationPage = toMyInvitationPage();
+//        invitationPage.assertNoTeam();
+//
+//        invitationPage.toRequestAgentPage();
+    }
 
-        invitationPage.toRequestAgentPage();
+    public MyInvitationPage toMyInvitationPage() {
+        inviteButton.click();
+        return initPage(MyInvitationPage.class);
     }
 }

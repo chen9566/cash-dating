@@ -30,31 +30,35 @@ public class StatisticServiceImpl implements StatisticService {
     /**
      * 合伙收益
      */
-    private static int TypeAgent = 1;
+    private static final int TypeAgent = 1;
     /**
      * 发展收益
      */
-    private static int TypeGuide = 1 << 1;
+    private static final int TypeGuide = 1 << 1;
     /**
      * 支付收益
      */
-    private static int TypePay = 1 << 2;
+    private static final int TypePay = 1 << 2;
     /**
      * 提现开支,用户提出的提现
      */
-    private static int TypeWithdraw = 1 << 4;
+    private static final int TypeWithdraw = 1 << 4;
     /**
      * 提现收入（指的是用户收到的提现）
      */
-    private static int TypeWithdrawIncoming = 1 << 5;
+    private static final int TypeWithdrawIncoming = 1 << 5;
     /**
      * 所有收入
      */
-    private static int TypeRevenue = TypeAgent | TypeGuide | TypePay;
+    private static final int TypeRevenue = TypeAgent | TypeGuide | TypePay;
+    /**
+     * 佣金收入
+     */
+    private static final int TypeCommission = TypeAgent | TypeGuide;
     /**
      * 所有流水
      */
-    private static int TypeAll = TypeRevenue | TypeWithdraw;
+    private static final int TypeAll = TypeRevenue | TypeWithdraw;
     @Autowired
     private OrderService orderService;
     @Autowired
@@ -166,6 +170,16 @@ public class StatisticServiceImpl implements StatisticService {
     @Override
     public List<BalanceFlow> balanceFlows(String openId) {
         return balanceFlows(openId, TypeAll);
+    }
+
+    @Override
+    public List<BalanceFlow> commissionFlows(String openId) {
+        return balanceFlows(openId, TypeCommission);
+    }
+
+    @Override
+    public List<BalanceFlow> withdrawalFlows(String openId) {
+        return balanceFlows(openId, TypeWithdraw);
     }
 
     @Override

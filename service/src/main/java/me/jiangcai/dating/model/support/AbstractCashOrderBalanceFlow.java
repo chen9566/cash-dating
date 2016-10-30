@@ -2,6 +2,7 @@ package me.jiangcai.dating.model.support;
 
 import lombok.Data;
 import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.BalanceFlow;
 
 import java.math.BigDecimal;
@@ -18,11 +19,14 @@ public abstract class AbstractCashOrderBalanceFlow implements BalanceFlow {
     private final String comment;
     private final LocalDateTime startTime;
     private final BigDecimal amount;
+    private final User owner;
+
     public AbstractCashOrderBalanceFlow(CashOrder cashOrder) {
         comment = cashOrder.getComment();
         startTime = cashOrder.getStartTime();
         amount = toAmount(cashOrder);
         name = cashOrder.getOwner().getRealName();
+        owner = cashOrder.getOwner();
         originalAmount = cashOrder.getAmount();
     }
 
@@ -35,5 +39,15 @@ public abstract class AbstractCashOrderBalanceFlow implements BalanceFlow {
     @Override
     public FlowType getFlowType() {
         return FlowType.revenue;
+    }
+
+    @Override
+    public String getStatus() {
+        return null;
+    }
+
+    @Override
+    public User getOwner() {
+        return owner;
     }
 }

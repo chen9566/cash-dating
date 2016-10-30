@@ -45,6 +45,19 @@ public class WithdrawOrder extends UserOrder implements BalanceFlow {
     }
 
     @Override
+    public String getStatus() {
+        switch (processStatus) {
+            case cancelled:
+                return "已取消";
+            case completed:
+                return "完成";
+            case requested:
+                return "进行中";
+        }
+        return null;
+    }
+
+    @Override
     public BigDecimal getWithdrawalAmount() {
         return getAmount();
     }
