@@ -92,6 +92,7 @@ public class CardControllerTest extends WebTest {
         // 选择卡
         orderPage.assertHaveCard();
         Card exceptedCard = cardService.recommend(user);
+        orderPage.assertCard(exceptedCard);
 
         // 1.5 不再有选卡的功能
         orderPage.pay(100, "", null);

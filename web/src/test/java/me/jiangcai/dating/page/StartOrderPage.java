@@ -1,5 +1,6 @@
 package me.jiangcai.dating.page;
 
+import me.jiangcai.dating.entity.Card;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.By;
@@ -128,5 +129,14 @@ public class StartOrderPage extends AbstractPage {
             host = webDriver.findElement(By.className("nocard"));
 
         host.findElement(By.tagName("a")).click();
+    }
+
+    /**
+     * @param card 确认显示了这张卡
+     */
+    public void assertCard(Card card) {
+        WebElement cardElement = webDriver.findElement(By.className("selectedCard"));
+//        System.out.println(cardElement.getText());
+        assertThat(cardElement.getText()).contains(card.getTailNumber());
     }
 }
