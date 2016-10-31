@@ -1,5 +1,7 @@
 package me.jiangcai.dating.service.impl;
 
+import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.model.trj.ApplyLoan;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.service.TourongjiaService;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,6 +105,22 @@ public class TourongjiaServiceImpl implements TourongjiaService {
         try (CloseableHttpClient client = requestClient()) {
             HttpGet get = new2Get("tenant/yt_listProduct.jhtml");
             return client.execute(get, new TRJJsonHandler<>(Loan[].class));
+        }
+    }
+
+    @Override
+    public String loan(Loan loan, User user, String name, BigDecimal amount, String province, String city
+            , String address) throws IOException {
+        try (CloseableHttpClient client = requestClient()) {
+            HttpGet get = new2Get("tenant/yt_applyLoan.jhtml", new BasicNameValuePair("name", name)
+                    , new BasicNameValuePair("mobile", user.getMobileNumber())
+                    , new BasicNameValuePair("productId", loan.getProductId())
+                    , new BasicNameValuePair("amount", amount.toString())
+                    , new BasicNameValuePair("province", province)
+                    , new BasicNameValuePair("city", city)
+                    , new BasicNameValuePair("address", address)
+            );
+            return client.execute(get, new TRJJsonHandler<>(ApplyLoan.class)).getApplyId();
         }
     }
 

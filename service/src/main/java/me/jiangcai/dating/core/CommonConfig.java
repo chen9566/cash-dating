@@ -12,10 +12,8 @@ import me.jiangcai.lib.upgrade.UpgradeSpringConfig;
 import me.jiangcai.lib.upgrade.VersionInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  * 核心服务 加载者
@@ -23,10 +21,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @author CJ
  */
 @Configuration
-@ComponentScan("me.jiangcai.loveport.service")
 @Import({BracketSpringConfig.class, ResourceSpringConfig.class, UpgradeSpringConfig.class, JdbcSpringConfig.class
         , NoticeSpringConfig.class, LoggingConfig.class})
-@EnableJpaRepositories(basePackages = {"me.jiangcai.loveport.repository"})
 class CommonConfig {
 
     @SuppressWarnings("SpringJavaAutowiringInspection")

@@ -1,8 +1,10 @@
 package me.jiangcai.dating.service;
 
+import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.Loan;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
  * 投融家相关服务
@@ -13,6 +15,26 @@ public interface TourongjiaService {
 
     Object recommend() throws IOException;
 
+    /**
+     * @return 借款产品列表
+     * @throws IOException
+     */
     Loan[] loanList() throws IOException;
+
+    /**
+     * 申请借款
+     *
+     * @param loan     产品
+     * @param user     用户
+     * @param name     真实姓名
+     * @param amount   金额
+     * @param province 省id
+     * @param city     市id
+     * @param address  地址
+     * @return 申请id
+     * @throws IOException
+     */
+    String loan(Loan loan, User user, String name, BigDecimal amount, String province, String city, String address)
+            throws IOException;
 
 }
