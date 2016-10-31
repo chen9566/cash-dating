@@ -37,4 +37,12 @@ public interface TourongjiaService {
     String loan(Loan loan, String term, User user, String name, BigDecimal amount, String province, String city, String address)
             throws IOException;
 
+    /**
+     * 申请状态查询
+     *
+     * @param id 申请id
+     * @return
+     * @throws IOException
+     */
+    String checkLoanStatus(String id) throws IOException;
 }

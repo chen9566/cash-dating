@@ -36,6 +36,11 @@ public class TourongjiaServiceTest extends ServiceBaseTest {
                 , new BigDecimal("5000"), "110000", "110103", "很复杂");
         assertThat(id)
                 .isNotEmpty();
+
+        String status = tourongjiaService.checkLoanStatus(id);
+        assertThat(status)
+                .isNotEmpty();
+        System.out.println(status);
     }
 
 }

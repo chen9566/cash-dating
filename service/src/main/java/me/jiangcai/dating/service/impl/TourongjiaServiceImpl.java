@@ -3,6 +3,7 @@ package me.jiangcai.dating.service.impl;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.ApplyLoan;
 import me.jiangcai.dating.model.trj.Loan;
+import me.jiangcai.dating.model.trj.LoanStatus;
 import me.jiangcai.dating.service.TourongjiaService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -123,6 +124,16 @@ public class TourongjiaServiceImpl implements TourongjiaService {
                     , new BasicNameValuePair("applyLoan.term", term)
             );
             return client.execute(get, new TRJJsonHandler<>(ApplyLoan[].class))[0].getApplyId();
+        }
+    }
+
+    @Override
+    public String checkLoanStatus(String id) throws IOException {
+        try (CloseableHttpClient client = requestClient()) {
+            HttpGet get = new2Get("tenant/yt_applyStatus.jhtml"
+                    , new BasicNameValuePair("applyId", id)
+            );
+            return client.execute(get, new TRJJsonHandler<>(LoanStatus[].class))[0].getStatus();
         }
     }
 
