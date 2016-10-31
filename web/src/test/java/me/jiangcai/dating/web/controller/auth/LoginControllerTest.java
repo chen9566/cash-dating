@@ -6,7 +6,6 @@ import me.jiangcai.dating.entity.AgentInfo;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.ManageStatus;
-import me.jiangcai.dating.page.LogoutPage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.PCLoginPage;
 import me.jiangcai.dating.repository.UserRepository;
@@ -137,8 +136,6 @@ public class LoginControllerTest extends WebTest {
         MyPage myPage = initPage(MyPage.class);
 
         myPage.logout();
-        LogoutPage page = initPage(LogoutPage.class);
-        System.out.println(page);
     }
 
     @Test

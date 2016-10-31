@@ -107,9 +107,8 @@ public class MyPage extends AbstractPage {
     /**
      * 登出
      */
-    public void logout() {
-        clickMyData();
-        initPage(MyDataPage.class).logout();
+    public LogoutPage logout() {
+        return clickMyData().logout();
 //        webDriver.findElements(By.tagName("input")).stream()
 //                .filter(WebElement::isDisplayed)
 //                .filter(webElement -> "注销".equals(webElement.getAttribute("value")))
@@ -118,8 +117,9 @@ public class MyPage extends AbstractPage {
 //                .click();
     }
 
-    public void clickMyData() {
+    public MyDataPage clickMyData() {
         headImage.click();
+        return initPage(MyDataPage.class);
     }
 
     public void clickPayToMe() {

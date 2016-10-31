@@ -43,6 +43,7 @@ public class SystemServiceImpl implements SystemService {
     private static final String BookRate = "dating.rate.book";
     private static final String AgentRate = "dating.rate.agent";
     private static final String GuideRate = "dating.rate.guide";
+    private static final String WeixinName = "dating.weixin.name";
 
     private static final Log log = LogFactory.getLog(SystemServiceImpl.class);
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS"
@@ -166,5 +167,10 @@ public class SystemServiceImpl implements SystemService {
         } else {
             updateSystemString(key, dateTimeFormatter.format(value));
         }
+    }
+
+    @Override
+    public String getPublicAccountName() {
+        return environment.getProperty(WeixinName, DefaultPublicAccountName);
     }
 }

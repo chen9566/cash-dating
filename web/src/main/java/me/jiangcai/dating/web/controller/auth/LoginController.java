@@ -6,6 +6,7 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.CashPublicAccount;
 import me.jiangcai.dating.service.QRCodeService;
+import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.web.controller.GlobalController;
 import me.jiangcai.wx.OpenId;
@@ -46,10 +47,13 @@ public class LoginController {
     private CashPublicAccount cashPublicAccount;
     @Autowired
     private Environment environment;
+    @Autowired
+    private SystemService systemService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/justLogout")
-    public String logout() {
+    public String logout(Model model) {
         // 已登出页面
+        model.addAttribute("name", systemService.getPublicAccountName());
         return "logout.html";
     }
 

@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
  */
 public interface SystemService {
 
+    String DefaultPublicAccountName = "默认微信公众号";
 
     /**
      * 自动调度
@@ -62,4 +63,9 @@ public interface SystemService {
 
     @Transactional
     void updateSystemString(String key, LocalDateTime value);
+
+    /**
+     * @return 公众号名称
+     */
+    String getPublicAccountName();
 }

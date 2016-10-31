@@ -48,13 +48,14 @@ public class MyDataPage extends AbstractPage {
     /**
      * 登出
      */
-    public void logout() {
+    public LogoutPage logout() {
         webDriver.findElements(By.tagName("input")).stream()
                 .filter(WebElement::isDisplayed)
                 .filter(webElement -> "注销".equals(webElement.getAttribute("value")))
                 .findFirst()
                 .orElseThrow(NullPointerException::new)
                 .click();
+        return initPage(LogoutPage.class);
     }
 
     public void assertUser(User user) {

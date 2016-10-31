@@ -59,8 +59,7 @@ public class HomeControllerTest extends LoginWebTest {
         driver.get("http://localhost/my");
         page.reloadPageInfo();
 
-        page.clickMyData();
-        myData(initPage(MyDataPage.class));
+        myData(page.clickMyData());
 
     }
 
