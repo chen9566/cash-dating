@@ -21,9 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.Arrays;
 import java.util.List;
@@ -108,13 +111,21 @@ public class AgentRequestController extends DataController<AgentRequest> {
 
     @Override
     protected DataFilter<AgentRequest> dataFilter() {
-        return (user, criteriaBuilder, root) -> {
-            final Path<Object> status = root.get("processStatus");
-            return criteriaBuilder.or(
-                    criteriaBuilder.isNull(status),
-                    criteriaBuilder.equal(status, AgentRequestStatus.requested)
-                    , criteriaBuilder.equal(status, AgentRequestStatus.forward)
-            );
+        return new DataFilter<AgentRequest>() {
+            @Override
+            public Predicate dataFilter(User user, CriteriaBuilder criteriaBuilder, Root<AgentRequest> root) {
+                final Path<Object> status = root.get("processStatus");
+                return criteriaBuilder.or(
+                        criteriaBuilder.isNull(status),
+                        criteriaBuilder.equal(status, AgentRequestStatus.requested)
+                        , criteriaBuilder.equal(status, AgentRequestStatus.forward)
+                );
+            }
+
+            @Override
+            public Order defaultOrder(CriteriaBuilder criteriaBuilder, Root<AgentRequest> root) {
+                return criteriaBuilder.desc(root.get("createdTime"));
+            }
         };
     }
 }

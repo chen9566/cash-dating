@@ -32,7 +32,7 @@ public interface DataField {
 
     Predicate searchPredicate(CriteriaBuilder criteriaBuilder, Root<?> root, String word);
 
-    Order order(Sort.Direction direction, Root<?> root);
+    Order order(CriteriaBuilder criteriaBuilder, Sort.Direction direction, Root<?> root);
 
     Object export(Object origin, MediaType type);
 

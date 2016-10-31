@@ -3,7 +3,6 @@ package me.jiangcai.dating.service;
 import me.jiangcai.dating.DataField;
 import me.jiangcai.dating.DataFilter;
 import me.jiangcai.dating.entity.User;
-import org.eclipse.persistence.internal.jpa.querydef.OrderImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,8 +84,10 @@ public interface DataService {
         }
 
         @Override
-        public Order order(Sort.Direction direction, Root<?> root) {
-            return new OrderImpl(selectExpression(root), direction == Sort.Direction.ASC);
+        public Order order(CriteriaBuilder criteriaBuilder, Sort.Direction direction, Root<?> root) {
+            if (direction == Sort.Direction.ASC)
+                return criteriaBuilder.asc(selectExpression(root));
+            return criteriaBuilder.desc(selectExpression(root));
         }
 
         @Override

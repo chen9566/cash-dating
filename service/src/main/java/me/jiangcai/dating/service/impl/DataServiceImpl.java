@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.HashMap;
@@ -93,12 +94,22 @@ public class DataServiceImpl implements DataService {
         countQuery = where(user, search, criteriaBuilder, countQuery, countRoot, dataFields, filter);
 
         // sort order
-        if (!StringUtils.isEmpty(sort))
-            query = query.orderBy(dataFields.stream()
+        Order defaultOrder = filter.defaultOrder(criteriaBuilder, root);
+        if (!StringUtils.isEmpty(sort)) {
+            final Order order1 = dataFields.stream()
                     .filter(dataField -> dataField.name().equals(sort))
                     .findFirst()
                     .orElseThrow(IllegalStateException::new)
-                    .order(order, root));
+                    .order(criteriaBuilder, order, root);
+            if (defaultOrder != null)
+                query = query.orderBy(order1, defaultOrder);
+            else
+                query = query.orderBy(order1);
+        } else {
+            if (defaultOrder != null)
+                query = query.orderBy(defaultOrder);
+        }
+
 
         // limit
         long total = entityManager.createQuery(countQuery).getSingleResult();
