@@ -32,7 +32,8 @@ public class TourongjiaServiceTest extends ServiceBaseTest {
 
         Loan loan = Stream.of(loanList).findAny().orElse(null);
 
-        String id = tourongjiaService.loan(loan, user, "轮渡人", new BigDecimal("5000"), "110000", "110103", "很复杂");
+        String id = tourongjiaService.loan(loan, loan.getTerm()[random.nextInt(loan.getTerm().length)], user, "轮渡人"
+                , new BigDecimal("5000"), "110000", "110103", "很复杂");
         assertThat(id)
                 .isNotEmpty();
     }

@@ -25,16 +25,16 @@ public interface TourongjiaService {
      * 申请借款
      *
      * @param loan     产品
+     * @param term     周期{@link Loan#term}其中之一
      * @param user     用户
      * @param name     真实姓名
      * @param amount   金额
      * @param province 省id
      * @param city     市id
-     * @param address  地址
-     * @return 申请id
+     * @param address  地址       @return 申请id
      * @throws IOException
      */
-    String loan(Loan loan, User user, String name, BigDecimal amount, String province, String city, String address)
+    String loan(Loan loan, String term, User user, String name, BigDecimal amount, String province, String city, String address)
             throws IOException;
 
 }

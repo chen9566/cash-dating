@@ -109,18 +109,20 @@ public class TourongjiaServiceImpl implements TourongjiaService {
     }
 
     @Override
-    public String loan(Loan loan, User user, String name, BigDecimal amount, String province, String city
+    public String loan(Loan loan, String term, User user, String name, BigDecimal amount, String province, String city
             , String address) throws IOException {
         try (CloseableHttpClient client = requestClient()) {
-            HttpGet get = new2Get("tenant/yt_applyLoan.jhtml", new BasicNameValuePair("name", name)
-                    , new BasicNameValuePair("mobile", user.getMobileNumber())
-                    , new BasicNameValuePair("productId", loan.getProductId())
-                    , new BasicNameValuePair("amount", amount.toString())
-                    , new BasicNameValuePair("province", province)
-                    , new BasicNameValuePair("city", city)
-                    , new BasicNameValuePair("address", address)
+            HttpGet get = new2Get("tenant/yt_applyLoan.jhtml"
+                    , new BasicNameValuePair("applyLoan.name", name)
+                    , new BasicNameValuePair("applyLoan.mobile", user.getMobileNumber())
+                    , new BasicNameValuePair("applyLoan.productId", loan.getProductId())
+                    , new BasicNameValuePair("applyLoan.amount", amount.toString())
+                    , new BasicNameValuePair("applyLoan.province", province)
+                    , new BasicNameValuePair("applyLoan.city", city)
+                    , new BasicNameValuePair("applyLoan.address", address)
+                    , new BasicNameValuePair("applyLoan.term", term)
             );
-            return client.execute(get, new TRJJsonHandler<>(ApplyLoan.class)).getApplyId();
+            return client.execute(get, new TRJJsonHandler<>(ApplyLoan[].class))[0].getApplyId();
         }
     }
 
