@@ -1,5 +1,6 @@
 package me.jiangcai.dating.service.impl;
 
+import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.service.TourongjiaService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -30,19 +31,27 @@ import java.util.Map;
 @Service
 public class TourongjiaServiceImpl implements TourongjiaService {
 
-    private final String urlRoot;
+    // 理财
+    private final String urlRoot1;
+    // 借款
+    private final String urlRoot2;
+    // www
+    private final String urlRoot3;
     private final String tenant;
     private final String key;
 
+
     @Autowired
     public TourongjiaServiceImpl(Environment environment) {
-        urlRoot = environment.getProperty("me.jiangcai.dating.tourongjia.url", "https://escrow.tourongjia.com/");
+        urlRoot1 = environment.getProperty("me.jiangcai.dating.tourongjia.url1", "https://escrow.tourongjia.com/");
+        urlRoot2 = environment.getProperty("me.jiangcai.dating.tourongjia.url2", "http://escrowcrm1.tourongjia.com/");
+        urlRoot3 = environment.getProperty("me.jiangcai.dating.tourongjia.url3", "https://wapescrow.tourongjia.com/");
         tenant = environment.getProperty("me.jiangcai.dating.tourongjia.tenant", "yuntao");
         key = environment.getProperty("me.jiangcai.dating.tourongjia.key", "1234567890");
         //
     }
 
-    public static String sign(final Map<String, String> params, String secretKey) {
+    private static String sign(final Map<String, String> params, String secretKey) {
 
         if (StringUtils.isBlank(secretKey)) {
             throw new IllegalArgumentException("secretKey not bank.");
@@ -78,9 +87,9 @@ public class TourongjiaServiceImpl implements TourongjiaService {
     @Override
     public Object recommend() throws IOException {
         try (CloseableHttpClient client = requestClient()) {
-            HttpGet get = newGet("ApiServer/Tenant/getToken", new BasicNameValuePair("mobile", "13600000033"));
-//            HttpGet get = newGet("ApiServer/Tenant/recommendBid", new BasicNameValuePair("mobile", "13600000033"));
-//            HttpGet get = new HttpGet(urlRoot + "ApiServer/Tenant/recommendBid");
+            HttpGet get = new1Get("ApiServer/Tenant/getToken", new BasicNameValuePair("mobile", "13600000033"));
+//            HttpGet get = new1Get("ApiServer/Tenant/recommendBid", new BasicNameValuePair("mobile", "13600000033"));
+//            HttpGet get = new HttpGet(urlRoot1 + "ApiServer/Tenant/recommendBid");
             String code = client.execute(get, new BasicResponseHandler());
             System.out.println(code);
         }
@@ -88,7 +97,23 @@ public class TourongjiaServiceImpl implements TourongjiaService {
         return null;
     }
 
-    private HttpGet newGet(String uri, NameValuePair... pairs) {
+    @Override
+    public Loan[] loanList() throws IOException {
+        try (CloseableHttpClient client = requestClient()) {
+            HttpGet get = new2Get("tenant/yt_listProduct.jhtml");
+            return client.execute(get, new TRJJsonHandler<>(Loan[].class));
+        }
+    }
+
+    private HttpGet new1Get(String uri, NameValuePair... pairs) {
+        return newGet(urlRoot1, uri, pairs);
+    }
+
+    private HttpGet new2Get(String uri, NameValuePair... pairs) {
+        return newGet(urlRoot2, uri, pairs);
+    }
+
+    private HttpGet newGet(String urlRoot, String uri, NameValuePair[] pairs) {
         List<NameValuePair> list = new ArrayList<>();
         list.addAll(Arrays.asList(pairs));
         list.add(new BasicNameValuePair("tenant", tenant));

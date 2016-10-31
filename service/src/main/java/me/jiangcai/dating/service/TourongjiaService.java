@@ -1,5 +1,7 @@
 package me.jiangcai.dating.service;
 
+import me.jiangcai.dating.model.trj.Loan;
+
 import java.io.IOException;
 
 /**
@@ -10,5 +12,7 @@ import java.io.IOException;
 public interface TourongjiaService {
 
     Object recommend() throws IOException;
+
+    Loan[] loanList() throws IOException;
 
 }
