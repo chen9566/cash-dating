@@ -2,14 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="code" type="me.jiangcai.wx.model.SceneCode"*/-->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>需要关注</title>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>需要关注</title>
+<link rel="stylesheet" href="dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="dist/css/font-awesome.min.css">
+<link rel="stylesheet" href="dist/css/meiyue.css">
+<script src="dist/js/jquery.js"></script>
+<script src="dist/js/bootstrap.min.js"></script>
 </head>
-<body>
-<h1>长按二维码完成关注</h1>
-<p>
-    <img src="images/temp2.png" th:src="${code.imageURL}"/>
-</p>
+<body class="bg-write">
+<div class="follow">
+	<h1>长按二维码完成关注</h1>
+	<p> <img src="images/temp2.png" th:src="${code.imageURL}"/> </p>
+</div>
 </body>
 </html>

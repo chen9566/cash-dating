@@ -1,3 +1,4 @@
+
 body {
 	color:#353535;
 	background: #EFEFF4;
@@ -1247,5 +1248,9 @@ box-shadow:0px 0px 6px #d9d9d9;  }
 	.payment-n2 input[type="number"]{-moz-appearance:textfield;border: 0;background: none}
 	.payment-n2 input{ background:none; font-weight:300; font-size:40px;width:80%; padding-left:12px; height:50px; line-height:50px; border:0;}
 	.payment-n2 img{ width:18px; height:24px; vertical-align:center; margin-top:-15px;  }
+.follow{ text-align:center; }
+	.follow h1{padding:20px 15px; font-size:18px}
+	.follow img{ width:60% }
+
 
 	
