@@ -4,12 +4,16 @@ import com.google.zxing.WriterException;
 import me.jiangcai.dating.CashFilter;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.service.BankService;
+import me.jiangcai.dating.service.CashPublicAccount;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.web.controller.GlobalController;
 import me.jiangcai.wx.OpenId;
+import me.jiangcai.wx.model.SceneCode;
 import me.jiangcai.wx.model.WeixinUserDetail;
+import me.jiangcai.wx.protocol.Protocol;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -38,6 +42,10 @@ public class LoginController {
     ///////////////////////////////非微信登录
     @Autowired
     private QRCodeService qrCodeService;
+    @Autowired
+    private CashPublicAccount cashPublicAccount;
+    @Autowired
+    private Environment environment;
 
     @RequestMapping(method = RequestMethod.GET, value = "/justLogout")
     public String logout() {
@@ -65,6 +73,16 @@ public class LoginController {
                 model.addAttribute("invite", null);
             return "register.html";
         }
+
+        //  必须关注本公众号才可以 测试环境可以跳过
+        final Protocol protocol = Protocol.forAccount(cashPublicAccount);
+        if (!environment.acceptsProfiles("unit_test")
+                && !protocol.userDetail(detail.getOpenId()).isSubscribe()) {
+            SceneCode code = protocol.createQRCode(1, 60 * 60);
+            model.addAttribute("code", code);
+            return "subscribe_required.html";
+        }
+
 //        if (userService.bankAccountRequired(detail.getOpenId())) {
 //            model.addAttribute("banks", bankService.list());
 //            return "addcard.html";
