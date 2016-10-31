@@ -86,7 +86,7 @@ public class AgentController {
             , @RequestBody String level) {
         User user = userService.by(id);
         BookRateLevel rateLevel = BookRateLevel.valueOf(level);
-        if (!user.getAgentUser().equals(owner))
+        if (!user.getAgentUser().equals(owner) && !user.equals(owner))
             return;
         if (user.getMyAgentInfo() != null) {
             user.getMyAgentInfo().setBookLevel(rateLevel);
@@ -105,22 +105,24 @@ public class AgentController {
             return "myTeamData.html";
         }
 
-        List<TeamMember> list = ((List<?>) dataService.data(user, null, "joinTime", Sort.Direction.DESC, offset, 10, User.class, Arrays.asList(
-                new DataService.NumberField("id", Long.class),
-                new DataService.StringField("nickname"),
-                new DataService.StringField("mobileNumber"),
-                new DataService.StringField("joinTime"),
-                new DataService.EnumField("level") {
-                    @Override
-                    protected Expression<?> selectExpression(Root<?> root) {
-                        return root.join("myAgentInfo", JoinType.LEFT).get("bookLevel");
-                    }
-                }
+        List<TeamMember> list = ((List<?>) dataService.data(user, null, "joinTime", Sort.Direction.DESC, offset, 10
+                , User.class, Arrays.asList(
+                        new DataService.NumberField("id", Long.class),
+                        new DataService.StringField("nickname"),
+                        new DataService.StringField("mobileNumber"),
+                        new DataService.StringField("joinTime"),
+                        new DataService.EnumField("level") {
+                            @Override
+                            protected Expression<?> selectExpression(Root<?> root) {
+                                return root.join("myAgentInfo", JoinType.LEFT).get("bookLevel");
+                            }
+                        }
                 )
                 , (user1, criteriaBuilder, root)
-                        -> criteriaBuilder.and(
+                        -> criteriaBuilder.or(criteriaBuilder.and(
                         criteriaBuilder.equal(root.get("agentUser"), user1)
                         , User.validUserPredicate(criteriaBuilder, root))
+                        , criteriaBuilder.equal(root, user1))
         ).get("rows")).stream()
                 .map(TeamMember::To)
                 .collect(Collectors.toList());

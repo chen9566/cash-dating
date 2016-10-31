@@ -48,15 +48,17 @@ public class AgentControllerTest extends LoginWebTest {
         invitePage.clickMyTeam();
 
         MyTeamPage teamPage = initPage(MyTeamPage.class);
+        currentUser = userService.by(currentUser.getId());
 
-        teamPage.assertTeamSize(0);
+        teamPage.assertTeamSize(1);
+        teamPage.assertMember(0, currentUser);
 
         // 然后我们获得一个成员
         User user = createMember(currentUser, true);
         assertThat(user.getAgentUser())
                 .isEqualTo(currentUser);
         teamPage.refresh();
-        teamPage.assertTeamSize(1);
+        teamPage.assertTeamSize(2);
         teamPage.assertMember(0, user);
 
         // 我们更改一个等级 再下一个单 检查下手续费
@@ -73,7 +75,7 @@ public class AgentControllerTest extends LoginWebTest {
         // 添加一个无效的用户
         createMember(currentUser, false);
         teamPage.refresh();
-        teamPage.assertTeamSize(1);
+        teamPage.assertTeamSize(2);
     }
 
     private User createMember(User owner, boolean active) {
