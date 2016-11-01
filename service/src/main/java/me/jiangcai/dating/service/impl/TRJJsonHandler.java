@@ -34,7 +34,10 @@ class TRJJsonHandler<T> extends AbstractResponseHandler<T> {
             log.debug(StreamUtils.copyToString(new ByteArrayInputStream(buffer.toByteArray()), Charset.forName("UTF-8")));
         }
         JsonNode root = objectMapper.readTree(new ByteArrayInputStream(buffer.toByteArray()));
-        if (root.get("boolen").intValue() == 0)
+
+        final JsonNode flag = root.get("boolen");
+        if ((flag.isNumber() && flag.intValue() == 0)
+                || (flag.isTextual() && flag.textValue().equals("0")))
             throw new IllegalStateException(root.get("message").asText());
         JsonNode data = root.get("data");
 
