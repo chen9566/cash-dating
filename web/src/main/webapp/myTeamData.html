@@ -9,10 +9,10 @@
 			<span class="sleHid">
 			<select class="levelSelect" name="bookLevel" title="选择手续费">
 			<!--suppress ThymeleafVariablesResolveInspection -->
-        		<option th:each="state:${T(me.jiangcai.dating.entity.support.BookRateLevel).values()}"
-						th:value="${state.name()}"
-						th:selected="${state==member.level}"
-						th:text="${state}" value="a">0.35%
+        		<option th:each="s:${T(me.jiangcai.dating.entity.support.BookRateLevel).values()}"
+						th:value="${s.name()}"
+						th:selected="${s==member.level}"
+						th:text="${s}" value="a">0.35%
 				</option>
 				<option th:remove="all" value="b">0.4%</option>
 				<option th:remove="all" value="c">0.25</option>

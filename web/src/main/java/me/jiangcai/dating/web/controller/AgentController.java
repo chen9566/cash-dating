@@ -86,7 +86,7 @@ public class AgentController {
             , @RequestBody String level) {
         User user = userService.by(id);
         BookRateLevel rateLevel = BookRateLevel.valueOf(level);
-        if (!user.getAgentUser().equals(owner) && !user.equals(owner))
+        if (!owner.equals(user.getAgentUser()) && !user.equals(owner))
             return;
         if (user.getMyAgentInfo() != null) {
             user.getMyAgentInfo().setBookLevel(rateLevel);
