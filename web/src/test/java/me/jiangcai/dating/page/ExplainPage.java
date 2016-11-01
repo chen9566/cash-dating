@@ -12,7 +12,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ExplainPage extends AbstractPage {
 
     private WebElement codeButton;
-    private WebElement agentButton;
 
     public ExplainPage(WebDriver webDriver) {
         super(webDriver);
@@ -29,12 +28,12 @@ public class ExplainPage extends AbstractPage {
                 .findFirst()
                 .ifPresent(element -> codeButton = element);
         // 这个似乎干不了什么
-
-        webDriver.findElements(By.tagName("button")).stream()
-                .filter(WebElement::isDisplayed)
-                .filter(element -> element.getText().contains("合伙人"))
-                .findFirst()
-                .ifPresent(element -> agentButton = element);
+//
+//        webDriver.findElements(By.tagName("button")).stream()
+//                .filter(WebElement::isDisplayed)
+//                .filter(element -> element.getText().contains("合伙人"))
+//                .findFirst()
+//                .ifPresent(element -> agentButton = element);
 
     }
 
@@ -42,6 +41,6 @@ public class ExplainPage extends AbstractPage {
      * 点击成为合伙人
      */
     public void requestAgent() {
-        agentButton.findElement(By.tagName("a")).click();
+        webDriver.findElement(By.tagName("button")).click();
     }
 }

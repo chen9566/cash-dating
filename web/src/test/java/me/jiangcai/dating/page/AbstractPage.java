@@ -43,8 +43,12 @@ public abstract class AbstractPage extends me.jiangcai.lib.test.page.AbstractPag
     void mockWeixinPay(String orderId, BufferedImage payCode) throws Exception {
         WebTest webTest = (WebTest) getTestInstance();
         CashOrder order = webTest.getOrderService().getOne(orderId);
+
         String url = webTest.getQrCodeService().scanImage(payCode);
-        webTest.getPay().pay(order.getPlatformOrderSet().iterator().next().getId(), url);
+        if (url.startsWith("trade"))
+            getWebTest().tradeSuccess(order);
+        else
+            webTest.getPay().pay(order.getPlatformOrderSet().iterator().next().getId(), url);
         Thread.sleep(2500);
     }
 
@@ -108,6 +112,10 @@ public abstract class AbstractPage extends me.jiangcai.lib.test.page.AbstractPag
     }
 
     protected SystemService getSystemService() {
-        return ((WebTest) (getTestInstance())).getSystemService();
+        return getWebTest().getSystemService();
+    }
+
+    private WebTest getWebTest() {
+        return (WebTest) (getTestInstance());
     }
 }

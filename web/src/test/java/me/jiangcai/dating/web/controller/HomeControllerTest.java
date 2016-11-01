@@ -16,7 +16,6 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -86,28 +85,14 @@ public class HomeControllerTest extends LoginWebTest {
         //   76352258.18&version=1.0
         //    6491427.62 work
 
+//        page.
         page.pay(amount, UUID.randomUUID().toString(), null);
 
         // 这个时候应该是到了二维码界面,在这个界面 我们可以分享它
         ShowOrderPage codePage = initPage(ShowOrderPage.class);
         codePage.assertAmount(amount);
-        // 并且拥有了一个新订单
-        String orderUrl = driver.getCurrentUrl();
 
-        // TODO 微信分享  分享的时候 应该携带者邀请信息
-        // 我们长按这个二维码进行
-        BufferedImage image = codePage.scanCode();
-
-        String url = qrCodeService.scanImage(image);
-
-        log.info("the url scanned:" + url);
-
-
-//        driver.get(url);
-//        System.out.println(driver.getPageSource());
-        // 如果打开这个支付页面应该是可以完成支付的
-        // 现在的目标是获得这个页面url
-//        String chanpayUrl = driver.findElement(By.id("platformFrame")).getAttribute("src");
+        codePage.pay();
 
         List<CashOrder> orderList = currentOrders();
         assertThat(orderList)
@@ -119,17 +104,6 @@ public class HomeControllerTest extends LoginWebTest {
                 .isNotEmpty()
                 .hasSize(1);
 
-        pay.pay(order.getPlatformOrderSet().iterator().next().getId(), url);
-
-//        WebDriverWait wait = new WebDriverWait(driver, 10);
-//        wait.until(new Predicate<WebDriver>() {
-//            @Override
-//            public boolean apply(@Nullable WebDriver input) {
-//                // 此处是扫码界面的标题
-//                return input != null && input.getTitle().equals("支付二维码");
-//            }
-//        });
-        Thread.sleep(2500);
         //
         PayCompletedPage payCompletedPage = initPage(PayCompletedPage.class);
         // 刚打款

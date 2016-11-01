@@ -43,7 +43,7 @@ public class MockTransactionService implements TransactionService {
         }
         if (tradeRequest instanceof CreateInstantTrade) {
             CreateInstantTrade trade = (CreateInstantTrade) tradeRequest;
-            trade.setSerialNumber(UUID.randomUUID().toString());
+            trade.setSerialNumber(UUID.randomUUID().toString().replaceAll("-", ""));
             return (T) ("trade://" + trade.getSerialNumber());
         }
         if (tradeRequest instanceof PaymentToCard) {

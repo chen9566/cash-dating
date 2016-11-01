@@ -112,7 +112,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
      *
      * @param order
      */
-    protected void tradeSuccess(CashOrder order) throws IOException, SignatureException {
+    public void tradeSuccess(CashOrder order) throws IOException, SignatureException {
         order = cashOrderRepository.getOne(order.getId());
         PlatformOrder platformOrder = orderService.preparePay(order.getId(), PayChannel.weixin);
 
