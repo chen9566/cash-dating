@@ -2,6 +2,7 @@ package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.ApplyLoan;
+import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.LoanStatus;
 import me.jiangcai.dating.service.TourongjiaService;
@@ -9,7 +10,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
@@ -89,16 +89,13 @@ public class TourongjiaServiceImpl implements TourongjiaService {
     }
 
     @Override
-    public Object recommend() throws IOException {
+    public Financing recommend() throws IOException {
         try (CloseableHttpClient client = requestClient()) {
-            HttpGet get = new1Get("ApiServer/Tenant/getToken", new BasicNameValuePair("mobile", "13600000033"));
-//            HttpGet get = new1Get("ApiServer/Tenant/recommendBid", new BasicNameValuePair("mobile", "13600000033"));
+//            HttpGet get = new1Get("ApiServer/Tenant/getToken", new BasicNameValuePair("mobile", "13600000033"));
+            HttpGet get = new1Get("ApiServer/Tenant/recommendBid");
 //            HttpGet get = new HttpGet(urlRoot1 + "ApiServer/Tenant/recommendBid");
-            String code = client.execute(get, new BasicResponseHandler());
-            System.out.println(code);
+            return client.execute(get, new TRJJsonHandler<>(Financing.class));
         }
-        // /ApiServer/Tenant/recommendBid
-        return null;
     }
 
     @Override

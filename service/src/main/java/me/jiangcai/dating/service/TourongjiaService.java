@@ -1,6 +1,7 @@
 package me.jiangcai.dating.service;
 
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
  */
 public interface TourongjiaService {
 
-    Object recommend() throws IOException;
+    Financing recommend() throws IOException;
 
     /**
      * @return 借款产品列表
