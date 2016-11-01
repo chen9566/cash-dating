@@ -1067,7 +1067,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 		.my-n .right-w img{ width:12px;}
 	.my-n a{ display:block}
 	.my-n .super{ background:#db4146; border-radius:8px; font-size:10px !important; line-height:16px; width:80px; display:block; margin-top:6px; text-align:center;}
-		.my-n .super img{ width:9px; margin-right:5px; margin-top:-2px}
+		.my-n .super img{ width:9px; margin-right:5px; margin-top:-1px}
 		.my-n .stxt{ opacity:0.8;font-size:10px !important; line-height:16px;}
 		.my-n .f14{opacity:0.8;font-size:14px !important; }
 .mylist{ background:#fff; height:89px; margin-bottom:15px; border-bottom:1px solid #dfdfdf}
