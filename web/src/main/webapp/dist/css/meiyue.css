@@ -739,15 +739,16 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 /*我的邀请码*/
 .code{ text-align:center; }
 	.code a{ text-decoration:none; font-size:12px; margin-bottom:30px}
-	.code h4{line-height:30px; font-weight:200}
+	.code h4{line-height:30px; font-weight:200; margin:0}
 	.code .nun{ font-size:36px}
 	.code .agent{ border:1px solid #F65150; color:#F65150}
 	.code .pbanner{ margin-bottom:10px;}
 		.code .pbanner img{ width:100%;}
 	.code .ewmbg{ background:#fff; padding:20px 15px; color:#888; font-size:15px;}
 		.code .ewmbg img{ width:70%; height:70%; }
-	.code .ewmbg button{ margin-bottom:15px;}
+	.code .ewmbg button{ margin-bottom:15px; margin-top:15px}
 	.code .mb-b{ margin-bottom:30px}
+	.code p{ margin:0;}
 		
 /*我的收款码*/
 .paycode{ padding:20px 15px; margin:22px 22px 0 22px; text-align:center;background:#fff;border-bottom:1px solid #dfdfdf;border-top:1px solid #dfdfdf;  }
@@ -889,6 +890,20 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.from-bank li .select3 {width:120%; text-align:center; padding-left:20px; background:none; border:none; } 
 	.from-bank .icon{ width:25px}
 	.from-bank .icon img{width: 20px;margin:-2px 0 0 0;} 
+.from-zc{ }
+	.from-zc ul{ border-top:1px solid #dfdfdf; border-bottom:1px solid #dfdfdf;background:#fff; padding-left:15px; overflow:hidden; margin-bottom:15px;}
+	.from-zc li{ line-height:44px; overflow:hidden; height:44px;}
+	.from-zc li input{  background:none; height:30px; line-height:30px; margin:5px 0 ;border:0;}
+	.from-zc li select{ background:none;  height:30px;line-height:30px; margin:5px 0; border:0;}
+	.from-zc li .select {width:120%; background:none; border:none; }   
+	.from-zc li .select2 {width:120%; background:none; border:none; }  
+	.from-zc li .select3 {width:120%; text-align:center; padding-left:20px; background:none; border:none; } 
+	.from-zc .icon{ width:25px}
+	.from-zc .icon img{width: 20px;margin:-2px 0 0 0;} 
+	.form-zc .yamput{}
+		.form-zc .yamput input{ width:50%}
+	
+	
 .sleHid { display:block;  overflow:hidden; }     
 .sleBG {  border-right:none; float:left; display:block;}
 	.from-bank li label{ color:#888; width:95px; font-weight:400; font-size:14px;}
@@ -941,6 +956,8 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.show-c1 a{display:block;color:#0079FF; text-decoration:none}
 .show-c2{ float:left; width:50%; border-right:1px solid #dfdfdf; line-height:44px; text-align:center; font-size:17px; color:#0079FF; }
 	.show-c2 a{ display:block;color:#0079FF; text-decoration:none}
+.show-c3{font-weight:600;  line-height:44px; text-align:center; font-size:17px; color:#0079FF}
+	.show-c1 a{display:block;color:#0079FF; text-decoration:none}
 .form-reg-n{ margin:15px 0;}
 	.form-reg-n ul{ background:#fff; padding-left:15px; border-bottom:1px solid #dfdfdf; border-top:1px solid #dfdfdf}
 	.form-reg-n li{ border-bottom:1px solid #dfdfdf;line-height:44px; overflow:hidden; height:44px;}
@@ -968,9 +985,11 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .ma-b{ margin-bottom:65px}
 .share{ position:absolute; top:0; left:0;}
 	.share img{ width:100%;}
-.yjmx{ font-size:13px; color:#888; height:36px; margin:20px 15px 0 15px;}
+.yjmx{ font-size:13px; color:#888; height:32px; margin:20px 15px 0 15px;}
 	.yjmx a{ width:65px; margin-top:-3px; text-align:center; line-height:22px; background:#fcfcfc; text-decoration:none; color:#353535; height:25px; border:1px solid #e0e0e0; font-size:12px; border-radius:4px; display:block }
-.yjmx .yj{ float:left; margin-right:15px}
+.yj{ margin-right:15px;}	
+.c-0{ color:#007Aff }
+.c-8{ color:#888; }
 .yjlist{border-bottom:1px solid #dfdfdf}
 	.yjlist ul{ border-top:1px solid #dfdfdf;background:#fff;overflow:hidden;padding:0 15px;  line-height:40px;  }
 	.yjlist li{ float:left;line-height:40px; width:25% ; font-size:12px; color:#353535}
@@ -1032,33 +1051,37 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .my-n{background: -webkit-linear-gradient(buttom, #FD5959 , #EB3842); /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(top, #EB3842 , #FD5959 ); /* Opera 11.1 - 12.0 */
   background: -moz-linear-gradient(top, #EB3842 , #FD5959 ); /* Firefox 3.6 - 15 */
-  background: linear-gradient(to top, #EB3842 , #FD5959 ); height:84px; padding:0 15px;}
+  background: linear-gradient(to top, #EB3842 , #FD5959 ); min-height:101px; padding:0 15px;}
 	.my-n a{ display:block; color:#fff; text-decoration:none; }
 	.my-n ul{ padding:12px 0}
 	.my-n li{ float:left; color:#fff;}
 	.my-n li.m-top{  }
-	.my-n li.m-top a{ display:block; height:55px; padding-top:15px; padding-left:30px }
+	.my-n li.m-top a{ display:block; height:55px; padding-top:25px; padding-left:30px }
 	.my-n h1{ font-size:17px; font-weight:300; margin-top:8px; line-height:14px;}
 	.my-n span{ font-size:14px; font-weight:200; margin-top:-5px;}
-	.my-n .avatar{ margin-right:10px}
-		.my-n .avatar img{ width:55px; height:55px; border-radius:55px; border:2px solid #f97f81}
+	.my-n .avatar{ margin-right:10px; margin-top:7px }
+		.my-n .avatar img{ width:60px; height:60px; border-radius:60px; border:2px solid #f97f81}
 	.my-n .ewm-s{ margin-right:8px; }
 		.my-n .ewm-s img{width:16px; height:16px;}
 	.my-n .right-w{ }
-		.my-n .right-w img{ width:8px;}
+		.my-n .right-w img{ width:12px;}
 	.my-n a{ display:block}
+	.my-n .super{ background:#db4146; border-radius:8px; font-size:10px !important; line-height:16px; width:80px; display:block; margin-top:6px; text-align:center;}
+		.my-n .super img{ width:9px; margin-right:5px; margin-top:-2px}
+		.my-n .stxt{ opacity:0.8;font-size:10px !important; line-height:16px;}
+		.my-n .f14{opacity:0.8;font-size:14px !important; }
 .mylist{ background:#fff; height:89px; margin-bottom:15px; border-bottom:1px solid #dfdfdf}
 	.mylist ul{padding:11px 0 15px 0; overflow:hidden }
 	.mylist li{width:33.3%; text-align:center;  float:left; overflow:hidden}
 	.mylist li img{ width:34px; height:34px}
 	.mylist .txt{ font-size:15px; margin-top:-2px; }
-	.mylist .bo-r{ background:url(border-right.png) no-repeat right 7px; background-size:1px 50px}
+	.mylist .bo-r{ background:url(border-right.png) no-repeat right 15px; background-size:1px 40px}
 	.mylist a{ color:#353535; text-decoration:none; display:block}
 .mykey{ background:#fff; border-bottom:1px solid #dfdfdf; border-top:1px solid #dfdfdf; padding-left:15px; margin-bottom:15px;}
 	.mykey ul{}
-	.mykey li{ line-height:44px;font-size:15px;}	
+	.mykey li{ line-height:48px;font-size:15px;}	
 	.mykey .bt{ margin:0 9px 0 0;}
-		.mykey .bt img{ width:23px; margin-top:-6px;}	
+		.mykey .bt img{ width:21px; margin-top:-3px;}	
 	.mykey .f-l{ margin-right:15px;}
 		.mykey .f-l img{ width:8px;}	
 	.mykey .bo-b{ border-bottom:1px solid #dfdfdf}
@@ -1174,7 +1197,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.myorder .f17{ font-size:17px; line-height:18px !important;height:18px }
 	.myorder .top-m{ margin-top:8px; font-size:14px;}
 	.myorder .fred{ color:#F65150; background:#F65150; color:#fff; text-align:center; width:60px; height:22px; border-radius:4px;}
-	.myorder .small-e{ border-radius:3px; border:1px solid #10BA0E; padding:2px 3px; font-size:10px; text-align:center; color:#10BA0E; margin-left:11px; margin-bottom:4px; }
+	.myorder .small-e{ border-radius:3px; border:1px solid #a3a3a3; padding:2px 3px; font-size:10px; text-align:center; color:#a3a3a3; margin-left:11px; margin-bottom:4px; }
 	.myorder .small-s{ border-radius:3px; border:1px solid #3F82DB; padding:2px 3px; font-size:10px; text-align:center; color:#3F82DB; margin-left:11px;}
 .financial{background: -webkit-linear-gradient(buttom, #FD5959 , #EB3842); /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(top, #EB3842 , #FD5959 ); /* Opera 11.1 - 12.0 */
@@ -1190,8 +1213,8 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.finlist li{ padding:10px 15px; line-height:21px;border-bottom:1px solid #dfdfdf}
 	.finlist .f15{ font-size:15px;display:block; font-weight:300 }
 	.finlist .f17{ font-size:17px;display:block; }
-	.finlist .f12{font-size:12px; color:#888; }
-	.finlist .f13{font-size:13px; color:#888; }
+	.finlist .f12{font-size:12px; color:#b3b3b3; font-weight:300}
+	.finlist .f13{font-size:13px; color:#888; font-weight:300 }
 	.finlist p{ margin:0}
 	.finlist .f-right{ text-align:right; }
 	.finlist .kong{ background:#fff; text-align:center; font-size:14px; padding:25px 0 40px 0; height:100%; color:#888; line-height:50px; border-bottom:1px solid #dfdfdf} 
@@ -1221,8 +1244,8 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .myin{background: -webkit-linear-gradient(right, #fd5959 , #EB3842); /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(left, #EB3842,  #fd5959 ); /* Opera 11.1 - 12.0 */
   background: -moz-linear-gradient(left, #EB3842,  #fd5959); /* Firefox 3.6 - 15 */
-  background: linear-gradient(to left, #EB3842,  #fd5959 );color:#fff; height:230px; padding:0 15px }
-  .myin .m{ line-height:44px; font-size:13px; border-bottom:1px solid #fb8688; }
+  background: linear-gradient(to left, #EB3842,  #fd5959 );color:#fff; height:215px; padding:0 15px }
+  .myin .m{ line-height:44px; font-size:13px; border-bottom:1px solid #fb8688; margin-bottom:12px; overflow:hidden }
   	.myin .m img{ width:30px; height:30px; border-radius:30px; margin-right:8px; margin-top:-2px}
 	.myin .m a{ display:block; color:#fff; text-decoration:none}
 	.myin .r{ opacity:0.6 }
@@ -1231,8 +1254,12 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.myin .num{ font-size:32px; font-weight:300}
 	.myin .num-s{ font-size:14px; margin-left:10px}
 	.myin p{ margin:0}
-	.myin .tx{float:right; margin-top:24px}
-	.myin .tx a{ background:none; border-radius:4px; color:#fff; width:60px; height:28px; line-height:26px; font-size:13px; text-align:center; border:1px solid #fff; opacity:0.8; margin:-17px 0 0 0; text-decoration:none; display:block}
+	.myin .tx{float:right; margin-top:25px;width:100%; overflow:hidden; display:block;}
+	.myin .tx a{ background:#f14c54;  border-radius:4px; color:#fff; width:100%; height:32px; line-height:32px; font-size:15px; text-align:center; border:1px solid #fff; opacity:0.5; text-decoration:none; display:block}
+	.myin .b50{ width:50%;}
+	.myin .b40{ width:40%;}
+	.myin .br-r{ background:url(border-rightw.png) no-repeat right 32px; margin-right:10%;  background-size:1px 40px}
+	
 .txgz{ font-size:12px; text-align:center; margin:15px 0 60px 0; overflow:hidden}
 	.txgz a{ color:#5F7593}
 .yjbl{ position:fixed; bottom:0; left:0; width:100%}
@@ -1251,6 +1278,19 @@ box-shadow:0px 0px 6px #d9d9d9;  }
 .follow{ text-align:center; }
 	.follow h1{padding:20px 15px; font-size:18px}
 	.follow img{ width:60% }
+.ks{}
+	.ks p{ margin:0}
+	.ks .k-b{}
+	.ks .k-b img{ width:100%;}
+	.ks .u-a{ padding:15px;}
+		.ks .u-a .f16{ font-size:16px; color:#353535;}
+		.ks .u-a .f14{ font-size:14px; color:#888; display:block}
+		.ks .u-a img{ float:left; margin-right:10px; width:44px; height:44px; border-radius:44px; border:1px solid #dfdfdf}
+	.ks .y1{ margin:30px 15px 0 15px}
+	.ks .y1 button{ height:42px; line-height:18px;}
+	.ks .bo-b{border-bottom:1px solid #dfdfdf;}
+	.ks .yzm-n{ float:right; color:#FFF; font-size:15px; line-height:44px; background:#F65150; padding:0 13px;}
+
 
 
 	
