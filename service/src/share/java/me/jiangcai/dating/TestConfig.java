@@ -24,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
@@ -39,6 +40,7 @@ import java.net.URLEncoder;
  */
 @Import({TestConfig.Config.class, WeixinTestConfig.class, DSConfig.class, ChanpayTestSpringConfig.class})
 @ImportResource("classpath:/datasource_local.xml")
+@ComponentScan("me.jiangcai.dating.mock")
 public class TestConfig {
 
     private static final Log log = LogFactory.getLog(TestConfig.class);

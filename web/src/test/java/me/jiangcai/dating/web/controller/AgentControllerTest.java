@@ -72,6 +72,14 @@ public class AgentControllerTest extends LoginWebTest {
         assertThat(order.getThatRateConfig().getBookRate())
                 .isEqualByComparingTo(level.toRate());
 
+        // 更改自己
+        teamPage.changeLevel(1, level);
+
+        currentUser = userService.by(currentUser.getId());
+        order = orderService.newOrder(currentUser, new BigDecimal("100"), UUID.randomUUID().toString(), null);
+        assertThat(order.getThatRateConfig().getBookRate())
+                .isEqualByComparingTo(level.toRate());
+
         // 添加一个无效的用户
         createMember(currentUser, false);
         teamPage.refresh();
