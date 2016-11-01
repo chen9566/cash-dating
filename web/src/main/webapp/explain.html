@@ -21,9 +21,10 @@
     </p>
 
     <p th:if="${user.agentInfo==null}" class="e5">
-        <button type="button" class="btn btn-default btn-lg btn-block">
-            <a href="agent.html" th:href="@{/agent}">成为合伙人</a>
-        </button>
+		<button type="button" class="btn btn-danger btn-lg btn-block clickHref" href="agent.html"
+                th:href="@{/agent}">
+        成为合伙人
+    </button>
     </p>
 </div>
 </body>
