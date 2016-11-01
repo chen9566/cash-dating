@@ -1137,7 +1137,8 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.loan li.bo-b{ border-bottom:1px solid #dfdfdf}
 	.loan li img{ width:8px; margin-left:8px; }
 	.loan select{ border:0; height:22px; line-height:22px; width:70%;border: 0px;border: none;outline:none; background:none;-moz-appearance: none;-webkit-appearance:none;color:#353535 ;
-            appearance:none; text-align:right ; }
+            appearance:none; text-align:right ; padding-left:58%; }
+	
 	.loan .right-pos{color:#888 ; position:absolute;background:none;  z-index:-1; top:0}
 	.loan .right-img{position:absolute;background:none;  z-index:-1; top:15px; right:15px;}
 	.agree{ padding:10px 15px; margin-bottom:30px; font-size:14px; overflow:hidden}
@@ -1197,7 +1198,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.myorder .f17{ font-size:17px; line-height:18px !important;height:18px }
 	.myorder .top-m{ margin-top:8px; font-size:14px;}
 	.myorder .fred{ color:#F65150; background:#F65150; color:#fff; text-align:center; width:60px; height:22px; border-radius:4px;}
-	.myorder .small-e{ border-radius:3px; border:1px solid #a3a3a3; padding:2px 3px; font-size:10px; text-align:center; color:#a3a3a3; margin-left:11px; margin-bottom:4px; }
+	.myorder .small-e{ border-radius:3px; border:1px solid #a3a3a3; padding:1px 3px; top:0; line-height:14px; font-size:10px; text-align:center; color:#a3a3a3; margin-left:11px; }
 	.myorder .small-s{ border-radius:3px; border:1px solid #3F82DB; padding:2px 3px; font-size:10px; text-align:center; color:#3F82DB; margin-left:11px;}
 .financial{background: -webkit-linear-gradient(buttom, #FD5959 , #EB3842); /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(top, #EB3842 , #FD5959 ); /* Opera 11.1 - 12.0 */
@@ -1275,14 +1276,16 @@ box-shadow:0px 0px 6px #d9d9d9;  }
 	.payment-n2 input[type="number"]{-moz-appearance:textfield;border: 0;background: none}
 	.payment-n2 input{ background:none; font-weight:300; font-size:40px;width:80%; padding-left:12px; height:50px; line-height:50px; border:0;}
 	.payment-n2 img{ width:18px; height:24px; vertical-align:center; margin-top:-15px;  }
-.follow{ text-align:center; }
-	.follow h1{padding:20px 15px; font-size:18px}
-	.follow img{ width:60% }
+.follow{ text-align:center; padding-top:20px ;color:#636363 }
+	.follow img{ width:100% }
+	.follow .ewm{ position:absolute; top:36%;  z-index:99}
+		.follow .ewm img{ width:35%; display:block; margin:0 auto;}
+	.follow .bg{ position:relative; top:0}
 .ks{}
 	.ks p{ margin:0}
 	.ks .k-b{}
 	.ks .k-b img{ width:100%;}
-	.ks .u-a{ padding:15px;}
+	.ks .u-a{ padding:20px 15px 10px 15px;}
 		.ks .u-a .f16{ font-size:16px; color:#353535;}
 		.ks .u-a .f14{ font-size:14px; color:#888; display:block}
 		.ks .u-a img{ float:left; margin-right:10px; width:44px; height:44px; border-radius:44px; border:1px solid #dfdfdf}
@@ -1290,7 +1293,6 @@ box-shadow:0px 0px 6px #d9d9d9;  }
 	.ks .y1 button{ height:42px; line-height:18px;}
 	.ks .bo-b{border-bottom:1px solid #dfdfdf;}
 	.ks .yzm-n{ float:right; color:#FFF; font-size:15px; line-height:44px; background:#F65150; padding:0 13px;}
-
-
+.
 
 	
