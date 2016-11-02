@@ -3,9 +3,12 @@ package me.jiangcai.dating.service;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
+import me.jiangcai.dating.model.trj.MobileToken;
+import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URI;
 
 /**
  * 投融家相关服务
@@ -13,6 +16,10 @@ import java.math.BigDecimal;
  * @author CJ
  */
 public interface TourongjiaService {
+
+    void sendCode(MobileToken token) throws IOException;
+
+    void bind(String mobile, String code) throws IOException;
 
     Financing recommend() throws IOException;
 
@@ -46,4 +53,23 @@ public interface TourongjiaService {
      * @throws IOException
      */
     String checkLoanStatus(String id) throws IOException;
+
+    MobileToken token(String mobile) throws IOException;
+
+    /**
+     * @param mobile
+     * @return 登录页
+     */
+    URI loginURL(String mobile);
+
+    /**
+     * 选择了理财产品以后的地址
+     *
+     * @param financing 产品
+     * @param mobile    手机号码
+     * @return 具体URL
+     * @throws IOException
+     * @throws VerifyCodeSentException 如果未绑定,并且发送了验证码
+     */
+    URI financingURL(Financing financing, String mobile) throws IOException, VerifyCodeSentException;
 }

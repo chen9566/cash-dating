@@ -5,6 +5,8 @@ import me.jiangcai.dating.model.trj.ApplyLoan;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.LoanStatus;
+import me.jiangcai.dating.model.trj.MobileToken;
+import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 import me.jiangcai.dating.service.TourongjiaService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -89,6 +92,50 @@ public class TourongjiaServiceImpl implements TourongjiaService {
     }
 
     @Override
+    public MobileToken token(String mobile) throws IOException {
+        try (CloseableHttpClient client = requestClient()) {
+            HttpGet get = new1Get("ApiServer/Tenant/getToken", new BasicNameValuePair("mobile", mobile));
+            return client.execute(get, new TRJJsonHandler<>(MobileToken.class));
+        }
+    }
+
+    @Override
+    public void sendCode(MobileToken token) throws IOException {
+        try (CloseableHttpClient client = requestClient()) {
+            HttpGet get = new1Get("ApiServer/Tenant/verifyCode"
+                    , new BasicNameValuePair("mobile", token.getMobile())
+                    , new BasicNameValuePair("token", token.getToken())
+            );
+            client.execute(get, new TRJJsonHandler<>(Void.class));
+        }
+    }
+
+    @Override
+    public void bind(String mobile, String code) throws IOException {
+        try (CloseableHttpClient client = requestClient()) {
+            HttpGet get = new1Get("ApiServer/Tenant/bind"
+                    , new BasicNameValuePair("mobile", mobile)
+                    , new BasicNameValuePair("verifyCode", code)
+            );
+            client.execute(get, new TRJJsonHandler<>(Void.class));
+        }
+    }
+
+//    /ApiServer/Tenant/investSeriesBid
+//参数名	备注
+//    tenant	yuntao
+//    minTerm	最小期限
+//    maxTerm	最大期限
+//    termUnit  期限单位 day,month,year
+//    minRate	最小利率 80 means 8% 不带小数,*1000
+//    maxRate	最大利率
+//    sign	对参数签名
+
+//    public Financing randomFinancing(){
+//
+//    }
+
+    @Override
     public Financing recommend() throws IOException {
         try (CloseableHttpClient client = requestClient()) {
 //            HttpGet get = new1Get("ApiServer/Tenant/getToken", new BasicNameValuePair("mobile", "13600000033"));
@@ -97,6 +144,7 @@ public class TourongjiaServiceImpl implements TourongjiaService {
             return client.execute(get, new TRJJsonHandler<>(Financing.class));
         }
     }
+    //////////////////////////
 
     @Override
     public Loan[] loanList() throws IOException {
@@ -134,12 +182,43 @@ public class TourongjiaServiceImpl implements TourongjiaService {
         }
     }
 
+    ////////////
+
+    @Override
+    public URI loginURL(String mobile) {
+        // #/login///?tenant=&mobile=&sign=
+        return new3Get("#/login///", new BasicNameValuePair("mobile", mobile)).getURI();
+    }
+
+    @Override
+    public URI financingURL(Financing financing, String mobile) throws IOException, VerifyCodeSentException {
+        MobileToken token = token(mobile);
+        if (token.getBinding() == -1)
+            return loginURL(mobile);
+        if (token.getBinding() == 0) {
+            sendCode(token);
+            throw new VerifyCodeSentException(token);
+        }
+
+        ///#/invest/1583/30/0?tenant=&prjId=123&mobile=13600000033&sign=&token=
+        return new3Get("#/invest/" + financing.getId() + "/30/0"
+                , new BasicNameValuePair("mobile", mobile)
+                , new BasicNameValuePair("prjId", financing.getId())
+                , new BasicNameValuePair("token", token.getToken())
+        ).getURI();
+    }
+
+
     private HttpGet new1Get(String uri, NameValuePair... pairs) {
         return newGet(urlRoot1, uri, pairs);
     }
 
     private HttpGet new2Get(String uri, NameValuePair... pairs) {
         return newGet(urlRoot2, uri, pairs);
+    }
+
+    private HttpGet new3Get(String uri, NameValuePair... pairs) {
+        return newGet(urlRoot3, uri, pairs);
     }
 
     private HttpGet newGet(String urlRoot, String uri, NameValuePair[] pairs) {
