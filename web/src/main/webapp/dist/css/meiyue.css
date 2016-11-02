@@ -910,7 +910,9 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.from-bank li .s1{ width:33%;}
 	.from-bank li .s2{ width:66%;}
 	.from-bank li .s3{ width:33%;text-align:right; padding-right:15px;}
-	.from-bank .b1{ font-size:13px; color:#888; padding-left:15px; margin-bottom:8px; }
+	.from-bank .b1{ font-size:14px; color:#353535; padding-left:15px; margin-bottom:8px; }
+	.from-bank .b3{ font-size:16px; font-weight:bold; }
+	.from-bank .b4{font-size:13px; color:#888; padding-left:15px; margin-bottom:8px;}
 	.from-bank .noline{ border-bottom:0}
 	.from-bank .b2{ padding:0 15px}
 	.from-bank .b2 button{ margin:30px 0 0 0; height:42px; line-height:18px;}
@@ -984,7 +986,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	
 .ma-b{ margin-bottom:65px}
 .share{ position:absolute; top:0; left:0;}
-	.share img{ width:100%;}
+	.share img{ width:100%;top:0;}
 .yjmx{ font-size:13px; color:#888; height:32px; margin:20px 15px 0 15px;}
 	.yjmx a{ width:65px; margin-top:-3px; text-align:center; line-height:22px; background:#fcfcfc; text-decoration:none; color:#353535; height:25px; border:1px solid #e0e0e0; font-size:12px; border-radius:4px; display:block }
 .yj{ margin-right:15px;}	

@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
-    <script src="dist/js/share.js"></script>
     <script src="dist/js/add-card.js"></script>
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
@@ -57,21 +56,21 @@
 				<span class="sleBG s2"
                       style="background:url(images/Path.png) no-repeat right;background-size:10px 6px;"> <span
                         class="sleHid">
-				<select name="subBranch" required class="select subBranch-selector">
+				<select name="subBranch" required class="select subBranch-selector" >
 				</select>
 				</span></span></li>
         <li class="noline">
             <label>银行卡号</label>
-            <input type="tel" style="width: 170px;" name="number" required minlength="16" placeholder="持卡人银行卡卡号">
+            <input type="tel" style="width: 200px;" name="number" required minlength="16" placeholder="持卡人银行卡卡号" class="b3">
         </li>
     </ul>
-    <p class="b1">此银行卡号开户名必须与上方开户名一致，否则提现会失败！</p>
+    <p class="b4">此银行卡号开户名必须与上方开户名一致，否则提现会失败！</p>
     <p class="b2">
         <button type="submit" class="btn btn-danger btn-lg btn-block">提交</button>
     </p>
 
 </form>
-
+<div class="show-bg" id="myAlert">填写内容不能为空</div>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
 <script>
     $(function () {
