@@ -61,7 +61,7 @@
 				</span></span></li>
         <li class="noline">
             <label>银行卡号</label>
-            <input type="tel" style="width: 170px;" name="number" required minlength="16" placeholder="持卡人银行卡卡号" class="b3">
+            <input type="tel" style="width: 200px;" name="number" required minlength="16" placeholder="持卡人银行卡卡号" class="b3">
         </li>
     </ul>
     <p class="b4">此银行卡号开户名必须与上方开户名一致，否则提现会失败！</p>
@@ -70,7 +70,7 @@
     </p>
 
 </form>
-
+<div class="show-bg" id="myAlert">填写内容不能为空</div>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
 <script>
     $(function () {
