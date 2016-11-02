@@ -4,7 +4,6 @@ import me.jiangcai.dating.ServiceBaseTest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
-import me.jiangcai.dating.model.trj.MobileToken;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,11 +28,16 @@ public class TourongjiaServiceTest extends ServiceBaseTest {
      */
     @Test
     public void financing() throws Exception {
-        MobileToken token = tourongjiaService.token("18606509616");
-        System.out.println(token);
-        assertThat(token).isNotNull();
+//        MobileToken token = tourongjiaService.token("18606509616");
+//        System.out.println(token);
+//        assertThat(token).isNotNull();
 
         Financing financing = tourongjiaService.recommend();
+        System.out.println(financing);
+        assertThat(financing)
+                .isNotNull();
+
+        financing = tourongjiaService.randomFinancing();
         System.out.println(financing);
         assertThat(financing)
                 .isNotNull();

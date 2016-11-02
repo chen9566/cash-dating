@@ -11,6 +11,7 @@ import me.jiangcai.dating.service.TourongjiaService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -37,6 +38,11 @@ import java.util.Map;
  */
 @Service
 public class TourongjiaServiceImpl implements TourongjiaService {
+
+    private static final RequestConfig defaultRequestConfig = RequestConfig.custom()
+            .setConnectTimeout(30000)
+            .setConnectionRequestTimeout(30000)
+            .setSocketTimeout(30000).build();
 
     // 理财
     private final String urlRoot1;
@@ -131,16 +137,18 @@ public class TourongjiaServiceImpl implements TourongjiaService {
 //    maxRate	最大利率
 //    sign	对参数签名
 
-//    public Financing randomFinancing(){
-//
-//    }
+    @Override
+    public Financing randomFinancing() throws IOException {
+        try (CloseableHttpClient client = requestClient()) {
+            HttpGet get = new1Get("ApiServer/Tenant/investSeriesBid");
+            return client.execute(get, new TRJJsonHandler<>(Financing.class));
+        }
+    }
 
     @Override
     public Financing recommend() throws IOException {
         try (CloseableHttpClient client = requestClient()) {
-//            HttpGet get = new1Get("ApiServer/Tenant/getToken", new BasicNameValuePair("mobile", "13600000033"));
             HttpGet get = new1Get("ApiServer/Tenant/recommendBid");
-//            HttpGet get = new HttpGet(urlRoot1 + "ApiServer/Tenant/recommendBid");
             return client.execute(get, new TRJJsonHandler<>(Financing.class));
         }
     }
@@ -249,6 +257,8 @@ public class TourongjiaServiceImpl implements TourongjiaService {
     }
 
     private CloseableHttpClient requestClient() {
-        return HttpClientBuilder.create().build();
+        return HttpClientBuilder.create()
+                .setDefaultRequestConfig(defaultRequestConfig)
+                .build();
     }
 }

@@ -21,6 +21,8 @@ public interface TourongjiaService {
 
     void bind(String mobile, String code) throws IOException;
 
+    Financing randomFinancing() throws IOException;
+
     Financing recommend() throws IOException;
 
     /**
