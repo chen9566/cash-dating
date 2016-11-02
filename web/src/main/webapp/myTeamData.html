@@ -11,7 +11,7 @@
 			<!--suppress ThymeleafVariablesResolveInspection -->
         		<option th:each="s:${T(me.jiangcai.dating.entity.support.BookRateLevel).values()}"
 						th:value="${s.name()}"
-						th:selected="${s==member.level}"
+						th:selected="${s.name().equals(member.level.name())}"
 						th:text="${s}" value="a">0.35%
 				</option>
 				<option th:remove="all" value="b">0.4%</option>
