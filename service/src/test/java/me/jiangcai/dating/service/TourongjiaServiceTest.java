@@ -4,10 +4,13 @@ import me.jiangcai.dating.ServiceBaseTest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
+import me.jiangcai.dating.model.trj.MobileToken;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Repeat;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -28,14 +31,20 @@ public class TourongjiaServiceTest extends ServiceBaseTest {
      */
     @Test
     public void financing() throws Exception {
-//        MobileToken token = tourongjiaService.token("18606509616");
-//        System.out.println(token);
-//        assertThat(token).isNotNull();
 
         Financing financing = tourongjiaService.recommend();
         System.out.println(financing);
         assertThat(financing)
                 .isNotNull();
+
+        // abc123
+        URI url = tourongjiaService.financingURL(financing, "18606509616");
+        System.out.println(url);
+
+        MobileToken token = tourongjiaService.token("18606509616");
+        System.out.println(token);
+        assertThat(token).isNotNull();
+        // 097671
 
         financing = tourongjiaService.randomFinancing();
         System.out.println(financing);
@@ -43,6 +52,7 @@ public class TourongjiaServiceTest extends ServiceBaseTest {
                 .isNotNull();
     }
 
+    @Repeat(20)
     @Test
     public void loan() throws Exception {
         Loan[] loanList = tourongjiaService.loanList();

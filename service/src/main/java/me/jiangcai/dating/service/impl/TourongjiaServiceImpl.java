@@ -10,9 +10,12 @@ import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 import me.jiangcai.dating.service.TourongjiaService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
@@ -39,6 +42,8 @@ import java.util.Map;
 @Service
 public class TourongjiaServiceImpl implements TourongjiaService {
 
+    private static final Log log = LogFactory.getLog(TourongjiaServiceImpl.class);
+
     private static final RequestConfig defaultRequestConfig = RequestConfig.custom()
             .setConnectTimeout(30000)
             .setConnectionRequestTimeout(30000)
@@ -52,10 +57,12 @@ public class TourongjiaServiceImpl implements TourongjiaService {
     private final String urlRoot3;
     private final String tenant;
     private final String key;
+    private final Environment environment;
 
 
     @Autowired
     public TourongjiaServiceImpl(Environment environment) {
+        this.environment = environment;
         urlRoot1 = environment.getProperty("me.jiangcai.dating.tourongjia.url1", "https://escrow.tourongjia.com/");
         urlRoot2 = environment.getProperty("me.jiangcai.dating.tourongjia.url2", "http://escrowcrm1.tourongjia.com/");
         urlRoot3 = environment.getProperty("me.jiangcai.dating.tourongjia.url3", "https://wapescrow.tourongjia.com/");
@@ -112,7 +119,7 @@ public class TourongjiaServiceImpl implements TourongjiaService {
                     , new BasicNameValuePair("mobile", token.getMobile())
                     , new BasicNameValuePair("token", token.getToken())
             );
-            client.execute(get, new TRJJsonHandler<>(Void.class));
+            client.execute(get, new TRJJsonHandler<>());
         }
     }
 
@@ -123,7 +130,7 @@ public class TourongjiaServiceImpl implements TourongjiaService {
                     , new BasicNameValuePair("mobile", mobile)
                     , new BasicNameValuePair("verifyCode", code)
             );
-            client.execute(get, new TRJJsonHandler<>(Void.class));
+            client.execute(get, new TRJJsonHandler<>());
         }
     }
 
@@ -247,6 +254,8 @@ public class TourongjiaServiceImpl implements TourongjiaService {
         });
 
         urlBuilder.setLength(urlBuilder.length() - 1);
+        if (log.isDebugEnabled())
+            log.debug("[TRJ]" + urlBuilder.toString());
         return new HttpGet(urlBuilder.toString());
     }
 
@@ -257,8 +266,12 @@ public class TourongjiaServiceImpl implements TourongjiaService {
     }
 
     private CloseableHttpClient requestClient() {
-        return HttpClientBuilder.create()
-                .setDefaultRequestConfig(defaultRequestConfig)
-                .build();
+        HttpClientBuilder builder = HttpClientBuilder.create();
+        builder = builder.setDefaultRequestConfig(defaultRequestConfig);
+        if (environment.acceptsProfiles("test")) {
+            builder.setSSLHostnameVerifier(new NoopHostnameVerifier());
+        }
+
+        return builder.build();
     }
 }

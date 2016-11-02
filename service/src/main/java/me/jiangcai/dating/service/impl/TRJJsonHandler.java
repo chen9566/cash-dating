@@ -22,6 +22,10 @@ class TRJJsonHandler<T> extends AbstractResponseHandler<T> {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final Class<T> type;
 
+    TRJJsonHandler() {
+        this(null);
+    }
+
     TRJJsonHandler(Class<T> clazz) {
         type = clazz;
     }
@@ -39,6 +43,9 @@ class TRJJsonHandler<T> extends AbstractResponseHandler<T> {
         if ((flag.isNumber() && flag.intValue() == 0)
                 || (flag.isTextual() && flag.textValue().equals("0")))
             throw new IllegalStateException(root.get("message").asText());
+
+        if (type == null || type == Void.class)
+            return null;
         JsonNode data = root.get("data");
 
         if (type.isArray() && !data.isArray()) {

@@ -50,6 +50,7 @@ public class Financing {
     private String wanyuanProfit;
     @JsonDeserialize(using = BooleanDeserializer.class)
     private boolean can_read;
+    private String url;
 
 
 }
