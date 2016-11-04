@@ -44,6 +44,7 @@ public class SystemServiceImpl implements SystemService {
     private static final String AgentRate = "dating.rate.agent";
     private static final String GuideRate = "dating.rate.guide";
     private static final String WeixinName = "dating.weixin.name";
+    private static final String ApplyCardUrl = "dating.url.applyCard";
 
     private static final Log log = LogFactory.getLog(SystemServiceImpl.class);
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS"
@@ -172,5 +173,10 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public String getPublicAccountName() {
         return environment.getProperty(WeixinName, DefaultPublicAccountName);
+    }
+
+    @Override
+    public String getApplyCardUrl() {
+        return getSystemString(ApplyCardUrl, String.class, "http://m.rong360.com/credit/card/landing/4?code=3&utm_source=kyyj&utm_medium=xyk&utm_campaign=code3");
     }
 }
