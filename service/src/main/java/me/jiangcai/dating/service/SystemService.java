@@ -68,4 +68,9 @@ public interface SystemService {
      * @return 公众号名称
      */
     String getPublicAccountName();
+
+    /**
+     * @return 办卡的URL
+     */
+    String getApplyCardUrl();
 }
