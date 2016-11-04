@@ -5,10 +5,12 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.MobileToken;
+import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Repeat;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Arrays;
@@ -24,6 +26,17 @@ public class TourongjiaServiceTest extends ServiceBaseTest {
     @Autowired
     private TourongjiaService tourongjiaService;
 
+    @Test
+    public void single() throws IOException, VerifyCodeSentException {
+        Financing financing = tourongjiaService.recommend();
+        System.out.println(financing);
+        assertThat(financing)
+                .isNotNull();
+        tourongjiaService.bind("18606509616", "1122");
+        URI url = tourongjiaService.financingURL(financing, "18606509616");
+        System.out.println(url);
+    }
+
     /**
      * 理财
      *
@@ -38,18 +51,25 @@ public class TourongjiaServiceTest extends ServiceBaseTest {
                 .isNotNull();
 
         // abc123
-        URI url = tourongjiaService.financingURL(financing, "18606509616");
-        System.out.println(url);
+        try {
+            URI url = tourongjiaService.financingURL(financing, "18606509616");
+            System.out.println(url);
 
-        MobileToken token = tourongjiaService.token("18606509616");
-        System.out.println(token);
-        assertThat(token).isNotNull();
-        // 097671
+            MobileToken token = tourongjiaService.token("18606509616");
+            System.out.println(token);
+            assertThat(token).isNotNull();
+            // 097671
 
-        financing = tourongjiaService.randomFinancing();
-        System.out.println(financing);
-        assertThat(financing)
-                .isNotNull();
+            financing = tourongjiaService.randomFinancing();
+            System.out.println(financing);
+            assertThat(financing)
+                    .isNotNull();
+        } catch (VerifyCodeSentException ex) {
+            tourongjiaService.bind("18606509616", "1122");
+            URI url = tourongjiaService.financingURL(financing, "18606509616");
+            System.out.println(url);
+        }
+
     }
 
     @Repeat(20)

@@ -3,6 +3,7 @@ package me.jiangcai.dating.service.impl;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.ApplyLoan;
 import me.jiangcai.dating.model.trj.Financing;
+import me.jiangcai.dating.model.trj.FinancingId;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.LoanStatus;
 import me.jiangcai.dating.model.trj.MobileToken;
@@ -117,7 +118,7 @@ public class TourongjiaServiceImpl implements TourongjiaService {
         try (CloseableHttpClient client = requestClient()) {
             HttpGet get = new1Get("ApiServer/Tenant/verifyCode"
                     , new BasicNameValuePair("mobile", token.getMobile())
-                    , new BasicNameValuePair("token", token.getToken())
+//                    , new BasicNameValuePair("token", token.getToken())
             );
             client.execute(get, new TRJJsonHandler<>());
         }
@@ -147,8 +148,16 @@ public class TourongjiaServiceImpl implements TourongjiaService {
     @Override
     public Financing randomFinancing() throws IOException {
         try (CloseableHttpClient client = requestClient()) {
-            HttpGet get = new1Get("ApiServer/Tenant/investSeriesBid");
-            return client.execute(get, new TRJJsonHandler<>(Financing.class));
+            HttpGet get = new1Get("ApiServer/Tenant/investSeriesBid"
+                    , new BasicNameValuePair("termUnit", "month")
+                    , new BasicNameValuePair("minTerm", "1")
+                    , new BasicNameValuePair("maxTerm", "24")
+                    , new BasicNameValuePair("minRate", "10")
+                    , new BasicNameValuePair("maxRate", "300")
+            );
+            Financing financing = new Financing();
+            financing.setId(client.execute(get, new TRJJsonHandler<>(FinancingId.class)).getPrjId());
+            return financing;
         }
     }
 
@@ -216,7 +225,7 @@ public class TourongjiaServiceImpl implements TourongjiaService {
         }
 
         ///#/invest/1583/30/0?tenant=&prjId=123&mobile=13600000033&sign=&token=
-        return new3Get("#/invest/" + financing.getId() + "/30/0"
+        return new3Get("#/invest/" + financing.getId() + "/1/30"
                 , new BasicNameValuePair("mobile", mobile)
                 , new BasicNameValuePair("prjId", financing.getId())
                 , new BasicNameValuePair("token", token.getToken())
