@@ -895,6 +895,8 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.from-bank .check{ margin:15px 15px 0 15px; }
 		.from-bank .check input{ float:left}
 		.from-bank .check a{ text-decoration:none}
+	.from-bank .b-r{ float:right; margin-right:7% } 
+		.from-bank .b-r img{ width:8px;}
 .from-zc{ }
 	.from-zc ul{ border-top:1px solid #dfdfdf; border-bottom:1px solid #dfdfdf;background:#fff; padding-left:15px; overflow:hidden; margin-bottom:15px;}
 	.from-zc li{ line-height:44px; border-bottom:1px solid #dfdfdf;overflow:hidden; height:44px;}
@@ -1178,7 +1180,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .card-abs{  text-align:center; height:68px;background:url(sharebgtwo.png); width:100%; padding-top:8px; }	
 	.card-abs .f12{ color:#fbd0c6; font-size:12px;}
 	.card-abs .f25{color:#fff; font-size:25px; display:block; font-weight:300}
-.mar30{ margin-top:30px}
+.mar30{ margin-top:30px !important}
 .mar20{ margin-top:20px !important}
 .loan{ background:#fff; padding-top:15px;}
 	.loan .t1{ font-size:14px; padding-left:15px; color:#353535}

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>添加借记卡</title>
+    <title>添加银行借记卡</title>
     <link rel="stylesheet" href="dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="dist/css/font-awesome.min.css">
     <link rel="stylesheet" href="dist/css/meiyue.css">
@@ -28,7 +28,7 @@
         </li>
 		<li>
             <label>银行卡号</label>
-            <input type="tel" style="width: 200px;" name="number" required minlength="16" placeholder="持卡人银行卡卡号" class="b3">
+            <input type="tel" style="width: 210px;" name="number" required minlength="16" placeholder="持卡人银行卡卡号" class="b3">
         </li>
         <li>
             <label class="pull-left">开户银行</label>
@@ -59,15 +59,11 @@
 				</span></span></li>
         <li class="noline" onclick="javascript:window.location.href='addcardlist.html'" >
             <label class="pull-left">支行名称</label>
-				<span class="sleBG s2"
-                      style="background:url(images/Path.png) no-repeat right;background-size:10px 6px;"> <span
-                        class="sleHid">
-				<select name="subBranch" required class="select subBranch-selector" >
-				</select>
-				</span></span></li>
+				 <input type="text" name="subBranch" required  placeholder="支行">
+			    <span class="b-r"><img src="images/blackright-r.png" ></span></li>
     </ul>
     <p class="b4">此银行卡号开户名必须与上方开户名一致，否则提现会失败！</p>
-    <div class="p-15">
+    <div class="p-15 mar30">
             <input value="提交" type="submit"  class="black" name="btn1" disabled="disabled"/>
     </div>
 </form>
