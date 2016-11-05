@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
+<!--/*@thymesVar id="balance" type="java.lang.Number"*/-->
+<!--/*@thymesVar id="numbers" type="java.lang.Integer"*/-->
+<!--/*@thymesVar id="flows" type="java.util.List<me.jiangcai.dating.model.BalanceFlow>"*/-->
+<!--/*@thymesVar id="withdrawalFlows" type="java.util.List<me.jiangcai.dating.model.BalanceFlow>"*/-->
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>邀请人</title>
+<link rel="stylesheet" href="dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="dist/css/font-awesome.min.css">
+<link rel="stylesheet" href="dist/css/meiyue.css">
+<script src="dist/js/jquery.js"></script>
+<script src="dist/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<!--邀请人明细!-->
+<div class="m-t yjlist">
+	<ul class="bg" th:if="${!withdrawalFlows.isEmpty()}">
+		<li class="w5">昵称</li>
+		<li class="w4">佣金总额(元)</li>
+		<li class="w4">注册时间</li>
+	</ul>
+	<ul th:each="flow:${withdrawalFlows}">
+		<li class="w5" >欣欣殿下</li>
+		<li class="w4" >2000.00</li>
+		<li class="w4" >14-08-13 18:00<span class="br-img"><img src="images/blackright-r.png" ></span></li>
+	</ul>
+	<ul th:each="flow:${withdrawalFlows}">
+		<li class="w5" >欣欣殿下</li>
+		<li class="w4" >2000.00</li>
+		<li class="w4" >14-08-13 18:00<span class="br-img"><img src="images/blackright-r.png" ></span></li>
+	</ul>
+</div>
+<!--邀请人明细 end!-->
+
+<script src="mock/all.js" th:src="@{/all.js}"></script> 
+
+</body>
+</html>

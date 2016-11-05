@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>支付二维码</title>
+    <title>收款二维码</title>
     <link rel="stylesheet" href="dist/css/bootstrap.min.css" th:href="@{/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" href="dist/css/font-awesome.min.css" th:href="@{/dist/css/font-awesome.min.css}">
     <link rel="stylesheet" href="dist/css/meiyue.css" th:href="@{/dist/css/meiyue.css}">
@@ -20,7 +20,7 @@
     <p class="t2" th:if="${order.cashOrder}"><span th:text="${order.owner.realName}">*春风</span> 向您发起一笔收款申请</p>
     <p class="t3"><i><img src="images/1.png" th:src="@{/images/1.png}"></i>
         <span class="nun"
-              th:text="${#numbers.formatDecimal(order.amount,1,'COMMA',2,'POINT')}">123.00</span>
+              th:text="${#numbers.formatDecimal(order.amount,1,'COMMA',2,'POINT')}">123</span>
     </p>
     <p class="t4"><img name="qrCode" src="images/temp2.png" th:src="${qrUrl}"/></p>
     <p class="t5">长按二维码可进行支付</p>

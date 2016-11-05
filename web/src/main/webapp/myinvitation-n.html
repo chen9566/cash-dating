@@ -15,15 +15,15 @@
 <link rel="stylesheet" href="dist/css/meiyue.css">
 <script src="dist/js/jquery.js"></script>
 <script src="dist/js/bootstrap.min.js"></script>
-
+<script src="dist/js/share.js"></script>
 </head>
 <body>
 
 <div class="financial">
-    <p class="pull-right"><a href="#" class="tx">提现</a></p>
-    <p class="smt">可提金额(元)</p>
+    <p class="pull-right"><a href="#" class="vip">成为超级合伙人</a></p>
+    <p class="smt">当前手续费利率(%)</p>
     <p class="money" th:text="${#numbers.formatDecimal(balance,1,'COMMA',2,'POINT')}"
-                         th:name="balance">1000.00</p>
+                         th:name="balance">0.60</p>
 	<div class="num-y"><a href="Invitelist.html">成功邀请人数(人)<span class="pull-right f17">100<img src="images/blackrightw-r.png" ></span></a></div>
 </div>
 <p class="yjmx"> <span class="yj" name="yj">佣金明细</span><span class="pull-right"><a href="#" class="dcbg">导出表格</a></span> </p>
@@ -40,17 +40,14 @@
 		<li class="w3" >2000</li>
 		<li class="w3" >500.00<span class="br-img"><img src="images/blackright-r.png" ></span></li>
 	</ul>
-	<ul th:each="flow:${withdrawalFlows}">
+	<ul th:each="flow:${withdrawalFlows}" onclick="javascript:window.location.href='Partnerdata.html'">
 		<li class="w3" >欣欣殿下</li>
 		<li class="w3" >2000</li>
 		<li class="w3" >500.00<span class="br-img"><img src="images/blackright-r.png" ></span></li>
 	</ul>
 </div>
 <!--佣金明细 end!-->
-<div class="yjbl" th:if="${user.agentInfo!=null}">
-	<input name="" type="button" value="调整手续费" class="clickHref"
-                                                         href="myteam.html" th:href="@{/myTeam}">
-</div>
+
 <!-- Modal -->
 <div class="modal fade" id="cardsContainer" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel"

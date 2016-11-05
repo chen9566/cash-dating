@@ -4,7 +4,7 @@ $(function () {
     //获取短信验证码
     var validCode = true;
     $("#btn-mask").click(function () {
-        var time = 30;
+        var time = 50;
         var code = $(this);
         if (validCode) {
             if (!$.yzmValidator.element(mobileInput)) {

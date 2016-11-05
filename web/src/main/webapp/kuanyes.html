@@ -15,44 +15,47 @@
 <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
 <body>
 <div class="ks">
-<p class="k-b"><img src="images/kuabyesbanner.png"></p>
-<p class="u-a"><img src="images/51.png"><span class="f16">目黑瞳</span><span class="f14">邀请您成为款爷用户！</span></p>
- <form class="from-zc" id="requestForm" role="form">
-    <ul>
-        <li class="bo-b">
-            <label class="icon"><img src="images/iphoneicon-n.png"></label>
-           <input name="mobile" required minlength="11" maxlength="11" type="tel" placeholder="请输入手机号码">
-        </li>
-         <li class="yamput">
-            <label class="icon"><img src="images/yzmicon.png"></label>
-            <input name="verificationCode" maxlength="4" minlength="4" type="tel" required placeholder="请输入验证码">
-            <div id="btn-mask" class="yzm-n">获取验证吗</div>
-            </li>
-    </ul>
-
-    <p class="y1">
-        <button type="submit" class="btn btn-danger btn-lg btn-block">注册</button>
-    </p>
-
-</form>
-
-<script src="mock/all.js" th:src="@{/all.js}"></script>
-<script src="js/register.js"></script>
-
+	<p class="k-b"><img src="images/kuabyesbanner.png"></p>
+	<p class="u-a"><img src="images/51.png"><span class="f16">目黑瞳</span><span class="f14">邀请您成为款爷用户！</span></p>
+	<form class="from-zc" id="requestForm" role="form">
+		<ul>
+			<li>
+				<label class="icon"><img src="images/iphoneicon-n.png"></label>
+				<input name="mobile" required minlength="11" maxlength="11" type="tel" placeholder="请输入手机号码">
+			</li>
+			<li class="yamput">
+				<label class="icon"><img src="images/yzmicon.png"></label>
+				<input name="verificationCode" maxlength="4" minlength="4" type="tel" required placeholder="请输入验证码">
+				<div id="btn-mask" class="yzm-n">获取验证吗</div>
+			</li>
+			<li class="noline">
+				<label  class="icon"><img src="images/yqmicon.png"></label>
+				<input name="inviteCode" type="text"
+                                                                                          placeholder="请输入邀请码"
+                                                                                          th:value="${invite!=null?invite.inviteCode:''}">
+				<span style=" float:right; margin-right:15px;">邀请码</span></li>
+		</ul>
+		<p class="check" ><input type="checkbox" id="checkbox_a1" class="chk_1" checked /><label for="checkbox_a1"></label><span class="check-pos">同意<a href="agreement.html">《款爷注册协议》</a></span></p>
+		<p class="y2">
+			<button type="submit" class="btn btn-danger btn-lg btn-block">注册</button>
+		</p>
+	</form>
+	<script src="mock/all.js" th:src="@{/all.js}"></script> 
+	<script src="js/register.js"></script> 
 </div>
 <!-- Modal -->
 <div class="modal fade"  id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="border-bottom:0">
-                <h4 class="modal-title" id="myModalLabel" style="text-align:center; font-size:15px;"><b>注册成功</b><br>
-关注款爷微信号，开启赚钱之旅！</h4>
-            </div>
-            <div class="modal-footer">
-                <div class="show-c3 cardSubmit ok-request">确定</div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header" style="border-bottom:0">
+				<h4 class="modal-title" id="myModalLabel" style="text-align:center; font-size:15px;"><b>注册成功</b><br>
+					关注款爷微信号，开启赚钱之旅！</h4>
 			</div>
-        </div>
-    </div>
+			<div class="modal-footer">
+				<div class="show-c3 cardSubmit ok-request">确定</div>
+			</div>
+		</div>
+	</div>
 </div>
 <div class="show-bg" id="myAlert">填写内容不能为空</div>
 </body>

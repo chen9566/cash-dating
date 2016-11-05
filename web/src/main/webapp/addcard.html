@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>绑定银行卡</title>
+    <title>添加借记卡</title>
     <link rel="stylesheet" href="dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="dist/css/font-awesome.min.css">
     <link rel="stylesheet" href="dist/css/meiyue.css">
@@ -14,15 +14,21 @@
     <script src="dist/js/add-card.js"></script>
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+	 <script src="js/start.js"></script>
 </head>
 <body>
 <form class="from-bank" action="receivables.html" th:action="@{/registerCard}" th:method="post" id="addCardForm"
       role="form">
-    <p class="b1">请绑定持卡人的银行卡(借记卡)</p>
+	  <div class="showcard">3333333333</div>
+    <p class="b1">请绑定持卡人的银行卡(<b>借记卡</b>)</p>
     <ul>
         <li>
             <label>持卡人姓名</label>
             <input type="text" name="name" required minlength="2" maxlength="20" placeholder="输入真实姓名">
+        </li>
+		<li>
+            <label>银行卡号</label>
+            <input type="tel" style="width: 200px;" name="number" required minlength="16" placeholder="持卡人银行卡卡号" class="b3">
         </li>
         <li>
             <label class="pull-left">开户银行</label>
@@ -51,7 +57,7 @@
 					<option value="1">北京</option>
 				</select>
 				</span></span></li>
-        <li>
+        <li class="noline" onclick="javascript:window.location.href='addcardlist.html'" >
             <label class="pull-left">支行名称</label>
 				<span class="sleBG s2"
                       style="background:url(images/Path.png) no-repeat right;background-size:10px 6px;"> <span
@@ -59,17 +65,13 @@
 				<select name="subBranch" required class="select subBranch-selector" >
 				</select>
 				</span></span></li>
-        <li class="noline">
-            <label>银行卡号</label>
-            <input type="tel" style="width: 200px;" name="number" required minlength="16" placeholder="持卡人银行卡卡号" class="b3">
-        </li>
     </ul>
     <p class="b4">此银行卡号开户名必须与上方开户名一致，否则提现会失败！</p>
-    <p class="b2">
-        <button type="submit" class="btn btn-danger btn-lg btn-block">提交</button>
-    </p>
-
+    <div class="p-15">
+            <input value="提交" type="submit"  class="black" name="btn1" disabled="disabled"/>
+    </div>
 </form>
+<p class="notes">电话: 400-8588528</p>
 <div class="show-bg" id="myAlert">填写内容不能为空</div>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
 <script>

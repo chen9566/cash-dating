@@ -11,14 +11,11 @@
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
-    <script src="dist/js/share.js"></script>
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
 </head>
 <body>
 <form class="from-bank" id="requestForm" role="form">
-    <p class="b1">合伙人介绍:<br>
-        客服热线: 400-858-8528&nbsp;&nbsp;&nbsp;官方网址:www.kuanyes.com</p>
     <ul>
         <li>
             <label class="icon"><img src="images/user-icon.svg"></label>
@@ -29,13 +26,13 @@
             <input type="tel" name="mobile" placeholder="请输入手机号码">
         </li>
     </ul>
-
+	<p class="check" ><input type="checkbox" id="checkbox_a1" class="chk_1" checked /><label for="checkbox_a1"></label><span class="check-pos">同意<a href="agreement2.html">《款爷合伙人协议》</a></span></p>
     <p class="b2">
         <button type="submit" class="btn btn-danger btn-lg btn-block">提交申请</button>
     </p>
-
+	
 </form>
-
+<p class="notes"><a href="returnnote .html">合伙人说明</a></p>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
 <script src="js/agent.js"></script>
 <!-- Modal -->
@@ -43,12 +40,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="border-bottom:0">
-                <h4 class="modal-title" id="myModalLabel" style="text-align:center; font-size:15px;">提交申请成功<br>
-我们的客服人员将尽快与您取得联系</h4>
+                <h4 class="modal-title" id="myModalLabel" style="text-align:center; font-size:15px;">您的资料已提交<br>
+24小时内有相关人员会回复您<br>
+请耐心等待</h4>
             </div>
             <div class="modal-footer">
-				<div class="show-c2" data-dismiss="modal" aria-hidden="true">取消</div>
-                <div class="show-c1 cardSubmit ok-request">确定</div>
+				
+                <div class="show-c3 cardSubmit ok-request">确定</div>
 			</div>
         </div>
     </div>

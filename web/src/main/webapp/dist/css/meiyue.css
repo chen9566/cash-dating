@@ -739,7 +739,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 /*我的邀请码*/
 .code{ text-align:center; }
 	.code a{ text-decoration:none; font-size:12px; margin-bottom:30px}
-	.code h4{line-height:30px; font-weight:200; margin:0}
+	.code h4{line-height:30px; color:#0079FF; font-size:16px; font-weight:200; margin:0}
 	.code .nun{ font-size:36px}
 	.code .agent{ border:1px solid #F65150; color:#F65150}
 	.code .pbanner{ margin-bottom:10px;}
@@ -747,7 +747,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.code .ewmbg{ background:#fff; padding:20px 15px; color:#888; font-size:15px;}
 		.code .ewmbg img{ width:70%; height:70%; }
 	.code .ewmbg button{ margin-bottom:15px; margin-top:15px}
-	.code .mb-b{ margin-bottom:30px}
+.mb-b{ margin-bottom:30px}
 	.code p{ margin:0;}
 		
 /*我的收款码*/
@@ -855,6 +855,8 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 		.payment .pay-m .t2 img{ width:18px; height:24px; vertical-align:center; margin-top:-15px }
 	.payment .pay-m .t3{ font-size:13px; line-height:30px; }
 	.payment .pay-m .t3 t{color:#888; padding-left:12px;}
+	.payment .pay-m .t4{ font-size:14px; margin-right:20px}
+	.payment .all-m{ color:#007AFF;font-size:14px;}
 	
 .payment .explain{padding:15px; color:#b3b3b3; font-size:13px;}
 
@@ -871,7 +873,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.pay-new .t6 button{ background:#fcfcfc; height:42px; line-height:18px;}
 	 .pay-new button{ margin-bottom:15px;}
 .pay-ok{ background:#fff; text-align:center; padding:50px 15px 120px 15px}
-	.pay-ok img{ width:180px;}
+	.pay-ok img{ width:80px;}
 	.pay-ok .k1{ font-size:15px; color:#353535; margin:22px 0 30px 0}
 		.pay-ok .k1 b{ font-weight:400; color:#F65150;font-size:16px}
 	.pay-ok .k2 button{  height:42px; line-height:18px;}
@@ -890,9 +892,12 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.from-bank li .select3 {width:120%; text-align:center; padding-left:20px; background:none; border:none; } 
 	.from-bank .icon{ width:25px}
 	.from-bank .icon img{width: 20px;margin:-2px 0 0 0;} 
+	.from-bank .check{ margin:15px 15px 0 15px; }
+		.from-bank .check input{ float:left}
+		.from-bank .check a{ text-decoration:none}
 .from-zc{ }
 	.from-zc ul{ border-top:1px solid #dfdfdf; border-bottom:1px solid #dfdfdf;background:#fff; padding-left:15px; overflow:hidden; margin-bottom:15px;}
-	.from-zc li{ line-height:44px; overflow:hidden; height:44px;}
+	.from-zc li{ line-height:44px; border-bottom:1px solid #dfdfdf;overflow:hidden; height:44px;}
 	.from-zc li input{  background:none; height:30px; line-height:30px; margin:5px 0 ;border:0;}
 	.from-zc li select{ background:none;  height:30px;line-height:30px; margin:5px 0; border:0;}
 	.from-zc li .select {width:120%; background:none; border:none; }   
@@ -902,7 +907,43 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.from-zc .icon img{width: 20px;margin:-2px 0 0 0;} 
 	.form-zc .yamput{}
 		.form-zc .yamput input{ width:50%}
+	.from-zc li.noline{border-bottom:0;}
+	.from-zc .yzm-n{ float:right; color:#FFF; font-size:15px; line-height:44px; background:#F65150; padding:0 13px; width:104px}
+.chk_1{
+    display: none;
+}
+.chk_1 + label {
+	background-color: #FFF;
+	border: 1px solid #dfdfdf;
+	padding: 9px;
+	border-radius: 2px;
+	display: inline-block;
+	position: relative;
 	
+}
+.chk_1 + label:active {
+	
+}
+
+.chk_1:checked + label {
+	background-color: #fff;
+	border: 1px solid #dfdfdf;
+	color: #F65150;
+}
+
+.chk_1:checked + label:after {
+	content: '\2714';
+	position: absolute;
+	top: -5px;
+	left: 0px;
+	color: #F65150;
+	width: 100%;
+	text-align: center;
+	font-size: 1.2em;
+	padding: 1px 0 0 0;
+	vertical-align: text-top;
+}
+
 	
 .sleHid { display:block;  overflow:hidden; }     
 .sleBG {  border-right:none; float:left; display:block;}
@@ -911,11 +952,13 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.from-bank li .s2{ width:66%;}
 	.from-bank li .s3{ width:33%;text-align:right; padding-right:15px;}
 	.from-bank .b1{ font-size:14px; color:#353535; padding-left:15px; margin-bottom:8px; }
-	.from-bank .b3{ font-size:16px; font-weight:bold; }
+		.from-bank .b1 b{ color:#F65150; font-weight:300}
+	.from-bank .b3{ font-size:16px; font-weight:300 }
 	.from-bank .b4{font-size:13px; color:#888; padding-left:15px; margin-bottom:8px;}
 	.from-bank .noline{ border-bottom:0}
 	.from-bank .b2{ padding:0 15px}
-	.from-bank .b2 button{ margin:30px 0 0 0; height:42px; line-height:18px;}
+	.from-bank .b2 button{ margin:20px 0 0 0; height:42px; line-height:18px;}
+	.from-bank .b2
 .order{ margin:0 0 15px 0;background:#fff;}
 	.order dl{ height:74px; border-bottom:1px solid #dfdfdf; margin:0; padding:15px}
 	.order dt{ float:left; margin-right:10px; width:44px; line-height:44px; text-align:center; height:44px; font-weight:300}
@@ -968,10 +1011,12 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.form-reg-n li.noline{border-bottom:0;}
 	.form-reg-n .yamput{}
 		.form-reg-n .yamput input{ width:50%}
-	.form-reg-n .yzm-n{ float:right; color:#FFF; font-size:15px; line-height:44px; background:#F65150; padding:0 13px;}
+	.form-reg-n .yzm-n{ float:right; color:#FFF; font-size:15px; line-height:44px; background:#F65150; padding:0 13px; width:104px}
 	.form-reg-n .y1{ margin:30px 15px 0 15px}
-		.form-reg-n .y1 button{ height:42px; line-height:18px;}
-	.form-reg-n li .mi{ display:b}
+		.form-reg-n .y1 button{ height:42px; line-height:18px; margin-bottom:15px;}
+	.form-reg-n .icon{ width:25px}
+	.form-reg-n .icon img{width: 20px;margin:-2px 0 0 0;} 
+.white-btn{ background:#f4f4f5; border:1px solid #dfdfdf}
 		.form-reg-n li .mi img{ width:8px; }
 .black{ background:#ddd; border-radius:6px; width:100%; line-height:42px; height:42px; text-align:center;font-size:18px;color:#b3b3b3;text-decoration:none; }
 	.black a{ display:block; }
@@ -992,13 +1037,13 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .yj{ margin-right:15px;}	
 .c-0{ color:#007Aff }
 .c-8{ color:#888; }
-.yjlist{border-bottom:1px solid #dfdfdf}
+.yjlist{border-bottom:1px solid #dfdfdf; overflow:hidden; }
+.m-t{margin-top:15px}
 	.yjlist ul{ border-top:1px solid #dfdfdf;background:#fff;overflow:hidden;padding:0 15px;  line-height:40px;  }
-	.yjlist li{ float:left;line-height:40px; width:25% ; font-size:12px; color:#353535}
-
-.yjlist li.w1 {
-	width: 44%
-}
+	.yjlist li{ float:left;line-height:40px; width:25% ; font-size:14px; color:#353535}
+	.yjlist .br-img{ float:right }
+	.yjlist .br-img img{ width:8px;}
+	.yjlist li.w1 {width: 44%}
 	.yjlist li.w2{ width:10%}	
 	.yjlist li.w3{ width:33.3%}	
 	.yjlist li.w4{ width:35%}	
@@ -1007,6 +1052,8 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.yjlist li.w7{ width:50%}
 	.yjlist li.w8{ width:20%;}
 	.yjlist li.w9{ width:10%;}
+	.yjlist li.w10{width:40%;}
+	.yjlist p{ margin:0}
 	.yjlist .bg{ background:#F8F8F8;}
 	.yjlist li select{ background:none; width:140%;  height:30px;line-height:30px; margin:5px 0; border:0;}
 	.yjlist li .e1 {width:100%; background:none; border:none; }  
@@ -1103,6 +1150,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.mydata .collect{ color:#353535}
 	.mydata .red-m{ color:#F65150; font-size:18px;}
 	.mydata a{ color:#888; display:block; text-decoration:none}
+	.mydata .m-1{ margin-top:-1px; }
 .pay-ewm{ padding:30px 0 0 0; text-align:center}
 	.pay-ewm .av-p{}
 	.pay-ewm .av-p img{ width:70px; height:70px; border-radius:70px; border:1px solid #dfdfdf}
@@ -1205,11 +1253,16 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .financial{background: -webkit-linear-gradient(buttom, #FD5959 , #EB3842); /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(top, #EB3842 , #FD5959 ); /* Opera 11.1 - 12.0 */
   background: -moz-linear-gradient(top, #EB3842 , #FD5959 ); /* Firefox 3.6 - 15 */
-  background: linear-gradient(to top, #EB3842 , #FD5959 ); height:100px; padding:20px 15px;}
+  background: linear-gradient(to top, #EB3842 , #FD5959 );  padding:20px 15px 0 15px;}
 	.financial .smt{ color:#fff; opacity:0.8; font-size:13px;}
 	.financial p{ margin:0}
 	.financial .money{ font-size:32px; color:#fff; font-weight:300}
-	.financial a{ text-decoration:none; display:block; text-align:center; color:#fff; border:1px solid #fff; border-radius:4px; background:#f4595e; opacity:0.7; width:60px; line-height:28px; margin-top:13px}
+	.financial .f17{ font-size:17px; font-weight:300}
+	.financial .tx{ text-decoration:none; display:block; text-align:center; color:#fff; border:1px solid #fff; border-radius:4px; background:#f4595e; opacity:0.7; width:60px; line-height:28px; margin-top:28px;font-size:13px;}
+	.financial .vip{ text-decoration:none; display:block; text-align:center; color:#fff; border:1px solid #fff; border-radius:4px; background:#f4595e; opacity:0.7; width:104px; line-height:28px; margin-top:28px; font-size:13px;}
+.num-y{margin:20px -15px 0 -15px; font-size:14px;color:#fff; line-height:44px; padding:0 15px; background:#dd4048;}
+	.num-y img{ width:8px; margin-left:8px; margin-top:-2px}
+	.num-y a{ display:block; text-decoration:none; color:#fff}
 .month{ padding:15px 15px 8px 15px; color:#888; font-size:14px;}
 .finlist{ background:#fff;border-top:1px solid #dfdfdf}
 	.finlist ul{}
@@ -1247,7 +1300,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 .myin{background: -webkit-linear-gradient(right, #fd5959 , #EB3842); /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(left, #EB3842,  #fd5959 ); /* Opera 11.1 - 12.0 */
   background: -moz-linear-gradient(left, #EB3842,  #fd5959); /* Firefox 3.6 - 15 */
-  background: linear-gradient(to left, #EB3842,  #fd5959 );color:#fff; height:215px; padding:0 15px }
+  background: linear-gradient(to left, #EB3842,  #fd5959 );color:#fff; height:145px; padding:0 15px }
   .myin .m{ line-height:44px; font-size:13px; border-bottom:1px solid #fb8688; margin-bottom:12px; overflow:hidden }
   	.myin .m img{ width:30px; height:30px; border-radius:30px; margin-right:8px; margin-top:-2px}
 	.myin .m a{ display:block; color:#fff; text-decoration:none}
@@ -1257,11 +1310,9 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.myin .num{ font-size:32px; font-weight:300}
 	.myin .num-s{ font-size:14px; margin-left:10px}
 	.myin p{ margin:0}
-	.myin .tx{float:right; margin-top:25px;width:100%; overflow:hidden; display:block;}
-	.myin .tx a{ background:#f14c54;  border-radius:4px; color:#fff; width:100%; height:32px; line-height:32px; font-size:15px; text-align:center; border:1px solid #fff; opacity:0.5; text-decoration:none; display:block}
-	.myin .b50{ width:50%;}
-	.myin .b40{ width:40%;}
-	.myin .br-r{ background:url(border-rightw.png) no-repeat right 32px; margin-right:10%;  background-size:1px 40px}
+	.myin .tx{float:right; margin-top:25px; overflow:hidden; display:block;}
+	.myin .tx a{ background:#f14c54;  border-radius:4px; color:#fff; width:60px; height:28px; font-size:14px; text-align:center; border:1px solid #fff; opacity:0.5; text-decoration:none; display:block}
+
 	
 .txgz{ font-size:12px; text-align:center; margin:15px 0 60px 0; overflow:hidden}
 	.txgz a{ color:#5F7593}
@@ -1283,6 +1334,7 @@ box-shadow:0px 0px 6px #d9d9d9;  }
 	.follow .ewm{ position:absolute; top:36%;  z-index:99}
 		.follow .ewm img{ width:35%; display:block; margin:0 auto;}
 	.follow .bg{ position:relative; top:0}
+.check-pos{ top:-10px;float:right; width:92%; text-align:left}
 .ks{}
 	.ks p{ margin:0}
 	.ks .k-b{}
@@ -1291,10 +1343,31 @@ box-shadow:0px 0px 6px #d9d9d9;  }
 		.ks .u-a .f16{ font-size:16px; color:#353535;}
 		.ks .u-a .f14{ font-size:14px; color:#888; display:block}
 		.ks .u-a img{ float:left; margin-right:10px; width:44px; height:44px; border-radius:44px; border:1px solid #dfdfdf}
-	.ks .y1{ margin:30px 15px 0 15px}
-	.ks .y1 button{ height:42px; line-height:18px;}
+	.ks .y2{ margin:20px 15px 0 15px}
+	.ks .y2 button{ height:42px; line-height:18px;}
 	.ks .bo-b{border-bottom:1px solid #dfdfdf;}
-	.ks .yzm-n{ float:right; color:#FFF; font-size:15px; line-height:44px; background:#F65150; padding:0 13px;}
-.
+	.ks .check{ margin:15px 15px 0 15px; }
+		.ks .check input{ float:left}
+		.ks .check a{ text-decoration:none}
+.branch{ background:#fff}
+	.branch ul{padding-left:15px; }
+	.branch li{ border-bottom:1px solid #dfdfdf; line-height:44px;}
+	.branch .serch{ padding:15px 10px 15px 15px ; border-bottom:1px solid #dfdfdf}
+		.branch .serch input{ background:#EFEFF4; border:0;border-radius:4px; height:30px; padding-left:10px; width:89% }
+	.branch .serch a{ text-decoration:none; color:#888; line-height:30px; float:right}
+	.branch .curr{ color:#FF5A5F; background:url(ok-icon.png) no-repeat 97% 50%; background-size:16px; }
+.showcard{ background:#fff;width:100%; position:fixed; top:0px; padding-left:37px;  line-height:44px; height:44px; color:#000; font-size:21px;-moz-box-shadow:0px 0px 6px #d9d9d9; 
+-webkit-box-shadow:0px 0px 6px #d9d9d9; 
+box-shadow:0px 0px 6px #d9d9d9;  }
+.notes{ color:#5F7593; position: absolute; width:100%; text-align:center; bottom:15px; }
+	.notes a{color:#5F7593; text-decoration:none; display:block}
+.note-r{ margin-top:15px;font-size:13px}
+	.note-r ul{ border-right:1px solid #dfdfdf; overflow:hidden}
+	.note-r li{ width:25%; float:left; text-align:center; color:#666; line-height:33px;border-left:1px solid #dfdfdf;border-bottom:1px solid #dfdfdf;}
+	.note-r .onebg{ background:#f8f8f8; border-top:1px solid #dfdfdf}
+	.note-r .b75{ width:75%; }
+	.note-r .zhu{ padding:15px; line-height:22px; color:#888; }
+.agreement{ padding:0 15px; line-height:22px; color:#888}
+
 
 	
