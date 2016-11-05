@@ -922,13 +922,15 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	
 }
 .chk_1 + label:active {
-	
+	color: #F65150;
+	font-weight:200;
 }
 
 .chk_1:checked + label {
 	background-color: #fff;
 	border: 1px solid #dfdfdf;
 	color: #F65150;
+	font-weight:200;
 }
 
 .chk_1:checked + label:after {
@@ -937,6 +939,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	top: -5px;
 	left: 0px;
 	color: #F65150;
+	font-weight:200;
 	width: 100%;
 	text-align: center;
 	font-size: 1.2em;
