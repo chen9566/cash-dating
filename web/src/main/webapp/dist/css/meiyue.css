@@ -1192,7 +1192,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	
 	.loan .right-pos{color:#888 ; position:absolute;background:none;  z-index:-1; top:0}
 	.loan .right-img{position:absolute;background:none;  z-index:-1; top:15px; right:15px;}
-	.agree{ padding:10px 15px; font-size:14px; overflow:hidden}
+	.agree{ padding:10px 15px; margin-top:5px; font-size:14px; overflow:hidden}
 		.agree .input_check{ width:22px; height:22px; vertical-align:bottom; margin-right:10px; background:#fff; color:#F65150;}
 		.agree a{ text-decoration:none; color:#007AFF; }
 		.agree .a1{ vertical-align:center;}
