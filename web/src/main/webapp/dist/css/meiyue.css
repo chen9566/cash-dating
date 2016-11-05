@@ -1176,11 +1176,12 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.card-abs .f12{ color:#fbd0c6; font-size:12px;}
 	.card-abs .f25{color:#fff; font-size:25px; display:block; font-weight:300}
 .mar30{ margin-top:30px}
+.mar20{ margin-top:20px !important}
 .loan{ background:#fff; padding-top:15px;}
 	.loan .t1{ font-size:14px; padding-left:15px; color:#353535}
 	.loan p{ margin:0}
 	.loan .jk{ border-bottom:1px solid #dfdfdf; padding:0 15px; height:65px; line-height:65px; }
-		.loan .jk input[type="number"]{-moz-appearance:textfield;border: 0;background:none;width:90%;font-size:40px; line-height:50px;height:50px; margin:7px 0 0 0;  font-weight:300;padding-left:5px;}
+		.loan .jk input[type="tel"]{-moz-appearance:textfield;border: 0;background:none;width:90%;font-size:40px; line-height:50px;height:50px; margin:7px 0 0 0;  font-weight:300;padding-left:5px;}
 		.loan .jk img{ width:18px; padding:10px 0 15px 0; margin-right:10px; margin-top:-11px;  }
 	.loan ul{padding-left:15px; overflow:hidden}
 	.loan li{ line-height:44px; padding-right:15px; color:#888; font-size:14px; }
@@ -1191,7 +1192,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	
 	.loan .right-pos{color:#888 ; position:absolute;background:none;  z-index:-1; top:0}
 	.loan .right-img{position:absolute;background:none;  z-index:-1; top:15px; right:15px;}
-	.agree{ padding:10px 15px; margin-bottom:30px; font-size:14px; overflow:hidden}
+	.agree{ padding:10px 15px; font-size:14px; overflow:hidden}
 		.agree .input_check{ width:22px; height:22px; vertical-align:bottom; margin-right:10px; background:#fff; color:#F65150;}
 		.agree a{ text-decoration:none; color:#007AFF; }
 		.agree .a1{ vertical-align:center;}
