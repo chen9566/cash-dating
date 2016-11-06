@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<!--/*@thymesVar id="banks" type="java.lang.Iterable<me.jiangcai.dating.entity.Bank>"*/-->
+<!--/*@thymesVar id="list" type="java.lang.Iterable<me.jiangcai.chanpay.model.SubBranch>"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
@@ -11,19 +11,22 @@
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
-    <script src="dist/js/add-card.js"></script>
 </head>
 <body>
+<!--class="curr" 选中的-->
 <div class="branch">
-		<div class="serch"><input name="" type="text" required  placeholder="搜索关键字"><a href="#">取消</a></div>
-	<ul>
-		<li class="curr">杭州德胜支行</li>
-		<li>杭州德胜支行</li>
-		<li>杭州德胜支行</li>
-		<li>杭州德胜支行</li>
-		<li>杭州德胜支行</li>
-		<li>杭州德胜支行</li>
-	</ul>
-	</div>
+    <div class="serch"><input name="search" type="text" required placeholder="搜索关键字">
+        <a href="javascript:history.back()">取消</a>
+    </div>
+    <ul>
+        <li th:each="branch:${list}" th:text="${branch.name}" data-id="1" th:attr="data-id=${branch.id}">杭州德胜支行1</li>
+        <li th:remove="all" data-id="2">杭州德胜支行2</li>
+        <li th:remove="all" data-id="3">杭州德胜支行3</li>
+        <li th:remove="all" data-id="4">杭州德胜支行4</li>
+        <li th:remove="all" data-id="5">杭州德胜支行5</li>
+    </ul>
+</div>
+
+<script src="js/subBranches.js"></script>
 </body>
 </html>

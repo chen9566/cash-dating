@@ -36,7 +36,7 @@ public class CodePage extends AbstractPage {
     @Override
     public void validatePage() {
         assertThat(webDriver.getTitle())
-                .isEqualTo("合伙赚钱");
+                .isEqualTo("邀请合伙人");
         webDriver.findElements(By.tagName("img")).stream()
                 .filter(WebElement::isDisplayed)
                 .filter(webElement -> "myShareQRCode".equals(webElement.getAttribute("name")))

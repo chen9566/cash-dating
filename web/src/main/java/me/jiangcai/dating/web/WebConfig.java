@@ -98,6 +98,7 @@ public class WebConfig {
                     .antMatchers("/qrUrl").permitAll()
                     //
                     .antMatchers("/provinceList").permitAll()
+                    .antMatchers("/subBranchHtml").permitAll()
                     .antMatchers("/subBranchList").permitAll()
                     // 所有的
                     .antMatchers("/all.js").permitAll()

@@ -53,16 +53,20 @@ public class CardController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/card")
-    public String start(@RequestHeader("Referer") String redirectUrl, String nextAction, HttpSession session, Model model) {
-        if (StringUtils.isEmpty(nextAction)) {
-            session.removeAttribute(NextActionSessionKey);
-        } else
-            session.setAttribute(NextActionSessionKey, nextAction);
+    public String start(@RequestHeader(value = "Referer", required = false) String redirectUrl, String nextAction
+            , HttpSession session, Model model) {
+        if (!StringUtils.isEmpty(redirectUrl) || !StringUtils.isEmpty(nextAction)) {
+            if (StringUtils.isEmpty(nextAction)) {
+                session.removeAttribute(NextActionSessionKey);
+            } else
+                session.setAttribute(NextActionSessionKey, nextAction);
 
-        if (StringUtils.isEmpty(redirectUrl)) {
-            session.removeAttribute(RedirectSessionKey);
-        } else
-            session.setAttribute(RedirectSessionKey, redirectUrl);
+            if (StringUtils.isEmpty(redirectUrl)) {
+                session.removeAttribute(RedirectSessionKey);
+            } else
+                session.setAttribute(RedirectSessionKey, redirectUrl);
+        }
+
         model.addAttribute("banks", bankService.list());
         return "addcard.html";
     }

@@ -1,6 +1,7 @@
 package me.jiangcai.dating.web.controller;
 
 import com.google.zxing.WriterException;
+import me.jiangcai.chanpay.model.SubBranch;
 import me.jiangcai.dating.CashFilter;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.service.OrderService;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.List;
 
 /**
  * 公开权限的
@@ -155,8 +158,16 @@ public class GlobalController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/subBranchList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public Object subBranchList(String bankId, String cityId) {
+    public List<SubBranch> subBranchList(String bankId, String cityId) {
         return payResourceService.listSubBranches(cityId, bankId);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/subBranchHtml", produces = MediaType.TEXT_HTML_VALUE)
+    public String subBranch(String bankId, String cityId, Model model) {
+//        model.addAttribute("bankId", bankId);
+//        model.addAttribute("cityId", cityId);
+        model.addAttribute("list", subBranchList(bankId, cityId));
+        return "addcardlist.html";
     }
 
 }

@@ -108,7 +108,8 @@ public class BindingMobilePage extends AbstractPage {
      * @param user 邀请者
      */
     public void assertInvite(User user) {
-        assertThat(inviteCodeInput.getText())
+//        printThisPage();
+        assertThat(inviteCodeInput.getAttribute("value"))
                 .isEqualTo(user.getInviteCode());
         // 总有一个span 是看到了user的
         assertThat(webDriver.findElements(By.tagName("span")).stream()

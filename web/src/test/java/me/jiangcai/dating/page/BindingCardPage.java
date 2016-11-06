@@ -23,9 +23,10 @@ public class BindingCardPage extends AbstractPage {
     private WebElement provinceSelect;
     private WebElement citySelect;
     private WebElement bankSelect;
-    private WebElement subBranchInput;
+    //    private WebElement subBranchInput;
     private WebElement numberInput;
     private WebElement submitButton;
+    private WebElement subBranchRegion;
 
     public BindingCardPage(WebDriver webDriver) {
         super(webDriver);
@@ -33,11 +34,6 @@ public class BindingCardPage extends AbstractPage {
 
     @Override
     public void validatePage() {
-        getWorkingInputs()
-                .filter(element -> element.getAttribute("placeholder").contains("姓名"))
-                .findFirst()
-                .ifPresent(element -> nameInput = element);
-
         getWorkingSelects()
                 .filter(element -> "province".equalsIgnoreCase(element.getAttribute("name")))
                 .findFirst()
@@ -57,31 +53,39 @@ public class BindingCardPage extends AbstractPage {
 //                .filter(element -> element.getAttribute("placeholder").contains("支行"))
 //                .findFirst()
 //                .ifPresent(element -> subBranchInput = element);
-        getWorkingSelects()
-                .filter(element -> "subBranch".equalsIgnoreCase(element.getAttribute("name")))
-                .findFirst()
-                .ifPresent(element -> subBranchInput = element);
+//        getWorkingSelects()
+//                .filter(element -> "subBranch".equalsIgnoreCase(element.getAttribute("name")))
+//                .findFirst()
+//                .ifPresent(element -> subBranchInput = element);
 
-        getWorkingInputs()
-                .filter(element -> element.getAttribute("placeholder").contains("卡号"))
-                .findFirst()
-                .ifPresent(element -> numberInput = element);
 
-        webDriver.findElements(By.tagName("button")).stream()
-                .filter(WebElement::isDisplayed)
-                .filter(element -> "提交".equals(element.getText()))
-                .findFirst()
-                .ifPresent(element -> submitButton = element);
-
+        checkFormElement();
 
         assertThat(nameInput).isNotNull();
         assertThat(nameInput.isDisplayed()).isTrue();
         assertThat(provinceSelect).isNotNull();
         assertThat(citySelect).isNotNull();
         assertThat(bankSelect).isNotNull();
-        assertThat(subBranchInput).isNotNull();
+//        assertThat(subBranchInput).isNotNull();
         assertThat(numberInput).isNotNull();
         assertThat(submitButton).isNotNull();
+        assertThat(submitButton.isDisplayed()).isTrue();
+    }
+
+    private void checkFormElement() {
+        getWorkingInputs()
+                .filter(element -> element.getAttribute("placeholder").contains("姓名"))
+                .findFirst()
+                .ifPresent(element -> nameInput = element);
+        getWorkingInputs()
+                .filter(element -> element.getAttribute("placeholder").contains("卡号"))
+                .findFirst()
+                .ifPresent(element -> numberInput = element);
+        webDriver.findElements(By.cssSelector("input[type=submit]")).stream()
+                .filter(WebElement::isDisplayed)
+//                .filter(element -> "提交".equals(element.getText()))
+                .findFirst()
+                .ifPresent(element -> submitButton = element);
     }
 
     private Stream<WebElement> getWorkingSelects() {
@@ -101,14 +105,9 @@ public class BindingCardPage extends AbstractPage {
      * @param number
      */
     public void submitWithRandomAddress(SubBranchBank branchBank, String name, String number) {
-
         // 这下省份了城市都应该有了
         City city = PayResourceService.cityById(branchBank.getCityCode());
         Province province = PayResourceService.provinceByCity(city);
-
-
-        nameInput.clear();
-        nameInput.sendKeys(name);
 
         WebElement form = webDriver.findElement(By.tagName("form"));
 
@@ -116,14 +115,28 @@ public class BindingCardPage extends AbstractPage {
         inputSelect(form, citySelect.getAttribute("name"), city.getName());
         //
         inputSelect(form, bankSelect.getAttribute("name"), branchBank.getBank().getName());
-        inputSelect(form, subBranchInput.getAttribute("name"), label -> {
-            return branchBank.getName().endsWith(label);
-        });
+
+        subBranchRegion.click();
+
+        // 去找目标
+        webDriver.findElements(By.tagName("li")).stream()
+                .filter(WebElement::isDisplayed)
+                .filter(webElement -> branchBank.getName().endsWith(webElement.getText()))
+                .findFirst()
+                .orElseThrow(IllegalStateException::new)
+                .click();
+        checkFormElement();
+//        inputSelect(form, subBranchInput.getAttribute("name"), label -> {
+//            return branchBank.getName().endsWith(label);
+//        });
 
 //        subBranchInput.clear();
 //        subBranchInput.sendKeys(subBranch);
+
         numberInput.clear();
         numberInput.sendKeys(number);
+        nameInput.clear();
+        nameInput.sendKeys(name);
 
         submitButton.submit();
     }

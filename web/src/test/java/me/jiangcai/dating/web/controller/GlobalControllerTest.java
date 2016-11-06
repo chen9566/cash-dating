@@ -55,6 +55,7 @@ public class GlobalControllerTest extends WebTest {
                 get("/subBranchList")
                         .param("bankId", subBranchBank.getBank().getCode())
                         .param("cityId", subBranchBank.getCityCode())
+                        .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
