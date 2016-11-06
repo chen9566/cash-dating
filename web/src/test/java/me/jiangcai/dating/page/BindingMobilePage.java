@@ -1,5 +1,6 @@
 package me.jiangcai.dating.page;
 
+import me.jiangcai.dating.entity.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
@@ -9,13 +10,14 @@ import org.openqa.selenium.support.FindBy;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * register.html
  * @author CJ
  */
 public class BindingMobilePage extends AbstractPage {
 
     private WebElement mobileInput;
     private WebElement codeInput;
-    private WebElement button;
+    private WebElement registerButton;
     @FindBy(id = "btn-mask")
     private WebElement buttonSend;
     private WebElement inviteCodeInput;
@@ -43,8 +45,8 @@ public class BindingMobilePage extends AbstractPage {
                 .findAny().ifPresent(element -> inviteCodeInput = element);
 
         webDriver.findElements(By.tagName("button")).stream()
-                .filter(element -> element.getText().equals("确定") && element.isDisplayed())
-                .findAny().ifPresent(element -> button = element);
+                .filter(element -> element.getText().equals("注册") && element.isDisplayed())
+                .findAny().ifPresent(element -> registerButton = element);
 
 //        webDriver.findElements(By.className("yzm")).stream()
 //                .filter(element -> element.isDisplayed() && element.getText().equals("获取验证码"))
@@ -53,12 +55,12 @@ public class BindingMobilePage extends AbstractPage {
         assertThat(mobileInput).isNotNull();
         assertThat(mobileInput.isDisplayed()).isTrue();
         assertThat(codeInput).isNotNull();
-        assertThat(button).isNotNull();
+        assertThat(registerButton).isNotNull();
         assertThat(buttonSend).isNotNull();
     }
 
     public void submitWithNothing() {
-//        button.click();
+//        registerButton.click();
         assertAlert("手机号码");
 
     }
@@ -84,7 +86,7 @@ public class BindingMobilePage extends AbstractPage {
     public void submitWithCode() {
         codeInput.clear();
         codeInput.sendKeys("1234");
-        button.click();
+        registerButton.click();
 //        System.out.println(webDriver.getPageSource());
     }
 
@@ -98,5 +100,20 @@ public class BindingMobilePage extends AbstractPage {
                 .isTrue();
         inviteCodeInput.clear();
         inviteCodeInput.sendKeys(code);
+    }
+
+    /**
+     * 这个用户是被user邀请而来的
+     *
+     * @param user 邀请者
+     */
+    public void assertInvite(User user) {
+        assertThat(inviteCodeInput.getText())
+                .isEqualTo(user.getInviteCode());
+        // 总有一个span 是看到了user的
+        assertThat(webDriver.findElements(By.tagName("span")).stream()
+                .filter(WebElement::isDisplayed)
+                .anyMatch(webElement -> webElement.getText().contains(user.getNickname())))
+                .isTrue();
     }
 }

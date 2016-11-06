@@ -1,16 +1,18 @@
 // reformat by CJ
 $(function () {
-    var mobileInput = $('input[type=tel]');
+    var mobileInput = $('input[name=mobile]');
     //获取短信验证码
+    // mobileInput.trigger('do-check');
+
     var validCode = true;
     $("#btn-mask").click(function () {
         var time = 50;
         var code = $(this);
         if (validCode) {
-            if (!$.yzmValidator.element(mobileInput)) {
+            mobileInput.trigger('do-check');
+            if (!mobileInput.attr('checkResult') || mobileInput.attr('checkResult') == 'false') {
                 return;
             }
-
             // if (!$.prototypesMode) {
             // 原型发个球
             // console.error('mobile', mobileInput.val());

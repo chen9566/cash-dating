@@ -50,8 +50,8 @@ public class RelationTest extends WebTest {
 //        driver.quit();
         WebDriver oldDriver = driver;
         createWebDriver();
-        driver.get(url);// 这个时候发生了什么事? 为什么还是原来的用户?
-        User newOne = helloNewUser(null, true);
+//        driver.get(url);// 这个时候发生了什么事? 为什么还是原来的用户?
+        User newOne = helloNewUser(url, invite, true);
         assertThat(newOne.getGuideUser())
                 .isEqualTo(invite);
 
@@ -75,6 +75,10 @@ public class RelationTest extends WebTest {
         myInvitationPage.assertTeam();
 
         myInvitationPage.assertUser(invite, statisticService);
+
+        // 这里再次浏览 应该是My
+        driver.get(url);
+        initPage(MyPage.class);
     }
 
     private void noTeamPage() {

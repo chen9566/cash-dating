@@ -167,7 +167,7 @@ public class LoginControllerTest extends WebTest {
         User boss = userService.byOpenId(createNewUser().getOpenId());
         driver.quit();
         createWebDriver();
-        User newUser = helloNewUser(boss.getInviteCode(), true);
+        User newUser = helloNewUser(boss, true);
         assertThat(newUser.getGuideUser())
                 .isEqualTo(boss);
         assertThat(newUser.getAgentUser())
@@ -176,7 +176,7 @@ public class LoginControllerTest extends WebTest {
         AgentInfo info = agentService.makeAgent(boss);
         driver.quit();
         createWebDriver();
-        newUser = helloNewUser(boss.getInviteCode(), true);
+        newUser = helloNewUser(boss, true);
         assertThat(newUser.getGuideUser())
                 .isEqualTo(boss);
         assertThat(newUser.getAgentUser())

@@ -52,6 +52,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = {WebTest.Config.class, WebConfig.class})
 public abstract class WebTest extends ServiceBaseTest {
 
+    static final String defaultStartUrl = "http://localhost/start";
     private static final Log log = LogFactory.getLog(WebTest.class);
     protected final ObjectMapper objectMapper = new ObjectMapper();
     @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -188,25 +189,24 @@ public abstract class WebTest extends ServiceBaseTest {
     /**
      * 磨磨唧唧的建立一个新用户
      *
-     * @param inviteCode      邀请码
+     * @param invite          邀请者
      * @param withBindingCard 是否自动绑定一个银行卡
      * @return
      * @throws IOException
      */
-    protected User helloNewUser(String inviteCode, boolean withBindingCard) throws IOException {
-        final String startUrl = "http://localhost/start";
-        return helloNewUser(startUrl, inviteCode, withBindingCard);
+    protected User helloNewUser(User invite, boolean withBindingCard) throws IOException {
+        return helloNewUser(defaultStartUrl, invite, withBindingCard);
     }
 
     /**
      * 磨磨唧唧的建立一个新用户
      *
-     * @param inviteCode      邀请码
+     * @param invite          邀请者
      * @param withBindingCard 是否自动绑定一个银行卡
      * @return
      * @throws IOException
      */
-    protected User helloNewUser(String startUrl, String inviteCode, boolean withBindingCard) throws IOException {
+    protected User helloNewUser(String startUrl, User invite, boolean withBindingCard) throws IOException {
         driver.get(startUrl);
         String mobile = randomMobile();
         BindingMobilePage page = initPage(BindingMobilePage.class);
@@ -214,12 +214,20 @@ public abstract class WebTest extends ServiceBaseTest {
         page.submitWithNothing();
         page.inputMobileNumber(mobile);
         page.sendCode();
-        if (inviteCode != null)
-            page.inputInviteCode(inviteCode);
+
+        if (invite != null)
+            if (startUrl.equals(defaultStartUrl)) {
+                page.inputInviteCode(invite.getInviteCode());
+            } else {
+                // 应该看到了邀请者
+                page.assertInvite(invite);
+            }
+
         // 找到最近发送的验证码
         page.submitWithCode();
 
         // 应该到了下一个页面了
+        driver.get(defaultStartUrl);
 
         StartOrderPage startOrderPage = initPage(StartOrderPage.class);
 
