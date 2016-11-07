@@ -107,7 +107,7 @@ public class GlobalController {
 
     public static StringBuilder generateInviteURL(long userId, HttpServletRequest request) {
         StringBuilder urlBuilder = contextUrlBuilder(request);
-        urlBuilder.append("/start?");
+        urlBuilder.append("/my?");
         urlBuilder.append(CashFilter.guideUserFromId(userId));
         return urlBuilder;
     }

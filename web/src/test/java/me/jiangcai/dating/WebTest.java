@@ -252,7 +252,7 @@ public abstract class WebTest extends ServiceBaseTest {
 
         // 这个地址需是我们的收款页吧
         assertThat(url)
-                .contains("/start");
+                .contains("/my");
 
         //终于找到id了
         Long userId = CashFilter.guideUserFromURL(url, null);

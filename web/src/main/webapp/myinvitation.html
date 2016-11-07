@@ -43,16 +43,17 @@
 </p>
 <!--佣金明细!-->
 <div class="yjlist mb60" id="yj">
-    <p class="kong" th:if="${withdrawalFlows.isEmpty()}"><img src="images/kong-pic.png">暂无数据</p>
-    <ul class="bg" th:if="${!withdrawalFlows.isEmpty()}">
+    <p class="kong" th:if="${flows.isEmpty()}"><img src="images/kong-pic.png">暂无数据</p>
+    <ul class="bg" th:if="${!flows.isEmpty()}">
         <li class="w3">昵称</li>
         <li class="w3">收款金额(元)</li>
         <li class="w3">佣金(元)</li>
     </ul>
-    <ul th:each="flow:${withdrawalFlows}" class="clickHref" href="Partnerdata.html">
-        <li class="w3">欣欣殿下</li>
-        <li class="w3">2000</li>
-        <li class="w3">500.00<span class="br-img"><img src="images/blackright-r.png"></span></li>
+    <ul th:each="flow:${flows}" class="clickHref" href="Partnerdata.html">
+        <li class="w3" th:text="${flow.owner.nickname}">欣欣殿下</li>
+        <li class="w3" th:text="${#numbers.formatDecimal(flow.originalAmount,1,'COMMA',2,'POINT')}">2000</li>
+        <li class="w3" th:inline="text">[[${#numbers.formatDecimal(flow.amount,1,'COMMA',2,'POINT')}]]
+            <span class="br-img"><img src="images/blackright-r.png"></span></li>
     </ul>
     <ul th:remove="all" class="clickHref" href="Partnerdata.html">
         <li class="w3">欣欣殿下</li>

@@ -121,7 +121,7 @@ public class MyInvitationPage extends AbstractPage {
     private WebFlow toFlow(WebElement element) {
         List<WebElement> texts = element.findElements(By.tagName("li"));
         return new WebFlow(
-                texts.get(1).getText()
+                texts.get(2).getText()
                 , null
                 , texts.get(0).getText()
                 , null
@@ -271,8 +271,9 @@ public class MyInvitationPage extends AbstractPage {
 
         private boolean equalsTo(BalanceFlow balanceFlow) {
 //            String dataAmount = balanceFlow.getFlowType().toFlag() + Common.CurrencyFormat(balanceFlow.getAmount());
-            String dataAmount = "返佣" + Common.CurrencyFormat(balanceFlow.getAmount()) + "元";
-            if (!amount.equals(dataAmount))
+//            String dataAmount = "返佣" + Common.CurrencyFormat(balanceFlow.getAmount()) + "元";
+            String dataAmount = Common.CurrencyFormat(balanceFlow.getAmount());
+            if (!amount.contains(dataAmount))
                 return false;
 //            if (!comment.equals(balanceFlow.getComment()))
 //                return false;
