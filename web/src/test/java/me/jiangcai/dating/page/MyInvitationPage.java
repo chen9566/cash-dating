@@ -119,12 +119,12 @@ public class MyInvitationPage extends AbstractPage {
     }
 
     private WebFlow toFlow(WebElement element) {
-        List<WebElement> texts = element.findElements(By.tagName("span"));
+        List<WebElement> texts = element.findElements(By.tagName("li"));
         return new WebFlow(
-                element.findElement(By.className("f15")).getText()
+                texts.get(1).getText()
                 , null
                 , texts.get(0).getText()
-                , texts.get(2).getText()
+                , null
         );
     }
 
@@ -150,7 +150,7 @@ public class MyInvitationPage extends AbstractPage {
                 .startsWith("" + statisticService.guides(user.getOpenId()));
 
         webDriver.findElement(By.cssSelector(".yj[name=yj]")).click();
-        webFlows = webDriver.findElement(By.id("yj")).findElements(By.tagName("li")).stream()
+        webFlows = webDriver.findElement(By.id("yj")).findElements(By.tagName("ul")).stream()
                 .filter(WebElement::isDisplayed)
                 .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
                 .map(this::toFlow)
@@ -165,23 +165,23 @@ public class MyInvitationPage extends AbstractPage {
         assertThat(webFlowArrayList.stream()
                 .filter(webFlow -> !webFlow.inList(list))
                 .count()).isEqualTo(0);
-
-        webDriver.findElement(By.cssSelector(".yj[name=tx]")).click();
-        withdrawFlows = webDriver.findElement(By.id("tx")).findElements(By.tagName("ul")).stream()
-                .filter(WebElement::isDisplayed)
-                .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
-                .map(this::toWithdrawFlow)
-                .collect(Collectors.toList());
-
-        List<BalanceFlow> withdrawalList = statisticService.withdrawalFlows(user.getOpenId());
-        // 流水
-        assertThat(withdrawFlows)
-                .hasSize(withdrawalList.size());
-
-        ArrayList<WithdrawFlow> withdrawFlows = new ArrayList<>(this.withdrawFlows);
-        assertThat(withdrawFlows.stream()
-                .filter(webFlow -> !webFlow.inList(withdrawalList))
-                .count()).isEqualTo(0);
+//
+//        webDriver.findElement(By.cssSelector(".yj[name=tx]")).click();
+//        withdrawFlows = webDriver.findElement(By.id("tx")).findElements(By.tagName("ul")).stream()
+//                .filter(WebElement::isDisplayed)
+//                .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
+//                .map(this::toWithdrawFlow)
+//                .collect(Collectors.toList());
+//
+//        List<BalanceFlow> withdrawalList = statisticService.withdrawalFlows(user.getOpenId());
+//        // 流水
+//        assertThat(withdrawFlows)
+//                .hasSize(withdrawalList.size());
+//
+//        ArrayList<WithdrawFlow> withdrawFlows = new ArrayList<>(this.withdrawFlows);
+//        assertThat(withdrawFlows.stream()
+//                .filter(webFlow -> !webFlow.inList(withdrawalList))
+//                .count()).isEqualTo(0);
 
 
     }
@@ -245,6 +245,9 @@ public class MyInvitationPage extends AbstractPage {
         }
     }
 
+    /**
+     * 佣金明细
+     */
     @Data
     @AllArgsConstructor
     private class WebFlow {
