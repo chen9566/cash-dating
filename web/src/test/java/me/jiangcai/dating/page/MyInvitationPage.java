@@ -52,7 +52,7 @@ public class MyInvitationPage extends AbstractPage {
         assertThat(webDriver.getTitle())
                 .isEqualTo("邀请明细");
 
-        agentElement = webDriver.findElements(By.tagName("span")).stream()
+        agentElement = webDriver.findElements(By.tagName("a")).stream()
 //                .filter(WebElement::isDisplayed)
                 .filter(webElement -> webElement.getText().contains("成为超级合伙人"))
                 .findFirst().orElse(null);

@@ -68,7 +68,7 @@ public class MyTeamPage extends AbstractPage {
         MyTeamMember member = new MyTeamMember();
         member.name = lis.get(0);
         member.mobile = lis.get(1);
-        member.select = lis.get(2);
+        member.select = lis.get(3);
         return member;
     }
 
