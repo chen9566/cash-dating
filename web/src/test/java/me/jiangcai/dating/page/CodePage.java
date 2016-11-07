@@ -50,7 +50,7 @@ public class CodePage extends AbstractPage {
 
         webDriver.findElements(By.tagName("button")).stream()
                 .filter(WebElement::isDisplayed)
-                .filter(element -> element.getText().equals("我的邀请"))
+                .filter(element -> element.getText().equals("邀请明细"))
                 .findFirst()
                 .ifPresent(element -> inviteButton = element);
 
@@ -70,6 +70,8 @@ public class CodePage extends AbstractPage {
                 .isNotNull();
         assertThat(inviteButton)
                 .isNotNull();
+        assertThat(inviteButton.isDisplayed())
+                .isTrue();
 //        assertThat(qrCode)
 //                .isNotNull();
 

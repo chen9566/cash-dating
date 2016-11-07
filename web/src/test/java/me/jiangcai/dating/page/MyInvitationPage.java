@@ -22,13 +22,16 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * 我的邀请
+ * 邀请明细
  *
  * @author CJ
  */
 public class MyInvitationPage extends AbstractPage {
     private WebElement agentElement;
-    @FindBy(css = "span[name=balance]")
+    /**
+     * 显示余额的element
+     */
+    @FindBy(css = "p[name=balance]")
     private WebElement balanceText;
     //    private WebElement codeButton;
     private WebElement withdrawButton;
@@ -47,7 +50,7 @@ public class MyInvitationPage extends AbstractPage {
     public void validatePage() {
 
         assertThat(webDriver.getTitle())
-                .isEqualTo("我的邀请");
+                .isEqualTo("邀请明细");
 
         agentElement = webDriver.findElements(By.tagName("span")).stream()
 //                .filter(WebElement::isDisplayed)
