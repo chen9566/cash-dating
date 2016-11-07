@@ -77,7 +77,7 @@ public class MyTeamPage extends AbstractPage {
         memberList.clear();
 
         assertThat(webDriver.getTitle())
-                .isEqualTo("合伙佣金");
+                .isEqualTo("设置支付手续费");
 
         // 等待 知道没有 a 为止
         WebDriverWait wait = new WebDriverWait(webDriver, 10);
@@ -88,7 +88,7 @@ public class MyTeamPage extends AbstractPage {
             }
         });
 
-        printThisPage();
+//        printThisPage();
 
         webDriver.findElements(By.tagName("ul")).stream()
                 .filter(WebElement::isDisplayed)
