@@ -33,7 +33,7 @@ public class TourongjiaServiceTest extends ServiceBaseTest {
         assertThat(financing)
                 .isNotNull();
         tourongjiaService.bind("18606509616", "1122");
-        URI url = tourongjiaService.financingURL(financing, "18606509616");
+        URI url = tourongjiaService.financingURL(financing.getId(), "18606509616");
         System.out.println(url);
     }
 
@@ -52,7 +52,7 @@ public class TourongjiaServiceTest extends ServiceBaseTest {
 
         // abc123
         try {
-            URI url = tourongjiaService.financingURL(financing, "18606509616");
+            URI url = tourongjiaService.financingURL(financing.getId(), "18606509616");
             System.out.println(url);
 
             MobileToken token = tourongjiaService.token("18606509616");
@@ -66,7 +66,7 @@ public class TourongjiaServiceTest extends ServiceBaseTest {
                     .isNotNull();
         } catch (VerifyCodeSentException ex) {
             tourongjiaService.bind("18606509616", "1122");
-            URI url = tourongjiaService.financingURL(financing, "18606509616");
+            URI url = tourongjiaService.financingURL(financing.getId(), "18606509616");
             System.out.println(url);
         }
 

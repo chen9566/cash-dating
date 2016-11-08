@@ -1,41 +1,133 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="rate1" type="java.lang.String"*/-->
+<!--/*@thymesVar id="rate2" type="java.lang.String"*/-->
+<!--/*@thymesVar id="currentFinancing" type="me.jiangcai.dating.model.trj.Financing"*/-->
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta charset="UTF-8">
-<title>款爷理财</title>
-<link rel="stylesheet" href="dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="dist/css/font-awesome.min.css">
-<link rel="stylesheet" href="dist/css/meiyue.css">
-<script src="dist/js/jquery.js"></script>
-<script src="dist/js/bootstrap.min.js"></script>
-<script src="dist/js/share.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <title>款爷理财</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/share.js"></script>
+    <style>
+        .financing {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-	<div class="wealth">
-		<p><img src="images/lcbig01.png" class="b"></p>
-		<div class="wealth-abs">
-			<ul>
-				<li class="bo-r"><span class="f12">累积理财资金(万元)</span><span class="f25">1000,000</span></li>
-				<li><span class="f12">累积为用户赚取(元)</span><span class="f25">1000,000</span></li>
-			</ul>
-		</div>
-	</div>
-	<div class="products">
-		<div class="ltxt">精选理财<span class="pull-right"><a href="wealthlist.html">更多<img src="images/blackright-r.png" ></a></span></div>
-		<ul >
-			<li class="b40">
-				<p class="f32">8.<span class="f21">00%</span></p>
-				<p class="f12">预期年化收益率</p>
-			</li>
-			<li class="b60">
-				<p><img src="images/we-iconlogo.png" ></p>
-				<p class="f15">微钱进理财</p>
-				<p class="f12">微钱进理财</p>
-			</li>
-		</ul>
-	</div>
-	
+<div class="wealth">
+    <p><img src="images/lcbig01.png" class="b"></p>
+    <!--<div class="wealth-abs">-->
+    <!--<ul>-->
+    <!--<li class="bo-r"><span class="f12">累积理财资金(万元)</span><span class="f25">1000,000</span></li>-->
+    <!--<li><span class="f12">累积为用户赚取(元)</span><span class="f25">1000,000</span></li>-->
+    <!--</ul>-->
+    <!--</div>-->
+</div>
+<div class="products">
+    <div class="ltxt">精选理财<span class="pull-right">
+			<a th:if="${@wealthService.moreFinancingSupport()}" href="wealthlist.html">更多<img
+                    src="images/blackright-r.png"></a>
+		</span></div>
+    <ul class="financing" data-id="test" th:attr="data-id=${currentFinancing.id}">
+        <li class="b40">
+            <p class="f32" id="financingYearRate">
+                <span th:text="${rate1}">8.</span>
+                <span class="f21" th:text="${rate2}">00%</span>
+            </p>
+            <p class="f12">预期年化收益率</p>
+        </li>
+        <li class="b60">
+            <p><img src="images/we-iconlogo.png"></p>
+            <p class="f15" id="financingName" th:text="${currentFinancing.projectTypeName}">微钱进理财</p>
+            <p class="f12" id="financingDesc" th:text="${currentFinancing.projectSlogan}">微钱进理财</p>
+        </li>
+    </ul>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom:0">
+                <h4 class="modal-title" id="myModalLabel" style="text-align:center; font-size:15px;"><b>确认帐号</b><br>
+                    验证码已经发向您的手机。</h4>
+            </div>
+            <label>
+                验证码:
+                <input type="text" name="code" size="30"/>
+            </label>
+            <div class="modal-footer">
+                <div class="show-c3" id="ok" style="cursor: pointer">确定</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="mock/all.js" th:src="@{/all.js}"></script>
+<script>
+    $(function () {
+        var codeInput = $('input[name=code]');
+        var theModal = $('#myModal');
+        var id = null;
+
+        function focusCode() {
+            codeInput.focus();
+        }
+
+        function success(data) {
+            console.error('my data', data);
+            if (data && data.length > 0) {
+                location.href = data;
+            } else {
+                theModal.modal();
+                setTimeout(focusCode, 500);
+            }
+        }
+
+        function forURL(code) {
+            // false &&
+            if ($.prototypesMode) {
+                success(Math.random() > 0.5 ? null : 'http://www.baidu.com');
+            } else {
+                $.ajax($.uriPrefix + '/financingUrl', {
+                    method: 'put',
+//                    dataType: 'json',
+                    data: JSON.stringify({
+                        id: id,
+                        code: code
+                    }),
+                    contentType: 'application/json;charset=UTF-8',
+                    error: function (r) {
+                        console.error('error', r.responseText, r.status, r.statusText);
+                        alert('系统故障,请稍候重试');
+                    },
+                    success: success
+                });
+            }
+
+        }
+
+        $('#ok').click(function () {
+            var code = codeInput.val();
+            theModal.hide();
+            if (code.length > 0)
+                forURL(code);
+        });
+
+        $('.financing').click(function () {
+            id = $(this).attr('data-id');
+            forURL();
+
+        });
+
+
+    });
+</script>
+
 </body>
 </html>

@@ -17,9 +17,14 @@ public class Financing {
     private String id;
     private String prj_series;
     private String prj_type;
-    private String prj_type_name;
+    @JsonProperty("prj_type_name")
+    private String projectTypeName;
     private String prj_name;
-    private String year_rate;
+    /**
+     * 10.00
+     */
+    @JsonProperty("year_rate")
+    private String yearRate;
     private String time_limit;
     private String time_limit_unit_view;
     private String schedule;
@@ -29,7 +34,7 @@ public class Financing {
 // "remind":{"remind_id":"0","is_available":"0"}
 // ,"activity_id":36
 // ,"activity_ext_info":{"name":"","icon":"","big_icon":""}
-// ,"prj_slogan":"定期理财 稳定收益 风险保障"
+// ,"projectSlogan":"定期理财 稳定收益 风险保障"
 // ,"wanyuanProfit":"273.97元",
 // "can_read":1}}
     private String bid_status;
@@ -46,7 +51,8 @@ public class Financing {
     @JsonProperty("is_limit_amount")
     private boolean is_limit_amount;
     private int guarantor_num;
-    private String prj_slogan;
+    @JsonProperty("prj_slogan")
+    private String projectSlogan;
     private String wanyuanProfit;
     @JsonDeserialize(using = BooleanDeserializer.class)
     private boolean can_read;

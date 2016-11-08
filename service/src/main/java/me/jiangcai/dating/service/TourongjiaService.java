@@ -67,11 +67,11 @@ public interface TourongjiaService {
     /**
      * 选择了理财产品以后的地址
      *
-     * @param financing 产品
+     * @param financingId 产品
      * @param mobile    手机号码
      * @return 具体URL
      * @throws IOException
      * @throws VerifyCodeSentException 如果未绑定,并且发送了验证码
      */
-    URI financingURL(Financing financing, String mobile) throws IOException, VerifyCodeSentException;
+    URI financingURL(String financingId, String mobile) throws IOException, VerifyCodeSentException;
 }

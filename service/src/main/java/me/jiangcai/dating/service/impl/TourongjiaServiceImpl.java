@@ -215,7 +215,7 @@ public class TourongjiaServiceImpl implements TourongjiaService {
     }
 
     @Override
-    public URI financingURL(Financing financing, String mobile) throws IOException, VerifyCodeSentException {
+    public URI financingURL(String financingId, String mobile) throws IOException, VerifyCodeSentException {
         MobileToken token = token(mobile);
         if (token.getBinding() == -1)
             return loginURL(mobile);
@@ -225,9 +225,9 @@ public class TourongjiaServiceImpl implements TourongjiaService {
         }
 
         ///#/invest/1583/30/0?tenant=&prjId=123&mobile=13600000033&sign=&token=
-        return new3Get("#/invest/" + financing.getId() + "/1/30"
+        return new3Get("#/invest/" + financingId + "/1/30"
                 , new BasicNameValuePair("mobile", mobile)
-                , new BasicNameValuePair("prjId", financing.getId())
+                , new BasicNameValuePair("prjId", financingId)
                 , new BasicNameValuePair("token", token.getToken())
         ).getURI();
     }
