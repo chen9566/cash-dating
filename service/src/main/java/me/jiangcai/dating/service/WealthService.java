@@ -2,6 +2,7 @@ package me.jiangcai.dating.service;
 
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.Financing;
+import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 
 import java.io.IOException;
@@ -22,6 +23,10 @@ public interface WealthService {
     Financing currentFinancing() throws IOException;
 
     URI financingUrl(User user, String financingId) throws IOException, VerifyCodeSentException;
+
+    Loan[] loanList() throws IOException;
+
+
 //
 //    /**
 //     * @return 总投资金额

@@ -2,6 +2,7 @@ package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.Financing;
+import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 import me.jiangcai.dating.service.TourongjiaService;
 import me.jiangcai.dating.service.WealthService;
@@ -21,6 +22,8 @@ public class WealthServiceImpl implements WealthService {
     private TourongjiaService tourongjiaService;
     private Financing cache;
     private long lastCacheTime;
+    private Loan[] loanCache;
+    private long loanCacheTime;
 
     @Override
     public boolean moreFinancingSupport() {
@@ -38,6 +41,25 @@ public class WealthServiceImpl implements WealthService {
     @Override
     public URI financingUrl(User user, String financingId) throws IOException, VerifyCodeSentException {
         return tourongjiaService.financingURL(financingId, user.getMobileNumber());
+    }
+
+    @Override
+    public Loan[] loanList() throws IOException {
+        if (loanCache == null || System.currentTimeMillis() - loanCacheTime > 5 * 60 * 1000) {
+            return reCacheLoan();
+        }
+        return loanCache;
+    }
+
+    private Loan[] reCacheLoan() throws IOException {
+        try {
+            loanCache = tourongjiaService.loanList();
+            loanCacheTime = System.currentTimeMillis();
+        } catch (IOException ignore) {
+            loanCache = tourongjiaService.loanList();
+            loanCacheTime = System.currentTimeMillis();
+        }
+        return loanCache;
     }
 
     private Financing reCache() throws IOException {

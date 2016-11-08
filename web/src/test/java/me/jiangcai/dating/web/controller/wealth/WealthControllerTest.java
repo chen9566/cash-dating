@@ -2,12 +2,16 @@ package me.jiangcai.dating.web.controller.wealth;
 
 import me.jiangcai.dating.LoginWebTest;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.page.FinancingPage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.WealthService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * @author CJ
@@ -19,6 +23,13 @@ public class WealthControllerTest extends LoginWebTest {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserRepository userRepository;
+
+    @Test
+    public void loan() throws IOException {
+        MyPage myPage = myPage();
+        Loan[] loenList = wealthService.loanList();
+        System.out.println(Arrays.toString(loenList));
+    }
 
     @Test
     public void financing() throws Exception {
