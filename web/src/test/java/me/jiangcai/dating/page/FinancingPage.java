@@ -49,4 +49,11 @@ public class FinancingPage extends AbstractPage {
         assertThat(webDriver.getCurrentUrl())
                 .contains("login");
     }
+
+    public void assertWorkingPage() {
+        assertThat(webDriver.getTitle())
+                .isEqualTo("投融家");
+        assertThat(webDriver.getCurrentUrl())
+                .doesNotContain("login");
+    }
 }
