@@ -23,6 +23,19 @@
     <input name="id" type="hidden" th:value="${project.productId}"/>
     <input name="period" type="hidden" th:value="${period}"/>
     <input name="amount" type="hidden" th:value="${amount}"/>
+
+    <p class="b1">基本信息</p>
+    <ul>
+        <li class="bo-b">
+            <label class="icon"><img src="images/user-icon.svg"></label>
+            <input type="text" name="name" placeholder="请输入姓名">
+        </li>
+        <li class="noline">
+            <label class="icon"><img src="images/myicon-07.png"></label>
+            <input type="tel" name="mobile" placeholder="请输入身份证号码">
+        </li>
+    </ul>
+
     <p class="b1">必填信息</p>
     <ul class="infor mb15">
         <li class="bo-b f-per">
