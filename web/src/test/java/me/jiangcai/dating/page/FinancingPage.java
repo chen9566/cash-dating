@@ -44,4 +44,9 @@ public class FinancingPage extends AbstractPage {
     public void goFinancing() {
         financingName.click();
     }
+
+    public void assertLoginPage() {
+        assertThat(webDriver.getCurrentUrl())
+                .contains("login");
+    }
 }

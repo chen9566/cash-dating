@@ -17,14 +17,15 @@ public class WealthControllerTest extends LoginWebTest {
 
     @Test
     public void financing() throws Exception {
-        driver.get("http://localhost/my");
-        MyPage myPage = initPage(MyPage.class);
+        MyPage myPage = myPage();
 
         FinancingPage financingPage = myPage.toFinancingPage();
 
         financingPage.assertFinancing(wealthService.currentFinancing());
         // 我这边点击 肯定是会提示让我输入验证码
         financingPage.goFinancing();
+        // 这个是一个新手机号码 所以应该是登录界面
+        financingPage.assertLoginPage();
     }
 
 }

@@ -49,7 +49,8 @@ public class WealthController {
     @RequestMapping(method = RequestMethod.PUT, value = "/financingUrl")
     @ResponseBody
     @Transactional(readOnly = true)
-    public String financingUrl(@AuthenticationPrincipal User user, @RequestBody Map<String, Object> data) throws IOException {
+    public String financingUrl(@AuthenticationPrincipal User user, @RequestBody Map<String, Object> data)
+            throws IOException {
         user = userService.by(user.getId());
         String id = (String) data.get("id");
         assert (id != null);

@@ -11,6 +11,7 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.page.BindingCardPage;
 import me.jiangcai.dating.page.BindingMobilePage;
 import me.jiangcai.dating.page.CodePage;
+import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.OrderService;
@@ -22,6 +23,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -86,8 +88,16 @@ public abstract class WebTest extends ServiceBaseTest {
 
     @Override
     public <T extends AbstractPage> T initPage(Class<T> clazz) {
+        return initPage(clazz, driver);
+    }
+
+    public <T extends AbstractPage> T initPage(Class<T> clazz, WebDriver driver) {
         try {
-            return super.initPage(clazz);
+            T page = PageFactory.initElements(driver, clazz);
+//        page.setResourceService(resourceService);
+            page.setTestInstance(this);
+            page.validatePage();
+            return page;
         } catch (RuntimeException ex) {
             System.out.println(driver.getCurrentUrl());
             System.out.println(driver.getPageSource());
@@ -340,6 +350,15 @@ public abstract class WebTest extends ServiceBaseTest {
 
     public SystemService getSystemService() {
         return systemService;
+    }
+
+    protected MyPage myPage() {
+        return myPage(driver);
+    }
+
+    protected MyPage myPage(WebDriver driver) {
+        driver.get("http://localhost/my");
+        return initPage(MyPage.class);
     }
 
     @ComponentScan({"me.jiangcai.dating.test"})
