@@ -25,6 +25,12 @@ import java.util.UUID;
 @Primary
 @Service
 public class MockTransactionService implements TransactionService {
+
+    /**
+     * 设定该卡number可让提现直接订单失败
+     */
+    public static String FailedServiceCardNumber = null;
+
     @Override
     public Response execute(Request request) throws IOException, SignatureException, SystemException, ServiceException {
         return null;
@@ -47,6 +53,9 @@ public class MockTransactionService implements TransactionService {
             return (T) ("trade://" + trade.getSerialNumber());
         }
         if (tradeRequest instanceof PaymentToCard) {
+            if (FailedServiceCardNumber != null && ((PaymentToCard) tradeRequest).getCardNumber().getOrigin().equals(FailedServiceCardNumber)) {
+                throw new ServiceException("01", "就是失败了");
+            }
             return (T) Boolean.TRUE;
         }
         return null;

@@ -38,6 +38,12 @@ public abstract class UserOrder implements Locker {
     @Column(length = 50)
     private String comment;
     /**
+     * 系统备注
+     * 这个通常记录在创建订单失败时系统的反馈
+     */
+    @Column(length = 100)
+    private String systemComment;
+    /**
      * 开启时间
      */
     @Column(columnDefinition = "datetime")

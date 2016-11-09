@@ -11,6 +11,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static me.jiangcai.dating.entity.Card.NUMBER_LENGTH;
 import static me.jiangcai.dating.entity.Card.OWNER_LENGTH;
@@ -91,4 +92,18 @@ public abstract class PlatformWithdrawalOrder {
      */
     public abstract boolean isSuccess();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PlatformWithdrawalOrder)) return false;
+        PlatformWithdrawalOrder that = (PlatformWithdrawalOrder) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(userOrder, that.userOrder) &&
+                Objects.equals(startTime, that.startTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userOrder, startTime);
+    }
 }
