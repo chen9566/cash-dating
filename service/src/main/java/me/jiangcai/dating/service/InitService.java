@@ -60,6 +60,9 @@ public class InitService {
             @Override
             public void upgradeToVersion(Version version) throws Exception {
                 switch (version) {
+                    case v105001:
+                        jdbcService.tableAlterAddColumn(UserOrder.class, "systemComment", null);
+                        break;
                     case v105000:
                         jdbcService.tableAlterAddColumn(UserOrder.class, "withdrawalCompleted", "0");
                         jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {

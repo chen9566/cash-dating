@@ -271,7 +271,10 @@ public abstract class AbstractChanpayService implements ChanpayService {
         } catch (Exception ex) {
             log.debug("create withdrawal failed", ex);
             order.getPlatformWithdrawalOrderSet().remove(withdrawalOrder);
-//            userOrderRepository.save(order);
+            order.setSystemComment(ex.getClass().getSimpleName() + ":" + ex.getMessage());
+            if (order.getSystemComment().length() > 100) {
+                order.setSystemComment(order.getSystemComment().substring(0, 99));
+            }
             return null;
         }
 
