@@ -243,7 +243,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
 
         order.getPlatformWithdrawalOrderSet().add(withdrawalOrder);
 
-        userOrderRepository.save(order);
+        order = userOrderRepository.save(order);
         // 先保存,失败自然回滚
 
         PaymentToCard paymentToCard = new PaymentToCard();
@@ -260,10 +260,20 @@ public abstract class AbstractChanpayService implements ChanpayService {
         paymentToCard.setCardName(new EncryptString(withdrawalOrder.getOwner()));
         paymentToCard.setCardNumber(new EncryptString(withdrawalOrder.getNumber()));
 
-        if (transactionService.execute(paymentToCard, null)) {
-            withdrawalOrder.setStatus(WithdrawalStatus.WITHDRAWAL_SUBMITTED);
-        } else
-            throw new IllegalStateException("提现订单被拒绝,可能是输入问题。");
+        try {
+            if (transactionService.execute(paymentToCard, null)) {
+                withdrawalOrder.setStatus(WithdrawalStatus.WITHDRAWAL_SUBMITTED);
+            } else {
+                order.getPlatformWithdrawalOrderSet().remove(withdrawalOrder);
+//                userOrderRepository.save(order);
+                return null;
+            }
+        } catch (Exception ex) {
+            log.debug("create withdrawal failed", ex);
+            order.getPlatformWithdrawalOrderSet().remove(withdrawalOrder);
+//            userOrderRepository.save(order);
+            return null;
+        }
 
         return withdrawalOrder;
     }
@@ -285,5 +295,11 @@ public abstract class AbstractChanpayService implements ChanpayService {
 
     protected abstract void beforeExecute(CashOrder order, CreateInstantTrade request);
 
-    protected abstract void beforeExecuteWithdrawal(UserOrder order, ChanpayWithdrawalOrder withdrawalOrder, Card card);
+    protected void beforeExecuteWithdrawal(UserOrder order, ChanpayWithdrawalOrder withdrawalOrder, Card card) {
+        withdrawalOrder.setAddress(card.getAddress());
+        withdrawalOrder.setBank(card.getBank());
+        withdrawalOrder.setSubBranch(card.getSubBranch());
+        withdrawalOrder.setOwner(card.getOwner());
+        withdrawalOrder.setNumber(card.getNumber());
+    }
 }

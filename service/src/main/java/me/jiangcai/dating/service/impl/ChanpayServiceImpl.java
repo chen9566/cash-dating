@@ -1,11 +1,8 @@
 package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.chanpay.data.trade.CreateInstantTrade;
-import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
-import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
-import me.jiangcai.dating.entity.UserOrder;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +18,6 @@ public class ChanpayServiceImpl extends AbstractChanpayService {
     @Override
     protected void beforeExecute(CashOrder order, CreateInstantTrade request) {
         request.scanPay();
-    }
-
-    @Override
-    protected void beforeExecuteWithdrawal(UserOrder order, ChanpayWithdrawalOrder withdrawalOrder, Card card) {
-        // 什么都不用干
-        withdrawalOrder.setAddress(card.getAddress());
-        withdrawalOrder.setBank(card.getBank());
-        withdrawalOrder.setSubBranch(card.getSubBranch());
-        withdrawalOrder.setOwner(card.getOwner());
-        withdrawalOrder.setNumber(card.getNumber());
     }
 
     @Override
