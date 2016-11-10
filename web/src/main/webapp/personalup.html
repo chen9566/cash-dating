@@ -101,37 +101,7 @@
     </p>
 </form>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
-<!--<script src="js/agent.js"></script>-->
-<script>
-    $(function () {
-        var moreRegion = $('#moreRegion');
-        var moreCover = $('#moreCover');
-
-        moreRegion.hide();
-
-        $('a', moreCover).click(function () {
-            moreCover.slideUp();
-            moreRegion.slideDown();
-        });
-
-        $('#loanForm').validate({
-            messages: {
-                name: {
-                    required: '姓名必须输入',
-                    minlength: '姓名必须多于2个字符'
-                },
-                number: {
-                    required: '身份证必须输入',
-                    minlength: '请输入正确的身份证号码'
-                }
-            },
-            errorPlacement: function (error, element) {
-                $.alert(error.text());
-            }
-        });
-
-    });
-</script>
+<script src="js/loanSubmit.js"></script>
 <div class="show-bg" id="myAlert">填写内容不能为空</div>
 </body>
 </html>
