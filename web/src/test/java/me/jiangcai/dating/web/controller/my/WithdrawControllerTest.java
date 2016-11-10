@@ -88,6 +88,9 @@ public class WithdrawControllerTest extends LoginWebTest {
 
         // 即可看到提现的历史了
         listPage.assertList(statisticService.withdrawalFlows(currentUser().getOpenId()));
+
+        assertThat(statisticService.balance(currentUser().getOpenId()))
+                .isEqualByComparingTo(BigDecimal.ZERO);
     }
 
     private void makeBalance() throws IOException, SignatureException {

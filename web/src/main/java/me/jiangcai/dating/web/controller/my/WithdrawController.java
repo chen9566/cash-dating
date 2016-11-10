@@ -35,7 +35,7 @@ public class WithdrawController {
     private OrderService orderService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/withdraw")
-    @Transactional
+    @Transactional(readOnly = true)
     public String index(@AuthenticationPrincipal User user, Model model) {
         if (cardService.bankAccountRequired(user.getOpenId())) {
             return "redirect:/card?nextAction=/withdraw";
@@ -49,7 +49,7 @@ public class WithdrawController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/withdraw")
-    @Transactional
+//    @Transactional
     public String withdraw(@AuthenticationPrincipal User user, BigDecimal amount) throws IOException, SignatureException {
         user = userService.by(user.getId());
         orderService.newWithdrawOrder(user, amount, null);
@@ -57,7 +57,7 @@ public class WithdrawController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/withdrawList")
-    @Transactional
+    @Transactional(readOnly = true)
     public String list(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("withdrawalFlows", statisticService.withdrawalFlows(user.getOpenId()));
         return "Cashlist.html";
