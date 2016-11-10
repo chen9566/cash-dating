@@ -1193,7 +1193,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.loan li.bo-b{ border-bottom:1px solid #dfdfdf}
 	.loan li img{ width:8px; margin-left:8px; }
 	.loan select{ border:0; height:22px; line-height:22px; width:70%;border: 0px;border: none;outline:none; background:none;-moz-appearance: none;-webkit-appearance:none;color:#353535 ;
-            appearance:none; text-align:right ; padding-left:58%; }
+            appearance:none; text-align:right ; padding-left:57%; }
 	
 	.loan .right-pos{color:#888 ; position:absolute;background:none;  z-index:-1; top:0}
 	.loan .right-img{position:absolute;background:none;  z-index:-1; top:15px; right:15px;}
@@ -1294,6 +1294,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 		.products .f21{ font-size:21px; color:#F65150}
 		.products .f12{ font-size:12px; color:#888; line-height:20px }
 		.products .f15{font-size:15px; margin-top:24px; padding:3px 0 8px 0}
+		.products .t-size{overflow: hidden;white-space: nowrap;text-overflow: ellipsis; padding-right:10px}
 	.products .b60{width:65%;}
 		.products .b60 img{ width:48px; float:left; margin:30px 10px 0 15px}
 	.products .ltxt{ color:#888; border-bottom:1px solid #dfdfdf; margin-left:-15px;padding:12px 15px;}
