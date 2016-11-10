@@ -38,7 +38,7 @@ public class InviteController {
 //        model.addAttribute("number", text.substring(0, point));
 //        model.addAttribute("decimal", text.substring(point));
         model.addAttribute("flows", statisticService.commissionFlows(user.getOpenId()));
-        model.addAttribute("withdrawalFlows", statisticService.withdrawalFlows(user.getOpenId()));
+
         return "myinvitation.html";
     }
 

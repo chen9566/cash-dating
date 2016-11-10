@@ -39,7 +39,7 @@ public class MyInvitationPage extends AbstractPage {
     private List<WebFlow> webFlows;
     @FindBy(css = "span[name=numbers]")
     private WebElement numbersText;
-    private List<WithdrawFlow> withdrawFlows;
+
 
     public MyInvitationPage(WebDriver webDriver) {
         super(webDriver);
@@ -70,11 +70,11 @@ public class MyInvitationPage extends AbstractPage {
 //                });
 
         //withdraw
-        webDriver.findElements(By.tagName("a")).stream()
+        withdrawButton = webDriver.findElements(By.tagName("a")).stream()
                 .filter(WebElement::isDisplayed)
                 .filter(element -> element.getText().equals("提现"))
                 .findAny()
-                .ifPresent(element -> withdrawButton = element);
+                .orElse(null);
 
 //        webDriver.findElements(By.tagName("button")).stream()
 //                .filter(WebElement::isDisplayed)
@@ -95,27 +95,16 @@ public class MyInvitationPage extends AbstractPage {
 //                .ifPresent(element -> explainButton = element);
 
 
-
-
         assertThat(balanceText)
                 .isNotNull();
         assertThat(balanceText.isDisplayed())
                 .isTrue();
-        assertThat(withdrawButton)
-                .isNotNull();
+//        assertThat(withdrawButton)
+//                .isNotNull();
 //        assertThat(codeButton)
 //                .isNotNull();
 //        assertThat(webFlows)
 //                .isNotEmpty();
-    }
-
-    private WithdrawFlow toWithdrawFlow(WebElement element) {
-        List<WebElement> texts = element.findElements(By.tagName("li"));
-        return new WithdrawFlow(
-                texts.get(0).getText()
-                , texts.get(1).getText()
-                , texts.get(2).getText()
-        );
     }
 
     private WebFlow toFlow(WebElement element) {
@@ -167,22 +156,6 @@ public class MyInvitationPage extends AbstractPage {
                 .count()).isEqualTo(0);
 //
 //        webDriver.findElement(By.cssSelector(".yj[name=tx]")).click();
-//        withdrawFlows = webDriver.findElement(By.id("tx")).findElements(By.tagName("ul")).stream()
-//                .filter(WebElement::isDisplayed)
-//                .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
-//                .map(this::toWithdrawFlow)
-//                .collect(Collectors.toList());
-//
-//        List<BalanceFlow> withdrawalList = statisticService.withdrawalFlows(user.getOpenId());
-//        // 流水
-//        assertThat(withdrawFlows)
-//                .hasSize(withdrawalList.size());
-//
-//        ArrayList<WithdrawFlow> withdrawFlows = new ArrayList<>(this.withdrawFlows);
-//        assertThat(withdrawFlows.stream()
-//                .filter(webFlow -> !webFlow.inList(withdrawalList))
-//                .count()).isEqualTo(0);
-
 
     }
 
@@ -204,45 +177,24 @@ public class MyInvitationPage extends AbstractPage {
 
             }
         }
+        assertThat(withdrawButton)
+                .isNull();
     }
 
     public void assertTeam() {
         assertThat(teamButton.isDisplayed())
                 .isTrue();
+        assertThat(withdrawButton)
+                .isNotNull();
     }
 
     public void clickMyTeam() {
         teamButton.click();
     }
 
-    /**
-     * 提现明细
-     */
-    @Data
-    @AllArgsConstructor
-    private class WithdrawFlow {
-        private String time;
-        private String amount;
-        private String status;
-
-        boolean inList(List<BalanceFlow> list) {
-            return list.stream()
-                    .filter(this::equalsTo)
-                    .findAny()
-                    .isPresent();
-        }
-
-        private boolean equalsTo(BalanceFlow flow) {
-            // 金额 状态
-            if (!amount.equals(Common.CurrencyFormat(flow.getAmount())))
-                return false;
-//            if (!comment.equals(balanceFlow.getComment()))
-//                return false;
-            if (!status.equals(flow.getStatus()))
-                return false;
-            // time 就算了
-            return true;
-        }
+    public WithdrawPage toWithdrawPage() {
+        withdrawButton.click();
+        return initPage(WithdrawPage.class);
     }
 
     /**

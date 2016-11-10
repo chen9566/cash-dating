@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<!--/*@thymesVar id="orders" type="java.lang.Iterable<me.jiangcai.dating.model.OrderFlow>"*/-->
+<!--/*@thymesVar id="orders" type="java.util.List<me.jiangcai.dating.model.OrderFlow>"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
@@ -14,7 +14,11 @@
     <script src="dist/js/share.js"></script>
 </head>
 <body>
-<div class="myorder">
+<div class="myorder-k" th:if="${orders.isEmpty()}">
+    <p><img src="images/order-kong.png" th:src="@{/images/order-kong.png}"></p>
+    <h1>您当前还没有相关订单</h1>
+</div>
+<div class="myorder" th:if="${!orders.isEmpty()}">
     <ul>
         <li href="orderdetails.html" class="clickHref" th:each="order:${orders}" th:switch="${order.status.name()}"
             th:href="@{/orderDetail/{id}(id=${order.order.id})}">

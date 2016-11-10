@@ -15,11 +15,10 @@
     <script src="dist/js/share.js"></script>
 </head>
 <body>
-<!--<div class="financial">
-    <!--<p class="pull-right"><a href="#">提现</a></p>
-    <p class="smt">在款爷共提现了(元)</p>
-    <p class="money" th:text="${#numbers.formatDecimal(total,1,'COMMA',2,'POINT')}">1000.00</p>
-</div>!-->
+<div class="myorder-k" th:if="${orders.isEmpty()}">
+    <p><img src="images/money-kong.png" th:src="@{/images/money-kong.png}"></p>
+    <h1>您当前还没有资金明细记录</h1>
+</div>
 <div th:each="flows:${orders}">
     <div class="month"><span class="pull-right"
                              th:text="${'收款: ¥'+#numbers.formatDecimal(flows.total,1,'COMMA',2,'POINT')}">收款: ¥3000.00</span><span

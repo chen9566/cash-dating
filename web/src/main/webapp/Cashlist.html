@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
-<!--/*@thymesVar id="balance" type="java.lang.Number"*/-->
-<!--/*@thymesVar id="numbers" type="java.lang.Integer"*/-->
-<!--/*@thymesVar id="flows" type="java.util.List<me.jiangcai.dating.model.BalanceFlow>"*/-->
 <!--/*@thymesVar id="withdrawalFlows" type="java.util.List<me.jiangcai.dating.model.BalanceFlow>"*/-->
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>提现明细</title>
-<link rel="stylesheet" href="dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="dist/css/font-awesome.min.css">
-<link rel="stylesheet" href="dist/css/meiyue.css">
-<script src="dist/js/jquery.js"></script>
-<script src="dist/js/bootstrap.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>提现明细</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
 
 </head>
 <body>
 <!--提现明细!-->
-<div class="m-t yjlist">
-	<ul class="bg" th:if="${!withdrawalFlows.isEmpty()}">
-		<li class="w10">时间</li>
-		<li class="w5">总额(元)</li>
-		<li class="w5">状态</li>
-	</ul>
-	<ul th:each="flow:${withdrawalFlows}">
-		<li class="w10" >14-08-13 18:00</li>
-		<li class="w5" >2000.00</li>
-		<li class="w5" >提现完成</li>
-	</ul>
-	<ul th:each="flow:${withdrawalFlows}">
-		<li class="w10" >14-08-13 18:00</li>
-		<li class="w5" >2000.00</li>
-		<li class="w5" >提现失败</li>
-	</ul>
+<div class="myorder-k" th:if="${withdrawalFlows.isEmpty()}">
+    <p><img src="images/money-kong.png" th:src="@{/images/money-kong.png}"></p>
+    <h1>您当前还没有提现明细记录</h1>
+</div>
+<div class="m-t yjlist" th:if="${!withdrawalFlows.isEmpty()}">
+    <ul class="bg">
+        <li class="w10">时间</li>
+        <li class="w5">总额(元)</li>
+        <li class="w5">状态</li>
+    </ul>
+    <ul th:each="flow:${withdrawalFlows}">
+        <li class="w10" th:text="${{flow.startTime}}">14-08-13 18:00</li>
+        <li class="w5" th:text="${#numbers.formatDecimal(flow.amount,1,'COMMA',2,'POINT')}">2000.00</li>
+        <li class="w5" th:text="${flow.status}">提现完成</li>
+    </ul>
+    <ul th:remove="all">
+        <li class="w10">14-08-13 18:00</li>
+        <li class="w5">2000.00</li>
+        <li class="w5">提现失败</li>
+    </ul>
 </div>
 <!--提现明细 end!-->
 

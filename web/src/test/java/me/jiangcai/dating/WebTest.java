@@ -294,17 +294,19 @@ public abstract class WebTest extends ServiceBaseTest {
             , SubBranchBank subBranchBank, String owner, String number) {
         startOrderPage.toCreateNewOneCard();
 
+        bindCard(mobile, subBranchBank, owner, number);
+        startOrderPage = initPage(StartOrderPage.class);
+        return startOrderPage;
+    }
+
+    protected void bindCard(String mobile, SubBranchBank subBranchBank, String owner, String number) {
         BindingCardPage cardPage = initPage(BindingCardPage.class);
         // 这个用户已经产生
         assertThat(userService.byMobile(mobile))
                 .isNotNull();
         //
         // 地址自己选吧
-
-
         cardPage.submitWithRandomAddress(subBranchBank, owner, number);
-        startOrderPage = initPage(StartOrderPage.class);
-        return startOrderPage;
     }
 
     /**
