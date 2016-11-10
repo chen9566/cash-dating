@@ -4,6 +4,23 @@
  */
 $(function () {
 
+    var myAlert = $('#myAlert');
+    if (myAlert.size() > 0) {
+        myAlert.hide();
+        function releaseMessage() {
+            myAlert.fadeOut();
+        }
+
+        var lastTimeOut;
+        $.alert = function (str) {
+            myAlert.text(str);
+            myAlert.fadeIn();
+            if (lastTimeOut)
+                clearTimeout(lastTimeOut);
+            lastTimeOut = setTimeout(releaseMessage, 2000);
+        };
+    }
+
     // 给所有 clickHref 添加一个点击行为
     $('.clickHref').click(function () {
         // console.log('click on ', this);

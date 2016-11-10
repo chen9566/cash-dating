@@ -63,7 +63,7 @@ $(function () {
             return;
         }
         var value = parseFloat(str);
-        if (value < 5000 || value > $.maxLoanAmount) {
+        if (value < 50000 || value > $.maxLoanAmount) {
             button.attr('disabled', 'disabled');
             button.addClass('black');
             button.removeClass('redremove');

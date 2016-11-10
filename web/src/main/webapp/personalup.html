@@ -18,7 +18,7 @@
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
 </head>
 <body>
-<form class="from-personal" id="" role="form" action="personalok.html" method="get" th:method="post"
+<form class="from-personal" id="loanForm" role="form" action="personalok.html" method="get" th:method="post"
       th:action="@{/loanSubmit}">
     <input name="id" type="hidden" th:value="${project.productId}"/>
     <input name="period" type="hidden" th:value="${period}"/>
@@ -28,11 +28,11 @@
     <ul>
         <li class="bo-b">
             <label class="icon"><img src="images/user-icon.svg"></label>
-            <input type="text" name="name" placeholder="请输入姓名">
+            <input type="text" name="name" placeholder="请输入姓名" required minlength="2">
         </li>
         <li class="noline">
             <label class="icon"><img src="images/myicon-07.png"></label>
-            <input type="tel" name="mobile" placeholder="请输入身份证号码">
+            <input type="tel" name="number" placeholder="请输入身份证号码" required minlength="15">
         </li>
     </ul>
 
@@ -85,7 +85,7 @@
         </select>
             <div class="right-pos">职业情况</div>
             <img src="images/blackright-r.png" class="right-img"></li>
-       
+
         <li><select name="">
             <option>居住类型</option>
             <option>按揭</option>
@@ -101,7 +101,7 @@
     </p>
 </form>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
-<script src="js/agent.js"></script>
+<!--<script src="js/agent.js"></script>-->
 <script>
     $(function () {
         var moreRegion = $('#moreRegion');
@@ -112,6 +112,22 @@
         $('a', moreCover).click(function () {
             moreCover.slideUp();
             moreRegion.slideDown();
+        });
+
+        $('#loanForm').validate({
+            messages: {
+                name: {
+                    required: '姓名必须输入',
+                    minlength: '姓名必须多于2个字符'
+                },
+                number: {
+                    required: '身份证必须输入',
+                    minlength: '请输入正确的身份证号码'
+                }
+            },
+            errorPlacement: function (error, element) {
+                $.alert(error.text());
+            }
         });
 
     });
