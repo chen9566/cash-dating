@@ -61,6 +61,8 @@ public class WealthControllerTest extends LoginWebTest {
         LoanCompletedPage completedPage = submitPage.submit(name, number, province.getName(), city.getName());
 
         completedPage.doBack();
+
+        //TODO 还需要校验下数据的
     }
 
     @Test
