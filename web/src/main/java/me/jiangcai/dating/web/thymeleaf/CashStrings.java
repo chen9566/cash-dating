@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 @Component
 public class CashStrings {
 
-    private static final Pattern numberPattern = Pattern.compile(".*(\\d+).*");
+    private static final Pattern numberPattern = Pattern.compile("(\\d+).*");
 
     /**
      * @param number 真实卡号

@@ -1,15 +1,19 @@
 package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 import me.jiangcai.dating.service.TourongjiaService;
 import me.jiangcai.dating.service.WealthService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URI;
 
 /**
@@ -17,6 +21,8 @@ import java.net.URI;
  */
 @Service("wealthService")
 public class WealthServiceImpl implements WealthService {
+
+    private static final Log log = LogFactory.getLog(WealthServiceImpl.class);
 
     @Autowired
     private TourongjiaService tourongjiaService;
@@ -49,6 +55,12 @@ public class WealthServiceImpl implements WealthService {
             return reCacheLoan();
         }
         return loanCache;
+    }
+
+    @Override
+    public void loanRequest(String openId, Loan loan, BigDecimal amount, int period, String name, String number
+            , Address address) throws IOException {
+        log.debug(address);
     }
 
     private Loan[] reCacheLoan() throws IOException {

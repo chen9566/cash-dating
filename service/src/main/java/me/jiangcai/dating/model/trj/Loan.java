@@ -3,6 +3,7 @@ package me.jiangcai.dating.model.trj;
 import lombok.Data;
 import org.springframework.util.NumberUtils;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -11,7 +12,7 @@ import java.util.regex.Pattern;
 @Data
 public class Loan {
 
-    private static final Pattern amount10KPattern = Pattern.compile(".*(\\d+).*");
+    private static final Pattern amount10KPattern = Pattern.compile("(\\d+).*");
     private String productId;
     private String amount;
     private String[] term;
@@ -23,7 +24,9 @@ public class Loan {
     public String getAmount10K() {
         if (!amount.contains("万"))
             throw new IllegalArgumentException(amount);
-        return amount10KPattern.matcher(amount).group(1);
+        final Matcher matcher = amount10KPattern.matcher(amount);
+        matcher.matches();
+        return matcher.group(1);
     }
 
     public int getAmountInteger() {

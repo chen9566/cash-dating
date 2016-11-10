@@ -24,7 +24,8 @@
     <!--</div>-->
 </div>
 <div class="products">
-    <ul class="bm-b clickHref" th:each="loan:${loanList}" href="loan.html" th:href="@{/loan(id=${loan.productId})}">
+    <ul class="bm-b clickHref" th:each="loan:${loanList}" href="loan.html"
+        th:href="@{/loanStart(id=${loan.productId})}">
         <li class="b30 b40">
             <p class="f32"><span th:text="${loan.amount10K}">20</span><span class="f21">万</span></p>
             <p class="f12">最高可贷</p>

@@ -127,12 +127,18 @@ public class MyPage extends AbstractPage {
     }
 
     public FinancingPage toFinancingPage() {
-        webDriver.findElements(By.tagName("a")).stream()
-                .filter(WebElement::isDisplayed)
-                .filter(webElement -> webElement.getText().contains("款爷理财"))
-                .findFirst()
-                .orElseThrow(IllegalStateException::new)
-                .click();
+        clickMenu("款爷理财");
+//        webDriver.findElements(By.tagName("a")).stream()
+//                .filter(WebElement::isDisplayed)
+//                .filter(webElement -> webElement.getText().contains("款爷理财"))
+//                .findFirst()
+//                .orElseThrow(IllegalStateException::new)
+//                .click();
         return initPage(FinancingPage.class);
+    }
+
+    public LoanPage toLoanPage() {
+        clickMenu("款爷借款");
+        return initPage(LoanPage.class);
     }
 }

@@ -1,8 +1,11 @@
 package me.jiangcai.dating.web.controller.wealth;
 
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.model.trj.Financing;
+import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
+import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.TourongjiaService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.service.WealthService;
@@ -16,10 +19,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * @author CJ
@@ -34,6 +40,8 @@ public class WealthController {
     private TourongjiaService tourongjiaService;
     @Autowired
     private UserService userService;
+
+    ///////////理财
 
     @RequestMapping(method = RequestMethod.GET, value = "/financing")
     public String financing(Model model) throws IOException {
@@ -65,6 +73,51 @@ public class WealthController {
             log.debug(user.getMobileNumber(), ex);
             return null;
         }
+    }
+
+    ////////////// 借款
+    @RequestMapping(method = RequestMethod.GET, value = "/loan")
+    public String loan(Model model) throws IOException {
+        model.addAttribute("loanList", wealthService.loanList());
+        return "loanmain.html";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/loanStart")
+    public String loanStart(Model model, @RequestParam String id) throws IOException {
+        putLoanAsProject(model, id);
+        return "loan.html";
+    }
+
+    private void putLoanAsProject(Model model, String id) throws IOException {
+        model.addAttribute("project", loanInstance(id));
+    }
+
+    private Loan loanInstance(String id) throws IOException {
+        return Stream.of(wealthService.loanList())
+                .filter(loan -> loan.getProductId().equals(id))
+                .findFirst()
+                .orElseThrow(IllegalArgumentException::new);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/loanSummary")
+    public String loanSummary(Model model, String id, String amount, String period) throws IOException {
+        putLoanAsProject(model, id);
+        model.addAttribute("amount", amount);
+        model.addAttribute("period", period);
+        return "personalup.html";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/loanSubmit")
+    public String loanSubmit(@AuthenticationPrincipal User user, String id, BigDecimal amount, int period, String name
+            , String number
+            , @RequestParam("province") String provinceCode, @RequestParam("city") String cityCode) throws IOException {
+
+        Address address = new Address();
+        address.setProvince(PayResourceService.provinceById(provinceCode));
+        address.setCity(PayResourceService.cityById(cityCode));
+
+        wealthService.loanRequest(user.getOpenId(), loanInstance(id), amount, period, name, number, address);
+        return "personalok.html";
     }
 
 }

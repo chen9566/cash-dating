@@ -17,6 +17,28 @@ Number.prototype.formatMoney = function (c, d, t) {
 $(function () {
 
     var myRates = {
+        // 1 2 3 18 24
+        setup: {
+            rate: 0.0144,
+            manage: 0.0025,
+            it: 0.0035,
+            account: 0.001,
+            period: 3
+        },
+        f1: {
+            rate: 0.0144,
+            manage: 0.0025,
+            it: 0.0035,
+            account: 0.001,
+            period: 3
+        },
+        f2: {
+            rate: 0.0144,
+            manage: 0.0025,
+            it: 0.0035,
+            account: 0.001,
+            period: 3
+        },
         f3: {
             rate: 0.0144,
             manage: 0.0025,
@@ -39,6 +61,20 @@ $(function () {
             period: 9
         },
         f12: {
+            rate: 0.0139,
+            manage: 0.0025,
+            it: 0.0035,
+            account: 0,
+            period: 12
+        },
+        f18: {
+            rate: 0.0139,
+            manage: 0.0025,
+            it: 0.0035,
+            account: 0,
+            period: 12
+        },
+        f24: {
             rate: 0.0139,
             manage: 0.0025,
             it: 0.0035,
@@ -71,7 +107,7 @@ $(function () {
             return;
         }
         //先计算利息
-        var rate = myRates['f' + period.val()];
+        var rate = myRates['f' + period.val()] || myRates.setup;
         var p1 = value / rate.period;
         var p2 = value * rate.rate;
         var p3 = value * rate.manage;
