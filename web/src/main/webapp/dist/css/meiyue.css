@@ -1225,7 +1225,7 @@ ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -1
 	.f-per .s2{ width:66%;}
 	.f-per .s3{ width:33%;text-align:right; padding-right:15px;}
 .infor{ color:#888;  }
-	.infor select{ border:0; height:30px; line-height:30px; width:100%;border: 0px;border: none;outline:none; background:none;-moz-appearance: none;-webkit-appearance:none;color:#353535 ;
+	.infor select{height:30px; line-height:30px; width:100%;border: 0px;border: none;outline:none; background:none;-moz-appearance: none;-webkit-appearance:none;color:#353535 ; padding-left:79%;
             appearance:none; text-align:right ; padding-right:15px;}
 	.infor .right-pos{color:#888 ; position:absolute;background:none;  z-index:-1; top:0}
 	.infor .right-img{position:absolute;background:none;  z-index:-1; top:15px; right:15px;}
