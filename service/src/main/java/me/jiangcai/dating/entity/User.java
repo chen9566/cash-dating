@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -168,6 +169,10 @@ public class User implements WeixinUser, ProfitSplit, UserDetails, Locker {
     // 银行卡信息
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Card> cards;
+
+    // 借款信息
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "owner")
+    private Set<UserLoanData> userLoanDataList;
 
     /**
      * 有效用户的谓语

@@ -3,6 +3,7 @@ package me.jiangcai.dating.web.controller.wealth;
 import me.jiangcai.chanpay.model.City;
 import me.jiangcai.chanpay.model.Province;
 import me.jiangcai.dating.LoginWebTest;
+import me.jiangcai.dating.entity.LoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.page.FinancingPage;
@@ -19,6 +20,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author CJ
@@ -62,7 +67,26 @@ public class WealthControllerTest extends LoginWebTest {
 
         completedPage.doBack();
 
-        //TODO 还需要校验下数据的
+        List<LoanRequest> requestList = wealthService.listLoanRequests(currentUser().getOpenId());
+        assertThat(requestList)
+                .isNotEmpty();
+        LoanRequest request = requestList.get(0);
+        assertThat(request.getLoanData().getOwner())
+                .isEqualTo(currentUser());
+        assertThat(request.getLoanData().getName())
+                .isEqualTo(name);
+        assertThat(request.getLoanData().getNumber())
+                .isEqualTo(number);
+        assertThat(request.getLoanData().getAddress().getProvince())
+                .isEqualTo(province);
+        assertThat(request.getLoanData().getAddress().getCity())
+                .isEqualTo(city);
+        assertThat(request.getAmount())
+                .isEqualByComparingTo(new BigDecimal(amount));
+        assertThat(request.getProjectId())
+                .isEqualTo(loan.getProductId());
+        assertThat(request.getMonths())
+                .isGreaterThan(0);
     }
 
     @Test

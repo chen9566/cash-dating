@@ -116,7 +116,7 @@ public class WealthController {
         address.setProvince(PayResourceService.provinceById(provinceCode));
         address.setCity(PayResourceService.cityById(cityCode));
 
-        wealthService.loanRequest(user.getOpenId(), loanInstance(id), amount, period, name, number, address);
+        wealthService.loanRequest(user.getOpenId(), loanInstance(id), amount, period, null, name, number, address);
         return "personalok.html";
     }
 
