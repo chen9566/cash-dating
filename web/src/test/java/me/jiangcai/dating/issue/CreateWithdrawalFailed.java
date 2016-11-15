@@ -51,9 +51,9 @@ public class CreateWithdrawalFailed extends LoginWebTest {
         assertThat(orderService.isComplete(withdrawalFailedOrder.getId()))
                 .isTrue();
         CashOrder order = cashOrderRepository.getOne(withdrawalFailedOrder.getId());
+        chanpayService.checkWithdrawal(order);
         assertThat(order.getPlatformWithdrawalOrderSet())
                 .isNullOrEmpty();
-        chanpayService.checkWithdrawal(order);
         // 可以通过校验
     }
 

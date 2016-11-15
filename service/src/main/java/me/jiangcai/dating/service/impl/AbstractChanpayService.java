@@ -252,12 +252,14 @@ public abstract class AbstractChanpayService implements ChanpayService {
             if (transactionService.execute(paymentToCard, null)) {
                 withdrawalOrder.setStatus(WithdrawalStatus.WITHDRAWAL_SUBMITTED);
             } else {
+                withdrawalOrder.setStatus(WithdrawalStatus.WITHDRAWAL_FAIL);
                 order.getPlatformWithdrawalOrderSet().remove(withdrawalOrder);
 //                userOrderRepository.save(order);
                 return null;
             }
         } catch (Exception ex) {
             log.debug("create withdrawal failed", ex);
+            withdrawalOrder.setStatus(WithdrawalStatus.WITHDRAWAL_FAIL);
             order.getPlatformWithdrawalOrderSet().remove(withdrawalOrder);
             order.setSystemComment(ex.getClass().getSimpleName() + ":" + ex.getMessage());
             if (order.getSystemComment().length() > 100) {
