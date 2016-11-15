@@ -37,6 +37,14 @@ public interface ChanpayService {
     ChanpayOrder createOrder(CashOrder order) throws IOException, SignatureException;
 
     /**
+     * 检查是否可以提现一个支付订单
+     *
+     * @param order 订单
+     * @throws IllegalStateException 不可以提现
+     */
+    void checkWithdrawal(UserOrder order) throws IllegalStateException;
+
+    /**
      * 建立提现订单
      *
      * @param order 对应主订单
