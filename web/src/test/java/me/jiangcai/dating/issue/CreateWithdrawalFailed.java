@@ -6,6 +6,7 @@ import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.mock.MockTransactionService;
 import me.jiangcai.dating.repository.CashOrderRepository;
+import me.jiangcai.dating.service.ChanpayService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,6 +28,8 @@ public class CreateWithdrawalFailed extends LoginWebTest {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private CashOrderRepository cashOrderRepository;
+    @Autowired
+    private ChanpayService chanpayService;
 
     @Test
     public void work() throws IOException, SignatureException {
@@ -50,6 +53,8 @@ public class CreateWithdrawalFailed extends LoginWebTest {
         CashOrder order = cashOrderRepository.getOne(withdrawalFailedOrder.getId());
         assertThat(order.getPlatformWithdrawalOrderSet())
                 .isNullOrEmpty();
+        chanpayService.checkWithdrawal(order);
+        // 可以通过校验
     }
 
 }

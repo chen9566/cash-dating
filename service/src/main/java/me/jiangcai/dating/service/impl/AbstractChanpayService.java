@@ -205,19 +205,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
     public ChanpayWithdrawalOrder withdrawalOrderCore(UserOrder order) throws IOException, SignatureException {
         log.debug("prepare to withdrawal " + order);
         order = userOrderRepository.getOne(order.getId());
-        if (order.isWithdrawalCompleted())
-            throw new IllegalStateException("提现已完成。");
-        if (order.getPlatformWithdrawalOrderSet() != null && !order.getPlatformWithdrawalOrderSet().isEmpty()) {
-            // 检查
-            for (PlatformWithdrawalOrder withdrawalOrder : order.getPlatformWithdrawalOrderSet()) {
-                if (withdrawalOrder.isSuccess()) {
-                    order.withdrawalSuccess();
-                    throw new IllegalStateException("提现已完成。");
-                }
-                if (!withdrawalOrder.isFinish())
-                    throw new IllegalStateException("提现正在进行中,请等待。");
-            }
-        }
+        checkWithdrawal(order);
 
         Card card = cardService.recommend(order);
 
@@ -279,6 +267,23 @@ public abstract class AbstractChanpayService implements ChanpayService {
         }
 
         return withdrawalOrder;
+    }
+
+    @Override
+    public void checkWithdrawal(UserOrder order) throws IllegalStateException {
+        if (order.isWithdrawalCompleted())
+            throw new IllegalStateException("提现已完成。");
+        if (order.getPlatformWithdrawalOrderSet() != null && !order.getPlatformWithdrawalOrderSet().isEmpty()) {
+            // 检查
+            for (PlatformWithdrawalOrder withdrawalOrder : order.getPlatformWithdrawalOrderSet()) {
+                if (withdrawalOrder.isSuccess()) {
+                    order.withdrawalSuccess();
+                    throw new IllegalStateException("提现已完成。");
+                }
+                if (!withdrawalOrder.isFinish())
+                    throw new IllegalStateException("提现正在进行中,请等待。");
+            }
+        }
     }
 
     @Override
