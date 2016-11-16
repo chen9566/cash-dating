@@ -37,7 +37,7 @@ public class ManageLoanControllerTest extends ManageWebTest {
     @Test
     public void data() throws Exception {
         MockHttpSession session = mvcLogin();
-        int current = JsonPath.read(mockMvc.perform(getWeixin("/manage/data/loan/all").session(session)
+        int current = JsonPath.read(mockMvc.perform(getWeixin("/manage/data/loan/pending").session(session)
                 .param("offset", "0")
                 .param("limit", "10"))
                 .andExpect(status().isOk())
