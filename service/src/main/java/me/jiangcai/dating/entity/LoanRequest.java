@@ -2,6 +2,8 @@ package me.jiangcai.dating.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.dating.Locker;
+import me.jiangcai.dating.entity.support.LoanRequestStatus;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,7 +23,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class LoanRequest {
+public class LoanRequest implements Locker {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,6 +54,15 @@ public class LoanRequest {
      */
     @Column(length = 30)
     private String supplierRequestId;
+    private LoanRequestStatus processStatus = LoanRequestStatus.requested;
+    @Column(columnDefinition = "datetime")
+    private LocalDateTime processTime;
+    private String comment;
+    @ManyToOne
+    private User processor;
 
-
+    @Override
+    public Object lockObject() {
+        return ("LoanRequest-" + id).intern();
+    }
 }

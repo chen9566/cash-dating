@@ -23,4 +23,10 @@ public class Address {
     @Column(length = ID_LENGTH)
     private City city;
 
+    public String toString() {
+        if (city == null)
+            return "";
+        return city.getName();
+    }
+
 }

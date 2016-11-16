@@ -1,5 +1,7 @@
 package me.jiangcai.dating.service;
 
+import me.jiangcai.dating.Locker;
+import me.jiangcai.dating.ThreadSafe;
 import me.jiangcai.dating.entity.LoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.Address;
@@ -49,6 +51,30 @@ public interface WealthService {
 
     @Transactional(readOnly = true)
     List<LoanRequest> listLoanRequests(String openId);
+
+    /**
+     * 同意借款
+     *
+     * @param user      操作用户
+     * @param requestId 请求id
+     * @param comment   留言
+     */
+    @Transactional
+    void approveLoanRequest(User user, long requestId, String comment) throws IOException;
+
+    /**
+     * 拒绝借款
+     *
+     * @param user      操作用户
+     * @param requestId 请求id
+     * @param comment   留言
+     */
+    @Transactional
+    void declineLoanRequest(User user, long requestId, String comment);
+
+    // 内部方法 请勿调用
+    @ThreadSafe
+    void approveLoanRequestCore(Locker locker, User user, long requestId, String comment) throws IOException;
 //
 //    /**
 //     * @return 总投资金额

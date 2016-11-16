@@ -3,6 +3,7 @@ package me.jiangcai.dating.core;
 import me.jiangcai.dating.Version;
 import me.jiangcai.dating.entity.SystemString;
 import me.jiangcai.dating.repository.SystemStringRepository;
+import me.jiangcai.gaa.sdk.GAASpringConfig;
 import me.jiangcai.lib.bracket.BracketSpringConfig;
 import me.jiangcai.lib.jdbc.JdbcSpringConfig;
 import me.jiangcai.lib.notice.NoticeSpringConfig;
@@ -22,6 +23,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Import({BracketSpringConfig.class, ResourceSpringConfig.class, UpgradeSpringConfig.class, JdbcSpringConfig.class
+        , GAASpringConfig.class
         , NoticeSpringConfig.class, LoggingConfig.class})
 class CommonConfig {
 

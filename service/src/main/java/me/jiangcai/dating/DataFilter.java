@@ -11,6 +11,12 @@ import javax.persistence.criteria.Root;
  * @author CJ
  */
 public interface DataFilter<T> {
+    /**
+     * @param user            当前用户
+     * @param criteriaBuilder cb
+     * @param root            root
+     * @return 过滤器, null 表示不过滤任何数据
+     */
     Predicate dataFilter(User user, CriteriaBuilder criteriaBuilder, Root<T> root);
 
     /**

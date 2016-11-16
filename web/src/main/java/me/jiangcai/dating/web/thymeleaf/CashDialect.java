@@ -1,5 +1,6 @@
 package me.jiangcai.dating.web.thymeleaf;
 
+import me.jiangcai.dating.service.CashStrings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.IExpressionContext;

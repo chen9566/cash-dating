@@ -1,4 +1,4 @@
-package me.jiangcai.dating.web.thymeleaf;
+package me.jiangcai.dating.service;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.NumberUtils;
