@@ -38,7 +38,7 @@
     <ul class="financing" data-id="test" th:attr="data-id=${currentFinancing.id}">
         <li class="b40">
             <p class="f32" id="financingYearRate">
-                <span th:text="${rate1}">8.</span>
+                <span th:text="${rate1}">11.</span>
                 <span class="f21" th:text="${rate2}">00%</span>
             </p>
             <p class="f12">预期年化收益率</p>
@@ -46,7 +46,7 @@
         <li class="b60">
             <p><img src="images/we-iconlogo.png"></p>
             <p class="f15" id="financingName" th:text="${currentFinancing.projectTypeName}">微钱进理财</p>
-            <p class="f12" id="financingDesc" th:text="${currentFinancing.projectSlogan}">微钱进理财</p>
+            <p class="f12 t-size" id="financingDesc" th:text="${currentFinancing.projectSlogan}">微钱进理财微钱进理财</p>
         </li>
     </ul>
 </div>
