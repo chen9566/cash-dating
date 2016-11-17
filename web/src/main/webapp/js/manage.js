@@ -15,6 +15,12 @@ $(function () {
         hrefUser = $.uriPrefix + '/manage/user';
     menus = menus + '<li><a href="' + hrefUser + '">用户</a></li>';
 
+    var hrefLoanRequest = 'loanRequest.html';
+    if (!$.prototypesMode)
+        hrefLoanRequest = $.uriPrefix + '/manage/loanRequest';
+    if ($.prototypesMode || $.auths.agent)
+        menus = menus + '<li><a href="' + hrefLoanRequest + '">审批借款</a></li>';
+
     var hrefAgentRequest = 'agentRequest.html';
     if (!$.prototypesMode)
         hrefAgentRequest = $.uriPrefix + '/manage/agentRequest';

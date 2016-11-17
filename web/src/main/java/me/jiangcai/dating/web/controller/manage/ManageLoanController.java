@@ -27,6 +27,7 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,11 @@ public class ManageLoanController {
     private WealthService wealthService;
     @Autowired
     private ConversionService conversionService;
+
+    @RequestMapping(value = "/manage/loanRequest", method = RequestMethod.GET)
+    public String index() {
+        return "manage/loanRequest.html";
+    }
 
     @RequestMapping(value = "/manage/data/loan", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -119,7 +125,15 @@ public class ManageLoanController {
                         return root.join("loanData", JoinType.LEFT).get("number");
                     }
                 }, new DataService.StringField("projectName")
-                , new DataService.NumberField("amount", Double.class)
+                , new DataService.NumberField("amount", Double.class) {
+                    @Override
+                    public Object export(Object origin, MediaType type) {
+                        if (origin == null)
+                            return null;
+                        BigDecimal decimal = (BigDecimal) origin;
+                        return decimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+                    }
+                }
                 , new DataService.NumberField("months", Integer.class)
                 , new ToStringField("createdTime")
                 , new DataService.EnumField("processStatus") {

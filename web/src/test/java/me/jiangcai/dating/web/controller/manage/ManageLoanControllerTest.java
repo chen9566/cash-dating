@@ -35,6 +35,19 @@ public class ManageLoanControllerTest extends ManageWebTest {
     private CashStrings cashStrings;
 
     @Test
+    public void index() {
+        BigDecimal bigDecimal = new BigDecimal("100");
+        System.out.println(bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP));
+        System.out.println(bigDecimal.setScale(1, BigDecimal.ROUND_HALF_UP));
+        bigDecimal = new BigDecimal("200.555");
+        System.out.println(bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP));
+        System.out.println(bigDecimal.setScale(1, BigDecimal.ROUND_HALF_UP));
+        driver.get("http://localhost/manage/loanRequest");
+        assertThat(driver.getTitle())
+                .isEqualTo("审批借款");
+    }
+
+    @Test
     public void data() throws Exception {
         MockHttpSession session = mvcLogin();
         int current = JsonPath.read(mockMvc.perform(getWeixin("/manage/data/loan/pending").session(session)
@@ -103,6 +116,7 @@ public class ManageLoanControllerTest extends ManageWebTest {
                 .param("limit", "10"))
                 .andExpect(status().isOk())
                 .andExpect(simliarDataJsonAs("/mock/loanRequest.json"))
+//                .andDo(print())
                 .andReturn().getResponse().getContentAsString(), "$.rows[0].id")).longValue();
     }
 
