@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="templateMessages" type="java.lang.Iterable<me.jiangcai.dating.model.NotifyMessageModel>"*/-->
+<head>
+    <meta charset="UTF-8">
+    <title>消息管理</title>
+    <link rel="stylesheet" href="../css/manage.css" th:href="@{/css/manage.css}">
+    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table-locale-all.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/editable/bootstrap-table-editable.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/export/bootstrap-table-export.min.js"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/eggplant/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <script src="../dist/js/share.js" th:src="@{/dist/js/share.js}"></script>
+    <script src="../mock/all.js" th:src="@{/all.js}"></script>
+    <script th:replace="fragment/auth.html::code"></script>
+    <script src="../js/manage.js" th:src="@{/js/manage.js}"></script>
+
+    <style>
+        .iTooltip {
+            color: bisque;
+            font-size: small;
+        }
+    </style>
+</head>
+<body>
+<div class="header"></div>
+<p>系统消息主要通过微信公众号向用户发送模板消息实现。</p>
+
+<aside>
+
+    <th:block class="NONO" th:each="templateMessage:${templateMessages}">
+        <h3 th:text="${templateMessage.type.name}">业务种类1</h3>
+        <div>
+            <p th:text="${templateMessage.type.description}">描述这个业务</p>
+            <fieldset>
+                <ol start="0">
+                    <li th:each="var:${templateMessage.type.getParameters()}"><var th:text="${var.name}">参数1foo</var>
+                    </li>
+                    <li th:remove="all"><var>参数2bar</var></li>
+                </ol>
+            </fieldset>
+            <label>
+                启用
+                <input type="checkbox"
+                       th:checked="${templateMessage.message!=null?templateMessage.message.enabled:false}"/>
+            </label>
+            <br/>
+            <label>
+                模板标题
+                <input type="text" value="新合伙人通过加入通知"
+                       th:value="${templateMessage.message!=null?templateMessage.message.templateTitle:templateMessage.type.recommendTemplateTitle}"/>
+            </label>
+            <label>
+                模板库ID
+                <input type="text" value="OPENTM201285651"
+                       th:value="${templateMessage.message!=null?templateMessage.message.templateIdShort:templateMessage.type.recommendShortId}"/>
+            </label>
+            <label>
+                模板ID
+                <input type="text" size="45" value="YoWOhKTShg9oCJmWT_41A45OgmcdstHHlZiPdFiSOGI"
+                       th:value="${templateMessage.message!=null?templateMessage.message.templateId:''}"/>
+            </label>
+            <button class="updateNotify updateMessage">应用</button>
+            <fieldset class="parameterTemplate" th:if="${templateMessage.message!=null}">
+                <legend><i class="iTooltip"
+                           title="可以用{0},{1}等方式分别将业务参数带入,详情参考 http://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html">参数模板<sup>?</sup></i>
+                </legend>
+                <div>
+                    <dl>
+                        <th:block th:each="parameter:${templateMessage.message.getMessageParameters()}">
+                            <dt><var th:name="${parameter.name}">FIRST</var></dt>
+                            <dd><input name="FIRST" type="text" title="FIRST" th:name="${parameter.name}"
+                                       th:title="${parameter.name}" th:value="${parameter.pattern}"/></dd>
+                        </th:block>
+                        <dt th:remove="all"><var>REMARK</var></dt>
+                        <dd th:remove="all"><input name="REMARK" type="text" title="REMARK"/></dd>
+                    </dl>
+                    <button class="updateNotify updateParameter">保存参数模板</button>
+                    <div class="modal fade" tabindex="-1" role="dialog"
+                         aria-labelledby="previewModalLabel-1"
+                         th:attr="aria-labelledby=${'previewModalLabel-'+templateMessage.type.name()}"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header" style="border-bottom:0">
+                                    <h4 class="modal-title" id="previewModalLabel-1"
+                                        style="text-align:center; font-size:17px;color:#000"
+                                        th:id="${'previewModalLabel-'+templateMessage.type.name()}">发送预览</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <ol style="color:#000">
+                                        <li th:each="var:${templateMessage.type.getParameters()}">
+                                            <label th:inline="text">
+                                                [[${var.name}]]
+                                                <input th:if="${!var.timeType}" th:type="${var.inputType}" type="text"
+                                                       name="0" th:name="${varStat.index}"/>
+                                                <span th:if="${var.timeType}"><var>当前时间</var></span>
+                                            </label>
+                                        </li>
+                                        <li th:remove="all">
+                                            <label>
+                                                参数2
+                                                <input type="number" name="0"/>
+                                            </label>
+                                        </li>
+                                        <li th:remove="all">
+                                            <label>
+                                                参数3 时间格式即采用当前时间
+                                            </label>
+                                        </li>
+                                    </ol>
+                                </div>
+                                <div class="modal-footer">
+                                    <button style="align-self: center">确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="updateNotify previewNotify">发送预览</button>
+                </div>
+            </fieldset>
+        </div>
+        <h3 th:remove="all">业务2</h3>
+        <div th:remove="all">
+            跟上面一样
+        </div>
+    </th:block>
+</aside>
+
+<script src="../js/manage/user.js" th:src="@{/js/manage/user.js}"></script>
+<script>
+    $(function () {
+        var toAccordion = $('.NONO');
+        if (toAccordion.length == 0) {
+            toAccordion = $('aside');
+        }
+        toAccordion.accordion();
+
+        $('.updateNotify').button();
+        $('input').css('color', '#000');
+        $('.iTooltip').tooltip();
+
+        $('.previewNotify').click(function () {
+            var region = $(this).closest('.parameterTemplate');
+            var modal = $('.modal', region);
+            modal.modal();
+        });
+
+    })
+</script>
+
+</body>
+</html>

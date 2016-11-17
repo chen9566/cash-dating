@@ -5,7 +5,7 @@
 $(function () {
 
     var myAlert = $('#myAlert');
-    if (myAlert.size() > 0) {
+    if (myAlert.length > 0) {
         myAlert.hide();
         function releaseMessage() {
             myAlert.fadeOut();

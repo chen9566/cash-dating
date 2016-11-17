@@ -37,11 +37,6 @@ public class MockTransactionService implements TransactionService {
     }
 
     @Override
-    public void createMember(String s, String s1, String s2, String s3) throws IOException {
-
-    }
-
-    @Override
     public <T> T execute(TradeRequest tradeRequest, PayHandler<T> payHandler) throws IOException, SignatureException {
         if (tradeRequest instanceof GetPayChannel) {
             // List<PayChannel>
