@@ -26,12 +26,12 @@
 <div class="products">
     <ul class="bm-b clickHref" th:each="loan:${loanList}" href="loan.html"
         th:href="@{/loanStart(id=${loan.productId})}">
-        <li class="b30 b40">
+        <li class="b30">
             <p class="f32"><span th:text="${loan.amount10K}">20</span><span class="f21">万</span></p>
             <p class="f12">最高可贷</p>
         </li>
         <!--<li th:text="${'区域:'+loan.region}">区域:上海</li>!-->
-        <li class="b70 b60">
+        <li class="b70">
             <p><img src="images/we-iconlogo.png"></p>
             <p class="f15" th:text="${loan.productName}">快车宝</p>
             <p class="f12 t-size" th:text="${loan.introduce}">
@@ -39,24 +39,24 @@
         </li>
     </ul>
     <ul class="bm-b clickHref" href="loan.html" th:remove="all">
-        <li class="b30 b40">
+        <li class="b30">
             <p class="f32">15<span class="f21">万</span></p>
             <p class="f12">最高可贷</p>
         </li>
         <!--<li>区域:杭州八大主城区，其他城市的试点区域逐步开放中</li>!-->
-        <li class="b70 b60">
+        <li class="b70">
             <p><img src="images/we-iconlogo.png"></p>
             <p class="f15">随心贷</p>
             <p class="f12 t-size">本项目系向优质企事业单位员工、教师、公务员提供的个人消费信用借款，借款人申请资料经投融家风控严格把控及反欺诈风险评估，借款人信用记录良好，工作收入来源稳定，拥有较强的还款能力。</p>
         </li>
     </ul>
     <ul class="clickHref" href="loan.html" th:remove="all">
-        <li class="b30 b40">
+        <li class="b30">
             <p class="f32">26<span class="f21">万</span></p>
             <p class="f12">最高可贷</p>
         </li>
         <!--<li>区域:杭州八大主城区，其他城市的试点区域逐步开放中</li>!-->
-        <li class="b70 b60">
+        <li class="b70">
             <p><img src="images/we-iconlogo.png"></p>
             <p class="f15">购车宝</p>
             <p class="f12 t-size">
