@@ -49,36 +49,40 @@
     <th:block class="NONO" th:each="templateMessage:${templateMessages}">
         <h3 th:text="${templateMessage.type.name}">业务种类1</h3>
         <div>
-            <p th:text="${templateMessage.type.description}">描述这个业务</p>
-            <fieldset>
-                <ol start="0">
-                    <li th:each="var:${templateMessage.type.getParameters()}"><var th:text="${var.name}">参数1foo</var>
-                    </li>
-                    <li th:remove="all"><var>参数2bar</var></li>
-                </ol>
-            </fieldset>
-            <label>
-                启用
-                <input type="checkbox"
-                       th:checked="${templateMessage.message!=null?templateMessage.message.enabled:false}"/>
-            </label>
-            <br/>
-            <label>
-                模板标题
-                <input type="text" value="新合伙人通过加入通知"
-                       th:value="${templateMessage.message!=null?templateMessage.message.templateTitle:templateMessage.type.recommendTemplateTitle}"/>
-            </label>
-            <label>
-                模板库ID
-                <input type="text" value="OPENTM201285651"
-                       th:value="${templateMessage.message!=null?templateMessage.message.templateIdShort:templateMessage.type.recommendShortId}"/>
-            </label>
-            <label>
-                模板ID
-                <input type="text" size="45" value="YoWOhKTShg9oCJmWT_41A45OgmcdstHHlZiPdFiSOGI"
-                       th:value="${templateMessage.message!=null?templateMessage.message.templateId:''}"/>
-            </label>
-            <button class="updateNotify updateMessage">应用</button>
+            <form method="get" action="notify.html" th:method="post" th:action="@{/manage/notify}">
+                <input type="hidden" name="type" th:value="${templateMessage.type.name()}"/>
+                <p th:text="${templateMessage.type.description}">描述这个业务</p>
+                <fieldset>
+                    <ol start="0">
+                        <li th:each="var:${templateMessage.type.getParameters()}"><var
+                                th:text="${var.name}">参数1foo</var>
+                        </li>
+                        <li th:remove="all"><var>参数2bar</var></li>
+                    </ol>
+                </fieldset>
+                <label>
+                    启用
+                    <input type="checkbox" name="enabled"
+                           th:checked="${templateMessage.message!=null?templateMessage.message.enabled:false}"/>
+                </label>
+                <br/>
+                <label>
+                    模板标题
+                    <input type="text" name="title" value="新合伙人通过加入通知"
+                           th:value="${templateMessage.message!=null?templateMessage.message.templateTitle:templateMessage.type.recommendTemplateTitle}"/>
+                </label>
+                <label>
+                    模板库ID
+                    <input type="text" name="shortId" value="OPENTM201285651"
+                           th:value="${templateMessage.message!=null?templateMessage.message.templateIdShort:templateMessage.type.recommendShortId}"/>
+                </label>
+                <label>
+                    模板ID
+                    <input type="text" name="templateId" size="45" value="YoWOhKTShg9oCJmWT_41A45OgmcdstHHlZiPdFiSOGI"
+                           th:value="${templateMessage.message!=null?templateMessage.message.templateId:''}"/>
+                </label>
+                <input type="submit" value="应用" class="updateNotify updateMessage"/>
+            </form>
             <fieldset class="parameterTemplate" th:if="${templateMessage.message!=null}">
                 <legend><i class="iTooltip"
                            title="可以用{0},{1}等方式分别将业务参数带入,详情参考 http://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html">参数模板<sup>?</sup></i>
@@ -129,7 +133,7 @@
                                     </ol>
                                 </div>
                                 <div class="modal-footer">
-                                    <button style="align-self: center">确定</button>
+                                    <button style="align-self: center" class="previewSubmit">确定</button>
                                 </div>
                             </div>
                         </div>
@@ -163,6 +167,18 @@
             var modal = $('.modal', region);
             modal.modal();
         });
+
+        $('.previewSubmit').click(function () {
+            var region = $(this).closest('.parameterTemplate');
+            var modal = $('.modal', region);
+            modal.modal('hide');
+            // 所有form 都打包
+            var json = {};
+            $('input', region).each(function () {
+                json[$(this).attr('name')] = $(this).val();
+            });
+            console.log(json);
+        })
 
     })
 </script>
