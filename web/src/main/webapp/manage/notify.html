@@ -47,8 +47,8 @@
 <aside>
 
     <th:block class="NONO" th:each="templateMessage:${templateMessages}">
-        <h3 th:text="${templateMessage.type.name}">业务种类1</h3>
-        <div>
+        <h3 th:text="${templateMessage.type.name}" th:name="${templateMessage.type.name()}">业务种类1</h3>
+        <div class="messageTemplate" th:name="${templateMessage.type.name()}">
             <form method="get" action="notify.html" th:method="post" th:action="@{/manage/notify}">
                 <input type="hidden" name="type" th:value="${templateMessage.type.name()}"/>
                 <p th:text="${templateMessage.type.description}">描述这个业务</p>
@@ -83,7 +83,9 @@
                 </label>
                 <input type="submit" value="应用" class="updateNotify updateMessage"/>
             </form>
-            <fieldset class="parameterTemplate" th:if="${templateMessage.message!=null}">
+            <fieldset class="parameterTemplate" th:if="${templateMessage.message!=null}"
+                      th:action="@{/manage/notify/preview}"
+                      th:src="@{/manage/notify/parameters}">
                 <legend><i class="iTooltip"
                            title="可以用{0},{1}等方式分别将业务参数带入,详情参考 http://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html">参数模板<sup>?</sup></i>
                 </legend>
@@ -168,8 +170,9 @@
             modal.modal();
         });
 
-        $('.previewSubmit').click(function () {
-            var region = $(this).closest('.parameterTemplate');
+        function notifyWork(me, hrefAttributeName, success) {
+            var region = me.closest('.messageTemplate');
+            var parameterTemplate = me.closest('.parameterTemplate');
             var modal = $('.modal', region);
             modal.modal('hide');
             // 所有form 都打包
@@ -177,8 +180,28 @@
             $('input', region).each(function () {
                 json[$(this).attr('name')] = $(this).val();
             });
-            console.log(json);
-        })
+
+            $.ajax(parameterTemplate.attr(hrefAttributeName), {
+                method: 'put',
+                data: JSON.stringify(json),
+                contentType: 'application/json;charset=UTF-8',
+                error: function () {
+                    alert('失败');
+                },
+                success: success
+            });
+        }
+
+        $('.updateParameter').click(function () {
+            notifyWork($(this), 'src', function () {
+            });
+        });
+
+        $('.previewSubmit').click(function () {
+            notifyWork($(this), 'action', function () {
+
+            });
+        });
 
     })
 </script>

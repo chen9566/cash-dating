@@ -31,6 +31,11 @@ $(function () {
         agentRequest = $.uriPrefix + '/manage/agent';
     if ($.prototypesMode || $.auths.agent)
         menus = menus + '<li><a href="' + agentRequest + '">合伙人</a></li>';
+    var notify = 'notify.html';
+    if (!$.prototypesMode)
+        notify = $.uriPrefix + '/manage/notify';
+    if ($.prototypesMode || $.auths.edit)
+        menus = menus + '<li><a href="' + notify + '">通知</a></li>';
     var bank = 'bank.html';
     if (!$.prototypesMode)
         bank = $.uriPrefix + '/manage/bank';

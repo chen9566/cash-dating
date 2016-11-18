@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author CJ
  */
 public interface NotifyMessageRepository extends JpaRepository<NotifyMessage, NotifyMessagePK> {
+
+
 }

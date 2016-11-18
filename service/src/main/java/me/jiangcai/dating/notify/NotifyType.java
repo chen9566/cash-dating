@@ -3,7 +3,7 @@ package me.jiangcai.dating.notify;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author CJ
@@ -13,34 +13,34 @@ public enum NotifyType {
     orderPaid("OPENTM201285651", "订单支付成功通知", "订单已支付", "指的是订单已经确认收款", 0
             , new NotifyParameter("订单编号", String.class)
             , new NotifyParameter("订单备注", String.class)
-            , new NotifyParameter("支付金额", String.class)
-            , new NotifyParameter("支付时间", String.class)),
+            , new NotifyParameter("支付金额", Number.class)
+            , new NotifyParameter("支付时间", Date.class)),
     memberRegister("OPENTM207422816", "新合伙人通过加入通知", "合伙人注册", "注册成为你的合伙人的时候", 0
             , new NotifyParameter("会员昵称", String.class)
             , new NotifyParameter("会员手机", String.class)
-            , new NotifyParameter("注册时间", String.class)),
+            , new NotifyParameter("注册时间", Date.class)),
     orderTransfer("TM204623114", "到账提醒", "订单转账", "订单金额开始转入银行卡", 0
             , new NotifyParameter("订单编号", String.class)
-            , new NotifyParameter("手续费", String.class)
-            , new NotifyParameter("转账金额", String.class)
+            , new NotifyParameter("手续费", Number.class)
+            , new NotifyParameter("转账金额", Number.class)
             , new NotifyParameter("银行卡号", String.class)
-            , new NotifyParameter("转账时间", String.class)),
+            , new NotifyParameter("转账时间", Date.class)),
     withdrawalTransfer("TM204623114", "到账提醒", "提现转账", "提现金额开始转入银行卡", 0
             , new NotifyParameter("订单编号", String.class)
-            , new NotifyParameter("转账金额", String.class)
+            , new NotifyParameter("转账金额", Number.class)
             , new NotifyParameter("银行卡号", String.class)
-            , new NotifyParameter("转账时间", String.class)),
+            , new NotifyParameter("转账时间", Date.class)),
     orderTransferFailed("TM204623061", "转账失败提醒", "订单转账失败", "订单金额开始转入银行卡", 0
             , new NotifyParameter("订单编号", String.class)
-            , new NotifyParameter("手续费", String.class)
-            , new NotifyParameter("转账金额", String.class)
+            , new NotifyParameter("手续费", Number.class)
+            , new NotifyParameter("转账金额", Number.class)
             , new NotifyParameter("银行卡号", String.class)
-            , new NotifyParameter("转账时间", String.class)),
+            , new NotifyParameter("转账时间", Date.class)),
     withdrawalTransferFailed("TM204623061", "转账失败提醒", "提现转账失败", "提现金额开始转入银行卡", 0
             , new NotifyParameter("订单编号", String.class)
-            , new NotifyParameter("转账金额", String.class)
+            , new NotifyParameter("转账金额", Number.class)
             , new NotifyParameter("银行卡号", String.class)
-            , new NotifyParameter("转账时间", String.class));
+            , new NotifyParameter("转账时间", Date.class));
 
     private final String recommendShortId;
     private final String recommendTemplateTitle;
@@ -90,13 +90,17 @@ public enum NotifyType {
         private Class<?> type;
 
         public boolean isTimeType() {
-            return type == LocalDateTime.class;
+            return type == Date.class;
         }
 
         public String getInputType() {
-            if (type.isAssignableFrom(Number.class))
+            if (type == (Number.class))
                 return "number";
             return "text";
+        }
+
+        public boolean isNumberType() {
+            return type == (Number.class);
         }
     }
 
