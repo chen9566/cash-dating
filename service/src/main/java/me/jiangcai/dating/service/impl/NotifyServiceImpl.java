@@ -78,7 +78,10 @@ public class NotifyServiceImpl implements NotifyService {
             }
         }
         Protocol protocol = Protocol.forAccount(supplier.findByIdentifier(null));
-        protocol.sendTemplate(user.getOpenId(), new TemplateMessageStyle() {
+        protocol.sendTemplate(
+                user.getOpenId()
+//                "oiKvNt0neOAB8ddS0OzM_7QXQDZw"
+                , new TemplateMessageStyle() {
             @Override
             public Collection<? extends TemplateMessageParameter> parameterStyles() {
                 return parameters;
