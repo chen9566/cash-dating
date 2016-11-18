@@ -25,6 +25,8 @@ import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.event.MyTradeEvent;
 import me.jiangcai.dating.event.MyWithdrawalEvent;
+import me.jiangcai.dating.event.Notification;
+import me.jiangcai.dating.notify.NotifyType;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.ChanpayOrderRepository;
 import me.jiangcai.dating.repository.ChanpayWithdrawalOrderRepository;
@@ -36,6 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,6 +63,8 @@ public abstract class AbstractChanpayService implements ChanpayService {
     private static final Log log = LogFactory.getLog(AbstractChanpayService.class);
     @Autowired
     private ApplicationContext applicationContext;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
     @Autowired
     private TransactionService transactionService;
     @Autowired
@@ -167,6 +172,13 @@ public abstract class AbstractChanpayService implements ChanpayService {
                 }
                 order.setFinishTime(LocalDateTime.now());
                 order.getCashOrder().paySuccess();
+                applicationEventPublisher.publishEvent(new Notification(order.getCashOrder().getOwner()
+                        , NotifyType.orderPaid
+                        , null
+                        , order.getCashOrder().getId()
+                        , order.getCashOrder().getComment()
+                        , order.getCashOrder().getAmount()
+                        , order.getFinishTime()));
                 cashOrderRepository.save(order.getCashOrder());
                 // 此时应该开启 套现
                 applicationContext.getBean(ChanpayService.class).withdrawalOrder(order.getCashOrder());

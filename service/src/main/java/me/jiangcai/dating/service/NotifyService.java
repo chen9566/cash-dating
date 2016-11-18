@@ -3,8 +3,10 @@ package me.jiangcai.dating.service;
 import me.jiangcai.dating.entity.NotifyMessage;
 import me.jiangcai.dating.entity.NotifyMessageParameter;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.event.Notification;
 import me.jiangcai.dating.model.NotifyMessageModel;
 import me.jiangcai.dating.notify.NotifyType;
+import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -38,6 +40,9 @@ public interface NotifyService {
      */
     @Transactional
     NotifyMessage save(NotifyMessage message);
+
+    @EventListener(Notification.class)
+    void sendMessage(Notification notification);
 
     /**
      * 实际的消息发送者

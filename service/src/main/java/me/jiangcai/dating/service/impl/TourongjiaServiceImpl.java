@@ -192,7 +192,7 @@ public class TourongjiaServiceImpl implements TourongjiaService {
                     , new BasicNameValuePair("applyLoan.address", address)
                     , new BasicNameValuePair("applyLoan.term", term)
             );
-            return client.execute(get, new TRJJsonHandler<>(ApplyLoan[].class))[0].getApplyId();
+            return client.execute(get, new TRJJsonHandler<>(ApplyLoan.class)).getApplyId();
         }
     }
 
