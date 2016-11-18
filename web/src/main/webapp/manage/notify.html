@@ -75,7 +75,7 @@
                 <div>
                     <dl>
                         <th:block th:each="parameter:${templateMessage.message.getMessageParameters()}">
-                            <dt><var th:name="${parameter.name}">FIRST</var></dt>
+                            <dt><var th:text="${parameter.name}">FIRST</var></dt>
                             <dd><input name="FIRST" type="text" title="FIRST" th:name="${parameter.name}"
                                        th:title="${parameter.name}" th:value="${parameter.pattern}"/></dd>
                         </th:block>

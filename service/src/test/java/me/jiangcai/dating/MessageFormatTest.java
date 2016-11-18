@@ -33,21 +33,24 @@ public class MessageFormatTest {
         System.out.println(messageFormat.format(new Object[]{"abc", Time8Utils.toDate(LocalDateTime.now())}));
         // Number
 
-        messageFormat = new MessageFormat("{0},{1,number,$'#',##}");
-        System.out.println(messageFormat.format(new Object[]{"abc", newNumber()}));
+        final Object number = newNumber();
+        messageFormat = new MessageFormat("{0},{1,number,￥,###.##}");
+        System.out.println(messageFormat.format(new Object[]{"abc", number}));
+        messageFormat = new MessageFormat("{0},{1,number,￥,##}");
+        System.out.println(messageFormat.format(new Object[]{"abc", number}));
         messageFormat = new MessageFormat("{0},{1,number,integer}");
-        System.out.println(messageFormat.format(new Object[]{"abc", newNumber()}));
+        System.out.println(messageFormat.format(new Object[]{"abc", number}));
         messageFormat = new MessageFormat("{0},{1,number,currency}");
-        System.out.println(messageFormat.format(new Object[]{"abc", newNumber()}));
+        System.out.println(messageFormat.format(new Object[]{"abc", number}));
         messageFormat = new MessageFormat("{0},{1,number,percent}");
-        System.out.println(messageFormat.format(new Object[]{"abc", newNumber()}));
-//        messageFormat = new MessageFormat("{0},{1,number,short}");
-//        System.out.println(messageFormat.format(new Object[]{"abc", newNumber()}));
+        System.out.println(messageFormat.format(new Object[]{"abc", number}));
+
 
     }
 
     private Object newNumber() {
-        return new BigDecimal(new Random().nextDouble()).setScale(2, BigDecimal.ROUND_HALF_UP);
+        return new BigDecimal(new Random().nextDouble()).add(new BigDecimal(new Random().nextInt()))
+                .setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
 }
