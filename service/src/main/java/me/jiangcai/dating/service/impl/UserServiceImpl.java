@@ -3,9 +3,11 @@ package me.jiangcai.dating.service.impl;
 import me.jiangcai.dating.CashFilter;
 import me.jiangcai.dating.entity.LoginToken;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.event.Notification;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.CashWeixinUserDetail;
 import me.jiangcai.dating.model.VerificationType;
+import me.jiangcai.dating.notify.NotifyType;
 import me.jiangcai.dating.repository.LoginTokenRepository;
 import me.jiangcai.dating.repository.UserAgentInfoRepository;
 import me.jiangcai.dating.repository.UserRepository;
@@ -17,6 +19,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -42,6 +45,8 @@ public class UserServiceImpl implements UserService {
 
     private final SecurityContextRepository httpSessionSecurityContextRepository
             = new HttpSessionSecurityContextRepository();
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
     @Autowired
     private LoginTokenRepository loginTokenRepository;
     @Autowired
@@ -72,6 +77,13 @@ public class UserServiceImpl implements UserService {
             applyGuide(user, from);
         }
         user.setMobileNumber(mobileNumber);
+
+        if (user.getAgentUser() != null) {
+            applicationEventPublisher.publishEvent(
+                    new Notification(user.getAgentUser(), NotifyType.memberRegister, null, null, user.getNickname()
+                            , user.getMobileNumber(), user.getJoinTime()));
+        }
+
         return userRepository.save(user);
     }
 

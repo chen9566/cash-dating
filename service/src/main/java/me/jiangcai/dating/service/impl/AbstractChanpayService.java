@@ -129,8 +129,12 @@ public abstract class AbstractChanpayService implements ChanpayService {
                 if (order.isSuccess()) {
                     //用户订单需更新了
                     order.getUserOrder().withdrawalSuccess();
-                } else
+                } else {
                     order.getUserOrder().withdrawalFailed();
+                    Notification notification = order.getUserOrder().withdrawalTransferFailedNotification(order, event.getMessage());
+                    if (notification != null)
+                        applicationEventPublisher.publishEvent(notification);
+                }
 
                 userOrderRepository.save(order.getUserOrder());
             }
@@ -175,7 +179,8 @@ public abstract class AbstractChanpayService implements ChanpayService {
                 applicationEventPublisher.publishEvent(new Notification(order.getCashOrder().getOwner()
                         , NotifyType.orderPaid
                         , null
-                        , order.getCashOrder().getId()
+                        , order.getCashOrder()
+                        , order.getCashOrder().getFriendlyId()
                         , order.getCashOrder().getComment()
                         , order.getCashOrder().getAmount()
                         , order.getFinishTime()));
@@ -263,9 +268,15 @@ public abstract class AbstractChanpayService implements ChanpayService {
         try {
             if (transactionService.execute(paymentToCard, null)) {
                 withdrawalOrder.setStatus(WithdrawalStatus.WITHDRAWAL_SUBMITTED);
+                Notification notification = order.withdrawalTransferNotification(withdrawalOrder);
+                if (notification != null)
+                    applicationEventPublisher.publishEvent(notification);
             } else {
                 withdrawalOrder.setStatus(WithdrawalStatus.WITHDRAWAL_FAIL);
                 order.getPlatformWithdrawalOrderSet().remove(withdrawalOrder);
+                Notification notification = order.withdrawalTransferFailedNotification(withdrawalOrder, "无");
+                if (notification != null)
+                    applicationEventPublisher.publishEvent(notification);
 //                userOrderRepository.save(order);
                 return null;
             }
@@ -277,6 +288,9 @@ public abstract class AbstractChanpayService implements ChanpayService {
             if (order.getSystemComment().length() > 100) {
                 order.setSystemComment(order.getSystemComment().substring(0, 99));
             }
+            Notification notification = order.withdrawalTransferFailedNotification(withdrawalOrder, ex.getMessage());
+            if (notification != null)
+                applicationEventPublisher.publishEvent(notification);
             return null;
         }
 

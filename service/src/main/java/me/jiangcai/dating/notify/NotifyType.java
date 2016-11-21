@@ -35,12 +35,14 @@ public enum NotifyType {
             , new NotifyParameter("手续费", Number.class)
             , new NotifyParameter("转账金额", Number.class)
             , new NotifyParameter("银行卡号", String.class)
-            , new NotifyParameter("转账时间", Date.class)),
+            , new NotifyParameter("转账时间", Date.class)
+            , new NotifyParameter("原因", String.class)),
     withdrawalTransferFailed("TM204623061", "转账失败提醒", "提现转账失败", "提现金额开始转入银行卡", 0
             , new NotifyParameter("订单编号", String.class)
             , new NotifyParameter("转账金额", Number.class)
             , new NotifyParameter("银行卡号", String.class)
-            , new NotifyParameter("转账时间", Date.class));
+            , new NotifyParameter("转账时间", Date.class)
+            , new NotifyParameter("原因", String.class));
 
     private final String recommendShortId;
     private final String recommendTemplateTitle;

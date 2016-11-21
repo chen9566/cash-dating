@@ -1,6 +1,5 @@
 package me.jiangcai.dating.service.impl;
 
-import me.jiangcai.dating.Time8Utils;
 import me.jiangcai.dating.entity.NotifyMessage;
 import me.jiangcai.dating.entity.NotifyMessageParameter;
 import me.jiangcai.dating.entity.User;
@@ -10,6 +9,7 @@ import me.jiangcai.dating.model.NotifyMessageModel;
 import me.jiangcai.dating.notify.NotifyType;
 import me.jiangcai.dating.repository.NotifyMessageRepository;
 import me.jiangcai.dating.service.NotifyService;
+import me.jiangcai.lib.seext.TimeUtils;
 import me.jiangcai.wx.PublicAccountSupplier;
 import me.jiangcai.wx.model.message.TemplateMessageParameter;
 import me.jiangcai.wx.model.message.TemplateMessageStyle;
@@ -23,7 +23,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,7 +39,7 @@ import java.util.stream.Stream;
 public class NotifyServiceImpl implements NotifyService {
 
     private static final Log log = LogFactory.getLog(NotifyServiceImpl.class);
-
+    private final Map<Notification, LocalDateTime> times = Collections.synchronizedMap(new HashMap<>());
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private NotifyMessageRepository notifyMessageRepository;
@@ -83,11 +86,19 @@ public class NotifyServiceImpl implements NotifyService {
             return;
         if (!message.isEnabled())
             return;
+
+        // 移除2分钟前的
+        times.keySet().stream()
+                .filter(notification1 -> times.get(notification1).isBefore(LocalDateTime.now().minusMinutes(-2)))
+                .forEach(times::remove);
+        if (times.containsKey(notification))
+            return;
+        times.put(notification, LocalDateTime.now());
         String url;
         if (notification.getUri() == null) {
             url = null;
         } else {
-            url = environment.getProperty("me.jiangcai.dating.url", "http://localhost") + notification.getUri();
+            url = environment.getProperty("dating.url", "http://localhost") + notification.getUri();
         }
         executorService.submit(() -> {
             try {
@@ -107,7 +118,7 @@ public class NotifyServiceImpl implements NotifyService {
             if (vars[i] != null) {
                 if (vars[i] instanceof LocalDateTime) {
                     LocalDateTime src = (LocalDateTime) vars[i];
-                    vars[i] = Time8Utils.toDate(src);
+                    vars[i] = TimeUtils.toDate(src, null);
                 }
             }
         }

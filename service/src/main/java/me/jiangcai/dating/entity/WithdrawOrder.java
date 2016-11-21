@@ -3,8 +3,10 @@ package me.jiangcai.dating.entity;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.dating.entity.support.WithdrawOrderStatus;
+import me.jiangcai.dating.event.Notification;
 import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.model.support.FlowType;
+import me.jiangcai.dating.notify.NotifyType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -77,5 +79,17 @@ public class WithdrawOrder extends UserOrder implements BalanceFlow {
     public void withdrawalFailed() {
         setWithdrawalCompleted(false);
         setProcessStatus(WithdrawOrderStatus.cancelled);
+    }
+
+    @Override
+    public Notification withdrawalTransferNotification(PlatformWithdrawalOrder withdrawalOrder) {
+        return new Notification(getOwner(), NotifyType.withdrawalTransfer, null, this, getFriendlyId(), getWithdrawalAmount()
+                , withdrawalOrder.getBank().getCode(), withdrawalOrder.getStartTime());
+    }
+
+    @Override
+    public Notification withdrawalTransferFailedNotification(PlatformWithdrawalOrder withdrawalOrder, String reason) {
+        return new Notification(getOwner(), NotifyType.withdrawalTransferFailed, null, this, getFriendlyId(), getWithdrawalAmount()
+                , withdrawalOrder.getBank().getCode(), withdrawalOrder.getStartTime(), reason);
     }
 }

@@ -3,6 +3,8 @@ package me.jiangcai.dating.entity;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.dating.Locker;
+import me.jiangcai.dating.event.Notification;
+import me.jiangcai.lib.seext.NumberUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +14,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -105,6 +108,14 @@ public abstract class UserOrder implements Locker {
         return Objects.hash(id, amount, owner);
     }
 
+    /**
+     * @return 尽量友好, 稳定的id
+     */
+    @Transient
+    public String getFriendlyId() {
+        return NumberUtils.hash62(id, true);
+    }
+
     @Override
     public String toString() {
         return "id='" + id + '\'' +
@@ -120,4 +131,20 @@ public abstract class UserOrder implements Locker {
     public Object lockObject() {
         return getId().intern();
     }
+
+    /**
+     * 系统做出提现动作时,应该发起的通知
+     *
+     * @param withdrawalOrder 用于提现的平台订单
+     * @return null 表示无需通知
+     */
+    public abstract Notification withdrawalTransferNotification(PlatformWithdrawalOrder withdrawalOrder);
+
+    /**
+     * 提现失败时推送通知
+     *
+     * @param withdrawalOrder 用于提现的平台订单
+     * @return null 表示无需通知
+     */
+    public abstract Notification withdrawalTransferFailedNotification(PlatformWithdrawalOrder withdrawalOrder, String reason);
 }
