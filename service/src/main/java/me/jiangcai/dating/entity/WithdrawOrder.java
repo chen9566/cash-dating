@@ -83,13 +83,13 @@ public class WithdrawOrder extends UserOrder implements BalanceFlow {
 
     @Override
     public Notification withdrawalTransferNotification(PlatformWithdrawalOrder withdrawalOrder) {
-        return new Notification(getOwner(), NotifyType.withdrawalTransfer, null, this, getFriendlyId(), getWithdrawalAmount()
+        return new Notification(getOwner(), NotifyType.withdrawalTransfer, "/withdrawList", this, getFriendlyId(), getWithdrawalAmount()
                 , withdrawalOrder.getBank().getCode(), withdrawalOrder.getStartTime());
     }
 
     @Override
     public Notification withdrawalTransferFailedNotification(PlatformWithdrawalOrder withdrawalOrder, String reason) {
-        return new Notification(getOwner(), NotifyType.withdrawalTransferFailed, null, this, getFriendlyId(), getWithdrawalAmount()
+        return new Notification(getOwner(), NotifyType.withdrawalTransferFailed, "/withdrawList", this, getFriendlyId(), getWithdrawalAmount()
                 , withdrawalOrder.getBank().getCode(), withdrawalOrder.getStartTime(), reason);
     }
 }
