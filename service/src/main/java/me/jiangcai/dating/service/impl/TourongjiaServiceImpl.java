@@ -202,7 +202,7 @@ public class TourongjiaServiceImpl implements TourongjiaService {
             HttpGet get = new2Get("tenant/yt_applyStatus.jhtml"
                     , new BasicNameValuePair("applyId", id)
             );
-            return client.execute(get, new TRJJsonHandler<>(LoanStatus[].class))[0].getStatus();
+            return client.execute(get, new TRJJsonHandler<>(LoanStatus.class)).getStatus();
         }
     }
 
