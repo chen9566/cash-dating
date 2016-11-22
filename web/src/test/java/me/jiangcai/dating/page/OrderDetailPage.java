@@ -60,7 +60,7 @@ public class OrderDetailPage extends AbstractPage {
     }
 
     private void commonAssert(CashOrder order) {
-        fieldCheck(webElement -> webElement.getText().equals(order.getId()));
+        fieldCheck(webElement -> webElement.getText().equals(order.getFriendlyId()));
         fieldCheck(webElement -> webElement.getText().equals(Common.CurrencyFormat(order.getAmount())));
     }
 
