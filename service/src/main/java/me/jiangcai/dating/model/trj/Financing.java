@@ -12,7 +12,7 @@ import me.jiangcai.wx.converter.BooleanDeserializer;
  * @author CJ
  */
 @Data
-@JsonIgnoreProperties({"remind", "activity_id", "activity_ext_info"})
+@JsonIgnoreProperties(value = {"remind", "activity_id", "activity_ext_info", "is_rate_yellow"}, ignoreUnknown = true)
 public class Financing {
     private String id;
     private String prj_series;
