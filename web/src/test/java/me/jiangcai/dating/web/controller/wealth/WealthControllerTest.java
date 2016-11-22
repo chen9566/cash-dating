@@ -15,6 +15,7 @@ import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.WealthService;
+import me.jiangcai.gaa.sdk.repository.DistrictRepository;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,6 +37,8 @@ public class WealthControllerTest extends LoginWebTest {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private DistrictRepository districtRepository;
 
     @Test
     public void loan() throws IOException {
@@ -57,11 +61,17 @@ public class WealthControllerTest extends LoginWebTest {
         LoanSubmitPage submitPage = page.loan(amount, term);
 
         //填入姓名,身份证号码, 随便弄一个地址
-        String name = RandomStringUtils.random(2 + random.nextInt(3));
+        String name = RandomStringUtils.randomAscii(2 + random.nextInt(3));
         String number = RandomStringUtils.randomNumeric(18);
 
-        Province province = PayResourceService.listProvince().stream().max(new RandomComparator()).orElseThrow(IllegalStateException::new);
-        City city = province.getCityList().stream().max(new RandomComparator()).orElseThrow(IllegalStateException::new);
+        Province province = null;
+        while (province == null || districtRepository.byChanpayCode(Locale.CHINA, province.getId()) == null) {
+            province = PayResourceService.listProvince().stream().max(new RandomComparator()).orElseThrow(IllegalStateException::new);
+        }
+        City city = null;
+        while (city == null || districtRepository.byChanpayCode(Locale.CHINA, city.getId()) == null) {
+            city = province.getCityList().stream().max(new RandomComparator()).orElseThrow(IllegalStateException::new);
+        }
 
         LoanCompletedPage completedPage = submitPage.submit(name, number, province.getName(), city.getName());
 
