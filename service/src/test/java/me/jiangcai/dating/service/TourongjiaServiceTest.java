@@ -8,7 +8,6 @@ import me.jiangcai.dating.model.trj.MobileToken;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Repeat;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -32,9 +31,9 @@ public class TourongjiaServiceTest extends ServiceBaseTest {
         System.out.println(financing);
         assertThat(financing)
                 .isNotNull();
-        tourongjiaService.bind("18606509616", "1122");
-        URI url = tourongjiaService.financingURL(financing.getId(), "18606509616");
-        System.out.println(url);
+//        tourongjiaService.bind("18606509616", "1122");
+//        URI url = tourongjiaService.financingURL(financing.getId(), "18606509616");
+//        System.out.println(url);
     }
 
     /**
@@ -65,14 +64,14 @@ public class TourongjiaServiceTest extends ServiceBaseTest {
             assertThat(financing)
                     .isNotNull();
         } catch (VerifyCodeSentException ex) {
-            tourongjiaService.bind("18606509616", "1122");
-            URI url = tourongjiaService.financingURL(financing.getId(), "18606509616");
-            System.out.println(url);
+//            tourongjiaService.bind("18606509616", "1122");
+//            URI url = tourongjiaService.financingURL(financing.getId(), "18606509616");
+//            System.out.println(url);
         }
 
     }
 
-    @Repeat(20)
+    //    @Repeat(20)
     @Test
     public void loan() throws Exception {
         Loan[] loanList = tourongjiaService.loanList();
