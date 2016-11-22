@@ -178,7 +178,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
                 order.getCashOrder().paySuccess();
                 applicationEventPublisher.publishEvent(new Notification(order.getCashOrder().getOwner()
                         , NotifyType.orderPaid
-                        , null
+                        , "/orderDetail/" + order.getCashOrder().getId()
                         , order.getCashOrder()
                         , order.getCashOrder().getFriendlyId()
                         , order.getCashOrder().getComment()

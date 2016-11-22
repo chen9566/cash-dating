@@ -76,14 +76,14 @@ public class CashOrder extends UserOrder {
 
     @Override
     public Notification withdrawalTransferNotification(PlatformWithdrawalOrder withdrawalOrder) {
-        return new Notification(getOwner(), NotifyType.orderTransfer, null, this, getFriendlyId()
+        return new Notification(getOwner(), NotifyType.orderTransfer, "/orderDetail/" + getId(), this, getFriendlyId()
                 , getAmount().subtract(getWithdrawalAmount()), getWithdrawalAmount()
                 , withdrawalOrder.getBank().getCode(), withdrawalOrder.getStartTime());
     }
 
     @Override
     public Notification withdrawalTransferFailedNotification(PlatformWithdrawalOrder withdrawalOrder, String reason) {
-        return new Notification(getOwner(), NotifyType.orderTransferFailed, null, this, getFriendlyId()
+        return new Notification(getOwner(), NotifyType.orderTransferFailed, "/orderDetail/" + getId(), this, getFriendlyId()
                 , getAmount().subtract(getWithdrawalAmount()), getWithdrawalAmount()
                 , withdrawalOrder.getBank().getCode(), withdrawalOrder.getStartTime(), reason);
     }
