@@ -1,5 +1,6 @@
 package me.jiangcai.dating.page;
 
+import me.jiangcai.dating.entity.User;
 import org.openqa.selenium.WebDriver;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,5 +30,14 @@ public class InviteListPage extends AbstractPage {
 //                .findFirst()
 //                .ifPresent(webFlow -> webFlow.element.click());
         return initPage(PartnerDataPage.class);
+    }
+
+    /**
+     * 这几个用户应该可见
+     *
+     * @param users 用户
+     */
+    public void assertHave(User... users) {
+
     }
 }

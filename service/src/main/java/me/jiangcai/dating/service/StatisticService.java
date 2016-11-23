@@ -84,4 +84,6 @@ public interface StatisticService {
      */
     @Transactional(readOnly = true)
     long guides(String openId);
+
+    // TODO 另外还有一个api是获取所有邀请的 并且排除掉不属于自己团队的
 }

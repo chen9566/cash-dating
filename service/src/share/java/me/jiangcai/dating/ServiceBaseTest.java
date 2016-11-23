@@ -31,6 +31,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.security.SignatureException;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -153,7 +154,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
         tradeEvent.setSerialNumber(platformOrder.getId());
 
         chanpayService.tradeUpdate(tradeEvent);
-        System.out.println("1");
+//        System.out.println("1");
     }
 
     private void mockEventInfo(AbstractTradeEvent tradeEvent) {
@@ -182,7 +183,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
             withdrawalEvent.setMessage(reason);
 
         chanpayService.withdrawalUpdate(withdrawalEvent);
-        System.out.println("1");
+//        System.out.println("1");
     }
 
     /**
@@ -192,6 +193,32 @@ public abstract class ServiceBaseTest extends SpringWebTest {
      */
     protected void withdrawalSuccess(UserOrder order) throws IOException, SignatureException {
         withdrawalFailed(order, WithdrawalStatus.WITHDRAWAL_SUCCESS, null);
+    }
+
+
+    /**
+     * 构建一个完成的订单
+     *
+     * @param user    owner
+     * @param amount  金额
+     * @param comment 备注
+     * @return 订单
+     */
+    protected CashOrder makeFinishCashOrder(User user, BigDecimal amount, String comment) throws IOException, SignatureException {
+        CashOrder order = orderService.newOrder(user, amount, comment
+                , (user.getCards() == null || user.getCards().isEmpty()) ? null : user.getCards().get(0).getId());
+        tradeSuccess(order);
+        withdrawalSuccess(order);
+        return order;
+    }
+
+    /**
+     * 100-100000
+     *
+     * @return 随机的订单金额
+     */
+    protected BigDecimal randomOrderAmount() {
+        return BigDecimal.valueOf(100 + random.nextInt(100000 - 100));
     }
 
     public static class RandomComparator implements Comparator<Object> {
