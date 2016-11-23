@@ -96,6 +96,7 @@ public class WebConfig {
             registry
                     //测试
                     .antMatchers("/qrUrl").permitAll()
+                    .antMatchers("/quickLogin/**").permitAll()
                     //
                     .antMatchers("/provinceList").permitAll()
                     .antMatchers("/subBranchHtml").permitAll()

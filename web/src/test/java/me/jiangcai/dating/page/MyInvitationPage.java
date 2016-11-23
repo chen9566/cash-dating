@@ -114,6 +114,7 @@ public class MyInvitationPage extends AbstractPage {
                 , null
                 , texts.get(0).getText()
                 , null
+                , element
         );
     }
 
@@ -138,12 +139,7 @@ public class MyInvitationPage extends AbstractPage {
         assertThat(numbersText.getText())
                 .startsWith("" + statisticService.guides(user.getOpenId()));
 
-        webDriver.findElement(By.cssSelector(".yj[name=yj]")).click();
-        webFlows = webDriver.findElement(By.id("yj")).findElements(By.tagName("ul")).stream()
-                .filter(WebElement::isDisplayed)
-                .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
-                .map(this::toFlow)
-                .collect(Collectors.toList());
+        checkFlows();
 
         List<BalanceFlow> list = statisticService.commissionFlows(user.getOpenId());
         // 流水
@@ -157,6 +153,15 @@ public class MyInvitationPage extends AbstractPage {
 //
 //        webDriver.findElement(By.cssSelector(".yj[name=tx]")).click();
 
+    }
+
+    private void checkFlows() {
+        webDriver.findElement(By.cssSelector(".yj[name=yj]")).click();
+        webFlows = webDriver.findElement(By.id("yj")).findElements(By.tagName("ul")).stream()
+                .filter(WebElement::isDisplayed)
+                .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
+                .map(this::toFlow)
+                .collect(Collectors.toList());
     }
 
 
@@ -198,6 +203,23 @@ public class MyInvitationPage extends AbstractPage {
     }
 
     /**
+     * @return 打开邀请人员列表
+     */
+    public InviteListPage inviteListPage() {
+        numbersText.click();
+        return initPage(InviteListPage.class);
+    }
+
+    public PartnerDataPage partnerDataPage(String nickName) {
+        checkFlows();
+        webFlows.stream()
+                .filter(webFlow -> webFlow.name.equals(nickName))
+                .findFirst()
+                .ifPresent(webFlow -> webFlow.element.click());
+        return initPage(PartnerDataPage.class);
+    }
+
+    /**
      * 佣金明细
      */
     @Data
@@ -207,6 +229,7 @@ public class MyInvitationPage extends AbstractPage {
         private String comment;
         private String name;
         private String time;
+        private WebElement element;
 
         /**
          * this 在 这个list里

@@ -32,6 +32,20 @@ public class RelationTest extends WebTest {
     @Autowired
     private AgentService agentService;
 
+    /**
+     * 页表,升级方面的测试
+     */
+    @Test
+    public void list() {
+        // 必须解决 以何种身份登录的问题 test controller 很不错
+        User user = createClassicsUsers().get("a");
+        MyPage my = loginAs(user);
+
+        MyInvitationPage invitationPage = my.toCodePage().toMyInvitationPage();
+        // 这里看到的邀请人数 并不包括 已经独立的人
+
+    }
+
     @Test
     public void tryIt() throws IOException, SignatureException {
         // 建立一个人物 并且获取它的信息

@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.security.SignatureException;
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -67,6 +69,35 @@ public abstract class ServiceBaseTest extends SpringWebTest {
         return subBranchBankRepository.findAll().stream()
                 .max(new RandomComparator())
                 .orElse(null);
+    }
+
+    /**
+     * A->B
+     * A->C
+     * C->D
+     * C->E
+     * E->F
+     * E->G
+     *
+     * @return 创建一个经典的用户关系图
+     */
+    protected Map<String, User> createClassicsUsers() {
+        User a = userService.byOpenId(createNewUser().getOpenId());
+        User b = userService.byOpenId(createNewUser(a).getOpenId());
+        User c = userService.byOpenId(createNewUser(a).getOpenId());
+        User d = userService.byOpenId(createNewUser(c).getOpenId());
+        User e = userService.byOpenId(createNewUser(c).getOpenId());
+        User f = userService.byOpenId(createNewUser(e).getOpenId());
+        User g = userService.byOpenId(createNewUser(e).getOpenId());
+        Map<String, User> map = new HashMap<>();
+        map.put("a", a);
+        map.put("b", b);
+        map.put("c", c);
+        map.put("d", d);
+        map.put("e", e);
+        map.put("f", f);
+        map.put("g", g);
+        return map;
     }
 
     protected String randomBankCard() {

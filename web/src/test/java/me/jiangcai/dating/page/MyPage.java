@@ -141,4 +141,9 @@ public class MyPage extends AbstractPage {
         clickMenu("款爷借款");
         return initPage(LoanPage.class);
     }
+
+    public CodePage toCodePage() {
+        clickMenu("合伙赚钱");
+        return initPage(CodePage.class);
+    }
 }

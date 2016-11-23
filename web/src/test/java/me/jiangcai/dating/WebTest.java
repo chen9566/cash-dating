@@ -74,6 +74,16 @@ public abstract class WebTest extends ServiceBaseTest {
         return () -> iterator;
     }
 
+    protected MyPage loginAs(User user) {
+        return loginAs(user, driver);
+    }
+
+    protected MyPage loginAs(User user, WebDriver driver) {
+        driver.get("http://localhost/quickLogin/" + user.getId());
+        driver.get("http://localhost/my");
+        return initPage(MyPage.class, driver);
+    }
+
     public OrderService getOrderService() {
         return orderService;
     }
