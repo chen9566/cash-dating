@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="banks" type="java.lang.Iterable<me.jiangcai.dating.entity.Bank>"*/-->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>添加银行借记卡</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/share.js"></script>
+    <script src="dist/js/add-card.js"></script>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+</head>
+<body>
+<form class="from-bank" action="receivables.html" th:action="@{/registerCard}" th:method="post" id="addCardForm"
+      role="form">
+    <!--<div class="showcard" id="cardShower">3333333333</div>!-->
+    <p class="b1">请绑定您的借还款(<b>结算卡</b>)</p>
+    <ul>
+        <li>
+            <label>持卡人姓名</label>
+            <input type="text" name="name" required minlength="2" maxlength="20" placeholder="输入真实姓名">
+        </li>
+        <li>
+            <label>银行卡号</label>
+            <input type="tel" style="width: 210px;" name="number" required minlength="16" placeholder="持卡人银行卡卡号"
+                   class="b3">
+        </li>
+        <li>
+            <label class="pull-left">开户银行</label>
+				<span class="sleBG s2"
+                      style="background:url(images/Path.png) no-repeat right;background-size:10px 6px;"> 
+					  <span class="sleHid">
+				<select name="bank" class="select bank-selector">
+					 <option value="" th:remove="all">默认选择</option>
+                     <option value="1" th:each="bank:${banks}" th:value="${bank.code}"
+                             th:text="${bank.name}">很多银行</option>
+					 <option value="2" th:remove="all">工商银行</option>
+				</select>
+				</span></span></li>
+        <li>
+            <label class="pull-left">开户地址</label>
+				<span class="sleBG s1"
+                      style="background:url(images/Path.png) no-repeat 80px 19px;background-size:10px 6px;"> <span
+                        class="sleHid">
+				<select class="select2 province-selector" name="province" required>
+					<option value="1">北京</option>
+				</select>
+				</span></span> <span class="sleBG s3"
+                                     style="background:url(images/Path.png) no-repeat right;background-size:10px 6px; "> <span
+                class="sleHid">
+				<select class="select3 city-selector" name="city" required>
+					<option value="1">北京</option>
+				</select>
+				</span></span></li>
+        <li class="clickHref noline" id="subBranchRegion" data-href="addcardlist.html"
+            th:attr="data-href=@{/subBranchHtml}">
+            <label class="pull-left">支行名称</label>
+            <input type="text" readonly name="subBranchName" required placeholder="支行">
+            <span class="b-r"><img src="images/blackright-r.png"></span></li>
+
+
+    </ul>
+    <p class="b4">此银行卡号开户名必须与上方开户名一致，否则提现会失败！</p>
+    <div class="p-15 mar30">
+        <input value="提交" type="submit" class="black" name="btn1" disabled="disabled" onClick="window.open('payment-ts.html')"/>
+    </div>
+    <input type="hidden" name="subBranch"/>
+</form>
+<p class="notes">电话: 400-8588528</p>
+<!--<div class="show-bg" id="myAlert">填写内容不能为空</div>-->
+<script src="mock/all.js" th:src="@{/all.js}"></script>
+<script>
+    $(function () {
+        var validator = $("#addCardForm").validate({});
+    });
+
+</script>
+</body>
+</html>
