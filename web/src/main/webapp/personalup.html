@@ -17,7 +17,7 @@
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
 </head>
 <body>
-<form class="from-personal" id="loanForm" role="form" action="personalok.html" method="get" th:method="post"
+<form class="from-personal" id="loanForm" role="form" action="id.html" method="get" th:method="post"
       th:action="@{/loanSubmit}">
     <input name="id" type="hidden" th:value="${project.productId}"/>
     <input name="period" type="hidden" th:value="${period}"/>
@@ -51,10 +51,13 @@
 				</select>
 				</span></span>
         </li>
-        <li class="bo-b f-per"><label>详细地址</label><input type="" placeholder="请输入详细地址"></li>
-        <li class="bo-b f-per"><label>单位名称</label><input type="" placeholder="请输入单位名称"></li>
-        <li class="bo-b f-per"><label>月 收 入</label><input type="" placeholder="请输入月收入"></li>
-        <li class="f-per"><label>用 途</label><input type="" placeholder="个人消费"></li>
+        <li class="bo-b f-per"><label>详细地址</label><input name="homeAddress" type="text" placeholder="请输入详细地址" required>
+        </li>
+        <li class="bo-b f-per"><label>单位名称</label><input name="employer" type="text" placeholder="请输入单位名称" required>
+        </li>
+        <li class="bo-b f-per"><label>月 收 入</label><input name="profitMonthly" type="text" placeholder="请输入月收入"
+                                                          required></li>
+        <li class="f-per"><label>用 途</label><input name="propose" type="text" placeholder="个人消费" required></li>
 
         <!--<li class="bo-b urgent">-->
         <!--<p>紧急联系人</p>-->
@@ -108,8 +111,7 @@
             <img src="images/blackright-r.png" class="right-img"></li>
     </ul>
     <p class="p-15">
-        <button type="submit" id="submitButton" class="btn btn-danger btn-lg btn-block"
-                onClick="window.open('insurance.html')" >下一步
+        <button type="submit" id="submitButton" class="btn btn-danger btn-lg btn-block">下一步
         </button>
     </p>
 </form>

@@ -1,5 +1,6 @@
 package me.jiangcai.dating.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.WriterException;
 import me.jiangcai.chanpay.model.SubBranch;
 import me.jiangcai.dating.CashFilter;
@@ -8,9 +9,13 @@ import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.VerificationCodeService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import me.jiangcai.wx.web.mvc.WeixinInterceptor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,16 +26,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * 公开权限的
@@ -40,6 +51,8 @@ import java.util.List;
 @Controller
 public class GlobalController {
 
+    private static final Log log = LogFactory.getLog(GlobalController.class);
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private VerificationCodeService verificationCodeService;
     @Autowired
@@ -52,23 +65,6 @@ public class GlobalController {
     private OrderService orderService;
     @Autowired
     private PayResourceService payResourceService;
-
-    public static StringBuilder contextUrlBuilder(HttpServletRequest request) {
-        StringBuilder urlBuilder = new StringBuilder();
-        urlBuilder.append(request.getScheme()).append("://");
-        urlBuilder.append(request.getLocalName());
-        if (request.getServerPort() < 0)
-            ;
-        else if (request.getServerPort() == 80 && request.getScheme().equalsIgnoreCase("http"))
-            ;
-        else if (request.getServerPort() == 443 && request.getScheme().equalsIgnoreCase("https"))
-            ;
-        else
-            urlBuilder.append(":").append(request.getServerPort());
-
-        urlBuilder.append(request.getContextPath());
-        return urlBuilder;
-    }
 
 //    /**
 //     * 这是公开uri,所有人都可以参与支付,微信用户 或者 其他用户
@@ -104,6 +100,25 @@ public class GlobalController {
 //        urlBuilder.append("/toPay/").append(id);
 //        return qrCodeService.generateQRCode(urlBuilder.toString());
 //    }
+@Autowired
+private ResourceService resourceService;
+
+    public static StringBuilder contextUrlBuilder(HttpServletRequest request) {
+        StringBuilder urlBuilder = new StringBuilder();
+        urlBuilder.append(request.getScheme()).append("://");
+        urlBuilder.append(request.getLocalName());
+        if (request.getServerPort() < 0)
+            ;
+        else if (request.getServerPort() == 80 && request.getScheme().equalsIgnoreCase("http"))
+            ;
+        else if (request.getServerPort() == 443 && request.getScheme().equalsIgnoreCase("https"))
+            ;
+        else
+            urlBuilder.append(":").append(request.getServerPort());
+
+        urlBuilder.append(request.getContextPath());
+        return urlBuilder;
+    }
 
     public static StringBuilder generateInviteURL(long userId, HttpServletRequest request) {
         StringBuilder urlBuilder = contextUrlBuilder(request);
@@ -168,6 +183,33 @@ public class GlobalController {
 //        model.addAttribute("cityId", cityId);
         model.addAttribute("list", subBranchList(bankId, cityId));
         return "addcardlist.html";
+    }
+
+    //    上传资源  并不做任何改变 仅仅静态保存
+    @RequestMapping(method = RequestMethod.POST, value = "/uploadResource", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public HttpEntity<?> uploadResource(@RequestPart("files") MultipartFile file) {
+        // 获取后缀名
+        int last = file.getOriginalFilename().lastIndexOf(".");
+        if (last == -1) {
+            return ResponseEntity.badRequest().body("并非图片");
+        }
+
+        String suffixName = file.getOriginalFilename().substring(last);
+        String name = ("tmp/" + UUID.randomUUID().toString() + suffixName).toLowerCase(Locale.CHINA);
+
+        try {
+            String url = resourceService.uploadResource(name, file.getInputStream()).httpUrl().toString();
+            Map<String, Object> data = new HashMap<>();
+            data.put("path", name);
+            data.put("url", url);
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(objectMapper.writeValueAsString(data));
+        } catch (IOException e) {
+            log.debug("upload resource", e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }

@@ -10,9 +10,13 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.util.StreamUtils;
 
 import java.io.InputStream;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,6 +70,29 @@ public class GlobalControllerTest extends WebTest {
             assertSimilarJsonArray(subArray, inputStream);
         }
         // 然后是根据 市 和 银行 可以获取一个支行列表
+    }
+
+    @Test
+    public void uploadResource() throws Exception {
+        MockHttpSession session = mvcLogin();
+
+        mockMvc.perform(fileUpload("/uploadResource")
+                .file(new MockMultipartFile("files", "abc", "image/jpeg", new byte[0]))
+                .session(session)
+        )
+//                .andDo(print())
+                .andExpect(status().isBadRequest())
+        ;
+
+        JsonNode node = objectMapper.readTree(mockMvc.perform(fileUpload("/uploadResource")
+                .file(new MockMultipartFile("files", "rmb.png", "image/png", StreamUtils.copyToByteArray(applicationContext.getResource("/images/1.png").getInputStream())))
+                .session(session)
+        )
+//                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsByteArray());
+
+        assertSimilarJsonObject(node, objectMapper.readTree(applicationContext.getResource("/mock/image_upload.json").getInputStream()));
     }
 
 }

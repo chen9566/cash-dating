@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.Resource;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -177,7 +178,7 @@ public abstract class WebTest extends ServiceBaseTest {
      * @param actual
      * @param excepted
      */
-    private void assertSimilarJsonObject(JsonNode actual, JsonNode excepted) {
+    protected void assertSimilarJsonObject(JsonNode actual, JsonNode excepted) {
         assertThat(actual.isObject())
                 .isTrue();
         assertThat(actual.fieldNames())
@@ -371,6 +372,14 @@ public abstract class WebTest extends ServiceBaseTest {
     protected MyPage myPage(WebDriver driver) {
         driver.get("http://localhost/my");
         return initPage(MyPage.class);
+    }
+
+    protected MockHttpSession mvcLogin() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        mockMvc.perform(getWeixin("/start").session(session));
+        mockMvc.perform(getWeixin("/login").session(session));
+        mockMvc.perform(getWeixin("/start").session(session));
+        return session;
     }
 
     @ComponentScan({"me.jiangcai.dating.test"})

@@ -22,15 +22,15 @@
         <p class="jk"><img src="images/1.png"><input placeholder="200000" type="tel" id="_content" name="amount"></p>
         <ul>
             <li class="bo-b">还款期数
-                <span class="pull-right">12个月</span>
-                <!--<select name="period" class="pull-right" style="margin-top: 11px;">
+                <!--<span class="pull-right">12个月</span>-->
+                <select name="period" class="pull-right" style="margin-top: 11px;">
                     <option value="3" th:each="term:${project.term}" th:text="${term}"
                             th:value="${#cashStrings.termInteger(term)}">3个月
                     </option>
                     <option th:remove="all" value="6">6个月</option>
                     <option th:remove="all" value="9">9个月</option>
                     <option th:remove="all" value="12">12个月</option>
-                </select>-->
+                </select>
             </li>
             <li>到期还款<span class="pull-right t1" id="spanMonthLo">¥556.76</span></li>
         </ul>

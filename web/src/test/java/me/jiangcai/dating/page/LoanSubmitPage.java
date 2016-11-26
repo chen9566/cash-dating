@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -21,6 +23,10 @@ public class LoanSubmitPage extends AbstractPage {
     private WebElement city;
     private WebElement submitButton;
     private WebElement loanForm;
+    private WebElement homeAddress;
+    private WebElement employer;
+    private WebElement profitMonthly;
+    private WebElement propose;
 
     public LoanSubmitPage(WebDriver webDriver) {
         super(webDriver);
@@ -32,13 +38,24 @@ public class LoanSubmitPage extends AbstractPage {
                 .isEqualTo("基本信息");
     }
 
-    public LoanIDPage submit(String name, String number, String proviceName, String cityName) {
+    public LoanIDPage submit(String name, String number, String provinceName, String cityName) {
         this.name.clear();
         this.name.sendKeys(name);
         this.number.clear();
         this.number.sendKeys(number);
-        inputSelect(loanForm, province.getAttribute("name"), proviceName);
+        inputSelect(loanForm, province.getAttribute("name"), provinceName);
         inputSelect(loanForm, city.getAttribute("name"), cityName);
+
+        // 这些字段目前都没有保存
+        homeAddress.clear();
+        homeAddress.sendKeys(UUID.randomUUID().toString());
+        employer.clear();
+        employer.sendKeys(UUID.randomUUID().toString());
+        profitMonthly.clear();
+        profitMonthly.sendKeys(UUID.randomUUID().toString());
+        propose.clear();
+        propose.sendKeys(UUID.randomUUID().toString());
+
         submitButton.click();
         return initPage(LoanIDPage.class);
     }
