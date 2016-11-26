@@ -32,7 +32,7 @@
         </li>
         <!--<li th:text="${'区域:'+loan.region}">区域:上海</li>!-->
         <li class="b70">
-            <p><img src="images/Loan-con4.png"></p>
+            <p><img src="images/Loan-con4.png" th:src="@{${loan.imageUri}}"/></p>
             <p class="f15" th:text="${loan.productName}">项目贷款</p>
             <p class="f12 t-size" th:text="${loan.introduce}">
                 本借款项目系为具有个人消费需求的汽车车主，提供的短期消费类借款产品。该产品由作为借款人的汽车车主，将其的自有车辆作为质押物申请借款。经过投融家平台审核后，确认借款人资信良好，车辆权属清晰的，且借款人所有车辆的可以依法质押的，方允许借款人发布借款信息。借款项目由第三方担保公司提供第三方连带责任保证，并且借款金额根据评估价值进行相应的折扣。本产品具有借款申请快捷，借款期限短、借款保障系数高，质押车辆处置快速的特点。</p>
@@ -47,7 +47,8 @@
         <li class="b70">
             <p><img src="images/Loan-icon.png"></p>
             <p class="f15">快车宝</p>
-            <p class="f12 t-size">本项目系向优质企事业单位员工、教师、公务员提供的个人消费信用借款，借款人申请资料经投融家风控严格把控及反欺诈风险评估，借款人信用记录良好，工作收入来源稳定，拥有较强的还款能力。</p>
+            <p class="f12 t-size">
+                本项目系向优质企事业单位员工、教师、公务员提供的个人消费信用借款，借款人申请资料经投融家风控严格把控及反欺诈风险评估，借款人信用记录良好，工作收入来源稳定，拥有较强的还款能力。</p>
         </li>
     </ul>
     <ul class="bm-b clickHref" href="loan.html" th:remove="all">
@@ -59,7 +60,8 @@
         <li class="b70">
             <p><img src="images/Loan-icon1.png"></p>
             <p class="f15">随心贷</p>
-            <p class="f12 t-size">本项目系向优质企事业单位员工、教师、公务员提供的个人消费信用借款，借款人申请资料经投融家风控严格把控及反欺诈风险评估，借款人信用记录良好，工作收入来源稳定，拥有较强的还款能力。</p>
+            <p class="f12 t-size">
+                本项目系向优质企事业单位员工、教师、公务员提供的个人消费信用借款，借款人申请资料经投融家风控严格把控及反欺诈风险评估，借款人信用记录良好，工作收入来源稳定，拥有较强的还款能力。</p>
         </li>
     </ul>
     <ul class="clickHref" href="loan.html" th:remove="all">
