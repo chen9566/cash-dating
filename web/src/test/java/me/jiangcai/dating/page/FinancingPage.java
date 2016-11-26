@@ -37,8 +37,9 @@ public class FinancingPage extends AbstractPage {
                 .contains(financing.getYearRate());
         assertThat(financingName.getText())
                 .contains(financing.getProjectTypeName());
-        assertThat(financingDesc.getText())
-                .contains(financing.getProjectSlogan());
+        if (financing.getProjectSlogan() != null)
+            assertThat(financingDesc.getText())
+                    .contains(financing.getProjectSlogan());
     }
 
     public void goFinancing() {

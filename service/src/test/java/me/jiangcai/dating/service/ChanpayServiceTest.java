@@ -2,13 +2,11 @@ package me.jiangcai.dating.service;
 
 import me.jiangcai.dating.ServiceBaseTest;
 import me.jiangcai.dating.entity.CashOrder;
-import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.repository.SubBranchBankRepository;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import me.jiangcai.wx.test.WeixinUserMocker;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,15 +34,15 @@ public class ChanpayServiceTest extends ServiceBaseTest {
     @Autowired
     private SubBranchBankRepository subBranchBankRepository;
 
-    protected String randomBankCard() {
-        return RandomStringUtils.randomNumeric(16);
-    }
-
-    protected SubBranchBank randomSubBranchBank() {
-        return subBranchBankRepository.findAll().stream()
-                .max(new RandomComparator())
-                .orElse(null);
-    }
+//    protected String randomBankCard() {
+//        return RandomStringUtils.randomNumeric(16);
+//    }
+//
+//    protected SubBranchBank randomSubBranchBank() {
+//        return subBranchBankRepository.findAll().stream()
+//                .max(new RandomComparator())
+//                .orElse(null);
+//    }
 
     @Test
     public void xx() throws IOException, SignatureException {

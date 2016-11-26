@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>上传身份证照片</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload.js"></script>
+</head>
+<body>
+<div class="insurance">
+    <h1>请上传二代身份证的正反面照片</h1>
+    <input id="fileupload" style="display: none;" type="file" name="files"
+           data-url="mock/image_upload.json"/>
+    <!--multiple-->
+    <!--data-form-data='{"script": "true"}'-->
+    <!--data-sequential-uploads="true"-->
+    <p class="id" id="fm"><img src="images/id-bg-z.png"></p>
+    <p class="id m-10" id="zm"><img src="images/id-bg-f.png"></p>
+    <ul id="navlist">
+        <li class="list1"></li>
+        <li class="list2"><a href=""><span>拍摄照片要求</span></a></li>
+    </ul>
+    <p class="id"><img src="images/id-bg-l.png"></p>
+</div>
+<div class="up-btn">
+    <a href="repaymentcard.html">下一步</a>
+</div>
+
+<script>
+    $(function () {
+        $('a', $('.up-btn')).click(function () {
+            if (!$('img', $('#fm')).attr('path')) {
+                alert('请先上传身份证');
+                return false;
+            }
+            if (!$('img', $('#zm')).attr('path')) {
+                alert('请先上传身份证');
+                return false;
+            }
+            return true;
+        });
+
+        var uploader = $("#fileupload");
+//        uploader.fileupload({
+//            add: function (e, data) {
+//                data.submit()
+//                        .success(function (data) {
+//                            $('img',uploader.targetJQuery).attr('src',data.url);
+//                            $('img',uploader.targetJQuery).attr('path',data.path);
+//                        })
+//                        .error(function (j) {
+//                            alert(j.responseText);
+////                            uploader.fileupload('destroy');
+//                        });
+//            }
+//        });
+        function work() {
+            var newOne = uploader.clone();
+            newOne.removeAttr('id');
+            uploader.before(newOne);
+            var me = this;
+
+            newOne.fileupload({
+                add: function (e, data) {
+                    data.submit()
+                            .success(function (data) {
+                                $('img', me).attr('src', data.url);
+                                $('img', me).attr('path', data.path);
+                            })
+                            .error(function (j) {
+                                alert(j.responseText);
+//                            uploader.fileupload('destroy');
+                            });
+                }
+            });
+            newOne.click();
+        }
+
+        $('#fm').click(work);
+        $('#zm').click(work);
+    });
+</script>
+
+</body>
+</html>

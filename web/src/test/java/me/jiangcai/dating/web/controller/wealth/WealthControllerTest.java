@@ -6,9 +6,11 @@ import me.jiangcai.dating.LoginWebTest;
 import me.jiangcai.dating.entity.LoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.Loan;
+import me.jiangcai.dating.page.BindingCardPage;
 import me.jiangcai.dating.page.FinancingPage;
 import me.jiangcai.dating.page.LoanAmountPage;
 import me.jiangcai.dating.page.LoanCompletedPage;
+import me.jiangcai.dating.page.LoanIDPage;
 import me.jiangcai.dating.page.LoanPage;
 import me.jiangcai.dating.page.LoanSubmitPage;
 import me.jiangcai.dating.page.MyPage;
@@ -73,7 +75,13 @@ public class WealthControllerTest extends LoginWebTest {
             city = province.getCityList().stream().max(new RandomComparator()).orElseThrow(IllegalStateException::new);
         }
 
-        LoanCompletedPage completedPage = submitPage.submit(name, number, province.getName(), city.getName());
+        LoanIDPage idPage = submitPage.submit(name, number, province.getName(), city.getName());
+
+        BindingCardPage bindingCardPage = idPage.next();
+        bindingCardPage.submitWithRandomAll();
+
+//        LoanCompletedPage completedPage = submitPage.submit(name, number, province.getName(), city.getName());
+        LoanCompletedPage completedPage = initPage(LoanCompletedPage.class);
 
         completedPage.doBack();
 

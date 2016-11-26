@@ -3,6 +3,7 @@ package me.jiangcai.dating.page;
 import com.gargoylesoftware.htmlunit.html.HtmlImage;
 import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.service.SystemService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -109,6 +110,14 @@ public abstract class AbstractPage extends me.jiangcai.lib.test.page.AbstractPag
                 return;
             }
         }
+    }
+
+    protected SubBranchBank randomSubBranchBank() {
+        return getWebTest().randomSubBranchBank();
+    }
+
+    protected String randomBankCard() {
+        return getWebTest().randomBankCard();
     }
 
     protected SystemService getSystemService() {

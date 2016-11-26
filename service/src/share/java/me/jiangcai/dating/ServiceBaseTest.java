@@ -66,7 +66,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
     @Autowired
     protected UserOrderRepository userOrderRepository;
 
-    protected SubBranchBank randomSubBranchBank() {
+    public SubBranchBank randomSubBranchBank() {
         return subBranchBankRepository.findAll().stream()
                 .max(new RandomComparator())
                 .orElse(null);
@@ -101,7 +101,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
         return map;
     }
 
-    protected String randomBankCard() {
+    public String randomBankCard() {
         return RandomStringUtils.randomNumeric(16);
     }
 

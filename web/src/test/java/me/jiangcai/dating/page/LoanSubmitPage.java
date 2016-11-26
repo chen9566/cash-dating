@@ -32,7 +32,7 @@ public class LoanSubmitPage extends AbstractPage {
                 .isEqualTo("基本信息");
     }
 
-    public LoanCompletedPage submit(String name, String number, String proviceName, String cityName) {
+    public LoanIDPage submit(String name, String number, String proviceName, String cityName) {
         this.name.clear();
         this.name.sendKeys(name);
         this.number.clear();
@@ -40,6 +40,6 @@ public class LoanSubmitPage extends AbstractPage {
         inputSelect(loanForm, province.getAttribute("name"), proviceName);
         inputSelect(loanForm, city.getAttribute("name"), cityName);
         submitButton.click();
-        return initPage(LoanCompletedPage.class);
+        return initPage(LoanIDPage.class);
     }
 }

@@ -4,6 +4,7 @@ import me.jiangcai.chanpay.model.City;
 import me.jiangcai.chanpay.model.Province;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.service.PayResourceService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -98,8 +99,16 @@ public class BindingCardPage extends AbstractPage {
                 .filter(WebElement::isDisplayed);
     }
 
+    public void submitWithRandomAll() {
+        getTestInstance();
+        SubBranchBank subBranchBank = randomSubBranchBank();
+
+        final String owner = RandomStringUtils.randomAlphanumeric(3);
+        final String number = randomBankCard();
+        submitWithRandomAddress(subBranchBank, owner, number);
+    }
+
     /**
-     *
      * @param branchBank
      * @param name
      * @param number
