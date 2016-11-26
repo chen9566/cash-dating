@@ -44,7 +44,7 @@ public class WithdrawController {
         user = userService.by(user.getId());
 
         model.addAttribute("card", cardService.recommend(user));
-        model.addAttribute("balance", statisticService.balance(user.getOpenId()));
+        model.addAttribute("balance", statisticService.balance(user.getOpenId()).setScale(2, BigDecimal.ROUND_DOWN));
         return "now.html";
     }
 
