@@ -38,10 +38,10 @@ public class WithdrawPage extends AbstractPage {
                 .isEqualTo(Common.CurrencyFormat(balance));
     }
 
-    public WithdrawListPage withdraw(BigDecimal number) {
+    public WithdrawResultPage withdraw(BigDecimal number) {
         input.clear();
         input.sendKeys(number.toString());
         button.click();
-        return initPage(WithdrawListPage.class);
+        return initPage(WithdrawResultPage.class);
     }
 }

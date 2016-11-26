@@ -9,6 +9,7 @@ import me.jiangcai.dating.page.MyInvitationPage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.WithdrawListPage;
 import me.jiangcai.dating.page.WithdrawPage;
+import me.jiangcai.dating.page.WithdrawResultPage;
 import me.jiangcai.dating.service.AgentService;
 import me.jiangcai.dating.service.StatisticService;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -84,7 +85,10 @@ public class WithdrawControllerTest extends LoginWebTest {
         page.refresh();
         page.assertBalance(balance);
 
-        WithdrawListPage listPage = page.withdraw(balance);
+        WithdrawResultPage resultPage = page.withdraw(balance);
+
+//        WithdrawListPage listPage = page.withdraw(balance);
+        WithdrawListPage listPage = resultPage.back();
 
         // 即可看到提现的历史了
         listPage.assertList(statisticService.withdrawalFlows(currentUser().getOpenId()));

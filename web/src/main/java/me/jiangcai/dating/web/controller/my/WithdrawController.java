@@ -53,7 +53,12 @@ public class WithdrawController {
     public String withdraw(@AuthenticationPrincipal User user, BigDecimal amount) throws IOException, SignatureException {
         user = userService.by(user.getId());
         orderService.newWithdrawOrder(user, amount, null);
-        return "redirect:/withdrawList";
+        return "redirect:/withdrawResult";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/withdrawResult")
+    public String withdrawResult() {
+        return "payment-ts.html";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/withdrawList")
