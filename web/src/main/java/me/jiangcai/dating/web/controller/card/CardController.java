@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class CardController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/card")
     public String start(@RequestHeader(value = "Referer", required = false) String redirectUrl, String nextAction
-            , HttpSession session, Model model) {
+            , HttpSession session, Model model, @RequestParam(value = "workModel", required = false) String workModel) {
         if (!StringUtils.isEmpty(redirectUrl) || !StringUtils.isEmpty(nextAction)) {
             if (StringUtils.isEmpty(nextAction)) {
                 session.removeAttribute(NextActionSessionKey);
@@ -67,6 +68,7 @@ public class CardController {
                 session.setAttribute(RedirectSessionKey, redirectUrl);
         }
 
+        model.addAttribute("workModel", workModel);
         model.addAttribute("banks", bankService.list());
         return "addcard.html";
     }
@@ -77,6 +79,7 @@ public class CardController {
     public String registerCard(@OpenId String id, HttpSession session, String name, String number
                                // 这3个参数 其实用不上
             , String province, String city, String bank
+            , @RequestParam(value = "workModel", required = false) String workModel
             , String subBranch) {
 //
 //        Address address = new Address();
@@ -85,13 +88,24 @@ public class CardController {
 
 //        userService.deleteCards(id);
         // 禁用原卡
-        cardService.disableRecommendCard(id);
+        Card card;
+        if ("loan".equals(workModel)) {
+            card = cardService.addCard(null, name, number, null, null, subBranch);
+        } else {
+            cardService.disableRecommendCard(id);
+            card = cardService.addCard(id, name, number, null, null, subBranch);
+        }
 
-        Card card = cardService.addCard(id, name, number, null, null, subBranch);
 
         String action = (String) session.getAttribute(NextActionSessionKey);
-        if (!StringUtils.isEmpty(action))
+        if (!StringUtils.isEmpty(action)) {
+            if (action.contains("?")) {
+                action = action + "&cardId=" + card.getId();
+            } else {
+                action = action + "?cardId=" + card.getId();
+            }
             return "redirect:" + action;
+        }
         String url = (String) session.getAttribute(RedirectSessionKey);
         if (StringUtils.isEmpty(url))
             return "redirect:/start";

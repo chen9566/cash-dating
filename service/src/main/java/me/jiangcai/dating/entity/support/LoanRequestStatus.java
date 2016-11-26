@@ -9,5 +9,9 @@ public enum LoanRequestStatus {
     requested,
     reject,
     forward,
-    accept
+    accept,
+    /**
+     * 尚未提交的请求
+     */
+    init
 }

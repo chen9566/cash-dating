@@ -65,10 +65,14 @@ public class ManageLoanControllerTest extends ManageWebTest {
         address.setProvince(PayResourceService.listProvince().stream().max(new RandomComparator()).orElse(null));
         address.setCity(address.getProvince().getCityList().stream().max(new RandomComparator()).orElse(null));
 
+        // 这个只是玩玩 不会被检查出来的
         wealthService.loanRequest(userOpenId, loan, new BigDecimal("20000"), cashStrings.termInteger(term), null
                 , "摆渡人", RandomStringUtils.randomNumeric(18), address);
-        wealthService.loanRequest(userOpenId, loan, new BigDecimal("20000"), cashStrings.termInteger(term), null
-                , "摆渡人", RandomStringUtils.randomNumeric(18), address);
+
+        wealthService.submitLoanRequest(wealthService.loanRequest(userOpenId, loan, new BigDecimal("20000"), cashStrings.termInteger(term), null
+                , "摆渡人", RandomStringUtils.randomNumeric(18), address));
+        wealthService.submitLoanRequest(wealthService.loanRequest(userOpenId, loan, new BigDecimal("20000"), cashStrings.termInteger(term), null
+                , "摆渡人", RandomStringUtils.randomNumeric(18), address));
 
         mockMvc.perform(getWeixin("/manage/data/loan/all").session(session)
                 .param("offset", "0")

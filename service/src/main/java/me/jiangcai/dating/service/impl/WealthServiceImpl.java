@@ -9,6 +9,7 @@ import me.jiangcai.dating.entity.support.LoanRequestStatus;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
+import me.jiangcai.dating.repository.CardRepository;
 import me.jiangcai.dating.repository.LoanRequestRepository;
 import me.jiangcai.dating.service.CashStrings;
 import me.jiangcai.dating.service.TourongjiaService;
@@ -56,6 +57,8 @@ public class WealthServiceImpl implements WealthService {
     private ApplicationContext applicationContext;
     @Autowired
     private CashStrings cashStrings;
+    @Autowired
+    private CardRepository cardRepository;
 
     @Override
     public boolean moreFinancingSupport() {
@@ -116,7 +119,16 @@ public class WealthServiceImpl implements WealthService {
         request.setProjectId(loan.getProductId());
         request.setProjectName(loan.getProductName());
         request.setCreatedTime(userLoanData.getLastUseTime());
+        request.setProcessStatus(LoanRequestStatus.init);
         return loanRequestRepository.save(request);
+    }
+
+    @Override
+    public void submitLoanRequest(LoanRequest loanRequest) {
+        if (loanRequest.getProcessStatus() == null || loanRequest.getProcessStatus() == LoanRequestStatus.init) {
+            loanRequest.setProcessStatus(LoanRequestStatus.requested);
+            loanRequestRepository.save(loanRequest);
+        }
     }
 
     @Override
@@ -169,6 +181,16 @@ public class WealthServiceImpl implements WealthService {
         request.setProcessTime(LocalDateTime.now());
         request.setProcessor(user);
         request.setComment(comment);
+    }
+
+    @Override
+    public void updateLoanIDImages(long loanRequestId, String backIdResourcePath, String frontIdResourcePath) {
+
+    }
+
+    @Override
+    public void updateLoanCard(long loanRequestId, long cardId) {
+        cardRepository.delete(cardId);
     }
 
     private Loan[] reCacheLoan() throws IOException {

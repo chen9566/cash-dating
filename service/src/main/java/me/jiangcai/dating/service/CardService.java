@@ -25,7 +25,7 @@ public interface CardService {
     /**
      * 增加银行卡
      *
-     * @param openId    openId
+     * @param openId    openId,如果为空,表示自己维护这个card
      * @param name      持卡人
      * @param number    卡号
      * @param bank

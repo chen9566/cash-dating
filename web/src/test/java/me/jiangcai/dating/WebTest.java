@@ -58,6 +58,8 @@ public abstract class WebTest extends ServiceBaseTest {
     static final String defaultStartUrl = "http://localhost/start";
     private static final Log log = LogFactory.getLog(WebTest.class);
     protected final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    protected ApplicationContext applicationContext;
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserRepository userRepository;
@@ -66,8 +68,6 @@ public abstract class WebTest extends ServiceBaseTest {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private MockPay pay;
-    @Autowired
-    private ApplicationContext applicationContext;
     @Autowired
     private SystemService systemService;
 

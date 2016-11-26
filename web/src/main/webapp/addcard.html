@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="workModel" type="java.lang.String"*/-->
 <!--/*@thymesVar id="banks" type="java.lang.Iterable<me.jiangcai.dating.entity.Bank>"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -19,8 +20,10 @@
 <body>
 <form class="from-bank" action="receivables.html" th:action="@{/registerCard}" th:method="post" id="addCardForm"
       role="form">
+    <input type="hidden" name="workModel" th:if="${workModel!=null}" th:value="${workModel}"/>
     <div class="showcard" id="cardShower">3333333333</div>
-    <p class="b1">请绑定持卡人的银行卡(<b>借记卡</b>)</p>
+    <p class="b1" th:if="${workModel==null}">请绑定持卡人的银行卡(<b>借记卡</b>)</p>
+    <p class="b1" th:if="${'loan'==(workModel)}">请绑定您的借还款(<b>结算卡</b>)</p>
     <ul>
         <li>
             <label class="pull-left">开户银行</label>

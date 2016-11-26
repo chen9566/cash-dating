@@ -92,7 +92,7 @@ public class ManageLoanController {
             if (pendingOnly) {
                 return root.get("processStatus").in(LoanRequestStatus.requested, LoanRequestStatus.forward);
             }
-            return null;
+            return criteriaBuilder.notEqual(root.get("processStatus"), LoanRequestStatus.init);
         };
     }
 

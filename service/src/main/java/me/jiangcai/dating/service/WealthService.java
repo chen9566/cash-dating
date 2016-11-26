@@ -34,7 +34,7 @@ public interface WealthService {
     Loan[] loanList() throws IOException;
 
     /**
-     * 借款申请
+     * 借款申请,仅仅是开始一个申请
      *
      * @param openId         借款者
      * @param loan           相关产品
@@ -48,6 +48,14 @@ public interface WealthService {
     @Transactional
     LoanRequest loanRequest(String openId, Loan loan, BigDecimal amount, int period, Long userLoanDataId, String name
             , String number, Address address) throws IOException;
+
+    /**
+     * 提交一项借款申请
+     *
+     * @param loanRequest 申请
+     */
+    @Transactional
+    void submitLoanRequest(LoanRequest loanRequest);
 
     @Transactional(readOnly = true)
     List<LoanRequest> listLoanRequests(String openId);
@@ -75,6 +83,25 @@ public interface WealthService {
     // 内部方法 请勿调用
     @ThreadSafe
     void approveLoanRequestCore(Locker locker, User user, long requestId, String comment) throws IOException;
+
+    /**
+     * 更新借款申请的身份证复印件信息
+     *
+     * @param loanRequestId       借款id
+     * @param backIdResourcePath  如不存在,请无视
+     * @param frontIdResourcePath 如不存在,请无视
+     */
+    @Transactional
+    void updateLoanIDImages(long loanRequestId, String backIdResourcePath, String frontIdResourcePath);
+
+    /**
+     * 更新借款申请的卡号信息
+     *
+     * @param loanRequestId 借款id
+     * @param cardId        如不存在,请无视
+     */
+    @Transactional
+    void updateLoanCard(long loanRequestId, long cardId);
 //
 //    /**
 //     * @return 总投资金额

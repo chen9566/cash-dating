@@ -1,5 +1,6 @@
 package me.jiangcai.dating.web.controller.wealth;
 
+import me.jiangcai.dating.entity.LoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.model.trj.Financing;
@@ -16,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,7 +46,13 @@ public class WealthController {
     ///////////理财
 
     @RequestMapping(method = RequestMethod.GET, value = "/financing")
-    public String financing(Model model) throws IOException {
+    public String financing(@AuthenticationPrincipal User user, Model model) throws IOException {
+        user = userService.by(user.getId());
+        if (tourongjiaService.token(user.getMobileNumber()).getBinding() == -1) {
+            // 用户未注册 直接302
+            return "redirect:" + tourongjiaService.loginURL(user.getMobileNumber()).toString();
+        }
+
         final Financing financing = wealthService.currentFinancing();
         model.addAttribute("currentFinancing", financing);
         // 10.00 切割为
@@ -110,13 +118,34 @@ public class WealthController {
     @RequestMapping(method = RequestMethod.POST, value = "/loanSubmit")
     public String loanSubmit(@AuthenticationPrincipal User user, String id, BigDecimal amount, int period, String name
             , String number
-            , @RequestParam("province") String provinceCode, @RequestParam("city") String cityCode) throws IOException {
+            , @RequestParam("province") String provinceCode, @RequestParam("city") String cityCode
+            , Model model) throws IOException {
 
         Address address = new Address();
         address.setProvince(PayResourceService.provinceById(provinceCode));
         address.setCity(PayResourceService.cityById(cityCode));
 
-        wealthService.loanRequest(user.getOpenId(), loanInstance(id), amount, period, null, name, number, address);
+        LoanRequest loanRequest = wealthService.loanRequest(user.getOpenId(), loanInstance(id), amount, period, null
+                , name, number, address);
+        model.addAttribute("loanRequest", loanRequest);
+        return "id.html";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/loanID")
+    public String loanID(long loanRequestId, String backId, String frontId) {
+        // 这个时候应该去身份证那边
+        wealthService.updateLoanIDImages(loanRequestId, backId, frontId);
+        return "redirect:/card?nextAction=/loanCard/" + loanRequestId + "&workModel=loan";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/loanCard/{loanRequestId}")
+    public String loanCard(@PathVariable("loanRequestId") long loanRequestId, long cardId) {
+        wealthService.updateLoanCard(loanRequestId, cardId);
+        return "redirect:/loanComplete";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/loanComplete")
+    public String loanCard() {
         return "personalok.html";
     }
 

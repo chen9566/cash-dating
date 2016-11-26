@@ -6,6 +6,7 @@ import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.entity.support.Address;
+import me.jiangcai.dating.repository.CardRepository;
 import me.jiangcai.dating.repository.SubBranchBankRepository;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.CardService;
@@ -28,6 +29,8 @@ public class CardServiceImpl implements CardService {
     private UserRepository userRepository;
     @Autowired
     private SubBranchBankRepository subBranchBankRepository;
+    @Autowired
+    private CardRepository cardRepository;
 
 
     @Override
@@ -41,8 +44,6 @@ public class CardServiceImpl implements CardService {
     @Override
     public Card addCard(String openId, String name, String number, Bank bank, Address address, String subBranch) {
 //        verificationCodeService.verify(mobile, code, VerificationType.card);
-
-        User user = userRepository.findByOpenId(openId);
 
         SubBranchBank branchBank = subBranchBankRepository.getOne(subBranch);
 
@@ -60,6 +61,10 @@ public class CardServiceImpl implements CardService {
         card.setSubBranchBank(branchBank);
         card.setSubBranch(branchBank.getName());
 //        card.setSubBranch(subBranch);
+        if (openId == null)
+            return cardRepository.saveAndFlush(card);
+
+        User user = userRepository.findByOpenId(openId);
 
         if (user.getCards() == null) {
             user.setCards(new ArrayList<>());
