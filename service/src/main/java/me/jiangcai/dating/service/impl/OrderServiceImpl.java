@@ -18,15 +18,21 @@ import me.jiangcai.dating.model.support.OrderFlowStatus;
 import me.jiangcai.dating.repository.CardRepository;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.PayToUserOrderRepository;
+import me.jiangcai.dating.repository.UserOrderRepository;
 import me.jiangcai.dating.repository.WithdrawOrderRepository;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.StatisticService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.UserService;
+import me.jiangcai.lib.seext.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.SetJoin;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -64,6 +70,9 @@ public class OrderServiceImpl implements OrderService {
     private WithdrawOrderRepository withdrawOrderRepository;
     @Autowired
     private StatisticService statisticService;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private UserOrderRepository userOrderRepository;
 
     @Override
     public CashOrder newOrder(User user, BigDecimal amount, String comment, Long cardId) {
@@ -250,5 +259,30 @@ public class OrderServiceImpl implements OrderService {
             withdrawOrderRepository.save(order);
             return order;
         }
+    }
+
+    @Override
+    public List<UserOrder> queryUserOrders(String search) {
+        try {
+            search = NumberUtils.hash62ToUUID(search).toString().replaceAll("-", "");
+        } catch (Throwable ignored) {
+        }
+        return userOrderRepository.findAll(specification(search));
+    }
+
+    private Specification<UserOrder> specification(String search) {
+        return (root, query, cb) -> {
+            SetJoin<UserOrder, PlatformWithdrawalOrder> platformWithdrawalOrderSet
+                    = root.joinSet("platformWithdrawalOrderSet", JoinType.LEFT);
+            Root<CashOrder> cashOrderRoot = cb.treat(root, CashOrder.class);
+            SetJoin<CashOrder, PlatformOrder> platformOrderSet = cashOrderRoot.joinSet("platformOrderSet", JoinType.LEFT);
+//                cb.treat(platformOrderSet,CashOrder.class)
+            return cb.or(
+                    cb.equal(root.get("id"), search)
+                    , cb.equal(root.get("owner").get("nickname"), search)
+                    , cb.equal(platformWithdrawalOrderSet.get("id"), search)
+                    , cb.equal(platformOrderSet.get("id"), search)
+            );
+        };
     }
 }

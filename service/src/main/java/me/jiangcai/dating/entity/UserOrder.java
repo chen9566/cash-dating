@@ -147,4 +147,12 @@ public abstract class UserOrder implements Locker {
      * @return null 表示无需通知
      */
     public abstract Notification withdrawalTransferFailedNotification(PlatformWithdrawalOrder withdrawalOrder, String reason);
+
+    /**
+     * @return true 是用于刷卡套现的 也就是{@link CashOrder}的子类
+     */
+    @Transient
+    public boolean isArbitrage() {
+        return false;
+    }
 }

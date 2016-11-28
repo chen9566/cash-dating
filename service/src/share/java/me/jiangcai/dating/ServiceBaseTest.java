@@ -12,6 +12,7 @@ import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserOrder;
+import me.jiangcai.dating.entity.WithdrawOrder;
 import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.repository.CashOrderRepository;
@@ -195,6 +196,21 @@ public abstract class ServiceBaseTest extends SpringWebTest {
         withdrawalFailed(order, WithdrawalStatus.WITHDRAWAL_SUCCESS, null);
     }
 
+    /**
+     * 创建一个已完成的提现订单
+     *
+     * @param user
+     * @param amount
+     * @return
+     * @throws IOException
+     * @throws SignatureException
+     */
+    protected WithdrawOrder makeFinishWithdrawOrder(User user, BigDecimal amount) throws IOException, SignatureException {
+        WithdrawOrder order = orderService.newWithdrawOrder(user, amount
+                , (user.getCards() == null || user.getCards().isEmpty()) ? null : user.getCards().get(0).getId());
+        withdrawalSuccess(order);
+        return order;
+    }
 
     /**
      * 构建一个完成的订单
