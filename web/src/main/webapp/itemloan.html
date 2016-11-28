@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta charset="UTF-8">
-    <title>款爷借款</title>
+    <title>项目贷款</title>
     <link rel="stylesheet" href="dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="dist/css/font-awesome.min.css">
     <link rel="stylesheet" href="dist/css/meiyue.css">
@@ -18,21 +18,18 @@
     <input name="id" type="hidden" th:value="${project.productId}"/>
     <div class="loan">
         <p class="t1" th:name="limitSpan" th:text="${'借款金额(50000元-'+project.amountInteger+'元)'}">
-            借款金额(50000元-500000元)</p>
-        <p class="jk"><img src="images/1.png"><input placeholder="0.00" type="tel" id="_content" name="amount"></p>
+            借款金额</p>
+        <p class="jk c33"><img src="images/1.png"><input readonly="readonly" placeholder="200000"type="tel" id="_content" name="amount"></p>
         <ul>
-            <li class="bo-b">还款期数<span class="pull-right bright-w"><img src="images/blackright-r.png"></span>
-                <!--<span class="pull-right">12个月</span>-->
-                <select name="period" class="pull-right" style="margin-top: 11px;">
+            <li class="bo-b">还款期数
+                <span class="pull-right c33">12个月</span>
+                <!--<select name="period" class="pull-right" style="margin-top: 11px;">
                     <option value="3" th:each="term:${project.term}" th:text="${term}"
-                            th:value="${#cashStrings.termInteger(term)}">3个月
+                            th:value="${#cashStrings.termInteger(term)}">12个月
                     </option>
-                    <option th:remove="all" value="6">6个月</option>
-                    <option th:remove="all" value="9">9个月</option>
-                    <option th:remove="all" value="12">12个月</option>
-                </select>
+                </select>-->
             </li>
-            <li>每月应还<span class="pull-right t1" id="spanMonthLo">¥556.76</span></li>
+            <li>到期还款<span class="pull-right t1" id="spanMonthLo">¥214000</span></li>
         </ul>
     </div>
     <p class="agree">
@@ -40,7 +37,7 @@
         <span class="check-pos">同意<a href="agreement3.html">《借款协议》《借款咨询与服务协议》</a></span>
     </p>
     <div class="p-15 ">
-        <input value="下一步" type="submit" id="_btn1" class="black" name="btn1" disabled="disabled"/>
+        <input value="下一步" type="submit"  class="redremove"   />
     </div>
 </form>
 <script th:inline="javascript">

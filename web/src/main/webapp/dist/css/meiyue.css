@@ -3305,7 +3305,11 @@ ul#navlist .list1 {
     height: 65px;
     line-height: 65px;
 }
-
+.c33{ color:#000 !important;
+}
+.c33 input[placeholder], [placeholder], *[placeholder] {
+     color:#000 !important;
+ }
 .loan .jk input[type="tel"] {
     -moz-appearance: textfield;
     border: 0;
@@ -3361,7 +3365,7 @@ ul#navlist .list1 {
     color: #353535;
     appearance: none;
     text-align: right;
-    padding-left: 57%;
+    padding-left: 55%;
 }
 
 .loan .right-pos {
