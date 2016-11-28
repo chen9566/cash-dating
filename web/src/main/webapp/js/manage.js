@@ -18,7 +18,7 @@ $(function () {
     var hrefOrder = 'order.html';
     if (!$.prototypesMode)
         hrefOrder = $.uriPrefix + '/manage/order';
-    if ($.prototypesMode || $.auths.agent)
+    if ($.prototypesMode || $.auths.order)
         menus = menus + '<li><a href="' + hrefOrder + '">订单查询</a></li>';
 
     var hrefLoanRequest = 'loanRequest.html';

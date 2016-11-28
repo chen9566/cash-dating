@@ -20,7 +20,7 @@
 <button title="执行平台审核,检查相关订单的状态">平台审核所有订单</button>
 <div>
     <!--订单区域-->
-    <article th:each="order:${orders}">
+    <article th:each="order:${orders}" th:id="${order.id}" id="1">
         <fieldset>
             <legend><span th:text="${order.friendlyId}">foo-bar</span></legend>
             <ul>
@@ -33,8 +33,8 @@
                 <li>系统备注:<span class="fieldValue" th:text="${order.systemComment}">无</span></li>
                 <li>是否已提现:<span class="fieldValue" th:text="${order.withdrawalCompleted?'是':'否'}">否</span></li>
             </ul>
-            <button th:if="${!order.withdrawalCompleted}">手动提现</button>
-            <button th:if="${!order.withdrawalCompleted}" title="执行平台审核,检查相关订单的状态">平台审核</button>
+            <button th:if="${!order.withdrawalCompleted}" name="withdrawal">手动提现</button>
+            <button title="执行平台审核,检查相关订单的状态">平台审核</button>
             <fieldset th:if="${order.arbitrage}">
                 <!--/*@thymesVar id="order" type="me.jiangcai.dating.entity.CashOrder"*/-->
                 <legend>支付记录</legend>
@@ -72,6 +72,27 @@
 
     </article>
 </div>
+
+<script>
+    $(function () {
+        $('button[name=withdrawal]').click(function () {
+            var button = $(this);
+            var id = button.closest('article').attr('id');
+            console.log('click me ', id);
+            function success() {
+                alert('已提交');
+            }
+
+            $.ajax($.uriPrefix + '/manage/order/withdrawal/' + id, {
+                method: 'put',
+                error: function (data) {
+                    alert(data.responseText);
+                },
+                success: success
+            });
+        });
+    });
+</script>
 
 </body>
 </html>
