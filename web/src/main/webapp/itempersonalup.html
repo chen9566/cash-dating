@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="project" type="me.jiangcai.dating.model.trj.Loan"*/-->
+<!--/*@thymesVar id="period" type="java.lang.Integer"*/-->
+<!--/*@thymesVar id="amount" type="java.math.BigDecimal"*/-->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>基本信息</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/share.js"></script>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+</head>
+<body>
+<form class="from-personal" id="loanForm" role="form" action="id.html" method="get" th:method="post"
+      th:action="@{/loanSubmit}">
+    <input name="id" type="hidden" th:value="${project.productId}"/>
+    <input name="period" type="hidden" th:value="${period}"/>
+    <input name="amount" type="hidden" th:value="${amount}"/>
+
+    <ul>
+        <li class="bo-b">
+            <label class="icon"><img src="images/user-icon.svg"></label>
+            <input type="text" name="name" placeholder="请输入真实姓名" required minlength="2">
+        </li>
+        <li class="noline">
+            <label class="icon"><img src="images/myicon-07.png"></label>
+            <input type="tel" name="number" placeholder="请输入身份证号码" required minlength="15">
+        </li>
+    </ul>
+    <p class="b1">必填信息</p>
+    <ul class="mb15">
+        <li class="bo-b f-per">
+            <label class="pull-left">居住所在地</label>
+            <span class="sleBG s1"
+                  style="background:url(images/Path.png) no-repeat 80px 19px;background-size:10px 6px;"> <span
+                    class="sleHid">
+				<select class="select2 province-selector" name="province" required>
+					<option value="1">北京</option>
+				</select>
+				</span></span> <span class="sleBG s3"
+                                     style="background:url(images/Path.png) no-repeat right;background-size:10px 6px; "> <span
+                class="sleHid">
+				<select class="select3 city-selector" name="city" required>
+					<option value="1">北京</option>
+				</select>
+				</span></span>
+        </li>
+        <li class="bo-b f-per"><label>详细地址</label><input name="homeAddress" type="text" placeholder="请输入详细地址" required>
+        </li>
+        <li class="bo-b f-per"><label>单位名称</label><input name="employer" type="text" placeholder="请输入单位名称" required>
+        </li>
+        <li class="bo-b f-per"><label>月 收 入</label><input name="profitMonthly" type="text" placeholder="请输入月收入"
+                                                          required></li>
+        <li class="f-per c33"><label>用 途</label><input name="propose" type="text" placeholder="个人消费"  disabled="disabled"></li>
+
+        <!--<li class="bo-b urgent">-->
+        <!--<p>紧急联系人</p>-->
+        <!--<a href="#" class="red-u pull-left">配偶</a><a href="#" class="red-b pull-left">子女/父母</a><a href="#"-->
+        <!--class="red-b pull-left">其他</a>-->
+        <!--</li>-->
+        <!--<li><a href="#">联系方式<span class="pull-right"><img src="images/blackright-r.png"></span><span class="pull-right">从通讯录选择</span></a>-->
+        <!--</li>-->
+    </ul>
+
+    <ul class="infor">
+        <li class="bo-b"><select name="">
+            <option>最高学历</option>
+            <option>高中及以下</option>
+            <option>大专</option>
+            <option>本科</option>
+            <option>硕士及以上</option>
+        </select>
+            <div class="right-pos">最高学历</div>
+            <img src="images/blackright-r.png" class="right-img"></li>
+        <li class="bo-b"><select name="">
+            <option>3年</option>
+            <option>5年</option>
+        </select>
+            <div class="right-pos">工作年限</div>
+            <img src="images/blackright-r.png" class="right-img"></li>
+
+        <li class="bo-b"><select name="">
+            <option>有</option>
+            <option>无</option>
+        </select>
+            <div class="right-pos">自有房产</div>
+            <img src="images/blackright-r.png" class="right-img"></li>
+        <li class="bo-b"><select name="">
+            <option>有</option>
+            <option>无</option>
+        </select>
+            <div class="right-pos">自有车辆</div>
+            <img src="images/blackright-r.png" class="right-img"></li>
+        <li class="bo-b"><select name="">
+            <option>有</option>
+            <option>无</option>
+        </select>
+            <div class="right-pos">缴纳公积金</div>
+            <img src="images/blackright-r.png" class="right-img"></li>
+        <li class="bo-b"><select name="">
+            <option>已婚</option>
+            <option>未婚</option>
+        </select>
+            <div class="right-pos">婚姻状况</div>
+            <img src="images/blackright-r.png" class="right-img"></li>
+    </ul>
+    <p class="p-15">
+        <button type="submit" id="submitButton" class="btn btn-danger btn-lg btn-block">下一步
+        </button>
+    </p>
+</form>
+<script src="mock/all.js" th:src="@{/all.js}"></script>
+<script src="js/loanSubmit.js"></script>
+<div class="show-bg" id="myAlert">填写内容不能为空</div>
+</body>
+</html>
