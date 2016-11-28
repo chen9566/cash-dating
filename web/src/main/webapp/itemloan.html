@@ -14,7 +14,7 @@
     <script src="dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-<form action="personalup.html" method="get" th:method="post" th:action="@{/loanSummary}">
+<form action="itempersonalup.html" method="get" th:method="post" th:action="@{/loanSummary}">
     <input name="id" type="hidden" th:value="${project.productId}"/>
     <div class="loan">
         <p class="t1" th:name="limitSpan" th:text="${'借款金额(50000元-'+project.amountInteger+'元)'}">
