@@ -6,6 +6,7 @@ import me.jiangcai.dating.service.OrderService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -38,7 +39,9 @@ public class ManageOrderController {
             return ResponseEntity.ok().body("");
         } catch (Throwable ex) {
             log.debug("mandalay", ex);
-            return ResponseEntity.badRequest().body(ex.getMessage());
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.valueOf(MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8"))
+                    .body(ex.getMessage());
         }
     }
 
