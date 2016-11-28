@@ -196,6 +196,8 @@ public abstract class AbstractChanpayService implements ChanpayService {
     @Override
     public void tradeUpdate(TradeEvent event) throws IOException, SignatureException {
         log.debug("trade event:" + event);
+        if (event.getTradeStatus() != TradeStatus.TRADE_SUCCESS)
+            return;
         applicationContext.getBean(ChanpayService.class).tradeUpdate(new MyTradeEvent(event));
     }
 
