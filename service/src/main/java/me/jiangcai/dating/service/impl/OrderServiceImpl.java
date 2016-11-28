@@ -272,11 +272,13 @@ public class OrderServiceImpl implements OrderService {
 
     private Specification<UserOrder> specification(String search) {
         return (root, query, cb) -> {
+            query.distinct(true);
             SetJoin<UserOrder, PlatformWithdrawalOrder> platformWithdrawalOrderSet
                     = root.joinSet("platformWithdrawalOrderSet", JoinType.LEFT);
             Root<CashOrder> cashOrderRoot = cb.treat(root, CashOrder.class);
             SetJoin<CashOrder, PlatformOrder> platformOrderSet = cashOrderRoot.joinSet("platformOrderSet", JoinType.LEFT);
 //                cb.treat(platformOrderSet,CashOrder.class)
+//            cb.in(platformWithdrawalOrderSet.get("id"))
             return cb.or(
                     cb.equal(root.get("id"), search)
                     , cb.equal(root.get("owner").get("nickname"), search)
