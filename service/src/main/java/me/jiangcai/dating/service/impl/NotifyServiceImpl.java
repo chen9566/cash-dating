@@ -88,12 +88,13 @@ public class NotifyServiceImpl implements NotifyService {
             return;
 
         // 移除2分钟前的
-        times.keySet().stream()
-                .filter(notification1 -> times.get(notification1).isBefore(LocalDateTime.now().minusMinutes(-2)))
-                .forEach(times::remove);
-        if (times.containsKey(notification))
-            return;
-        times.put(notification, LocalDateTime.now());
+//        times.keySet().stream()
+//                .filter(notification1 -> times.get(notification1).isBefore(LocalDateTime.now().minusMinutes(-2)))
+//                .forEach(times::remove);
+//        if (times.containsKey(notification))
+//            return;
+//        times.put(notification, LocalDateTime.now());
+
         String url;
         if (notification.getUri() == null) {
             url = null;
