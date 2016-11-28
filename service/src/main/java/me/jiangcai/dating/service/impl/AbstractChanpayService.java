@@ -270,15 +270,23 @@ public abstract class AbstractChanpayService implements ChanpayService {
         try {
             if (transactionService.execute(paymentToCard, null)) {
                 withdrawalOrder.setStatus(WithdrawalStatus.WITHDRAWAL_SUBMITTED);
-                Notification notification = order.withdrawalTransferNotification(withdrawalOrder);
-                if (notification != null)
-                    applicationEventPublisher.publishEvent(notification);
+                try {
+                    Notification notification = order.withdrawalTransferNotification(withdrawalOrder);
+                    if (notification != null)
+                        applicationEventPublisher.publishEvent(notification);
+                } catch (Throwable ignored) {
+                    log.debug("no dist", ignored);
+                }
             } else {
                 withdrawalOrder.setStatus(WithdrawalStatus.WITHDRAWAL_FAIL);
                 order.getPlatformWithdrawalOrderSet().remove(withdrawalOrder);
-                Notification notification = order.withdrawalTransferFailedNotification(withdrawalOrder, "无");
-                if (notification != null)
-                    applicationEventPublisher.publishEvent(notification);
+                try {
+                    Notification notification = order.withdrawalTransferFailedNotification(withdrawalOrder, "无");
+                    if (notification != null)
+                        applicationEventPublisher.publishEvent(notification);
+                } catch (Throwable ignored) {
+                    log.debug("no dist", ignored);
+                }
 //                userOrderRepository.save(order);
                 return null;
             }
