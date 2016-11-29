@@ -2465,6 +2465,7 @@ ul#navlist .list1 {
 
 .black a {
     display: block;
+
 }
 
 .red {
@@ -3376,6 +3377,7 @@ ul#navlist .list1 {
     appearance: none;
     text-align: right;
     padding-left: 55%;
+    direction: rtl;
 }
 
 .loan .right-pos {
@@ -4567,7 +4569,7 @@ ul#navlist .list1 {
 
 .up-btn a {
     font-size: 18px;
-    color: #fff;
+    color: #b3b3b3;
     display: block;
     text-decoration: none
 }

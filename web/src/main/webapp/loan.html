@@ -23,7 +23,7 @@
         <ul>
             <li class="bo-b">还款期数<span class="pull-right bright-w"><img src="images/blackright-r.png"></span>
                 <!--<span class="pull-right">12个月</span>-->
-                <select name="period" class="pull-right" style="margin-top: 11px;">
+                <select name="period" class="pull-right" style="margin-top: 12px;">
                     <option value="3" th:each="term:${project.term}" th:text="${term}"
                             th:value="${#cashStrings.termInteger(term)}">3个月
                     </option>

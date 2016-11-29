@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <title>上传驾驶证</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/bootstrap.min.js"></script>
+<body>
+<div class="carflow">
+    <ul>
+        <li>1.填写车主资料 </li>
+        <li  class="t2">2.上传证件照</li>
+        <li>3.完成</li>
+    </ul>
+</div>
+<div class="insurance ">
+    <h1>请上传二代身份证的正反面照片</h1>
+    <input id="fileupload" style="display: none;" type="file" name="files" th:attr="data-url=@{/uploadResource}"
+           data-url="mock/image_upload.json" accept="image/*"/>
+    <!--multiple-->
+    <!--data-form-data='{"script": "true"}'-->
+    <!--data-sequential-uploads="true"-->
+    <p class="id" id="zm"><img src="images/id-bg-f.png"></p>
+    <p class="id m-10" id="fm"><img src="images/id-bg-z.png"></p>
+    <ul id="navlist">
+        <li class="list1"></li>
+        <li class="list2"><a href=""><span>拍摄照片要求</span></a></li>
+    </ul>
+    <p class="id"><img src="images/id-bg-l.png"></p>
+</div>
+
+<div class="carimg mar30">
+    <ul id="navlist">
+        <li class="list1"></li>
+        <li class="list2"><a href=""><span class="b">战略合作伙伴</span></a></li>
+    </ul>
+    <ul class="ma-b" >
+        <li><img src="images/car-logo1.png"/></li>
+        <li><img src="images/car-logo2.png"/></li>
+        <li class="ma-0"><img src="images/car-logo3.png"/></li>
+        <li><img src="images/car-logo4.png"/></li>
+        <li><img src="images/car-logo5.png"/></li>
+        <li class="ma-0"><img src="images/car-logo6.png"/></li>
+        <li><img src="images/car-logo7.png"/></li>
+        <li><img src="images/car-logo8.png"/></li>
+        <li class="ma-0"><img src="images/car-logo8.png"/></li>
+    </ul>
+</div>
+<div class="up-btn">
+    <a href="repaymentcard.html?a=b" th:href="@{/loanID(loanRequestId=${loanRequest.id})}" class="black" disabled="disabled">提交</a>
+    <!--注:相片成功后按扭变成红色! 页面跳转到:uploadcar.html-->
+</div>
+</body>
+</html>
