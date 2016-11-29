@@ -46,6 +46,12 @@ public class WealthControllerTest extends LoginWebTest {
     @Autowired
     private ResourceService resourceService;
 
+    /**
+     * 存在2种流程
+     * 1,是{@link me.jiangcai.dating.model.trj.ProjectLoan} 固定金额,固定周期,固定汇率 更丰富的个人信息,
+     *
+     * @throws IOException
+     */
     @Test
     public void loan() throws IOException {
         MyPage myPage = myPage();
