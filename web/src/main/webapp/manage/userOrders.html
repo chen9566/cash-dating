@@ -33,7 +33,7 @@
                 <li>系统备注:<span class="fieldValue" th:text="${order.systemComment}">无</span></li>
                 <li>是否已提现:<span class="fieldValue" th:text="${order.withdrawalCompleted?'是':'否'}">否</span></li>
             </ul>
-            <button th:if="${!order.withdrawalCompleted}" name="withdrawal">手动提现</button>
+            <button th:if="${!order.withdrawalCompleted and order.arbitrage}" name="withdrawal">手动提现</button>
             <button title="执行平台审核,检查相关订单的状态">平台审核</button>
             <fieldset th:if="${order.arbitrage}">
                 <!--/*@thymesVar id="order" type="me.jiangcai.dating.entity.CashOrder"*/-->
