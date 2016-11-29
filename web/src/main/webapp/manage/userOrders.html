@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="orders" type="org.springframework.data.domain.Page<me.jiangcai.dating.entity.UserOrder>"*/-->
+<head>
+    <meta charset="UTF-8">
+    <title>订单列表</title>
+    <style>
+        .fieldValue {
+            float: right;
+        }
+    </style>
+    <link rel="stylesheet" href="../css/manage.css" th:href="@{/css/manage.css}">
+    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="../mock/all.js" th:src="@{/all.js}"></script>
+    <script th:replace="fragment/auth.html::code"></script>
+    <script src="../js/manage.js" th:src="@{/js/manage.js}"></script>
+</head>
+<body>
+<div class="header"></div>
+<button title="执行平台审核,检查相关订单的状态">平台审核所有订单</button>
+<div>
+    <!--订单区域-->
+    <article th:each="order:${orders}" th:id="${order.id}" id="1">
+        <fieldset>
+            <legend><span th:text="${order.friendlyId}">foo-bar</span></legend>
+            <ul>
+                <li>类型:<span class="fieldValue" th:text="${order.arbitrage?'套现':'提现'}">套现</span></li>
+                <li>账面金额:<span class="fieldValue"
+                               th:text="${#numbers.formatDecimal(1,1,'COMMA',2,'POINT')}">100.00</span></li>
+                <li>创建时间:<span class="fieldValue" th:text="${{order.startTime}}">2016-10-10 20:09</span></li>
+                <li>所属用户:<span class="fieldValue" th:text="${order.owner.nickname}">才才</span></li>
+                <li>备注:<span class="fieldValue" th:text="${order.comment}">无</span></li>
+                <li>系统备注:<span class="fieldValue" th:text="${order.systemComment}">无</span></li>
+                <li>是否已提现:<span class="fieldValue" th:text="${order.withdrawalCompleted?'是':'否'}">否</span></li>
+            </ul>
+            <button th:if="${!order.withdrawalCompleted and order.arbitrage}" name="withdrawal">手动提现</button>
+            <button title="执行平台审核,检查相关订单的状态">平台审核</button>
+            <fieldset th:if="${order.arbitrage}">
+                <!--/*@thymesVar id="order" type="me.jiangcai.dating.entity.CashOrder"*/-->
+                <legend>支付记录</legend>
+                <ul>
+                    <li style="color:rebeccapurple" th:if="${order.completed}">已检测到支付记录</li>
+                    <li th:if="${!order.completed}">等待支付中</li>
+                    <li>明细:
+                        <ul>
+                            <li th:each="pay:${order.platformOrderSet}" title="时间,状态" th:text="${pay.id}"
+                                th:title="${{pay.finishTime}}+','+${pay.status}">
+                                bar-foo
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </fieldset>
+            <fieldset>
+                <legend>提现记录</legend>
+                <fieldset th:each="w:${order.platformWithdrawalOrderSet}">
+                    <legend th:text="${w.id}">foo-bar</legend>
+                    <ul>
+                        <li>开始时间:<span class="fieldValue" th:text="${{w.startTime}}">2016-10-10 20:09</span></li>
+                        <li>更新时间:<span class="fieldValue" th:text="${{w.finishTime}}">2016-10-10 20:09</span></li>
+                        <li>平台备注:<span class="fieldValue" th:text="${w.comment}">银行卡错误</span></li>
+                        <li>收款人:<span class="fieldValue" th:text="${w.owner}">才才</span></li>
+                        <li>收款银行卡:<span class="fieldValue" th:text="${w.bank.name+','+w.tailNumber}">农业银行,尾号1990</span>
+                        </li>
+                        <li style="color:rebeccapurple" th:if="${w.finish}">提现已成功</li>
+                        <li th:if="${!w.finish}" th:text="${w.status}">状态</li>
+                    </ul>
+                </fieldset>
+
+            </fieldset>
+        </fieldset>
+
+    </article>
+</div>
+
+<script>
+    $(function () {
+        $('button[name=withdrawal]').click(function () {
+            var button = $(this);
+            var id = button.closest('article').attr('id');
+            console.log('click me ', id);
+            function success() {
+                alert('已提交');
+            }
+
+            $.ajax($.uriPrefix + '/manage/order/withdrawal/' + id, {
+                method: 'put',
+                error: function (data) {
+                    alert(data.responseText);
+                },
+                success: success
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

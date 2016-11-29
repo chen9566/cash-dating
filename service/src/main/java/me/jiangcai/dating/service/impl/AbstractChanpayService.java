@@ -311,6 +311,11 @@ public abstract class AbstractChanpayService implements ChanpayService {
     public void checkWithdrawal(UserOrder order) throws IllegalStateException {
         if (order.isWithdrawalCompleted())
             throw new IllegalStateException("提现已完成。");
+        if (order instanceof CashOrder) {
+            if (!((CashOrder) order).isCompleted()) {
+                throw new IllegalStateException("订单尚未完成支付。");
+            }
+        }
         if (order.getPlatformWithdrawalOrderSet() != null && !order.getPlatformWithdrawalOrderSet().isEmpty()) {
             // 检查
             for (PlatformWithdrawalOrder withdrawalOrder : order.getPlatformWithdrawalOrderSet()) {

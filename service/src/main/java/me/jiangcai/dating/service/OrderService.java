@@ -6,6 +6,7 @@ import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
 import me.jiangcai.dating.entity.PayToUserOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.entity.WithdrawOrder;
 import me.jiangcai.dating.model.OrderFlow;
 import me.jiangcai.dating.model.OrderFlows;
@@ -135,4 +136,5 @@ public interface OrderService {
     @ThreadSafe
     WithdrawOrder newWithdrawOrder(User user, BigDecimal amount, Long cardId) throws IOException, SignatureException;
 
+    List<UserOrder> queryUserOrders(String search);
 }

@@ -15,6 +15,12 @@ $(function () {
         hrefUser = $.uriPrefix + '/manage/user';
     menus = menus + '<li><a href="' + hrefUser + '">用户</a></li>';
 
+    var hrefOrder = 'order.html';
+    if (!$.prototypesMode)
+        hrefOrder = $.uriPrefix + '/manage/order';
+    if ($.prototypesMode || $.auths.order)
+        menus = menus + '<li><a href="' + hrefOrder + '">订单查询</a></li>';
+
     var hrefLoanRequest = 'loanRequest.html';
     if (!$.prototypesMode)
         hrefLoanRequest = $.uriPrefix + '/manage/loanRequest';

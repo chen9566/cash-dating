@@ -94,4 +94,9 @@ public class CashOrder extends UserOrder {
     public boolean isCashOrder() {
         return !(this instanceof PayToUserOrder);
     }
+
+    @Override
+    public boolean isArbitrage() {
+        return true;
+    }
 }
