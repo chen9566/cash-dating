@@ -48,7 +48,8 @@ public class WealthControllerTest extends LoginWebTest {
 
     /**
      * 存在2种流程
-     * 1,是{@link me.jiangcai.dating.model.trj.ProjectLoan} 固定金额,固定周期,固定汇率 更丰富的个人信息,
+     * 1,是{@link me.jiangcai.dating.model.trj.ProjectLoan} 固定金额,固定周期,固定汇率 更丰富的个人信息,身份证,银行卡,完成
+     * 2,普通的 输入金额,明细,完成
      *
      * @throws IOException
      */
