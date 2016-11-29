@@ -5,7 +5,7 @@ body {
 
 }
 
-ul, li {
+ul, li{
     list-style: none;
     padding: 0;
     margin: 0;
@@ -3305,11 +3305,15 @@ ul#navlist .list1 {
     height: 65px;
     line-height: 65px;
 }
-.c33{ color:#000 !important;
+
+.c33 {
+    color: #000 !important;
 }
+
 .c33 input[placeholder], [placeholder], *[placeholder] {
-     color:#000 !important;
- }
+    color: #000 !important;
+}
+
 .loan .jk input[type="tel"] {
     -moz-appearance: textfield;
     border: 0;
@@ -3322,7 +3326,13 @@ ul#navlist .list1 {
     font-weight: 300;
     padding-left: 5px;
 }
-.loan .t20{ color: #000; font-size: 40px; font-weight: 300}
+
+.loan .t20 {
+    color: #000;
+    font-size: 40px;
+    font-weight: 300
+}
+
 .loan .jk img {
     width: 18px;
     padding: 10px 0 15px 0;
@@ -3555,7 +3565,8 @@ ul#navlist .list1 {
     padding-left: 74%;
     appearance: none;
     text-align: right;
-    padding-right: 15px;direction: rtl;
+    padding-right: 15px;
+    direction: rtl;
 }
 
 .infor .right-pos {
@@ -3617,8 +3628,16 @@ ul#navlist .list1 {
 .infor .urgent {
     height: 81px;
 }
-.note a{color: #353535;}
-.note img{width: 8px; margin-left: 10px}
+
+.note a {
+    color: #353535;
+}
+
+.note img {
+    width: 8px;
+    margin-left: 10px
+}
+
 .moretxt {
     font-size: 13px;
     background: #fff;
@@ -3682,7 +3701,12 @@ ul#navlist .list1 {
     font-size: 13px;
     color: #888
 }
-.over .ted{ color: #ff0000; font-size: 16px;}
+
+.over .ted {
+    color: #ff0000;
+    font-size: 16px;
+}
+
 .myorder {
     background: #fff;
 }
@@ -4011,7 +4035,6 @@ ul#navlist .list1 {
 
 .products .ltxt a {
     padding: 10px 0;
-    text-decoration: none;
     text-decoration: none;
     color: #888
 }
@@ -4465,17 +4488,112 @@ ul#navlist .list1 {
     padding-left: 10px;
     margin: 10px 0 5px
 }
-.insurance{ background: #fff; padding:5px 15px; margin-bottom: 60px;}
-.insurance p{margin: 0}
-.insurance h1{ font-size: 16px; margin-bottom: 15px; font-weight:300; text-align: center}
-.insurance .id{ }
-.insurance .id img{ width: 100%;margin-bottom: 15px;}
-.insurance .m-10{ margin-bottom:-20px}
-ul#navlist{font:14px verdana;padding-bottom: 13px;}
-ul#navlist li span{ background: #FBFBFB;}
-ul#navlist li{float: left; height: 40px; border: 0px solid #dfdfdf; width: 100%;}
-ul#navlist .list1{border-bottom: 1px solid #dfdfdf;width: 100%;margin-bottom: -15px;}
-#navlist a{display: block;color: #666;text-decoration: none;padding: 6px 5px;width: 100%;text-align: center; }
-.up-btn{ width: 100%; position: fixed; bottom: 0; background: #F65150; line-height: 42px; text-align: center}
-.up-btn a{ font-size: 18px; color: #fff; display: block; text-decoration: none}
+
+.insurance {
+    background: #fff;
+    padding: 5px 15px;
+    border-top:1px solid #dfdfdf;
+    border-bottom:1px solid #dfdfdf;
+    margin-top: 15px;
+}
+
+.insurance p {
+    margin: 0
+}
+
+.insurance h1 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-weight: 300;
+    text-align:left;
+
+}
+
+.insurance .id {
+}
+
+.insurance .id img {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.insurance .m-10 {
+    margin-bottom: -20px
+}
+.insurance .finish{ text-align: center; margin: 60px 0 ; font-size: 15px;}
+.insurance .finish img{ width: 80px; height: 80px; margin-bottom: 15px}
+ul#navlist {
+    font: 14px verdana;
+    padding-bottom: 13px;
+}
+
+ul#navlist li span {
+    background: #FBFBFB;
+}
+ul#navlist li .b {
+    background: #EFEFF4;
+}
+ul#navlist li {
+    float: left;
+    height: 40px;
+    border: 0px solid #dfdfdf;
+    width: 100%;
+}
+
+ul#navlist .list1 {
+    border-bottom: 1px solid #dfdfdf;
+    width: 100%;
+    margin-bottom: -15px;
+}
+
+#navlist a {
+    display: block;
+    color: #666;
+    text-decoration: none;
+    padding: 6px 5px;
+    width: 100%;
+    text-align: center;
+}
+
+.up-btn {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background: #F65150;
+    line-height: 42px;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.up-btn a {
+    font-size: 18px;
+    color: #fff;
+    display: block;
+    text-decoration: none
+}
+.car{}
+.carflow{}
+.carflow ul{line-height: 44px; overflow: hidden; background: #fff; border-bottom: 1px solid #dfdfdf; border-top: 1px solid #dfdfdf; }
+.carflow li{ float: left; text-align:center; width: 33.3%;  color: #353535;}
+.carflow .t1{ color: #fff;  background: url("carbg1.png") no-repeat; background-size: 100% 44px  }
+.carflow .t2{ color: #fff;  background: url("carbg2.png") no-repeat; background-size: 100% 44px  }
+.carflow .t3{ color: #fff;  background: url("carbg3.png") no-repeat; background-size: 100% 44px  }
+
+.carflow li img{ height: 44px;}
+
+.carform{ margin: 15px 0 0 0}
+.carform ul{ background: #fff; padding-left: 15px;border-bottom: 1px solid #dfdfdf;border-top: 1px solid #dfdfdf
+}
+.carform li{ line-height: 44px; border-bottom: 1px solid #dfdfdf}
+.carform li.bo-r{ border-bottom: 0}
+.carform img{ width: 22px; height: 22px; margin-right: 10px}
+.carform li input{ border: 0; line-height: 30px;height: 30px; }
+
+.carimg{ margin: 15px 15px 0 15px;}
+.carimg ul{
+    overflow: hidden; margin-top: -20px;
+}
+.carimg li{ float: left; width: 32%; margin-right: 5px; margin-bottom: 5px}
+.carimg li img{width: 100%}
+.carimg .ma-0{ margin-right: 0;}
 	
