@@ -51,6 +51,14 @@ public class WeixinServiceTest extends ServiceBaseTest {
 
         weixinService.menus(msg, account);
 
+//        try(InputStream inputStream = new ClassPathResource("/welcome.json").getInputStream()){
+//            String code = StreamUtils.copyToString(inputStream, Charset.forName("UTF-8"));
+//
+//            String jsonLine = mapper.writeValueAsString(mapper.readTree(code));
+//            System.out.println(jsonLine);
+//            System.out.println(jsonLine.replaceAll("\"", "\""));
+//        }
+
     }
 
 }
