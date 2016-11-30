@@ -26,7 +26,7 @@
             <ul>
                 <li>类型:<span class="fieldValue" th:text="${order.arbitrage?'套现':'提现'}">套现</span></li>
                 <li>账面金额:<span class="fieldValue"
-                               th:text="${#numbers.formatDecimal(1,1,'COMMA',2,'POINT')}">100.00</span></li>
+                               th:text="${#numbers.formatDecimal(order.amount,1,'COMMA',2,'POINT')}">100.00</span></li>
                 <li>创建时间:<span class="fieldValue" th:text="${{order.startTime}}">2016-10-10 20:09</span></li>
                 <li>所属用户:<span class="fieldValue" th:text="${order.owner.nickname}">才才</span></li>
                 <li>备注:<span class="fieldValue" th:text="${order.comment}">无</span></li>
