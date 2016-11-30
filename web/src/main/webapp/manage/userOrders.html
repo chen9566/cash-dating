@@ -72,8 +72,8 @@
                         <li>收款人:<span class="fieldValue" th:text="${w.owner}">才才</span></li>
                         <li>收款银行卡:<span class="fieldValue" th:text="${w.bank.name+','+w.tailNumber}">农业银行,尾号1990</span>
                         </li>
-                        <li style="color:rebeccapurple" th:if="${w.finish}">提现已成功</li>
-                        <li th:if="${!w.finish}" th:text="${w.status}">状态</li>
+                        <li style="color:rebeccapurple" th:if="${w.success}">提现已成功</li>
+                        <li th:if="${!w.success}" th:text="${w.status}">状态</li>
                     </ul>
                 </fieldset>
 
