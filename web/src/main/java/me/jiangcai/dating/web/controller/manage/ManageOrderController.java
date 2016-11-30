@@ -123,7 +123,9 @@ public class ManageOrderController {
                         applicationEventPublisher.publishEvent(withdrawalEvent);
                         continue;
                     }
-                    throw exception;
+                    // 无所谓的异常 就假装不知道好了
+                    log.debug("Do Not Care ServiceException", exception);
+//                    throw exception;
                 }
             }
     }
