@@ -8,6 +8,11 @@
         .fieldValue {
             float: right;
         }
+
+        .orderRegion {
+            margin: 0 auto;
+            width: 600px;
+        }
     </style>
     <link rel="stylesheet" href="../css/manage.css" th:href="@{/css/manage.css}">
     <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -28,7 +33,7 @@
 <button title="执行平台审核,检查相关订单的状态" name="platformCheck" data-search="中文可以么?" th:attr="data-search=${search}">
     平台审核所有订单
 </button>
-<div>
+<div class="orderRegion">
     <!--订单区域-->
     <article th:each="order:${orders}" th:id="${order.id}" id="1">
         <fieldset>
