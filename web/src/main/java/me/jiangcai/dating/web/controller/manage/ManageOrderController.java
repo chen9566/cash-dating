@@ -1,11 +1,27 @@
 package me.jiangcai.dating.web.controller.manage;
 
+import me.jiangcai.chanpay.data.trade.QueryTrade;
+import me.jiangcai.chanpay.data.trade.QueryTradeResult;
+import me.jiangcai.chanpay.event.AbstractTradeEvent;
+import me.jiangcai.chanpay.event.TradeEvent;
+import me.jiangcai.chanpay.event.WithdrawalEvent;
+import me.jiangcai.chanpay.exception.ServiceException;
+import me.jiangcai.chanpay.model.TradeStatus;
+import me.jiangcai.chanpay.model.TradeType;
+import me.jiangcai.chanpay.model.WithdrawalStatus;
+import me.jiangcai.chanpay.service.TransactionService;
+import me.jiangcai.chanpay.service.impl.QueryTradeHandler;
 import me.jiangcai.dating.core.Login;
+import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.entity.PlatformOrder;
+import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.UserOrder;
+import me.jiangcai.dating.repository.UserOrderRepository;
 import me.jiangcai.dating.service.OrderService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,9 +29,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.IOException;
+import java.security.SignatureException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -30,7 +50,121 @@ public class ManageOrderController {
     private static final Log log = LogFactory.getLog(ManageOrderController.class);
 
     @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+    @Autowired
     private OrderService orderService;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private UserOrderRepository userOrderRepository;
+    @Autowired
+    private TransactionService transactionService;
+
+    private void checkOrder(UserOrder order) throws IOException, SignatureException {
+        if (order instanceof CashOrder) {
+            if (!((CashOrder) order).isCompleted() && ((CashOrder) order).getPlatformOrderSet() != null) {
+                // 这里需要检查相关的支付订单
+                for (PlatformOrder platformOrder : ((CashOrder) order).getPlatformOrderSet()) {
+                    if (platformOrder.isFinish())
+                        continue;
+                    QueryTrade queryTrade = new QueryTrade();
+                    queryTrade.setSerialNumber(platformOrder.getId());
+                    queryTrade.setType(TradeType.INSTANT);
+// ILLEGAL_OUTER_TRADE_NO 这个异常可以原谅
+                    try {
+                        QueryTradeResult result = transactionService.execute(queryTrade, new QueryTradeHandler());
+                        if (result.getStatus() == TradeStatus.TRADE_FINISHED
+                                || result.getStatus() == TradeStatus.TRADE_SUCCESS
+                                || result.getStatus() == TradeStatus.PAY_FINISHED) {
+                            // 都可被认为支付完成
+                            TradeEvent tradeEvent = new TradeEvent(TradeStatus.TRADE_SUCCESS);
+                            commitEventWithQueryResult(result, tradeEvent);
+                            break;
+                        }
+                    } catch (ServiceException exception) {
+                        if (exception.getCode().equals("ILLEGAL_OUTER_TRADE_NO")) {
+                            continue;
+                        }
+                        throw exception;
+                    }
+                }
+            }
+        }
+
+        // 检查支付订单 现在系统存在一个问题需要顺手修复 及时已支付成功并不影响继续成功
+        if (order.getPlatformWithdrawalOrderSet() != null)
+            for (PlatformWithdrawalOrder withdrawalOrder : order.getPlatformWithdrawalOrderSet()) {
+                if (withdrawalOrder.isFinish())
+                    continue;
+                QueryTrade queryTrade = new QueryTrade();
+                queryTrade.setSerialNumber(withdrawalOrder.getId());
+                queryTrade.setType(TradeType.WITHDRAWAL);
+// ILLEGAL_OUTER_TRADE_NO 这个异常可以原谅
+                try {
+                    QueryTradeResult result = transactionService.execute(queryTrade, new QueryTradeHandler());
+                    WithdrawalEvent withdrawalEvent;
+                    if (result.getStatus() == TradeStatus.success) {
+                        withdrawalEvent = new WithdrawalEvent(WithdrawalStatus.WITHDRAWAL_SUCCESS);
+                    } else if (result.getStatus() == TradeStatus.failed) {
+                        withdrawalEvent = new WithdrawalEvent(WithdrawalStatus.WITHDRAWAL_FAIL);
+                    } else if (result.getStatus() == TradeStatus.submitted) {
+                        withdrawalEvent = new WithdrawalEvent(WithdrawalStatus.WITHDRAWAL_SUBMITTED);
+                    } else
+                        throw new IllegalStateException("unknown status:" + result.getStatus());
+
+                    commitEventWithQueryResult(result, withdrawalEvent);
+                } catch (ServiceException exception) {
+                    if (exception.getCode().equals("ILLEGAL_OUTER_TRADE_NO")) {
+                        //发布失败事件
+                        WithdrawalEvent withdrawalEvent = new WithdrawalEvent(WithdrawalStatus.WITHDRAWAL_FAIL);
+                        withdrawalEvent.setTradeTime(LocalDateTime.now());
+                        withdrawalEvent.setAmount(order.getWithdrawalAmount());
+                        withdrawalEvent.setSerialNumber(withdrawalOrder.getId());
+                        withdrawalEvent.setMessage("查询未找到结果");
+                        applicationEventPublisher.publishEvent(withdrawalEvent);
+                        continue;
+                    }
+                    throw exception;
+                }
+            }
+    }
+
+    private void commitEventWithQueryResult(QueryTradeResult result, AbstractTradeEvent tradeEvent) {
+        tradeEvent.setPlatformOrderNo(result.getChanPayNumber());
+        tradeEvent.setSerialNumber(result.getSerialNumber());
+        tradeEvent.setAmount(result.getAmount());
+        tradeEvent.setTradeTime(result.getTime());
+//        tradeEvent.setMessage(result.get);
+        applicationEventPublisher.publishEvent(tradeEvent);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/manage/order/checkOrder")
+    public ResponseEntity<?> checkOrder(@RequestBody String id) {
+        try {
+            checkOrder(userOrderRepository.getOne(id));
+            return ResponseEntity.ok().body("");
+        } catch (Throwable ex) {
+            log.debug("checkSearch", ex);
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.valueOf(MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8"))
+                    .body(ex.getMessage());
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/manage/order/checkSearch")
+    public ResponseEntity<?> checkSearch(@RequestBody String search) {
+        List<UserOrder> orderList = orderService.queryUserOrders(search);
+        try {
+            for (UserOrder order : orderList) {
+                checkOrder(order);
+            }
+            return ResponseEntity.ok().body("");
+        } catch (Throwable ex) {
+            log.debug("checkSearch", ex);
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.valueOf(MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8"))
+                    .body(ex.getMessage());
+        }
+    }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/manage/order/withdrawal/{id}")
     public ResponseEntity<?> withdrawal(@PathVariable("id") String id) {
