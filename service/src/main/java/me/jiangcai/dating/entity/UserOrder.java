@@ -90,7 +90,9 @@ public abstract class UserOrder implements Locker {
 
     /**
      * 提现失败了!
+     * 提现状态是不可改变的!!
      */
+    @Deprecated
     public abstract void withdrawalFailed();
 
     @Override

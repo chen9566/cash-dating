@@ -67,16 +67,20 @@ public abstract class AbstractChanpayService implements ChanpayService {
     private ApplicationEventPublisher applicationEventPublisher;
     @Autowired
     private TransactionService transactionService;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private ChanpayOrderRepository chanpayOrderRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private CashOrderRepository cashOrderRepository;
     @Autowired
     private BankService bankService;
     @Autowired
     private Environment environment;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private ChanpayWithdrawalOrderRepository chanpayWithdrawalOrderRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserOrderRepository userOrderRepository;
     @Autowired
@@ -125,15 +129,23 @@ public abstract class AbstractChanpayService implements ChanpayService {
             order.setComment(event.getMessage());
 
             if (order.isFinish()) {
-                order.setFinishTime(LocalDateTime.now());
+                order.setFinishTime(event.getTradeTime());
                 if (order.isSuccess()) {
                     //用户订单需更新了
                     order.getUserOrder().withdrawalSuccess();
                 } else {
-                    order.getUserOrder().withdrawalFailed();
-                    Notification notification = order.getUserOrder().withdrawalTransferFailedNotification(order, event.getMessage());
-                    if (notification != null)
-                        applicationEventPublisher.publishEvent(notification);
+//                    order.getUserOrder().withdrawalFailed();
+                    try {
+                        // 订单未成功支付时才发布消息
+                        if (!order.getUserOrder().isWithdrawalCompleted()) {
+                            Notification notification = order.getUserOrder().withdrawalTransferFailedNotification(order, event.getMessage());
+                            if (notification != null)
+                                applicationEventPublisher.publishEvent(notification);
+                        }
+                    } catch (Throwable ex) {
+                        log.debug("NOTIFY", ex);
+                    }
+
                 }
 
                 userOrderRepository.save(order.getUserOrder());
@@ -174,7 +186,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
 
                     throw new IllegalStateException("bad amount System:" + order.getCashOrder().getAmount() + " event:" + event.getAmount());
                 }
-                order.setFinishTime(LocalDateTime.now());
+                order.setFinishTime(event.getTradeTime());
                 order.getCashOrder().paySuccess();
                 applicationEventPublisher.publishEvent(new Notification(order.getCashOrder().getOwner()
                         , NotifyType.orderPaid
@@ -311,11 +323,11 @@ public abstract class AbstractChanpayService implements ChanpayService {
     public void checkWithdrawal(UserOrder order) throws IllegalStateException {
         if (order.isWithdrawalCompleted())
             throw new IllegalStateException("提现已完成。");
-        if (order instanceof CashOrder) {
-            if (!((CashOrder) order).isCompleted()) {
-                throw new IllegalStateException("订单尚未完成支付。");
-            }
-        }
+//        if (order instanceof CashOrder) {
+//            if (!((CashOrder) order).isCompleted()) {
+//                throw new IllegalStateException("订单尚未完成支付。");
+//            }
+//        }
         if (order.getPlatformWithdrawalOrderSet() != null && !order.getPlatformWithdrawalOrderSet().isEmpty()) {
             // 检查
             for (PlatformWithdrawalOrder withdrawalOrder : order.getPlatformWithdrawalOrderSet()) {

@@ -8,17 +8,32 @@
         .fieldValue {
             float: right;
         }
+
+        .orderRegion {
+            margin: 0 auto;
+            width: 600px;
+        }
     </style>
     <link rel="stylesheet" href="../css/manage.css" th:href="@{/css/manage.css}">
     <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/eggplant/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <!--<script src="http://resali.huobanplus.com/cdn/jquery/3.1.1/jquery-3.1.1.min.js"></script>-->
+    <!--<link rel="stylesheet" href="http://resali.huobanplus.com/cdn/jquery-ui/1.12.0/jquery-ui.min.css">-->
+    <!--<script src="http://resali.huobanplus.com/cdn/jquery-ui/1.12.0/jquery-ui.min.js"></script>-->
+
     <script src="../mock/all.js" th:src="@{/all.js}"></script>
     <script th:replace="fragment/auth.html::code"></script>
     <script src="../js/manage.js" th:src="@{/js/manage.js}"></script>
 </head>
 <body>
 <div class="header"></div>
-<button title="执行平台审核,检查相关订单的状态">平台审核所有订单</button>
-<div>
+<!--/*@thymesVar id="search" type="java.lang.String"*/-->
+<button title="执行平台审核,检查相关订单的状态" name="platformCheck" data-search="中文可以么?" th:attr="data-search=${search}">
+    平台审核所有订单
+</button>
+<div class="orderRegion">
     <!--订单区域-->
     <article th:each="order:${orders}" th:id="${order.id}" id="1">
         <fieldset>
@@ -26,7 +41,7 @@
             <ul>
                 <li>类型:<span class="fieldValue" th:text="${order.arbitrage?'套现':'提现'}">套现</span></li>
                 <li>账面金额:<span class="fieldValue"
-                               th:text="${#numbers.formatDecimal(1,1,'COMMA',2,'POINT')}">100.00</span></li>
+                               th:text="${#numbers.formatDecimal(order.amount,1,'COMMA',2,'POINT')}">100.00</span></li>
                 <li>创建时间:<span class="fieldValue" th:text="${{order.startTime}}">2016-10-10 20:09</span></li>
                 <li>所属用户:<span class="fieldValue" th:text="${order.owner.nickname}">才才</span></li>
                 <li>备注:<span class="fieldValue" th:text="${order.comment}">无</span></li>
@@ -34,7 +49,7 @@
                 <li>是否已提现:<span class="fieldValue" th:text="${order.withdrawalCompleted?'是':'否'}">否</span></li>
             </ul>
             <button th:if="${!order.withdrawalCompleted and order.arbitrage}" name="withdrawal">手动提现</button>
-            <button title="执行平台审核,检查相关订单的状态">平台审核</button>
+            <button title="执行平台审核,检查相关订单的状态" name="platformCheck">平台审核</button>
             <fieldset th:if="${order.arbitrage}">
                 <!--/*@thymesVar id="order" type="me.jiangcai.dating.entity.CashOrder"*/-->
                 <legend>支付记录</legend>
@@ -62,8 +77,8 @@
                         <li>收款人:<span class="fieldValue" th:text="${w.owner}">才才</span></li>
                         <li>收款银行卡:<span class="fieldValue" th:text="${w.bank.name+','+w.tailNumber}">农业银行,尾号1990</span>
                         </li>
-                        <li style="color:rebeccapurple" th:if="${w.finish}">提现已成功</li>
-                        <li th:if="${!w.finish}" th:text="${w.status}">状态</li>
+                        <li style="color:rebeccapurple" th:if="${w.success}">提现已成功</li>
+                        <li th:if="${!w.success}" th:text="${w.status}">状态</li>
                     </ul>
                 </fieldset>
 
@@ -71,14 +86,87 @@
         </fieldset>
 
     </article>
+
+    <div id="dialog-confirm" title="平台审核确认" style="display:none">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+            【平台审核】会从第三方支付平台获取最新的订单状态,这将是一个耗时操作,操作过程中请勿关闭浏览器窗口。
+        </p>
+    </div>
+    <div id="dialog-process" title="处理中……请耐性等候" style="display: none">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+        <div id="progressbar">
+        </div>
+        </p>
+    </div>
 </div>
 
 <script>
+    // platformCheck 需要一个进度条
+    // progressbar.progressbar( "option", "value", false );
+
     $(function () {
+
+        $("#progressbar").progressbar({
+            value: false
+        });
+
+        $('button[name=platformCheck]').click(function () {
+            var button = $(this);
+            var forSearch = button.attr('data-search');
+            var id;
+            if (!forSearch)
+                id = button.closest('article').attr('id');
+            else
+                id = null;
+            $("#dialog-confirm").dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: {
+                    "确定": function () {
+                        $(this).dialog("close");
+                        $('#dialog-process').dialog({
+                            resizable: false,
+                            closable: false,
+                            height: "auto",
+                            width: 400,
+                            modal: true
+                        });
+
+                        var url, data;
+                        if (forSearch) {
+                            url = $.uriPrefix + '/manage/order/checkSearch';
+                            data = forSearch;
+                        } else {
+                            url = $.uriPrefix + '/manage/order/checkOrder';
+                            data = id;
+                        }
+
+//                        console.log(JSON.stringify(data));
+                        $.ajax(url, {
+                            method: 'put',
+                            data: data,
+                            contentType: 'text/plain;charset=UTF-8',
+                            error: function (data) {
+                                alert(data.responseText);
+                                $('#dialog-process').dialog('close');
+                            },
+                            success: function () {
+                                $('#dialog-process').dialog('close');
+                            }
+                        });
+                    },
+                    '取消': function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        });
         $('button[name=withdrawal]').click(function () {
             var button = $(this);
             var id = button.closest('article').attr('id');
-            console.log('click me ', id);
+//            console.log('click me ', id);
             function success() {
                 alert('已提交');
             }

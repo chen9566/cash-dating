@@ -217,10 +217,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ChanpayWithdrawalOrder withdrawalWithCard(String orderId, Long cardId) throws IOException, SignatureException {
         CashOrder order = getOne(orderId);
+        if (!order.isCompleted())
+            throw new IllegalStateException("订单尚未完成支付。");
         if (cardId != null) {
             order.setCard(cardRepository.getOne(cardId));
+            cashOrderRepository.save(order);
         }
-        cashOrderRepository.save(order);
         return chanpayService.withdrawalOrder(order);
     }
 

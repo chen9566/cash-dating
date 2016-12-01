@@ -6,7 +6,9 @@ import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.WithdrawOrder;
 import me.jiangcai.dating.entity.support.ManageStatus;
+import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.page.ManageOrderPage;
+import me.jiangcai.dating.page.ManageOrderResultPage;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.repository.WithdrawOrderRepository;
 import org.junit.Test;
@@ -82,12 +84,48 @@ public class ManageOrderControllerTest extends ManageWebTest {
         orderPage = initPage(ManageOrderPage.class);
 
         orderPage.search(word1);
-        System.out.println(driver.getPageSource());
+//        System.out.println(driver.getPageSource());
+
+        CashOrder needTradeOrder = orderService.newOrder(user, randomOrderAmount(), UUID.randomUUID().toString(), user.getCards().get(0).getId());
+        orderService.preparePay(needTradeOrder.getId(), PayChannel.weixin);
+        assertThat(needTradeOrder.isCompleted())
+                .isFalse();
+        CashOrder needWithOrder = orderService.newOrder(user, randomOrderAmount(), UUID.randomUUID().toString(), user.getCards().get(0).getId());
+        tradeSuccess(needWithOrder);
+        assertThat(needWithOrder.isWithdrawalCompleted())
+                .isFalse();
+
         driver.navigate().back();
         orderPage = initPage(ManageOrderPage.class);
         orderPage.search(word9);
-        System.out.println(driver.getPageSource());
+//        System.out.println(driver.getPageSource());
 
+        // 分别执行一次全审核和订单审核
+        // 思考下 如何确定该状态已经被更新过?
+        // 显然我们需要建立一个订单 这个订单的支付是没有完成的
+        // 另外需要一个订单  它的支付是完成的,提现也进行了 但是没有完成
+        ManageOrderResultPage resultPage = initPage(ManageOrderResultPage.class);
+        resultPage.platformCheckAll();
+        // 完成之后这2个订单都应该被处理了
+        needTradeOrder = orderService.getOne(needTradeOrder.getId());
+        assertThat(needTradeOrder.isCompleted())
+                .isTrue();
+        //并且等待支付了
+        assertThat(needTradeOrder.getPlatformWithdrawalOrderSet())
+                .isNotEmpty();
+        needWithOrder = orderService.getOne(needWithOrder.getId());
+        assertThat(needWithOrder.isWithdrawalCompleted())
+                .isTrue();
+        // 再执行一个单独的订单
+        needTradeOrder = orderService.newOrder(user, randomOrderAmount(), UUID.randomUUID().toString(), user.getCards().get(0).getId());
+        orderService.preparePay(needTradeOrder.getId(), PayChannel.weixin);
+        assertThat(needTradeOrder.isCompleted())
+                .isFalse();
+        resultPage = resultPage.searchAgain(needTradeOrder.getFriendlyId());
+        resultPage.platFormCheckOrder(needTradeOrder.getId());
+        needTradeOrder = orderService.getOne(needTradeOrder.getId());
+        assertThat(needTradeOrder.isCompleted())
+                .isTrue();
     }
 
 }
