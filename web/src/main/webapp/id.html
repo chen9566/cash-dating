@@ -29,10 +29,13 @@
     </ul>
     <p class="id"><img src="images/id-bg-l.png"></p>
 </div>
-<div class="up-btn">
-    <a href="repaymentcard.html?a=b" th:href="@{/loanID(loanRequestId=${loanRequest.id})}">下一步</a>
-</div>
-
+<!--<div class="up-btn">
+    <a href="repaymentcard.html?a=b" th:href="@{/loanID(loanRequestId=${loanRequest.id})}" >下一步</a>
+</div>-->
+<p class="up-btn">
+    <a type="submit" id="submitButton" class="black" href="handid.html">下一步</a>
+    <!--表单没提交时按钮灰不可点 红色样式class="redremove"-->
+</p>
 <script>
     $(function () {
         $('a', $('.up-btn')).click(function () {

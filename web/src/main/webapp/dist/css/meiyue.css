@@ -2476,13 +2476,13 @@ ul#navlist .list1 {
     height: 42px;
     text-align: center;
     font-size: 18px;
-    color: #b3b3b3;
+    color: #b3b3b3 !important;
     text-decoration: none;
 }
 
 .black a {
     display: block;
-    color: #b3b3b3;
+    color: #b3b3b3 ;
 }
 
 .red {
@@ -2508,7 +2508,7 @@ ul#navlist .list1 {
     background: #F65150;
     border-radius: 6px;
     font-size: 18px;
-    color: #fff;
+    color: #fff !important;
     width: 100%;
     line-height: 42px;
     height: 42px;
@@ -3566,7 +3566,7 @@ ul#navlist .list1 {
 
 .infor {
     color: #888;
-
+    overflow: hidden;
 }
 
 .infor select {
@@ -3731,7 +3731,8 @@ ul#navlist .list1 {
 .over .o4 img {
     width: 125px
 }
-
+.over .o5{color: #ff0000;
+    font-size: 14px; padding: 0 3px;}
 .myorder {
     background: #fff;
 }
@@ -3956,13 +3957,13 @@ ul#navlist .list1 {
 .products {
     margin-top: 15px;
     background: #fff;
-    padding-left: 15px;
-    border-bottom: 1px solid #dfdfdf;
     border-top: 1px solid #dfdfdf
 }
 
 .products ul {
     overflow: hidden;
+    border-bottom: 1px solid #dfdfdf;
+    padding-left: 15px;
 }
 
 .products li {
@@ -3996,7 +3997,7 @@ ul#navlist .list1 {
 }
 
 .products .b40 {
-    width: 37%;
+    width: 41%;
     background: url(border-right.png) no-repeat right 30px;
     background-size: 1px 48px
 }
@@ -4005,7 +4006,6 @@ ul#navlist .list1 {
     font-size: 32px;
     color: #F65150;
     margin-top: 12px;
-    margin-right: 15px;
     font-weight: 300
 }
 
@@ -4018,6 +4018,12 @@ ul#navlist .list1 {
     font-size: 12px;
     color: #888;
     line-height: 20px
+}
+
+.products .f13 {
+    font-size: 13px;
+    color: #F65150;
+    padding: 0 3px
 }
 
 .products .f15 {
@@ -4034,7 +4040,8 @@ ul#navlist .list1 {
 }
 
 .products .b60 {
-    width: 63%;
+    width: 59%;
+    padding-left: 15px;
 }
 
 .products .b60 img {
@@ -4556,7 +4563,7 @@ ul#navlist .list1 {
     height: 80px;
     margin-bottom: 15px
 }
-
+.insurance .f13{ color: #888; font-size: 13px; padding-bottom: 30px}
 ul#navlist {
     font: 14px verdana;
     padding-bottom: 13px;
@@ -4599,13 +4606,14 @@ ul#navlist .list1 {
     line-height: 42px;
     text-align: center;
     margin-bottom: 0;
+    z-index: 99;
 }
 
 .up-btn a {
     font-size: 18px;
     display: block;
     text-decoration: none;
-    border-radius: 0;
+    border-radius: 0 !important;
 }
 
 .car {
@@ -4798,13 +4806,13 @@ ul#navlist .list1 {
 .bg-one {
     background: url("loanbg5.png") no-repeat top;
     background-size: 100%;
-    padding-top: 100px
+    padding-top: 120px
 }
 
 .bg-two {
     background: url("loanbg6.png") no-repeat top;
     background-size: 100%;
-    padding-top: 100px
+    padding-top: 120px
 }
 
 .cardtab {
@@ -4919,7 +4927,8 @@ ul#navlist .list1 {
 
 .none-t {
     border-top: 0 !important;
-    margin-top: -21px
+    margin-top: -16px;
+
 }
 
 .topay {
@@ -5060,3 +5069,73 @@ ul#navlist .list1 {
     height: 36px;
     padding-top: 8px;
 }
+
+.hot {
+    background: #fff;
+    padding: 15px 15px 20px 15px;
+    border-top: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+}
+
+.hot ul {
+    text-align: center
+}
+
+.hot li {
+}
+
+.hot .f19 {
+    font-size: 19px;
+}
+
+.hot .f19 img {
+    width: 60px;
+    margin-top: -4px;
+    margin-right: 5px;
+}
+
+.hot .f12 {
+    font-size: 12px;
+    color: #888;
+    margin: 15px 0 0 0
+}
+
+.hot .f14 {
+    font-size: 14px;
+    display: block
+}
+
+.hot .f15 {
+    font-size: 15px;
+    color: #F65150;
+    padding: 0 3px;
+}
+
+.hot .f44 {
+    font-size: 44px;
+    color: #F65150;
+    font-weight: 300
+}
+
+.hot .tag {
+    width:184px;
+    overflow: hidden;
+    display: block;
+    text-align: center;
+    margin: 5px auto 18px auto
+}
+
+.hot .tagtxt {
+    width: 83px;
+    line-height: 20px;
+    margin: 0 4px;
+    display: block;
+    font-size: 12px;
+    float: left;
+    color: #c3c3c3;
+    border-radius: 10px;
+    border: 1px solid #c3c3c3;
+}
+.hot .k{ padding: 0 20px}
+.picc{padding: 25px 15px;}
+.picc img{ width: 100%}

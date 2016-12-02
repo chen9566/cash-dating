@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="loanRequest" type="me.jiangcai.dating.entity.LoanRequest"*/-->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>上传身份证照片</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+</head>
+<body>
+<div class="insurance mb-b">
+    <h1>请上传本人手持二代身份证的正面照片</h1>
+    <input id="fileupload" style="display: none;" type="file" name="files"
+           th:attr="data-url=@{/uploadResource}"
+           data-url="mock/image_upload.json" accept="image/*"/>
+
+    <p class="id"><img src="images/hangidbg.png"></p>
+    <p class="f13">注：请不要带眼镜，在光线充足的环境下平视摄像
+        头，保持合适的距离，确保照片中面部及身份证清
+        晰可见且无修图！</p>
+
+</div>
+
+<p class="p-15">
+    <button type="submit" name="submit" class="btn btn-danger btn-lg btn-block clickHref" href="personalok.html"
+            th:href="@{/withdrawList}">下一步
+    </button>
+</p>
+
+</body>
+</html>

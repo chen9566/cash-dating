@@ -15,34 +15,49 @@
 </head>
 <body>
 <form action="itempersonalup.html" method="get" th:method="post" th:action="@{/loanSummary}">
-    <input name="id" type="hidden" th:value="${project.productId}"/>
-    <div class="loan">
-        <p class="t1" th:name="limitSpan" th:text="${'借款金额(50000元-'+project.amountInteger+'元)'}">
-            借款金额</p>
-        <p class="jk c33"><img src="images/1.png"><span class="t20">200000</span></p>
-        <ul>
-            <li class="bo-b">还款期数
-                <span class="pull-right c33">12个月</span>
-                <!--<select name="period" class="pull-right" style="margin-top: 11px;">
-                    <option value="3" th:each="term:${project.term}" th:text="${term}"
-                            th:value="${#cashStrings.termInteger(term)}">12个月
-                    </option>
-                </select>-->
-            </li>
-            <li>到期还款<span class="pull-right t1" id="spanMonthLo">¥214000</span></li>
-        </ul>
+    <div class="bg-one mb-b">
+        <input name="id" type="hidden" th:value="${project.productId}"/>
+        <div class="loan">
+            <p class="t1" th:name="limitSpan" th:text="${'借款金额(50000元-'+project.amountInteger+'元)'}">
+                借款金额</p>
+            <p class="jk c33"><img src="images/1.png"><input placeholder="0.00" type="tel" id="_content" name="amount">
+            </p>
+            <ul>
+                <li class="bo-b">还款期数
+                    <span class="pull-right c33">30天</span>
+                    <!--<select name="period" class="pull-right" style="margin-top: 11px;">
+                        <option value="3" th:each="term:${project.term}" th:text="${term}"
+                                th:value="${#cashStrings.termInteger(term)}">12个月
+                        </option>
+                    </select>-->
+                </li>
+                <li><img src="images/miicon.png"/> 借款授信期限2年</li>
+            </ul>
+        </div>
     </div>
-    <p class="agree">
-        <input type="checkbox" id="checkbox_a1" class="chk_1" checked/><label for="checkbox_a1"></label>
-        <span class="check-pos">同意<a href="agreement3.html">《借款协议》《借款咨询与服务协议》</a></span>
-    </p>
+
     <div class="p-15 ">
-        <input value="下一步" type="submit"  class="redremove"   />
+        <input value="立即借款" type="submit" class="redremove"/>
     </div>
 </form>
+<p class="notes" data-toggle="modal"
+   data-target=".safecode">产品介绍</p>
 <script th:inline="javascript">
     $.maxLoanAmount = /*[[${project.amountInteger}]]*/500000;
 </script>
 <script src="js/loan.js"></script>
+<!-- 产品介绍 -->
+<div class="modal fade safecode" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content ">
+            <div class="safeshow">
+                <h1>产品介绍</h1>
+                <p class="txt"> 产品系指借款人将其拥有的车辆评估后抵押给保险公司，经保险公司的严格筛选与审查，确认借款人借款用途合法，还款来源充足的，由保险公司为借款人在借款项目项下的借款本息出具贷款履约保证保险单，保单的被保险人为该项目的平台投资人，保险范围为借款项目下的借款本息。保险公司承诺如借款人发生违约的，将由保险公司对于借款人的本息损失进行赔偿。</p>
+                <p data-dismiss="modal" class="know">确定</p>
+            </div>
+
+        </div>
+    </div>
+</div>
 </body>
 </html>

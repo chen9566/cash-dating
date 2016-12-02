@@ -80,10 +80,10 @@
         &nbsp;&nbsp;&nbsp;&nbsp;1. 合伙人发展的用户包含自己直接发展的用户，以及自己用户发展的用户，当团队中有用户申请成为合伙人时，发展的团队佣金从成为合伙人时起归此用户；<br>
         &nbsp;&nbsp;&nbsp;&nbsp;2. 用户或合伙人发展15个用户时，收银手续费为0.45%，用户或合伙人发展50个用户时，收银手续费为0.38%；</p>
     <p th:if="${user.agentInfo==null}" class="up-btn">
-        <button type="button" class="btn btn-danger btn-lg btn-block clickHref" href="agent.html"
+        <a type="button" class="btn btn-danger btn-lg btn-block clickHref" href="agent.html"
                 th:href="@{/agent}">
             成为合伙人
-        </button>
+        </a>
     </p>
 
 </div>
