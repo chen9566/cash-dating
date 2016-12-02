@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>设置收款金额</title>
     <link rel="stylesheet" href="dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
@@ -68,13 +67,37 @@
             </p>
         </div>
         <div class="p-15">
-            <input value="确定" type="submit" id="_btn1" class="black" name="btn1" disabled="disabled"/>
+            <input value="确定" onclick="return toshow()" type="submit" id="_btn1" class="black" name="btn1"
+                   disabled="disabled"/>
         </div>
     </form>
+</div>
+<div class="am-show ">
+    <div class="back-c">
+        <ul class="topay">
+            <h1>选择付款方式</h1>
+            <li class="bo-b"><img src="images/weixin-icon.png  "/>微信支付<span class="pull-right big15"><img
+                    src="images/ok-icon.png" /> </span></li>
+            <li class="bo-b"><img src="images/zhifubao-icon.png"/>支付宝支付</li>
+            <li><img src="images/kuaijie-icon.png"/>快捷支付</li>
+    </div>
+    </ul>
 </div>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
 <script type="text/javascript" th:inline="javascript">
     $.bookRate = /*[[${rate}]]*/ 0.006;
+</script>
+<script type="text/javascript">
+    function toshow() {
+        $(".am-show").addClass("am-modal-active");
+        if ($(".showebg").length > 0) {
+            $(".showbg").addClass("showbg-active");
+        } else {
+            $("body").append('<div class="showbg"></div>');
+            $(".showbg").addClass("showbg-active");
+        }
+        return false;
+    }
 </script>
 </body>
 </html>
