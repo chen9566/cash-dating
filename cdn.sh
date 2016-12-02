@@ -31,20 +31,20 @@ fi
 if [[ ! -e $1/bootstrap.min.js ]]; then
     wget http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js -O $1/bootstrap.min.js
 fi
-if [[ ! -e $1/jquery-3.1.1.min.js ]]; then
-    wget http://code.jquery.com/jquery-3.1.1.min.js -O $1/jquery-3.1.1.min.js
+if [[ ! -e $1/bootstrap-table.min.css ]]; then
+    wget http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css -O $1/bootstrap-table.min.css
 fi
-if [[ ! -e $1/jquery-3.1.1.min.js ]]; then
-    wget http://code.jquery.com/jquery-3.1.1.min.js -O $1/jquery-3.1.1.min.js
+if [[ ! -e $1/bootstrap-table.min.js ]]; then
+    wget http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js -O $1/bootstrap-table.min.js
 fi
-if [[ ! -e $1/jquery-3.1.1.min.js ]]; then
-    wget http://code.jquery.com/jquery-3.1.1.min.js -O $1/jquery-3.1.1.min.js
+if [[ ! -e $1/bootstrap-table-locale-all.min.js ]]; then
+    wget http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table-locale-all.min.js -O $1/bootstrap-table-locale-all.min.js
 fi
-if [[ ! -e $1/jquery-3.1.1.min.js ]]; then
-    wget http://code.jquery.com/jquery-3.1.1.min.js -O $1/jquery-3.1.1.min.js
+if [[ ! -e $1/bootstrap-table-editable.min.js ]]; then
+    wget http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/editable/bootstrap-table-editable.min.js -O $1/bootstrap-table-editable.min.js
 fi
-if [[ ! -e $1/jquery-3.1.1.min.js ]]; then
-    wget http://code.jquery.com/jquery-3.1.1.min.js -O $1/jquery-3.1.1.min.js
+if [[ ! -e $1/bootstrap-table-export.min.js ]]; then
+    wget http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/extensions/export/bootstrap-table-export.min.js -O $1/bootstrap-table-export.min.js
 fi
 
 
