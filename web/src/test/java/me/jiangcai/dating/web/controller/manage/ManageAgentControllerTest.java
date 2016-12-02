@@ -30,7 +30,7 @@ public class ManageAgentControllerTest extends ManageWebTest {
     @Test
     public void index() {
         driver.get("http://localhost/manage/agent");
-        System.out.println(driver.getPageSource());
+//        System.out.println(driver.getPageSource());
         assertThat(driver.getTitle())
                 .isEqualTo("合伙人");
     }

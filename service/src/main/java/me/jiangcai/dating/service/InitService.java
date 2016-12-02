@@ -125,7 +125,7 @@ public class InitService {
                         jdbcService.tableAlterAddColumn(Bank.class, "weight", "50");
                         break;
                     case v101000:
-                        System.out.println("update to 1.1?");
+//                        System.out.println("update to 1.1?");
                         break;
                 }
             }

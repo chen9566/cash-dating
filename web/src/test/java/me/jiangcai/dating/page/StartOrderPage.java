@@ -34,7 +34,7 @@ public class StartOrderPage extends AbstractPage {
 
     public StartOrderPage(WebDriver webDriver) {
         super(webDriver);
-        System.out.println(webDriver.getPageSource());
+//        System.out.println(webDriver.getPageSource());
     }
 
     @Override

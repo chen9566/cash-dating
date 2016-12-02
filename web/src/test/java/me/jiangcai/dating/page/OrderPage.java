@@ -25,7 +25,7 @@ public class OrderPage extends AbstractPage {
 
     @Override
     public void validatePage() {
-        System.out.println(webDriver.getPageSource());
+//        System.out.println(webDriver.getPageSource());
         assertThat(webDriver.getTitle())
                 .isEqualTo("我的订单");
 

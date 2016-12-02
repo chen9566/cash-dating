@@ -27,7 +27,7 @@ public class ManageControllerTest extends ManageWebTest {
 
     @Test
     public void index() {
-        System.out.println(driver.getPageSource());
+//        System.out.println(driver.getPageSource());
     }
 
     @Test

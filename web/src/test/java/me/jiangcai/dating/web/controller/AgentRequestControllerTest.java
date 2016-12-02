@@ -31,7 +31,7 @@ public class AgentRequestControllerTest extends ManageWebTest {
     @Test
     public void index() {
         driver.get("http://localhost/manage/agentRequest");
-        System.out.println(driver.getPageSource());
+//        System.out.println(driver.getPageSource());
         assertThat(driver.getTitle())
                 .isEqualTo("审批合伙人");
     }
