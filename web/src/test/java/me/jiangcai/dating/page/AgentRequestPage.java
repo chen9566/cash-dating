@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 申请代理商页面
+ * agent.html
  *
  * @author CJ
  */
@@ -59,5 +60,15 @@ public class AgentRequestPage extends AbstractPage {
         }
         assertThat(myAlert.isDisplayed())
                 .isFalse();
+    }
+
+    public ExplainPage toExplainPage() {
+        webDriver.findElements(By.tagName("a")).stream()
+                .filter(WebElement::isDisplayed)
+                .filter(webElement -> webElement.getText().equals("合伙人收益说明"))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("找不到合伙人收益说明链接"))
+                .click();
+        return initPage(ExplainPage.class);
     }
 }

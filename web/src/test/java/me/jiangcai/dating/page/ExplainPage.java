@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * explain.html
  * @author CJ
  */
 public class ExplainPage extends AbstractPage {
@@ -20,7 +21,7 @@ public class ExplainPage extends AbstractPage {
     @Override
     public void validatePage() {
         assertThat(webDriver.getTitle())
-                .isEqualTo("合伙人说明");
+                .isEqualTo("款爷——你的赚钱平台");
 
         webDriver.findElements(By.tagName("button")).stream()
                 .filter(WebElement::isDisplayed)
@@ -40,7 +41,8 @@ public class ExplainPage extends AbstractPage {
     /**
      * 点击成为合伙人
      */
-    public void requestAgent() {
+    public AgentRequestPage requestAgent() {
         webDriver.findElement(By.tagName("button")).click();
+        return initPage(AgentRequestPage.class);
     }
 }

@@ -165,12 +165,13 @@ public class MyInvitationPage extends AbstractPage {
     }
 
 
-    public void toRequestAgentPage() {
+    public AgentRequestPage toRequestAgentPage() {
 //        codeButton.click();
         agentElement.click();
 //        ExplainPage explainPage = initPage(ExplainPage.class);
 //
 //        explainPage.requestAgent();
+        return initPage(AgentRequestPage.class);
     }
 
     public void assertNoTeam() {

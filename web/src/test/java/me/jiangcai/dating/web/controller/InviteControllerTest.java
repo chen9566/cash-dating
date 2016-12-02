@@ -53,8 +53,6 @@ public class InviteControllerTest extends LoginWebTest {
 
         codePage.assertUser(currentUser(), qrCodeService);
 
-        codePage.requestAgent();
-
         // 这里已经申请过了 所有应该先删除
         User user = currentUser();
         agentService.waitingList().stream()
@@ -62,8 +60,7 @@ public class InviteControllerTest extends LoginWebTest {
                 .forEach(
                         agentRequest -> agentService.declineRequest(null, agentRequest.getId(), UUID.randomUUID().toString())
                 );
-
-        doRequestAgent();
+        doRequestAgent(codePage.requestAgent());
 
         //现在同意你的申请
         agentService.waitingList().stream()
@@ -103,8 +100,7 @@ public class InviteControllerTest extends LoginWebTest {
     private void invite(MyInvitationPage page, boolean ableRequest) throws IOException {
         page.assertUser(currentUser(), statisticService);
         if (ableRequest) {
-            page.toRequestAgentPage();
-            doRequestAgent();
+            doRequestAgent(page.toRequestAgentPage());
         } else {
 //            page.
             // 这里的话 页面依然还是
@@ -113,8 +109,8 @@ public class InviteControllerTest extends LoginWebTest {
         }
     }
 
-    private void doRequestAgent() {
-        AgentRequestPage requestPage = initPage(AgentRequestPage.class);
+    private void doRequestAgent(AgentRequestPage requestPage) {
+//        AgentRequestPage requestPage = initPage(AgentRequestPage.class);
 
         final String mobile = randomMobile();
         requestPage.submitRequest(currentUser().getNickname(), mobile);

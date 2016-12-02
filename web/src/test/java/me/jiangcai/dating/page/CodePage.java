@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 合伙賺钱页面
+ * code.html
  * @author CJ
  */
 public class CodePage extends AbstractPage {
@@ -103,12 +104,17 @@ public class CodePage extends AbstractPage {
         return toImage(qrCode);
     }
 
-    public void requestAgent() {
+    public AgentRequestPage requestAgent() {
 //        requestButton.click();
 //        throw new RuntimeException("这里没法支持申请合伙人。");
         explainButton.click();
         ExplainPage explainPage = initPage(ExplainPage.class);
-        explainPage.requestAgent();
+
+        AgentRequestPage page = explainPage.requestAgent();
+        // 这个页面还可以回到 ExplainPage
+        page.toExplainPage();
+        webDriver.navigate().back();
+        return initPage(AgentRequestPage.class);
 //        MyInvitationPage invitationPage = toMyInvitationPage();
 //        invitationPage.assertNoTeam();
 //
