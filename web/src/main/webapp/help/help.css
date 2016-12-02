@@ -1,0 +1,68 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #EFEFF4;
+}
+
+ul, li, p {
+    list-style: none;
+    margin: 0;
+    padding: 0
+}
+
+.help-user {
+}
+
+.help-user ul {
+}
+
+.help-user li {
+    background: #fff;
+    line-height: 22px;
+    padding: 10px 15px;
+    border-top: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+    margin-top: 15px;
+
+}
+.help-user .b1{ padding: 15px 15px 0 15px; }
+.help-user li img {
+    float: right;
+    width: 32px;
+    height: 32px
+}
+
+.show-user {
+    line-height: 22px;
+    background: #F8F8F8;
+    padding: 15px;
+    line-height: 22px;
+    border-bottom: 1px solid #dfdfdf;
+}
+.show-user img{width: 100%; margin: 10px 0}
+.help-parther {
+    background: #fff;
+}
+
+.help-parther ul {
+}
+
+.help-parther li {
+    line-height: 22px;
+    padding: 10px 15px;
+}
+
+.help-parther img {
+    width: 100%;
+    margin: 10px 0
+}
+.helpmain{}
+.helpmain ul{ border-bottom: 1px solid #dfdfdf; border-top:1px solid #dfdfdf;  background: #fff; padding-left: 15px}
+.helpmain p{ margin: 0;}
+.helpmain li{ line-height: 44px;height: 44px;}
+.helpmain li img{ width: 22px; float: left; margin-right: 10px; margin-top: 10px }
+.helpmain img{ width: 100%; vertical-align: bottom}
+.helpmain .bo-b{ border-bottom: 1px solid #dfdfdf}
+.helpmain .rimg{ float: right; }
+.helpmain .rimg img{width: 8px; margin-top: 15px; margin-right: 15px;}
+.helpmain a{ display: block; color: #353535; text-decoration: none}
