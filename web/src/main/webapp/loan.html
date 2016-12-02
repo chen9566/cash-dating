@@ -16,7 +16,7 @@
 <body>
 <form action="personalup.html" method="get" th:method="post" th:action="@{/loanSummary}">
     <input name="id" type="hidden" th:value="${project.productId}"/>
-    <div class="bg-two mb-b">
+    <div class="bg-two">
         <div class="loan">
             <p class="t1" th:name="limitSpan" th:text="${'借款金额(50000元-'+project.amountInteger+'元)'}">
                 借款金额(50000元-500000元)</p>
@@ -45,9 +45,23 @@
         <input value="下一步" type="submit" id="_btn1" class="black" name="btn1" disabled="disabled"/>
     </div>
 </form>
+<p class="notes" data-toggle="modal" data-target=".safecode">产品介绍</p>
+<!-- 产品介绍 -->
+<div class="modal fade safecode" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content ">
+            <div class="safeshow">
+                <h1>产品介绍</h1>
+                <p class="txt"> 产品系指借款人将其拥有的车辆评估后抵押给保险公司，经保险公司的严格筛选与审查，确认借款人借款用途合法，还款来源充足的，由保险公司为借款人在借款项目项下的借款本息出具贷款履约保证保险单，保单的被保险人为该项目的平台投资人，保险范围为借款项目下的借款本息。保险公司承诺如借款人发生违约的，将由保险公司对于借款人的本息损失进行赔偿。<p data-dismiss="modal" class="know">确定</p>
+            </div>
+
+        </div>
+    </div>
+</div>
 <script th:inline="javascript">
     $.maxLoanAmount = /*[[${project.amountInteger}]]*/500000;
 </script>
 <script src="js/loan.js"></script>
+
 </body>
 </html>
