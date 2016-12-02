@@ -14,7 +14,7 @@ import org.springframework.context.annotation.PropertySource;
 public class ProductTourongjiaServiceTest extends TourongjiaServiceTest {
 
     @Configuration
-    @PropertySource("classpath:/trj.properties")
+    @PropertySource(value = "classpath:/trj.properties", ignoreResourceNotFound = true)
     static class Config {
     }
 
