@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * 用户订单,面向用户的订单
@@ -51,10 +52,8 @@ public abstract class UserOrder implements Locker {
      */
     @Column(columnDefinition = "datetime")
     private LocalDateTime startTime;
-
     @ManyToOne(cascade = CascadeType.REFRESH)
     private User owner;
-
     /**
      * 提现是否完成的冗余标记
      *
@@ -66,12 +65,29 @@ public abstract class UserOrder implements Locker {
      */
     @ManyToOne
     private Card card;
-
     /**
      * @since 1.5
      */
     @OneToMany(mappedBy = "userOrder", orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<PlatformWithdrawalOrder> platformWithdrawalOrderSet;
+
+    /**
+     * @return 是否已经实际完成支付的判定(并且成功)
+     */
+    public static Predicate<UserOrder> reallyWithdrawalCompletedPredicate() {
+        return order
+                -> order.getPlatformWithdrawalOrderSet() != null
+                && order.getPlatformWithdrawalOrderSet().stream().anyMatch(PlatformWithdrawalOrder::isSuccess);
+    }
+
+    /**
+     * @return 是否已实际处理过支付（并不一定是支付成功,可能是支付失败,反正是最终状态了）
+     */
+    public static Predicate<UserOrder> reallyWithdrawalFinishPredicate() {
+        return order
+                -> order.getPlatformWithdrawalOrderSet() != null
+                && order.getPlatformWithdrawalOrderSet().stream().anyMatch(PlatformWithdrawalOrder::isFinish);
+    }
 
     /**
      * @return 以提现的立场来说, 它的金额应该是多少
