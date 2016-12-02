@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 /**
  * 提现的订单,当前订单肯定只有一个。
- * 只有被{@link WithdrawOrderStatus#cancelled 取消}而非{@link WithdrawOrderStatus#completed 完成}的订单的金额才会被无视。
+ * 只有未完成{@link #reallyWithdrawalCompletedPredicate()}而且已经结束{@link #reallyWithdrawalFinishPredicate()}的订单才会被视作无效提现订单
  *
  * @author CJ
  */
@@ -25,6 +25,11 @@ import java.time.LocalDateTime;
 @Getter
 public class WithdrawOrder extends UserOrder implements BalanceFlow {
 
+    /**
+     * 不再依赖这个状态
+     * 在以后版本中将移除
+     */
+    @Deprecated
     private WithdrawOrderStatus processStatus = WithdrawOrderStatus.cancelled;
     @Column(columnDefinition = "datetime")
     private LocalDateTime processTime;
@@ -48,15 +53,20 @@ public class WithdrawOrder extends UserOrder implements BalanceFlow {
 
     @Override
     public String getStatus() {
-        switch (processStatus) {
-            case cancelled:
-                return "已取消";
-            case completed:
-                return "完成";
-            case requested:
-                return "进行中";
-        }
-        return null;
+        if (isWithdrawalCompleted())
+            return "完成";
+        if (!reallyWithdrawalFinishPredicate().test(this))
+            return "进行中";
+        return "已取消";
+//        switch (processStatus) {
+//            case cancelled:
+//                return "已取消";
+//            case completed:
+//                return "完成";
+//            case requested:
+//                return "进行中";
+//        }
+//        return null;
     }
 
     @Override

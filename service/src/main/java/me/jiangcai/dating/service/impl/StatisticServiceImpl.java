@@ -2,7 +2,7 @@ package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.User;
-import me.jiangcai.dating.entity.support.WithdrawOrderStatus;
+import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.model.AgentCashOrderBalanceFlow;
 import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.model.GuideCashOrderBalanceFlow;
@@ -159,7 +159,9 @@ public class StatisticServiceImpl implements StatisticService {
 
         if ((flag & TypeWithdraw) > 0)
             withdrawOrderRepository.findByOwnerOrderByStartTimeDesc(user).stream()
-                    .filter(withdrawOrder -> withdrawOrder.getProcessStatus() != WithdrawOrderStatus.cancelled)
+                    // NOT Cancelled -> Complete or not complete and not finish
+                    // Finish and Complete
+                    .filter(UserOrder.reallyWithdrawalCompletedPredicate().or(UserOrder.reallyWithdrawalFinishPredicate().negate()))
                     .forEach(flowArrayList::add);
 
         Collections.sort(flowArrayList, (o1, o2) -> o2.getStartTime().compareTo(o1.getStartTime()));
