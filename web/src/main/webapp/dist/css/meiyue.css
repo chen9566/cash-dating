@@ -5,7 +5,7 @@ body {
 
 }
 
-ul, li{
+ul, li {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -1362,7 +1362,6 @@ ul#navlist .list1 {
 
 .my-activity li h4 {
     font-size: 16px;
-    font-weight: 300;
     font-weight: 400;
     line-height: 16px
 }
@@ -1374,7 +1373,7 @@ ul#navlist .list1 {
 
 .my-activity li b {
     color: #ff3f51;
-    font-weight: 300
+    font-weight: 300;
 }
 
 .my-activity li button {
@@ -1388,7 +1387,6 @@ ul#navlist .list1 {
     background: #fff;
     border-bottom: 1px solid #dfdfdf;
     border-top: 1px solid #dfdfdf;
-    color: #353535;
 }
 
 .my-list ul {
@@ -1527,14 +1525,14 @@ ul#navlist .list1 {
 }
 
 .bankcard .card {
-    border-bottom: 1px solid #888;
-    padding: 0 5px
+
 }
 
 .bankcard dl {
-    padding: 16px 12px 0 12px;
+    padding: 15px 12px 0 12px;
     margin-bottom: 0;
-    overflow: hidden
+    overflow: hidden;
+    height: 120px;
 }
 
 .bankcard dl.blue {
@@ -1542,7 +1540,7 @@ ul#navlist .list1 {
     background: -o-linear-gradient(right, #588CC6, #4669B4); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(right, #588CC6, #4669B4); /* Firefox 3.6 - 15 */
     background: linear-gradient(to right, #588CC6, #4669B4);
-    border-radius: 6px 6px 0 0;
+    border-radius: 6px
 }
 
 .bankcard dl.green {
@@ -1550,7 +1548,7 @@ ul#navlist .list1 {
     background: -o-linear-gradient(right, #37AE93, #13A0B3); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(right, #37AE93, #13A0B3); /* Firefox 3.6 - 15 */
     background: linear-gradient(to right, #37AE93, #13A0B3);
-    border-radius: 6px 6px 0 0;
+    border-radius: 6px
 }
 
 .bankcard dl.yellow {
@@ -1558,7 +1556,7 @@ ul#navlist .list1 {
     background: -o-linear-gradient(right, #E75C65, #E8507D); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(right, #E75C65, #E8507D); /* Firefox 3.6 - 15 */
     background: linear-gradient(to right, #E75C65, #E8507D);
-    border-radius: 6px 6px 0 0;
+    border-radius: 6px
 }
 
 .bankcard dt {
@@ -1570,7 +1568,7 @@ ul#navlist .list1 {
 .bankcard dt img {
     width: 36px;
     height: 36px;
-    margin: 3px 10px 30px 0
+    margin: 0 10px 30px 0
 }
 
 .bankcard dd {
@@ -1580,15 +1578,32 @@ ul#navlist .list1 {
 }
 
 .bankcard dd .txt {
-    font-size: 16px;
+    font-size: 18px;
     color: #fff;
-    display: block
+    display: block;
+    margin-top: 6px;
 }
 
 .bankcard dd .code-n {
     text-align: left;
     font-size: 14px;
+    color: #e1e1e1;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.bankcard dd .num {
+    font-size: 24px;
     color: #fff;
+    font-weight: 300;
+    letter-spacing: 2px
+}
+
+.bankcard dd .mi {
+    padding-top: 15px;
+    font-size: 16px;
+    letter-spacing: 4px;
+    margin-right: 5px;
 }
 
 .modcard {
@@ -1784,12 +1799,12 @@ ul#navlist .list1 {
 }
 
 .pay-new .t4 {
-    margin: 20px 0 0 0;
+    margin: 15px 0 0 0;
 }
 
 .pay-new .t4 img {
-    width: 190px;
-    height: 190px;
+    width: 210px;
+    height: 210px;
 }
 
 .pay-new .t5 {
@@ -2026,11 +2041,23 @@ ul#navlist .list1 {
     border-bottom: 0;
 }
 
-.from-zc .yzm-n {
+.yzm-n {
     float: right;
     color: #FFF;
     font-size: 15px;
     line-height: 44px;
+    height: 44px;
+    background: #F65150;
+    padding: 0 13px;
+    width: 103px
+}
+
+.yzm-n2 {
+    float: right;
+    color: #FFF;
+    font-size: 15px;
+    line-height: 46px;
+    height: 46px;
     background: #F65150;
     padding: 0 13px;
     width: 103px
@@ -2413,16 +2440,6 @@ ul#navlist .list1 {
     width: 50%
 }
 
-.form-reg-n .yzm-n {
-    float: right;
-    color: #FFF;
-    font-size: 15px;
-    line-height: 44px;
-    background: #F65150;
-    padding: 0 13px;
-    width: 104px
-}
-
 .form-reg-n .y1 {
     margin: 30px 15px 0 15px
 }
@@ -2465,7 +2482,7 @@ ul#navlist .list1 {
 
 .black a {
     display: block;
-
+    color: #b3b3b3;
 }
 
 .red {
@@ -2824,14 +2841,14 @@ ul#navlist .list1 {
 }
 
 .add-bank img {
-    width: 15px;
-    height: 15px;
-    margin-top: -3px;
-    margin-right: 10px;
+    width: 8px;
+    margin-top: 15px;
+
+    float: right;
 }
 
 .add-bank a {
-    color: #007aff;
+    color: #888;
     font-size: 14px;
     display: block;
     text-decoration: none
@@ -2853,7 +2870,6 @@ ul#navlist .list1 {
     font-size: 14px;
     background: url(sharebg.png);
     color: #FFF;
-    margin: auto;
     line-height: 22px;
     padding: 10px 15px 12px 15px;
     margin: 10px auto;
@@ -2901,7 +2917,7 @@ ul#navlist .list1 {
 }
 
 .my-n {
-    background: -webkit-linear-gradient(buttom, #FD5959, #EB3842); /* Safari 5.1 - 6.0 */
+    background: -webkit-linear-gradient(bottom, #FD5959, #EB3842); /* Safari 5.1 - 6.0 */
     background: -o-linear-gradient(top, #EB3842, #FD5959); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(top, #EB3842, #FD5959); /* Firefox 3.6 - 15 */
     background: linear-gradient(to top, #EB3842, #FD5959);
@@ -3142,6 +3158,8 @@ ul#navlist .list1 {
 
 .mydata .bright-w img {
     width: 8px;
+    display: block;
+    margin-left: 5px;
 }
 
 .mydata .collect {
@@ -3181,11 +3199,6 @@ ul#navlist .list1 {
 .pay-ewm h1 {
     font-size: 19px;
     margin-top: 0px
-}
-
-.pay-ewm t {
-    color: #888;
-    font-size: 16px;
 }
 
 .pay-ewm .ewm-b {
@@ -3288,6 +3301,8 @@ ul#navlist .list1 {
 .loan {
     background: #fff;
     padding-top: 15px;
+    margin: 0 10px;
+    border-radius: 6px;
 }
 
 .loan .t1 {
@@ -3319,7 +3334,7 @@ ul#navlist .list1 {
     -moz-appearance: textfield;
     border: 0;
     background: none;
-    width: 90%;
+    width: 88%;
     font-size: 40px;
     line-height: 50px;
     height: 50px;
@@ -3359,16 +3374,16 @@ ul#navlist .list1 {
 
 .loan li img {
     width: 8px;
-    margin-left: 8px;
+    margin-top: 1px;
+    margin-left: 2px;
+    margin-right: -1px;
 }
 
 .loan select {
     border: 0;
     height: 22px;
     line-height: 22px;
-    width: 70%;
-    border: 0px;
-    border: none;
+    width: 60%;
     outline: none;
     background: none;
     -moz-appearance: none;
@@ -3376,7 +3391,7 @@ ul#navlist .list1 {
     color: #353535;
     appearance: none;
     text-align: right;
-    padding-left: 55%;
+
     direction: rtl;
 }
 
@@ -3551,13 +3566,14 @@ ul#navlist .list1 {
 
 .infor {
     color: #888;
+
 }
 
 .infor select {
     height: 30px;
     line-height: 30px;
     width: 100%;
-    border: 0px;
+    border: 0;
     border: none;
     outline: none;
     background: none;
@@ -3709,6 +3725,13 @@ ul#navlist .list1 {
     font-size: 16px;
 }
 
+.over .o4 {
+}
+
+.over .o4 img {
+    width: 125px
+}
+
 .myorder {
     background: #fff;
 }
@@ -3778,7 +3801,7 @@ ul#navlist .list1 {
 }
 
 .financial {
-    background: -webkit-linear-gradient(buttom, #FD5959, #EB3842); /* Safari 5.1 - 6.0 */
+    background: -webkit-linear-gradient(bottom, #FD5959, #EB3842); /* Safari 5.1 - 6.0 */
     background: -o-linear-gradient(top, #EB3842, #FD5959); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(top, #EB3842, #FD5959); /* Firefox 3.6 - 15 */
     background: linear-gradient(to top, #EB3842, #FD5959);
@@ -3946,7 +3969,6 @@ ul#navlist .list1 {
     font-weight: 300;
     float: left;
     height: 96px;
-    padding:
 }
 
 .products p {
@@ -4494,8 +4516,8 @@ ul#navlist .list1 {
 .insurance {
     background: #fff;
     padding: 5px 15px;
-    border-top:1px solid #dfdfdf;
-    border-bottom:1px solid #dfdfdf;
+    border-top: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
     margin-top: 15px;
 }
 
@@ -4507,7 +4529,7 @@ ul#navlist .list1 {
     font-size: 16px;
     margin-bottom: 15px;
     font-weight: 300;
-    text-align:left;
+    text-align: left;
 
 }
 
@@ -4522,8 +4544,19 @@ ul#navlist .list1 {
 .insurance .m-10 {
     margin-bottom: -20px
 }
-.insurance .finish{ text-align: center; margin: 60px 0 ; font-size: 15px;}
-.insurance .finish img{ width: 80px; height: 80px; margin-bottom: 15px}
+
+.insurance .finish {
+    text-align: center;
+    margin: 60px 0;
+    font-size: 15px;
+}
+
+.insurance .finish img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px
+}
+
 ul#navlist {
     font: 14px verdana;
     padding-bottom: 13px;
@@ -4532,9 +4565,11 @@ ul#navlist {
 ul#navlist li span {
     background: #FBFBFB;
 }
+
 ul#navlist li .b {
     background: #EFEFF4;
 }
+
 ul#navlist li {
     float: left;
     height: 40px;
@@ -4561,7 +4596,6 @@ ul#navlist .list1 {
     width: 100%;
     position: fixed;
     bottom: 0;
-    background: #F65150;
     line-height: 42px;
     text-align: center;
     margin-bottom: 0;
@@ -4569,33 +4603,460 @@ ul#navlist .list1 {
 
 .up-btn a {
     font-size: 18px;
-    color: #b3b3b3;
     display: block;
+    text-decoration: none;
+    border-radius: 0;
+}
+
+.car {
+}
+
+.carflow {
+}
+
+.carflow ul {
+    line-height: 44px;
+    overflow: hidden;
+    background: #fff;
+    border-bottom: 1px solid #dfdfdf;
+    border-top: 1px solid #dfdfdf;
+}
+
+.carflow li {
+    float: left;
+    text-align: center;
+    width: 33.3%;
+    color: #353535;
+}
+
+.carflow .t1 {
+    color: #fff;
+    background: url("carbg1.png") no-repeat;
+    background-size: 100% 44px
+}
+
+.carflow .t2 {
+    color: #fff;
+    background: url("carbg2.png") no-repeat;
+    background-size: 100% 44px
+}
+
+.carflow .t3 {
+    color: #fff;
+    background: url("carbg3.png") no-repeat;
+    background-size: 100% 44px
+}
+
+.carflow li img {
+    height: 44px;
+}
+
+.carform {
+    margin: 15px 0 0 0
+}
+
+.carform ul {
+    background: #fff;
+    padding-left: 15px;
+    border-bottom: 1px solid #dfdfdf;
+    border-top: 1px solid #dfdfdf
+}
+
+.carform li {
+    line-height: 44px;
+    border-bottom: 1px solid #dfdfdf
+}
+
+.carform li.bo-r {
+    border-bottom: 0
+}
+
+.carform img {
+    width: 22px;
+    height: 22px;
+    margin-right: 10px
+}
+
+.carform li input {
+    border: 0;
+    line-height: 30px;
+    height: 30px;
+}
+
+.carimg {
+    margin: 15px 15px 0 15px;
+}
+
+.carimg ul {
+    overflow: hidden;
+    margin-top: -20px;
+}
+
+.carimg li {
+    float: left;
+    width: 32%;
+    margin-right: 5px;
+    margin-bottom: 5px
+}
+
+.carimg li img {
+    width: 100%
+}
+
+.carimg .ma-0 {
+    margin-right: 0;
+}
+
+.help-c {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.loan-v2 {
+}
+
+.loan-v2 ul {
+    overflow: hidden;
+    height: 130px;
+    padding: 15px 0 0 25px;
+}
+
+.loan-v2 .bg1 {
+    background: url("loanbg1.png") no-repeat;
+    background-size: 100%;
+    margin: 15px 10px 10px 10px;
+}
+
+.loan-v2 .bg2 {
+    background: url("loanbg2.png") no-repeat;
+    background-size: 100%;
+    margin: 15px 10px 10px 10px;
+}
+
+.loan-v2 .bg3 {
+    background: url("loanbg3.png") no-repeat;
+    background-size: 100%;
+    margin: 15px 10px 10px 10px;
+}
+
+.loan-v2 .bg4 {
+    background: url("loanbg4.png") no-repeat;
+    background-size: 100%;
+    margin: 15px 10px 10px 10px;
+}
+
+.loan-v2 li {
+    float: left;
+}
+
+.loan-v2 a {
+    color: #F65150;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid #F65150;
+    display: block;
+    width: 98px;
+    line-height: 23px;
+    border-radius: 15px;
+    margin-top: 15px;
+}
+
+.loan-v2 .b30 {
+    width: 28%;
+}
+
+.loan-v2 .b70 {
+    width: 72%;
+}
+
+.loan-v2 p {
+    margin: 0;
+}
+
+.loan-v2 .f19 {
+    color: #000;
+    font-size: 19px;
+    line-height: 34px;
+}
+
+.loan-v2 .f12 {
+    color: #666;
+    font-size: 12px;
+}
+
+.loan-v2 .f46 {
+    color: #F65150;
+    font-size: 46px;
+    font-weight: 300;
+}
+
+.loan-v2 .f13 {
+    color: #F65150;
+    font-size: 13px
+}
+
+.bg-one {
+    background: url("loanbg5.png") no-repeat top;
+    background-size: 100%;
+    padding-top: 100px
+}
+
+.bg-two {
+    background: url("loanbg6.png") no-repeat top;
+    background-size: 100%;
+    padding-top: 100px
+}
+
+.cardtab {
+}
+
+.cardtab ul {
+    background: #fff;
+    overflow: hidden
+}
+
+.cardtab li {
+    line-height: 44px;
+    width: 50%;
+    float: left;
+    border-bottom: 1px solid #dfdfdf;
+    text-align: center
+}
+
+.cardtab li a {
+    text-decoration: none;
+    color: #353535;
+    display: block
+}
+
+.cardtab .curr {
+    color: #F65150;
+    border-bottom: 2px solid #F65150;
+    margin-top: -1px
+}
+
+.am-show {
+    font-size: 14px;
+    border-radius: 0;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    text-align: center;
+    -webkit-transform: translateY(100%);
+    -ms-transform: translateY(100%);
+    transform: translateY(100%);
+    -webkit-transition: -webkit-transform 300ms;
+    transition: transform 300ms;
+    width: 100%;
+    z-index: 1110;
+}
+
+.am-modal-active {
+    transform: translateY(0px);
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+}
+
+.am-modal-out {
+    z-index: 1109;
+    -webkit-transform: translateY(100%);
+    -ms-transform: translateY(100%);
+    transform: translateY(100%)
+}
+
+.am-show-footer {
+    margin: 10px 25px;
+}
+
+.am-show-footer .delete_btn {
+    font-size: 17px;
+    color: #353535;
+    display: block;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 6px;
+    font-weight: 400;
+    line-height: 1.6;
+    padding: 0.625em 0;
+    text-align: center;
+}
+
+.am-show-footer .close-btn {
+    font-size: 17px;
+    color: #0079FF;
+    display: block;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 6px;
+    font-weight: 400;
+    line-height: 1.6;
+    padding: 0.625em 0;
+    text-align: center;
+}
+
+.am-show-footer a {
     text-decoration: none
 }
-.car{}
-.carflow{}
-.carflow ul{line-height: 44px; overflow: hidden; background: #fff; border-bottom: 1px solid #dfdfdf; border-top: 1px solid #dfdfdf; }
-.carflow li{ float: left; text-align:center; width: 33.3%;  color: #353535;}
-.carflow .t1{ color: #fff;  background: url("carbg1.png") no-repeat; background-size: 100% 44px  }
-.carflow .t2{ color: #fff;  background: url("carbg2.png") no-repeat; background-size: 100% 44px  }
-.carflow .t3{ color: #fff;  background: url("carbg3.png") no-repeat; background-size: 100% 44px  }
 
-.carflow li img{ height: 44px;}
-
-.carform{ margin: 15px 0 0 0}
-.carform ul{ background: #fff; padding-left: 15px;border-bottom: 1px solid #dfdfdf;border-top: 1px solid #dfdfdf
+.showbg {
+    background-color: rgba(0, 0, 0, 0.6);
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 1100;
+    display: none;
 }
-.carform li{ line-height: 44px; border-bottom: 1px solid #dfdfdf}
-.carform li.bo-r{ border-bottom: 0}
-.carform img{ width: 22px; height: 22px; margin-right: 10px}
-.carform li input{ border: 0; line-height: 30px;height: 30px; }
 
-.carimg{ margin: 15px 15px 0 15px;}
-.carimg ul{
-    overflow: hidden; margin-top: -20px;
+.showbg-active {
+    opacity: 1;
+    display: block;
 }
-.carimg li{ float: left; width: 32%; margin-right: 5px; margin-bottom: 5px}
-.carimg li img{width: 100%}
-.carimg .ma-0{ margin-right: 0;}
-	
+
+.none-t {
+    border-top: 0 !important;
+    margin-top: -21px
+}
+
+.topay {
+    background: #fff;
+    border-bottom: 1px solid #dfdfdf;
+    overflow: hidden;
+}
+
+.topay h1 {
+    border-bottom: 1px solid #dfdfdf;
+    text-align: center;
+    margin: 0;
+    line-height: 50px;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.topay li {
+    overflow: hidden;
+    margin: 0 15px;
+    color: #353535;
+    line-height: 44px;
+    text-align: left
+}
+
+.topay li img {
+    width: 26px;
+    margin-right: 5px;
+}
+
+.topay .bo-b {
+    border-bottom: 1px solid #dfdfdf;
+}
+
+.back-c {
+    background: #fff;
+    padding-bottom: 60px
+}
+
+.big15 {
+    display: block;
+}
+
+.big15 img {
+    width: 15px !important;
+}
+
+.addcred {
+}
+
+.addcred ul {
+    background: #fff;
+    border-top: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+    padding: 0 0 0 15px;
+}
+
+.addcred li {
+    line-height: 46px;
+    font-size: 15px
+}
+
+.addcred label {
+    margin-right: 20px
+}
+
+.addcred li img {
+    width: 16px;
+    margin-right: 15px
+}
+
+.addcred input {
+    border: 0;
+    height: 40px;
+    line-height: 40px
+}
+
+.addcred .bo-b {
+    border-bottom: 1px solid #dfdfdf
+}
+
+.addcred p {
+    margin: 0
+}
+
+.addcred .b1 {
+    line-height: 44px;
+    height: 44px;
+    color: #353535;
+    font-size: 14px;
+    padding: 3px 0 0 15px;
+}
+
+.addcred .check {
+    margin: 15px 15px 0 15px;
+}
+
+.addcred .check input {
+    float: left
+}
+
+.addcred .check a {
+    text-decoration: none
+}
+
+.addcred .check label {
+    margin: 0
+}
+
+.safeshow {
+    text-align: center;
+    padding: 0 15px
+}
+
+.safeshow h1 {
+    font-size: 17px;
+    color: #000
+}
+
+.safeshow img {
+    width: 190px;
+    margin-top: 5px
+}
+
+.safeshow .txt {
+    text-align: left;
+    font-size: 15px;
+}
+
+.safeshow .know {
+    display: block;
+    border-top: 1px solid #dfdfdf;
+    color: #0079FF;
+    text-align: center;
+    width: 100%;
+    background: none;
+    font-size: 17px;
+    height: 36px;
+    padding-top: 8px;
+}

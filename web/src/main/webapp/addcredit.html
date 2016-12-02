@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>添加信用卡</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<form  action="safetycode.html"  th:method="post" role="form">
+    <div class="addcred">
+        <div class="showcard" id="cardShower">3333333333</div>
+        <p class="b1">请绑定持卡人的信用卡</p><!-- 没输入卡号时,这句话显示-->
+        <ul>
+            <li class="bo-b"><label>持卡人姓名</label><input placeholder="输入真实姓名" type="text"></li>
+            <li><label>信用卡卡号</label><input placeholder="持卡人信用卡卡号" type="tel"></li>
+        </ul>
+    </div>
+    <div class="p-15 mar30">
+        <input value="下一步" type="submit" class="black" name="btn1" disabled="disabled"/>
+    </div>
+</form>
+</body>
+</html>

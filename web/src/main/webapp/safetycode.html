@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>添加信用卡</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/meiyue.css">
+    <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<form action="checkcode.html" method="post" role="form">
+    <div class="addcred">
+        <p class="b1">请填写真实信用卡信息</p><!-- 没输入卡号时,这句话显示-->
+        <ul>
+            <li class="bo-b"><label>安全码</label><input placeholder="卡背面末三位数字" type="tel"><span class="pull-right"
+                                                                                              data-toggle="modal"
+                                                                                              data-target=".safecode"><img
+                    src="images/Imported.png"/> </span></li>
+            <li><label>手机号</label><input placeholder="银行预留手机号" type="tel"><span class="pull-right" data-toggle="modal"
+                                                                                data-target=".iphonecode"><img
+                    src="images/Imported.png"/> </span></li>
+        </ul>
+    </div>
+    <div class="p-15 mar30">
+        <input value="下一步" type="submit" class="black" name="btn1" disabled="disabled"/>
+    </div>
+
+</form>
+<!-- 安全码说明 -->
+<div class="modal fade safecode" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content ">
+            <div class="safeshow">
+                <h1>安全码说明</h1>
+                <p><img src="images/safeimg.png"/></p>
+                <p class="txt"> 安全码是打印在信用卡背面签名区的一组数字，一般是后3位数字。</p>
+                <p data-dismiss="modal" class="know">知道了</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- 手机号说明 -->
+<div class="modal fade iphonecode" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="safeshow">
+                <h1>手机号说明</h1>
+                <p class="txt"> 银行预留的手机号码是办理该银行卡时所填写的手机号码，没有预留、手机号没有预留、手机号忘记或者已停用，请联系银行客服更新处理。</p>
+                <p data-dismiss="modal" class="know">知道了</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

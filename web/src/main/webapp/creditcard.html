@@ -16,28 +16,28 @@
 <body>
 <div class="cardtab">
     <ul>
-        <li class="curr"> 借记卡</li>
-        <li><a href="creditcard.html">信用卡</a></li>
+        <li><a href="bankcard.html"> 借记卡</a></li>
+        <li  class="curr">信用卡</li>
     </ul>
 </div>
 <div class="bankcard" th:each="card:${cards}">
-    <div class="card">
+    <div class="card" onClick="toshow()">
         <dl class="blue" th:style="${'background:'+card.bank.background}"
             style="background: linear-gradient(to right, #588CC6 , #4669B4);">
             <dt><img src="images/logo-gs.png" th:src="@{${card.bank.imageUri}}" class="img-circle"></dt>
             <dd><span class="txt" th:text="${card.bank.name}">杭州银行</span>
-                <span class="code-n" th:text="${#cashStrings.bankCardNumber(card.number)}">储蓄卡</span>
+                <span class="code-n" th:text="${#cashStrings.bankCardNumber(card.number)}">信用卡</span>
                 <span class="mi">**** **** ****</span> <span class="num">3333</span>
             </dd>
         </dl>
     </div>
 </div>
 <div class="bankcard" th:remove="all">
-    <div class="card">
+    <div class="card" >
         <dl class="green">
             <dt><img src="images/temp.jpg" class="img-circle"></dt>
             <dd><span class="txt">杭州银行</span>
-                <span class="code-n">储蓄卡</span>
+                <span class="code-n">信用卡</span>
                 <span class="mi">**** **** ****</span> <span class="num">3333</span>
             </dd>
         </dl>
@@ -48,16 +48,44 @@
         <dl class="yellow">
             <dt><img src="images/temp.jpg" class="img-circle"></dt>
             <dd><span class="txt">杭州银行</span>
-                <span class="code-n">储蓄卡</span>
+                <span class="code-n">信用卡</span>
                 <span class="mi">**** **** ****</span> <span class="num">3333</span>
             </dd>
         </dl>
     </div>
 </div>
-<div class="add-bank"><a href="addcard.html" th:href="@{/card}"><img src="images/blackright-r.png">更换银行卡</a>
+<div class="add-bank"><a href="addcredit.html" th:href="@{/card}"><img src="images/blackright-r.png">添加信用卡</a>
 </div>
 
-
+<div class="am-show">
+    <div class="am-show-footer"><a class="delete_btn">删除</a></div>
+    <div class="am-show-footer"><a class="close-btn">取消</a></div>
+</div>
+<script type="text/javascript">
+    function toshow(){
+        $(".am-show").addClass("am-modal-active");
+        if($(".showbg").length>0){
+            $(".showbg").addClass("showbg-active");
+        }else{
+            $("body").append('<div class="showbg"></div>');
+            $(".showbg").addClass("showbg-active");
+        }
+        $(".showbg-active,.delete_btn").click(function(){
+            $(".am-show").removeClass("am-modal-active");
+            setTimeout(function(){
+                $(".showbg-active").removeClass("showbg-active");
+                $(".showbg").remove();
+            },300);
+        })
+        $(".showbg-active,.close-btn").click(function(){
+            $(".am-show").removeClass("am-modal-active");
+            setTimeout(function(){
+                $(".showbg-active").removeClass("showbg-active");
+                $(".showbg").remove();
+            },300);
+        })
+    }
+</script>
 <!--<div class="modcard">-->
 <!--<ul>-->
 <!--<li>添加银行卡<i class="fa fa-angle-right fa-2x pull-right"></i></li>-->
