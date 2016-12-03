@@ -6,25 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>添加信用卡</title>
     <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/share.js"></script>
+
 </head>
-<body>
-<form action="#" th:method="post" role="form">
-    <div class="addcred">
-        <p class="b1">请输入手机169*****9984收到的短信校验码</p><!-- 没输入卡号时,这句话显示-->
-        <ul>
-            <li><input placeholder="请输入验证码" type="tel">
-                <div id="btn-mask" class="yzm-n2">获取验证码</div>
-            </li>
-        </ul>
-        <p class="check"><input type="checkbox" id="checkbox_a1" class="chk_1" checked/><label
-                for="checkbox_a1"></label><span class="check-pos">同意<a href="#">《服务协议》</a></span></p>
-    </div>
-    <div class="p-15 mar30">
-        <input value="下一步" type="submit" class="black" name="btn1" disabled="disabled"/>
-    </div>
-</form>
+<body class="bg-write">
+<div class="over">
+    <p class="o1"><img src="images/5.png"></p>
+    <p class="o2">添加成功</p>
+
+</div>
+<p class="p-15">
+    <button type="submit" name="submit" class="btn btn-danger btn-lg btn-block clickHref" href="creditcard.html"
+            th:href="@{/withdrawList}">完成
+    </button>
+</p>
 </body>
 </html>
