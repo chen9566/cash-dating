@@ -6,6 +6,7 @@ import me.jiangcai.dating.LoginWebTest;
 import me.jiangcai.dating.entity.LoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.Loan;
+import me.jiangcai.dating.model.trj.ProjectLoan;
 import me.jiangcai.dating.page.BindingCardPage;
 import me.jiangcai.dating.page.FinancingPage;
 import me.jiangcai.dating.page.LoanAmountPage;
@@ -28,6 +29,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,15 +48,8 @@ public class WealthControllerTest extends LoginWebTest {
     @Autowired
     private ResourceService resourceService;
 
-    /**
-     * 存在2种流程
-     * 1,是{@link me.jiangcai.dating.model.trj.ProjectLoan} 固定金额,固定周期,固定汇率 更丰富的个人信息,身份证,银行卡,完成
-     * 2,普通的 输入金额,明细,完成
-     *
-     * @throws IOException
-     */
     @Test
-    public void loan() throws IOException {
+    public void projectLoan() throws IOException {
         MyPage myPage = myPage();
         Loan[] loanList = wealthService.loanList();
 //        System.out.println(Arrays.toString(loanList));
@@ -62,8 +57,12 @@ public class WealthControllerTest extends LoginWebTest {
         LoanPage loanPage = myPage.toLoanPage();
         loanPage.assertList(loanList);
 
-        // 选择了一款产品
-        Loan loan = loanList[random.nextInt(loanList.length)];
+        // 选择了一款普通产品
+        ProjectLoan loan = Stream.of(loanList).filter(loan1 -> loan1 instanceof ProjectLoan)
+                .map(loan1 -> (ProjectLoan) loan1)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("找不到项目贷款"));
+
         LoanAmountPage page = loanPage.choose(loan.getProductName());
 
         page.checkAgreement();
@@ -94,6 +93,76 @@ public class WealthControllerTest extends LoginWebTest {
 
 //        LoanCompletedPage completedPage = submitPage.submit(name, number, province.getName(), city.getName());
         LoanCompletedPage completedPage = initPage(LoanCompletedPage.class);
+
+        completedPage.doBack();
+
+        List<LoanRequest> requestList = wealthService.listLoanRequests(currentUser().getOpenId());
+        assertThat(requestList)
+                .isNotEmpty();
+        LoanRequest request = requestList.get(0);
+        assertThat(request.getLoanData().getOwner())
+                .isEqualTo(currentUser());
+        assertThat(request.getLoanData().getName())
+                .isEqualTo(name);
+        assertThat(request.getLoanData().getNumber())
+                .isEqualTo(number);
+        assertThat(request.getLoanData().getAddress().getProvince())
+                .isEqualTo(province);
+        assertThat(request.getLoanData().getAddress().getCity())
+                .isEqualTo(city);
+        assertThat(request.getAmount())
+                .isEqualByComparingTo(new BigDecimal(amount));
+        assertThat(request.getProjectId())
+                .isEqualTo(loan.getProductId());
+        assertThat(request.getMonths())
+                .isGreaterThan(0);
+        // 管理员 登录 并且同意这个借款请求
+        assertThat(request.getSupplierRequestId()).isNull();
+    }
+
+    /**
+     * 存在2种流程
+     * 1,是{@link me.jiangcai.dating.model.trj.ProjectLoan} 固定金额,固定周期,固定汇率 更丰富的个人信息,身份证,银行卡,完成
+     * 2,普通的 输入金额,明细,完成
+     *
+     * @throws IOException
+     */
+    @Test
+    public void loan() throws IOException {
+        MyPage myPage = myPage();
+        Loan[] loanList = wealthService.loanList();
+//        System.out.println(Arrays.toString(loanList));
+
+        LoanPage loanPage = myPage.toLoanPage();
+        loanPage.assertList(loanList);
+
+        // 选择了一款普通产品
+        Loan loan = Stream.of(loanList).filter(loan1 -> !(loan1 instanceof ProjectLoan))
+                .max(new RandomComparator())
+                .orElse(null);
+        LoanAmountPage page = loanPage.choose(loan.getProductName());
+
+        page.checkAgreement();
+        page.assertLoan(loan);
+        // 随机从50000-max
+        int amount = 50000 + random.nextInt((loan.getAmountInteger() - 50000));
+        String term = loan.getTerm()[random.nextInt(loan.getTerm().length)];
+        LoanSubmitPage submitPage = page.loan(amount, term);
+
+        //填入姓名,身份证号码, 随便弄一个地址
+        String name = RandomStringUtils.randomAscii(2 + random.nextInt(3));
+        String number = RandomStringUtils.randomNumeric(18);
+
+        Province province = null;
+        while (province == null || districtRepository.byChanpayCode(Locale.CHINA, province.getId()) == null) {
+            province = PayResourceService.listProvince().stream().max(new RandomComparator()).orElseThrow(IllegalStateException::new);
+        }
+        City city = null;
+        while (city == null || districtRepository.byChanpayCode(Locale.CHINA, city.getId()) == null) {
+            city = province.getCityList().stream().max(new RandomComparator()).orElseThrow(IllegalStateException::new);
+        }
+
+        LoanCompletedPage completedPage = submitPage.submitNormal(name, number, province.getName(), city.getName());
 
         completedPage.doBack();
 

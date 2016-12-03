@@ -39,6 +39,11 @@ public class LoanPage extends AbstractPage {
             products = products.stream()
                     .filter(webElement -> {
                         // 把不符合loan的留下来
+//                        webElement.findElements(By.tagName("p")).stream()
+//                                .map(WebElement::getText)
+//                                .map(s -> s.replaceAll(" ",""))
+//                                .forEach(System.out::println);
+
                         boolean haveSameAmount = webElement.findElements(By.tagName("p")).stream()
                                 .anyMatch(p -> p.getText().replaceAll(" ", "").contains(loan.getAmount10K() + "万"));
                         boolean haveSameName = webElement.findElements(By.tagName("p")).stream()

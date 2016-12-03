@@ -39,12 +39,7 @@ public class LoanSubmitPage extends AbstractPage {
     }
 
     public LoanIDPage submit(String name, String number, String provinceName, String cityName) {
-        this.name.clear();
-        this.name.sendKeys(name);
-        this.number.clear();
-        this.number.sendKeys(number);
-        inputSelect(loanForm, province.getAttribute("name"), provinceName);
-        inputSelect(loanForm, city.getAttribute("name"), cityName);
+
 
         // 这些字段目前都没有保存
         homeAddress.clear();
@@ -56,7 +51,33 @@ public class LoanSubmitPage extends AbstractPage {
         propose.clear();
         propose.sendKeys(UUID.randomUUID().toString());
 
-        submitButton.click();
+
+        fillCommonForm(name, number, provinceName, cityName);
         return initPage(LoanIDPage.class);
+    }
+
+    private void fillCommonForm(String name, String number, String provinceName, String cityName) {
+        this.name.clear();
+        this.name.sendKeys(name);
+        this.number.clear();
+        this.number.sendKeys(number);
+        inputSelect(loanForm, province.getAttribute("name"), provinceName);
+        inputSelect(loanForm, city.getAttribute("name"), cityName);
+
+        submitButton.click();
+    }
+
+    /**
+     * 提交普通借款
+     *
+     * @param name
+     * @param number
+     * @param provinceName
+     * @param cityName
+     * @return
+     */
+    public LoanCompletedPage submitNormal(String name, String number, String provinceName, String cityName) {
+        fillCommonForm(name, number, provinceName, cityName);
+        return initPage(LoanCompletedPage.class);
     }
 }

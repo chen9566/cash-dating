@@ -21,6 +21,24 @@ public class Loan {
     private String region;
     private String productName;
 
+    public String getListClass() {
+        String cssClass;
+        switch (getProductName()) {
+            case "快车宝":
+                cssClass = "bg2";
+                break;
+            case "随心贷":
+                cssClass = "bg3";
+                break;
+            case "购车宝":
+                cssClass = "bg4";
+                break;
+            default:
+                cssClass = "bg1";
+                break;
+        }
+        return cssClass + " clickHref";
+    }
     /**
      * @return 产品图片的URI
      */

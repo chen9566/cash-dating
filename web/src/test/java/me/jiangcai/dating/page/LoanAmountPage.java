@@ -1,6 +1,7 @@
 package me.jiangcai.dating.page;
 
 import me.jiangcai.dating.model.trj.Loan;
+import org.apache.commons.lang.RandomStringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -47,6 +48,14 @@ public class LoanAmountPage extends AbstractPage {
     public void validatePage() {
         assertThat(webDriver.getTitle())
                 .isEqualTo("款爷借款");
+        input.clear();
+        input.sendKeys(RandomStringUtils.randomAlphabetic(1));
+        assertThat(button.isEnabled())
+                .isFalse();
+        input.clear();
+        input.sendKeys(RandomStringUtils.randomAscii(1));
+        assertThat(button.isEnabled())
+                .isFalse();
     }
 
     /**
