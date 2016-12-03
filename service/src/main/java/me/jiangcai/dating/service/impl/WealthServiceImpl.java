@@ -125,7 +125,8 @@ public class WealthServiceImpl implements WealthService {
     }
 
     @Override
-    public void submitLoanRequest(LoanRequest loanRequest) {
+    public void submitLoanRequest(long loanRequestId) {
+        LoanRequest loanRequest = loanRequestRepository.getOne(loanRequestId);
         if (loanRequest.getProcessStatus() == null || loanRequest.getProcessStatus() == LoanRequestStatus.init) {
             loanRequest.setProcessStatus(LoanRequestStatus.requested);
             loanRequestRepository.save(loanRequest);

@@ -52,10 +52,10 @@ public interface WealthService {
     /**
      * 提交一项借款申请
      *
-     * @param loanRequest 申请
+     * @param loanRequestId 申请
      */
     @Transactional
-    void submitLoanRequest(LoanRequest loanRequest);
+    void submitLoanRequest(long loanRequestId);
 
     @Transactional(readOnly = true)
     List<LoanRequest> listLoanRequests(String openId);

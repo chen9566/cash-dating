@@ -70,9 +70,9 @@ public class ManageLoanControllerTest extends ManageWebTest {
                 , "摆渡人", RandomStringUtils.randomNumeric(18), address);
 
         wealthService.submitLoanRequest(wealthService.loanRequest(userOpenId, loan, new BigDecimal("20000"), cashStrings.termInteger(term), null
-                , "摆渡人", RandomStringUtils.randomNumeric(18), address));
+                , "摆渡人", RandomStringUtils.randomNumeric(18), address).getId());
         wealthService.submitLoanRequest(wealthService.loanRequest(userOpenId, loan, new BigDecimal("20000"), cashStrings.termInteger(term), null
-                , "摆渡人", RandomStringUtils.randomNumeric(18), address));
+                , "摆渡人", RandomStringUtils.randomNumeric(18), address).getId());
 
         mockMvc.perform(getWeixin("/manage/data/loan/all").session(session)
                 .param("offset", "0")

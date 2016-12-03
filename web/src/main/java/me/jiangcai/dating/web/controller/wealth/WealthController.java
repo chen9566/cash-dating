@@ -5,6 +5,7 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
+import me.jiangcai.dating.model.trj.ProjectLoan;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.TourongjiaService;
@@ -92,12 +93,16 @@ public class WealthController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/loanStart")
     public String loanStart(Model model, @RequestParam String id) throws IOException {
-        putLoanAsProject(model, id);
+        Loan loan = putLoanAsProject(model, id);
+        if (loan instanceof ProjectLoan)
+            return "itemloan.html";
         return "loan.html";
     }
 
-    private void putLoanAsProject(Model model, String id) throws IOException {
-        model.addAttribute("project", loanInstance(id));
+    private Loan putLoanAsProject(Model model, String id) throws IOException {
+        final Loan loan = loanInstance(id);
+        model.addAttribute("project", loan);
+        return loan;
     }
 
     private Loan loanInstance(String id) throws IOException {
@@ -109,9 +114,11 @@ public class WealthController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/loanSummary")
     public String loanSummary(Model model, String id, String amount, String period) throws IOException {
-        putLoanAsProject(model, id);
+        Loan loan = putLoanAsProject(model, id);
         model.addAttribute("amount", amount);
         model.addAttribute("period", period);
+        if (loan instanceof ProjectLoan)
+            return "itempersonalup.html";
         return "personalup.html";
     }
 
@@ -125,10 +132,15 @@ public class WealthController {
         address.setProvince(PayResourceService.provinceById(provinceCode));
         address.setCity(PayResourceService.cityById(cityCode));
 
-        LoanRequest loanRequest = wealthService.loanRequest(user.getOpenId(), loanInstance(id), amount, period, null
+        final Loan loan = loanInstance(id);
+        LoanRequest loanRequest = wealthService.loanRequest(user.getOpenId(), loan, amount, period, null
                 , name, number, address);
-        model.addAttribute("loanRequest", loanRequest);
-        return "id.html";
+        if (loan instanceof ProjectLoan) {
+            model.addAttribute("loanRequest", loanRequest);
+            return "id.html";
+        }
+        wealthService.submitLoanRequest(loanRequest.getId());
+        return "redirect:/loanComplete";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/loanID")
@@ -141,6 +153,7 @@ public class WealthController {
     @RequestMapping(method = RequestMethod.GET, value = "/loanCard/{loanRequestId}")
     public String loanCard(@PathVariable("loanRequestId") long loanRequestId, long cardId) {
         wealthService.updateLoanCard(loanRequestId, cardId);
+        wealthService.submitLoanRequest(loanRequestId);
         return "redirect:/loanComplete";
     }
 

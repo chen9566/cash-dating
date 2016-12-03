@@ -48,7 +48,9 @@ public class LoanAmountPage extends AbstractPage {
     @Override
     public void validatePage() {
         assertThat(webDriver.getTitle())
-                .isEqualTo("款爷借款");
+                .isIn("款爷借款", "项目贷款")
+//                .isEqualTo("款爷借款")
+        ;
         input.clear();
         input.sendKeys(RandomStringUtils.randomAlphabetic(1));
         assertThat(button.isEnabled())
