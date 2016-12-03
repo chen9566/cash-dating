@@ -15,7 +15,7 @@ public class ProjectLoan extends Loan {
         setAmount("20万");
         setCondition("");
         setIntroduce("12个月还本付息9%");
-        setTerm(new String[]{"12月"});
+        setTerm(new String[]{"30", "60", "90", "180", "365"});
     }
 
     @Override

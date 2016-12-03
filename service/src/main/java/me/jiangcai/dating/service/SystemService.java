@@ -64,6 +64,9 @@ public interface SystemService {
     @Transactional
     void updateSystemString(String key, LocalDateTime value);
 
+    @Transactional
+    void updateSystemString(String key, BigDecimal decimal);
+
     /**
      * @return 公众号名称
      */
@@ -73,4 +76,17 @@ public interface SystemService {
      * @return 办卡的URL
      */
     String getApplyCardUrl();
+
+    /**
+     * @return 项目贷款授信年限
+     */
+    default int getProjectLoanCreditLimit() {
+        return getSystemString("dating.project.loan.limit", BigDecimal.class, new BigDecimal(2)).intValue();
+    }
+
+    default void updateProjectLoanCreditLimit(int years) {
+        updateSystemString("dating.project.loan.limit", new BigDecimal(years));
+    }
+
+//    double
 }

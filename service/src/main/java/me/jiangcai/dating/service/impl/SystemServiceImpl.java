@@ -50,6 +50,7 @@ public class SystemServiceImpl implements SystemService {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS"
             , Locale.CHINA);
 
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private SystemStringRepository systemStringRepository;
     //    @Autowired
@@ -167,6 +168,15 @@ public class SystemServiceImpl implements SystemService {
             updateSystemString(key, (String) null);
         } else {
             updateSystemString(key, dateTimeFormatter.format(value));
+        }
+    }
+
+    @Override
+    public void updateSystemString(String key, BigDecimal decimal) {
+        if (decimal == null) {
+            updateSystemString(key, (String) null);
+        } else {
+            updateSystemString(key, decimal.toString());
         }
     }
 
