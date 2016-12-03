@@ -99,7 +99,14 @@ $(function () {
             return;
         }
         var value = parseFloat(str);
-        if (value < 50000 || value > $.maxLoanAmount) {
+        if (isNaN(value)) {
+            button.attr('disabled', 'disabled');
+            button.addClass('black');
+            button.removeClass('redremove');
+            spanMonthLo.text('¥0.00');
+            return;
+        }
+        if (value <= 0 || value < $.minLoanAmount || value > $.maxLoanAmount) {
             button.attr('disabled', 'disabled');
             button.addClass('black');
             button.removeClass('redremove');

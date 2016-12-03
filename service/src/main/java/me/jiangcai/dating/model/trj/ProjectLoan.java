@@ -17,4 +17,9 @@ public class ProjectLoan extends Loan {
         setIntroduce("12个月还本付息9%");
         setTerm(new String[]{"12月"});
     }
+
+    @Override
+    public int getMinAmount() {
+        return 1;
+    }
 }

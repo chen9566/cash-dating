@@ -61,6 +61,10 @@ public class Loan {
         return matcher.group(1);
     }
 
+    public int getMinAmount() {
+        return 50000;
+    }
+
     public int getAmountInteger() {
         return NumberUtils.parseNumber(getAmount10K(), Integer.class) * 10000;
     }

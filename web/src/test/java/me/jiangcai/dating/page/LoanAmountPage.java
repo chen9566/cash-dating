@@ -9,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -79,6 +80,35 @@ public class LoanAmountPage extends AbstractPage {
      * @param loan
      */
     public void assertLoan(Loan loan) {
+        Random random = new Random();
+        // 输入最小额可以
+        input.clear();
+        input.sendKeys(String.valueOf(loan.getMinAmount()));
+        assertThat(button.isEnabled())
+                .isTrue();
+        // 输入最大额 可以
+        input.clear();
+        input.sendKeys(String.valueOf(loan.getAmountInteger()));
+        assertThat(button.isEnabled())
+                .isTrue();
+        // 中间额可以
+        input.clear();
+
+        input.sendKeys(String.valueOf(loan.getMinAmount() + random.nextInt(loan.getAmountInteger() - loan.getMinAmount())));
+        assertThat(button.isEnabled())
+                .isTrue();
+        // 比最早的小 不可以
+        input.clear();
+        input.sendKeys(String.valueOf(loan.getMinAmount() - 1));
+        assertThat(button.isEnabled())
+                .isFalse();
+        // 比最大的大不可以
+        input.clear();
+        input.sendKeys(String.valueOf(loan.getAmountInteger() + 1));
+        assertThat(button.isEnabled())
+                .isFalse();
+
+        //
         assertThat(limitSpan.isDisplayed())
                 .isTrue();
         assertThat(limitSpan.getText())
