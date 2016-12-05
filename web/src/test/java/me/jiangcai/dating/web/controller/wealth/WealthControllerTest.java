@@ -48,6 +48,12 @@ public class WealthControllerTest extends LoginWebTest {
     @Autowired
     private ResourceService resourceService;
 
+    /**
+     * 需要关注的数据是
+     * 年龄,个人年收入,家庭年收入,有无房产
+     *
+     * @throws IOException
+     */
     @Test
     public void projectLoan() throws IOException {
         MyPage myPage = myPage();
@@ -68,9 +74,9 @@ public class WealthControllerTest extends LoginWebTest {
 //        page.checkAgreement();
         page.assertLoan(loan, wealthService.nextProjectLoanTerm());
         // 随机从50000-max
-        int amount = 50000 + random.nextInt((loan.getAmountInteger() - 50000));
-        String term = loan.getTerm()[random.nextInt(loan.getTerm().length)];
-        LoanSubmitPage submitPage = page.loan(amount, term);
+        int amount = 1 + random.nextInt((loan.getAmountInteger()));
+//        String term = loan.getTerm()[random.nextInt(loan.getTerm().length)];
+        LoanSubmitPage submitPage = page.loan(amount, null);
 
         //填入姓名,身份证号码, 随便弄一个地址
         String name = RandomStringUtils.randomAscii(2 + random.nextInt(3));
@@ -85,7 +91,15 @@ public class WealthControllerTest extends LoginWebTest {
             city = province.getCityList().stream().max(new RandomComparator()).orElseThrow(IllegalStateException::new);
         }
 
-        LoanIDPage idPage = submitPage.submit(name, number, province.getName(), city.getName());
+        int age = 18 + random.nextInt(40);
+        boolean hasHouse = random.nextBoolean();
+        int familyIncome = 1 + random.nextInt(100);
+        int personalIncome = 1 + random.nextInt(100);
+
+        // 年龄,个人年收入,家庭年收入,有无房产
+        // 原数据也需要保留
+        LoanIDPage idPage = submitPage.submit(name, number, province.getName(), city.getName(), hasHouse, age
+                , familyIncome, personalIncome);
 
         BindingCardPage bindingCardPage = idPage.next(randomImageResourcePath(), randomImageResourcePath());
 //        bindingCardPage.printThisPage();

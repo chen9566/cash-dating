@@ -145,7 +145,8 @@ public class LoanAmountPage extends AbstractPage {
      * @return 详情提交页面
      */
     public LoanSubmitPage loan(int amount, String term) {
-        inputSelect(webDriver.findElement(By.tagName("form")), period.getAttribute("name"), term);
+        if (term != null)
+            inputSelect(webDriver.findElement(By.tagName("form")), period.getAttribute("name"), term);
         input.clear();
         input.sendKeys("" + amount);
         button.click();

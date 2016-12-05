@@ -14,7 +14,9 @@ $(function () {
         moreRegion.slideDown();
     });
 
-    $('#loanForm').validate({
+    var loanForm = $('#loanForm');
+    var button = $('[type=submit]', loanForm);
+    loanForm.validate({
         messages: {
             name: {
                 required: '姓名必须输入',
@@ -28,7 +30,32 @@ $(function () {
         errorPlacement: function (error, element) {
             $.alert(error.text());
         }
+        // ,
+        // success:function (what) {
+        //     console.log('success',arguments);
+        // }
+        // showErrors: function (errorMap, errorList) {
+        //     console.log(errorMap, errorList);
+        // }
     });
+    var inputs = $('input', loanForm);
+
+    function inputChanges() {
+        if (loanForm.valid()) {
+            button.removeAttr('disabled');
+            button.removeClass('black');
+            button.addClass('redremove');
+        } else {
+            button.attr('disabled', 'disabled');
+            button.addClass('black');
+            button.removeClass('redremove');
+        }
+    }
+
+    inputs.change(inputChanges);
+    inputs.blur(inputChanges);
+    inputs.keyup(inputChanges);
+
 
     var provinceSelector = $('.province-selector');
     var citySelector = $('.city-selector');

@@ -38,8 +38,14 @@ public class LoanSubmitPage extends AbstractPage {
                 .isEqualTo("基本信息");
     }
 
-    public LoanIDPage submit(String name, String number, String provinceName, String cityName) {
+    public LoanIDPage submit(String name, String number, String provinceName, String cityName, boolean hasHouse
+            , int age, int familyIncome, int personalIncome) {
 
+
+        inputSelect(loanForm, "hasHouse", hasHouse ? "有" : "无");
+        inputText(loanForm, "age", String.valueOf(age));
+        inputText(loanForm, "familyIncome", String.valueOf(familyIncome));
+        inputText(loanForm, "personalIncome", String.valueOf(personalIncome));
 
         // 这些字段目前都没有保存
         homeAddress.clear();

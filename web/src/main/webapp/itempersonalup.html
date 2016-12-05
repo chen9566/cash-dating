@@ -54,12 +54,14 @@
         </li>
         <li class="bo-b f-per"><label>单位名称</label><input name="employer" type="text" placeholder="请输入单位名称" required>
         </li>
-        <li class="bo-b f-per"><label>个人年收入</label><input type="text" placeholder="请输入个人年收入"
-                                                          required></li>
-        <li class="bo-b f-per"><label>家庭年收入</label><input type="text" placeholder="请输入家庭年收入"
-                                                          required></li>
-        <li class="bo-b f-per"><label>年 龄</label><input type="text" placeholder="请输入您的年龄"
-                                                        required></li>
+        <li class="bo-b f-per"><label>个人年收入</label><input name="personalIncome" type="text" placeholder="请输入个人年收入"
+                                                          required number="true">万元
+        </li>
+        <li class="bo-b f-per"><label>家庭年收入</label><input name="familyIncome" type="text" placeholder="请输入家庭年收入"
+                                                          required number="true">万元
+        </li>
+        <li class="bo-b f-per"><label>年 龄</label><input name="age" type="text" placeholder="请输入您的年龄"
+                                                        required number="true"></li>
         <li class="f-per bo-b c33"><label>用 途</label>网店经营</li>
 
     </ul>
@@ -114,9 +116,9 @@
         </select>
             <div class="right-pos">自有房产</div>
             <img src="images/blackright-r.png" class="right-img"></li>
-        <li class="bo-b"><select name="">
-            <option>有</option>
-            <option>无</option>
+        <li class="bo-b"><select name="hasHouse">
+            <option value="true">有</option>
+            <option value="false">无</option>
         </select>
             <div class="right-pos">自有车辆</div>
             <img src="images/blackright-r.png" class="right-img"></li>
@@ -134,8 +136,8 @@
             <img src="images/blackright-r.png" class="right-img"></li>
     </ul>
     <p class="up-btn">
-        <a type="submit" id="submitButton" class="black" href="id.html">下一步
-        </a><!--表单没提交时按钮灰不可点 红色样式class="redremove"-->
+        <input type="submit" id="submitButton" class="black" value="下一步"/>
+        <!--表单没提交时按钮灰不可点 红色样式class="redremove"-->
     </p>
 </form>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
