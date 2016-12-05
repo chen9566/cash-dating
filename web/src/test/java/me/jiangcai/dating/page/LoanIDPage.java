@@ -27,7 +27,7 @@ public class LoanIDPage extends AbstractPage {
                 .isEqualTo("上传身份证照片");
     }
 
-    public BindingCardPage next(String backId, String frontId) {
+    public LoanHandIDPage next(String backId, String frontId) {
         setElementAttributeValue(webDriver.findElement(By.cssSelector("#fm img")), "path", backId);
         setElementAttributeValue(webDriver.findElement(By.cssSelector("#zm img")), "path", frontId);
         webDriver.findElements(By.tagName("a")).stream()
@@ -35,7 +35,7 @@ public class LoanIDPage extends AbstractPage {
                 .filter(webElement -> webElement.getText().equals("下一步"))
                 .findFirst()
                 .ifPresent(WebElement::click);
-        return initPage(BindingCardPage.class);
+        return initPage(LoanHandIDPage.class);
     }
 
     private void setElementAttributeValue(WebElement element, String attributeName, String value) {
