@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
+    <script src="dist/js/share.js"></script>
+    <script src="http://cdn.kuanyes.com/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+    <script src="https://blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload.js"></script>
 </head>
 <body>
 <div class="insurance mb-b">
@@ -17,18 +20,75 @@
            th:attr="data-url=@{/uploadResource}"
            data-url="mock/image_upload.json" accept="image/*"/>
 
-    <p class="id"><img src="images/hangidbg.png"></p>
+    <p class="id" id="hand"><img src="images/hangidbg.png"></p>
     <p class="f13">注：请不要带眼镜，在光线充足的环境下平视摄像
         头，保持合适的距离，确保照片中面部及身份证清
         晰可见且无修图！</p>
 
 </div>
-
-<p class="p-15">
-    <button type="submit" name="submit" class="btn btn-danger btn-lg btn-block clickHref" href="personalok.html"
-            th:href="@{/withdrawList}">下一步
-    </button>
+<p class="up-btn">
+    <a type="submit" id="submitButton" name="submit" class="black btn btn-block btn-default"
+       href="personalok.html?a=b" th:href="@{/submithandid(id=${loanRequest.id})}">下一步</a>
 </p>
+<script>
+    $(function () {
+        var submitButton = $('#submitButton');
+        var hand = $('#hand');
+
+        /**
+         * 检查是否已完成上传
+         * return: true 表示已完成
+         */
+        function checkUploaded() {
+            return $('img', hand).attr('path');
+        }
+
+        $('a', $('.up-btn')).click(function () {
+            var backPath = $('img', hand).attr('path');
+            if (!backPath) {
+                alert('请先上传身份证');
+                return false;
+            }
+            $(this).attr('href', $(this).attr('href') + '&path=' + backPath);
+            return true;
+        });
+
+        var uploader = $("#fileupload");
+
+        function work() {
+            var newOne = uploader.clone();
+            newOne.removeAttr('id');
+            uploader.before(newOne);
+            var me = this;
+
+            newOne.fileupload({
+                add: function (e, data) {
+                    data.submit()
+                            .success(function (data) {
+                                $('img', me).attr('src', data.url);
+                                $('img', me).attr('path', data.path);
+                                if (checkUploaded()) {
+//                                    submitButton.removeAttr('disabled');
+                                    submitButton.removeClass('black');
+                                    submitButton.addClass('redremove');
+                                } else {
+//                                    submitButton.attr('disabled', 'disabled');
+                                    submitButton.addClass('black');
+                                    submitButton.removeClass('redremove');
+                                }
+                            })
+                            .error(function (j) {
+                                alert(j.responseText);
+//                            uploader.fileupload('destroy');
+                            });
+                }
+            });
+            newOne.click();
+        }
+
+        hand.click(work);
+    });
+</script>
 
 </body>
 </html>

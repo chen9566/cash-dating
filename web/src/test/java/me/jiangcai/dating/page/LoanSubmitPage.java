@@ -25,7 +25,7 @@ public class LoanSubmitPage extends AbstractPage {
     private WebElement loanForm;
     private WebElement homeAddress;
     private WebElement employer;
-    private WebElement profitMonthly;
+    //    private WebElement profitMonthly;
     private WebElement propose;
 
     public LoanSubmitPage(WebDriver webDriver) {
@@ -52,10 +52,10 @@ public class LoanSubmitPage extends AbstractPage {
         homeAddress.sendKeys(UUID.randomUUID().toString());
         employer.clear();
         employer.sendKeys(UUID.randomUUID().toString());
-        profitMonthly.clear();
-        profitMonthly.sendKeys(UUID.randomUUID().toString());
-        propose.clear();
-        propose.sendKeys(UUID.randomUUID().toString());
+//        profitMonthly.clear();
+//        profitMonthly.sendKeys(UUID.randomUUID().toString());
+//        propose.clear();
+//        propose.sendKeys(UUID.randomUUID().toString());
 
 
         fillCommonForm(name, number, provinceName, cityName);

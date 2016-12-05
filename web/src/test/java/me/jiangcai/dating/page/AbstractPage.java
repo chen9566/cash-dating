@@ -1,5 +1,6 @@
 package me.jiangcai.dating.page;
 
+import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlImage;
 import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.CashOrder;
@@ -126,5 +127,16 @@ public abstract class AbstractPage extends me.jiangcai.lib.test.page.AbstractPag
 
     private WebTest getWebTest() {
         return (WebTest) (getTestInstance());
+    }
+
+    protected void setElementAttributeValue(WebElement element, String attributeName, String value) {
+        try {
+            Field field = HtmlUnitWebElement.class.getDeclaredField("element");
+            field.setAccessible(true);
+            HtmlElement htmlHiddenInput = (HtmlElement) field.get(element);
+            htmlHiddenInput.setAttribute(attributeName, value);
+        } catch (Exception ex) {
+            throw new IllegalStateException(ex);
+        }
     }
 }

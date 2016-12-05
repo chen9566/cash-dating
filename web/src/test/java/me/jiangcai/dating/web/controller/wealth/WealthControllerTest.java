@@ -7,10 +7,10 @@ import me.jiangcai.dating.entity.LoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.ProjectLoan;
-import me.jiangcai.dating.page.BindingCardPage;
 import me.jiangcai.dating.page.FinancingPage;
 import me.jiangcai.dating.page.LoanAmountPage;
 import me.jiangcai.dating.page.LoanCompletedPage;
+import me.jiangcai.dating.page.LoanHandIDPage;
 import me.jiangcai.dating.page.LoanIDPage;
 import me.jiangcai.dating.page.LoanPage;
 import me.jiangcai.dating.page.LoanSubmitPage;
@@ -101,12 +101,9 @@ public class WealthControllerTest extends LoginWebTest {
         LoanIDPage idPage = submitPage.submit(name, number, province.getName(), city.getName(), hasHouse, age
                 , familyIncome, personalIncome);
 
-        BindingCardPage bindingCardPage = idPage.next(randomImageResourcePath(), randomImageResourcePath());
-//        bindingCardPage.printThisPage();
-        bindingCardPage.submitWithRandomAll();
+        LoanHandIDPage handIDPage = idPage.next(randomImageResourcePath(), randomImageResourcePath());
 
-//        LoanCompletedPage completedPage = submitPage.submit(name, number, province.getName(), city.getName());
-        LoanCompletedPage completedPage = initPage(LoanCompletedPage.class);
+        LoanCompletedPage completedPage = handIDPage.next(randomImageResourcePath());
 
         completedPage.doBack();
 

@@ -1,12 +1,8 @@
 package me.jiangcai.dating.page;
 
-import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.htmlunit.HtmlUnitWebElement;
-
-import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,14 +34,4 @@ public class LoanIDPage extends AbstractPage {
         return initPage(LoanHandIDPage.class);
     }
 
-    private void setElementAttributeValue(WebElement element, String attributeName, String value) {
-        try {
-            Field field = HtmlUnitWebElement.class.getDeclaredField("element");
-            field.setAccessible(true);
-            HtmlElement htmlHiddenInput = (HtmlElement) field.get(element);
-            htmlHiddenInput.setAttribute(attributeName, value);
-        } catch (Exception ex) {
-            throw new IllegalStateException(ex);
-        }
-    }
 }
