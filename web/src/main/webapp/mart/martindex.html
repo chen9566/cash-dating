@@ -551,7 +551,7 @@
     </div>
 <div class="am-show ">
     <div class="back-c">
-        <ul class="topay">
+        <ul class="photop">
             <a href="photolist.html"><img src="images/showimg.png"/></a>
         </ul>
     </div>
@@ -567,6 +567,20 @@
             $("body").append('<div class="showbg"></div>');
             $(".showbg").addClass("showbg-active");
         }
+        $(".showbg-active,.delete_btn").click(function(){
+            $(".am-show").removeClass("am-modal-active");
+            setTimeout(function(){
+                $(".showbg-active").removeClass("showbg-active");
+                $(".showbg").remove();
+            },300);
+        })
+        $(".showbg-active,.close-btn").click(function(){
+            $(".am-show").removeClass("am-modal-active");
+            setTimeout(function(){
+                $(".showbg-active").removeClass("showbg-active");
+                $(".showbg").remove();
+            },300);
+        })
         return false;
     }
 </script>
