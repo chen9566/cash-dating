@@ -43,6 +43,10 @@ if [[ ! -e $1/jquery-3.1.1.min.js ]]; then
     wget http://code.jquery.com/jquery-3.1.1.min.js -O $1/jquery-3.1.1.min.js
 fi
 
+if [[ ! -e $1/jquery.fileupload.js ]]; then
+    wget https://blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload.js -O $1/jquery.fileupload.js
+fi
+
 #if [[ ! -e $1/jquery-ui.css ]]; then
 #    wget http://code.jquery.com/ui/1.12.1/themes/eggplant/jquery-ui.css -O $1/jquery-ui.css
 #fi

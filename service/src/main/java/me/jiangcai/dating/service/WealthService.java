@@ -7,6 +7,7 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
+import me.jiangcai.dating.model.trj.ProjectLoan;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,12 +39,35 @@ public interface WealthService {
      *
      * @param openId         借款者
      * @param loan           相关产品
+     * @param userDataId     {@link me.jiangcai.dating.entity.UserLoanData#id}如果提供了则其他数据都无需提供
+     * @param amount         金额
+     * @param name           真实姓名
+     * @param number         身份证号码
+     * @param address        地址
+     * @param homeAddress    家庭住址
+     * @param employer       工作单位
+     * @param personalIncome 个人年收入（万）
+     * @param familyIncome   家庭年收入(万)
+     * @param age            年龄
+     * @return 新建的申请
+     */
+    @Transactional
+    LoanRequest loanRequest(String openId, ProjectLoan loan, Long userDataId, BigDecimal amount, String name
+            , String number, Address address, String homeAddress, String employer, int personalIncome, int familyIncome
+            , int age);
+
+    /**
+     * 借款申请,仅仅是开始一个申请
+     *
+     * @param openId         借款者
+     * @param loan           相关产品
      * @param amount         金额
      * @param period         周期（月）
      * @param userLoanDataId {@link me.jiangcai.dating.entity.UserLoanData#id}如果提供了则其他数据都无需提供
      * @param name           真实姓名
      * @param number         身份证号码
-     * @param address        地址    @throws IOException
+     * @param address        地址
+     * @throws IOException
      */
     @Transactional
     LoanRequest loanRequest(String openId, Loan loan, BigDecimal amount, int period, Long userLoanDataId, String name
@@ -86,13 +110,13 @@ public interface WealthService {
 
     /**
      * 更新借款申请的身份证复印件信息
-     *
-     * @param loanRequestId       借款id
+     *  @param loanRequestId       借款id
      * @param backIdResourcePath  如不存在,请无视
      * @param frontIdResourcePath 如不存在,请无视
+     * @param handResourcePath
      */
     @Transactional
-    void updateLoanIDImages(long loanRequestId, String backIdResourcePath, String frontIdResourcePath);
+    void updateLoanIDImages(long loanRequestId, String backIdResourcePath, String frontIdResourcePath, String handResourcePath);
 
     /**
      * 更新借款申请的卡号信息
@@ -107,6 +131,7 @@ public interface WealthService {
      * @return 下一个项目贷款期限周期, 单位:天
      */
     int nextProjectLoanTerm();
+
 //
 //    /**
 //     * @return 总投资金额

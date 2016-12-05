@@ -7,6 +7,7 @@ import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.ProjectLoan;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
+import me.jiangcai.dating.repository.LoanRequestRepository;
 import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.TourongjiaService;
@@ -48,6 +49,9 @@ public class WealthController {
     ///////////理财
     @Autowired
     private SystemService systemService;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private LoanRequestRepository loanRequestRepository;
 
     @RequestMapping(method = RequestMethod.GET, value = "/financing")
     public String financing(@AuthenticationPrincipal User user, Model model) throws IOException {
@@ -128,6 +132,28 @@ public class WealthController {
         return "personalup.html";
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/loanProjectSubmit")
+    public String loanProjectSubmit(@AuthenticationPrincipal User user, String id, BigDecimal amount, String name
+            , String number
+            , @RequestParam("province") String provinceCode, @RequestParam("city") String cityCode
+            , String homeAddress, String employer
+            , int personalIncome, int familyIncome, int age
+            , Model model) throws IOException {
+
+        Address address = new Address();
+        address.setProvince(PayResourceService.provinceById(provinceCode));
+        address.setCity(PayResourceService.cityById(cityCode));
+
+        final Loan loan = loanInstance(id);
+        assert loan instanceof ProjectLoan;
+        ProjectLoan projectLoan = (ProjectLoan) loan;
+        LoanRequest loanRequest = wealthService.loanRequest(user.getOpenId(), projectLoan, null, amount
+                , name, number, address, homeAddress, employer, personalIncome, familyIncome, age);
+
+        model.addAttribute("loanRequest", loanRequest);
+        return "id.html";
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/loanSubmit")
     public String loanSubmit(@AuthenticationPrincipal User user, String id, BigDecimal amount, int period, String name
             , String number
@@ -141,19 +167,25 @@ public class WealthController {
         final Loan loan = loanInstance(id);
         LoanRequest loanRequest = wealthService.loanRequest(user.getOpenId(), loan, amount, period, null
                 , name, number, address);
-        if (loan instanceof ProjectLoan) {
-            model.addAttribute("loanRequest", loanRequest);
-            return "id.html";
-        }
+        assert !(loan instanceof ProjectLoan);
         wealthService.submitLoanRequest(loanRequest.getId());
         return "redirect:/loanComplete";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/loanID")
-    public String loanID(long loanRequestId, String backId, String frontId) {
+    @RequestMapping(method = RequestMethod.GET, value = "/loanID2")
+    public String loanID(long loanRequestId, String path) {
         // 这个时候应该去身份证那边
-        wealthService.updateLoanIDImages(loanRequestId, backId, frontId);
-        return "redirect:/card?nextAction=/loanCard/" + loanRequestId + "&workModel=loan";
+        wealthService.updateLoanIDImages(loanRequestId, null, null, path);
+        return "personalok.html";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/loanID")
+    public String loanID(long loanRequestId, String backId, String frontId, Model model) {
+        // 这个时候应该去身份证那边
+        wealthService.updateLoanIDImages(loanRequestId, backId, frontId, null);
+        model.addAttribute("loanRequest", loanRequestRepository.getOne(loanRequestId));
+//        return "redirect:/card?nextAction=/loanCard/" + loanRequestId + "&workModel=loan";
+        return "handid.html";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/loanCard/{loanRequestId}")

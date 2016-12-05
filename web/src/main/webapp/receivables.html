@@ -90,6 +90,11 @@
 </script>
 <script type="text/javascript">
     function toshow() {
+        if (true) {
+            // 在开发优先级上较低,暂时无视相关内容 ???
+            // 看汉字
+            return true;
+        }
         $(".am-show").addClass("am-modal-active");
         if ($(".showebg").length > 0) {
             $(".showbg").addClass("showbg-active");
