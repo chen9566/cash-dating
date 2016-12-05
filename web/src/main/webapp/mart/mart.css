@@ -913,8 +913,47 @@ div.screening > ul > li {
     opacity: 1;
     display: block;
 }
-.topay{ z-index: 99;}
-.topay img{ width: 220px}
+.photop{ z-index: 99;}
+.photop img{ width: 220px}
+.topay {
+    background: #fff;
+    border-bottom: 1px solid #dfdfdf;
+    overflow: hidden;
+}
+
+.topay h1 {
+    border-bottom: 1px solid #dfdfdf;
+    text-align: center;
+    margin: 0;
+    line-height: 50px;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.topay li {
+    overflow: hidden;
+    margin: 0 15px;
+    color: #353535;
+    line-height: 44px;
+    text-align: left
+}
+
+.topay li img {
+    width: 26px;
+    margin-right: 5px;
+}
+
+.topay .bo-b {
+    border-bottom: 1px solid #dfdfdf;
+}
+.topay a{ display: block; text-decoration: none; color: #353535}
+.big15 {
+    display: block;
+}
+
+.big15 img {
+    width: 15px !important;
+}
 .photo{}
 .photo ul{}
 .photo li{ position: relative; float: left; margin:4px;}
