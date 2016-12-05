@@ -534,7 +534,7 @@ div.screening > ul > li {
     border-radius: 60px;
     position: relative;
     top: -22px;
-    left: 0px;
+    left: 0;
     background: url(home_icon.png) no-repeat center center;
     background-size: 100% 100%;
 }
@@ -1366,7 +1366,7 @@ ul#navlist .list1 {
     line-height: 16px
 }
 
-.my-activity li t {
+.my-activity li .t {
     color: #888;
     font-size: 12px;
 }
@@ -1708,7 +1708,6 @@ ul#navlist .list1 {
     border-bottom: 1px solid #dfdfdf;
     overflow: hidden;
     line-height: 65px;
-    overflow: hidden;
     height: 65px;
 }
 
@@ -1745,7 +1744,7 @@ ul#navlist .list1 {
     line-height: 30px;
 }
 
-.payment .pay-m .t3 t {
+.payment .pay-m .t3 .t {
     color: #888;
     padding-left: 12px;
 }
@@ -2065,15 +2064,17 @@ ul#navlist .list1 {
 
 .chk_1 {
     display: none;
+
 }
 
 .chk_1 + label {
     background-color: #FFF;
     border: 1px solid #dfdfdf;
-    padding: 9px;
+    padding: 11px;
     border-radius: 2px;
     display: inline-block;
     position: relative;
+    margin-top: -2px;
 
 }
 
@@ -2099,10 +2100,10 @@ ul#navlist .list1 {
     width: 100%;
     text-align: center;
     font-size: 1.2em;
-    padding: 1px 0 0 0;
+    padding: 2px 0 0 0;
     vertical-align: text-top;
     background: url(ok-icon.png) no-repeat;
-    background-size: 12px
+    background-size: 16px
 }
 
 .sleHid {
@@ -2469,20 +2470,20 @@ ul#navlist .list1 {
 }
 
 .black {
-    background: #ddd;
+    background: #cfcfcf;
     border-radius: 6px;
     width: 100%;
     line-height: 42px;
     height: 42px;
     text-align: center;
     font-size: 18px;
-    color: #b3b3b3 !important;
+    color: #959595 !important;
     text-decoration: none;
 }
 
 .black a {
     display: block;
-    color: #b3b3b3 ;
+    color: #b3b3b3;
 }
 
 .red {
@@ -3109,7 +3110,8 @@ ul#navlist .list1 {
 .mydata {
     padding: 0 0 0 15px;
     background: #fff;
-    border-bottom: 1px solid #dfdfdf
+    border-bottom: 1px solid #dfdfdf;
+    border-top: 1px solid #dfdfdf
 }
 
 .mydata ul {
@@ -3168,7 +3170,7 @@ ul#navlist .list1 {
 
 .mydata .red-m {
     color: #F65150;
-    font-size: 18px;
+    font-size: 17px;
 }
 
 .mydata a {
@@ -3198,7 +3200,7 @@ ul#navlist .list1 {
 
 .pay-ewm h1 {
     font-size: 19px;
-    margin-top: 0px
+    margin-top: 0;
 }
 
 .pay-ewm .ewm-b {
@@ -3731,8 +3733,13 @@ ul#navlist .list1 {
 .over .o4 img {
     width: 125px
 }
-.over .o5{color: #ff0000;
-    font-size: 14px; padding: 0 3px;}
+
+.over .o5 {
+    color: #ff0000;
+    font-size: 14px;
+    padding: 0 3px;
+}
+
 .myorder {
     background: #fff;
 }
@@ -3952,7 +3959,10 @@ ul#navlist .list1 {
     margin-bottom: 70px;
     overflow: hidden
 }
-
+.mb110 {
+    margin-bottom: 110px;
+    overflow: hidden
+}
 .products {
     margin-top: 15px;
     background: #fff;
@@ -4291,12 +4301,13 @@ ul#navlist .list1 {
 }
 
 .check-pos {
-    top: -10px;
-    float: right;
-    width: 92%;
-    text-align: left
-}
 
+    float: right;
+    width: 90%;
+    text-align: left;
+    line-height: 20px;
+}
+.check-pos a{ color: #007AFF; text-decoration: none}
 .ks {
 }
 
@@ -4562,7 +4573,13 @@ ul#navlist .list1 {
     height: 80px;
     margin-bottom: 15px
 }
-.insurance .f13{ color: #888; font-size: 13px; padding-bottom: 30px}
+
+.insurance .f13 {
+    color: #888;
+    font-size: 13px;
+    padding-bottom: 30px
+}
+
 ul#navlist {
     font: 14px verdana;
     padding-bottom: 13px;
@@ -5086,6 +5103,7 @@ ul#navlist .list1 {
 
 .hot .f19 {
     font-size: 19px;
+    text-align: left;
 }
 
 .hot .f19 img {
@@ -5118,7 +5136,7 @@ ul#navlist .list1 {
 }
 
 .hot .tag {
-    width:184px;
+    width: 184px;
     overflow: hidden;
     display: block;
     text-align: center;
@@ -5136,6 +5154,32 @@ ul#navlist .list1 {
     border-radius: 10px;
     border: 1px solid #c3c3c3;
 }
-.hot .k{ padding: 0 20px}
-.picc{padding: 25px 15px;}
-.picc img{ width: 100%}
+
+.hot .k {
+    padding: 0 20px
+}
+
+.picc {
+    padding: 25px 15px;
+}
+
+.picc img {
+    width: 100%
+}
+
+.success {
+    background: url("succenbg.png") no-repeat;
+    background-size: 100%;
+    text-align: center;
+    padding: 15px 0;
+    color:#888;
+    margin-bottom: 15px;
+}
+
+.success img {
+    width: 27px; margin-top: -4px; margin-right: 10px;
+}
+.success .f17{color:#02BB00; font-size: 17px;}
+.agreelist{ padding: 15px;}
+.agreelist .f13{ font-size: 13px; color: #888; margin-bottom:15px}
+.agreefix{ padding: 15px 0; width: 100%; position: fixed; z-index: 99; bottom: 0; background: #f3f3f3; border-top: 1px solid #dfdfdf}
