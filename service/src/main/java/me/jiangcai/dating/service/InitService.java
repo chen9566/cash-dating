@@ -4,6 +4,7 @@ import me.jiangcai.dating.Version;
 import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.UserLoanData;
 import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.lib.jdbc.ConnectionConsumer;
 import me.jiangcai.lib.jdbc.ConnectionProvider;
@@ -60,6 +61,26 @@ public class InitService {
             @Override
             public void upgradeToVersion(Version version) throws Exception {
                 switch (version) {
+                    case v108001:
+//                        jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {
+//                            @Override
+//                            public void accept(ConnectionProvider connection) throws SQLException {
+//                                try (Statement statement = connection.getConnection().createStatement()) {
+//                                    statement.execute("ALTER TABLE loanRequest ADD DTYPE VARCHAR(31) NOT NULL DEFAULT 'LoanRequest';");
+//                                    // CashOrder
+////                                    statement.executeUpdate("UPDATE cashorder SET DTYPE='CashOrder'");
+//                                }
+//                            }
+//                        });
+                        jdbcService.tableAlterAddColumn(UserLoanData.class, "backIdResource", null);
+                        jdbcService.tableAlterAddColumn(UserLoanData.class, "frontIdResource", null);
+                        jdbcService.tableAlterAddColumn(UserLoanData.class, "handIdResource", null);
+                        jdbcService.tableAlterAddColumn(UserLoanData.class, "homeAddress", null);
+//                        jdbcService.tableAlterAddColumn(UserLoanData.class, "employer", null);
+//                        jdbcService.tableAlterAddColumn(UserLoanData.class, "personalIncome", "0");
+//                        jdbcService.tableAlterAddColumn(UserLoanData.class, "familyIncome", "0");
+//                        jdbcService.tableAlterAddColumn(UserLoanData.class, "age", "0");
+                        break;
                     case v105001:
                         jdbcService.tableAlterAddColumn(UserOrder.class, "systemComment", null);
                         break;

@@ -2,6 +2,7 @@ package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.Locker;
 import me.jiangcai.dating.entity.LoanRequest;
+import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserLoanData;
 import me.jiangcai.dating.entity.support.Address;
@@ -13,11 +14,14 @@ import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 import me.jiangcai.dating.repository.CardRepository;
 import me.jiangcai.dating.repository.LoanRequestRepository;
 import me.jiangcai.dating.service.CashStrings;
+import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.TourongjiaService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.service.WealthService;
 import me.jiangcai.gaa.model.District;
 import me.jiangcai.gaa.sdk.repository.DistrictRepository;
+import me.jiangcai.lib.resource.Resource;
+import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +65,10 @@ public class WealthServiceImpl implements WealthService {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private CardRepository cardRepository;
+    @Autowired
+    private SystemService systemService;
+    @Autowired
+    private ResourceService resourceService;
 
     @Override
     public boolean moreFinancingSupport() {
@@ -95,7 +103,12 @@ public class WealthServiceImpl implements WealthService {
         UserLoanData userLoanData = updateUserLoanData(userDataId, openId, name, number, address, homeAddress, employer
                 , personalIncome, familyIncome, age);
 
-        LoanRequest request = new LoanRequest();
+        ProjectLoanRequest request = new ProjectLoanRequest();
+        request.setApplyAmount(amount);
+        request.setApplyTermDays(nextProjectLoanTerm());
+        request.setApplyCreditLimitYears(systemService.getProjectLoanCreditLimit());
+        request.setTermDays(request.getApplyTermDays());
+        request.setCreditLimitYears(request.getApplyCreditLimitYears());
         saveLoadRequest(loan, amount, 0, userLoanData, request);
         return loanRequestRepository.save(request);
     }
@@ -144,6 +157,12 @@ public class WealthServiceImpl implements WealthService {
             userLoanData.setNumber(number);
             userLoanData.setOwner(user);
             userLoanData.setCreatedTime(LocalDateTime.now());
+
+            userLoanData.setHomeAddress(homeAddress);
+            userLoanData.setEmployer(employer);
+            userLoanData.setPersonalIncome(personalIncome);
+            userLoanData.setFamilyIncome(familyIncome);
+            userLoanData.setAge(age);
             if (user.getUserLoanDataList() == null) {
                 user.setUserLoanDataList(new HashSet<>());
             }
@@ -215,13 +234,31 @@ public class WealthServiceImpl implements WealthService {
     }
 
     @Override
-    public void updateLoanIDImages(long loanRequestId, String backIdResourcePath, String frontIdResourcePath, String handResourcePath) {
+    public void updateLoanIDImages(long loanRequestId, String backIdResourcePath, String frontIdResourcePath
+            , String handResourcePath) {
+        // 从原资源体系删除
+        LoanRequest loanRequest = loanRequestRepository.getOne(loanRequestId);
+        if (backIdResourcePath != null) {
+            loanRequest.getLoanData().setBackIdResource(fromTmp(backIdResourcePath));
+        }
+        if (backIdResourcePath != null) {
+            loanRequest.getLoanData().setFrontIdResource(fromTmp(frontIdResourcePath));
+        }
+        if (backIdResourcePath != null) {
+            loanRequest.getLoanData().setHandIdResource(fromTmp(handResourcePath));
+        }
+    }
 
+    private String fromTmp(String resourcePath) {
+        //名字就不改了
+        Resource resource = resourceService.getResource(resourcePath);
+        log.info(resource.getFilename());
+        return resourcePath;
     }
 
     @Override
     public void updateLoanCard(long loanRequestId, long cardId) {
-        cardRepository.delete(cardId);
+//        cardRepository.delete(cardId);
     }
 
     @Override

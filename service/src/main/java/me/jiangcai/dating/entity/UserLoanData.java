@@ -47,5 +47,21 @@ public class UserLoanData {
     @Column(columnDefinition = "datetime")
     private LocalDateTime lastUseTime;
 
+    // 1.8.0 新增
+    @Column(length = 100)
+    private String homeAddress;
+    @Column(length = 100)
+    private String employer;
+    private int personalIncome;
+    private int familyIncome;
+    private int age;
+    @Column(length = 100)
+    private String backIdResource;
+    @Column(length = 100)
+    private String frontIdResource;
+    @Column(length = 100)
+    private String handIdResource;
+
+
 
 }

@@ -4,6 +4,7 @@ import me.jiangcai.chanpay.model.City;
 import me.jiangcai.chanpay.model.Province;
 import me.jiangcai.dating.LoginWebTest;
 import me.jiangcai.dating.entity.LoanRequest;
+import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.LoanRequestStatus;
 import me.jiangcai.dating.model.trj.Loan;
@@ -112,6 +113,31 @@ public class WealthControllerTest extends LoginWebTest {
         assertThat(requestList)
                 .isNotEmpty();
         LoanRequest request = requestList.get(0);
+        // 项目贷款
+        assertThat(request)
+                .isInstanceOf(ProjectLoanRequest.class);
+        ProjectLoanRequest projectLoanRequest = (ProjectLoanRequest) request;
+        assertThat(projectLoanRequest.getApplyAmount())
+                .isEqualByComparingTo(new BigDecimal(amount));
+        assertThat(projectLoanRequest.getApplyCreditLimitYears())
+                .isEqualTo(getSystemService().getProjectLoanCreditLimit());
+        assertThat(projectLoanRequest.getCreditLimitYears())
+                .isEqualTo(getSystemService().getProjectLoanCreditLimit());
+        assertThat(projectLoanRequest.getApplyTermDays())
+                .isEqualTo(wealthService.nextProjectLoanTerm());
+        assertThat(projectLoanRequest.getTermDays())
+                .isEqualTo(wealthService.nextProjectLoanTerm());
+        // 个人数据
+//        assertThat(projectLoanRequest.getLoanData().getHomeAddress())
+//                .isEqualTo();
+        // 家庭住址 和单位 未纳入测试体系
+        assertThat(projectLoanRequest.getLoanData().getPersonalIncome())
+                .isEqualTo(personalIncome);
+        assertThat(projectLoanRequest.getLoanData().getFamilyIncome())
+                .isEqualTo(familyIncome);
+        assertThat(projectLoanRequest.getLoanData().getAge())
+                .isEqualTo(age);
+        
         assertThat(request.getProcessStatus())
                 .isEqualByComparingTo(LoanRequestStatus.requested);
         assertThat(request.getLoanData().getOwner())
