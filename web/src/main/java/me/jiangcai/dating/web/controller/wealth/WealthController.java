@@ -173,9 +173,11 @@ public class WealthController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/loanID2")
+    @Transactional
     public String loanID(long loanRequestId, String path) {
         // 这个时候应该去身份证那边
         wealthService.updateLoanIDImages(loanRequestId, null, null, path);
+        wealthService.submitLoanRequest(loanRequestId);
         return "personalok.html";
     }
 

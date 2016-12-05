@@ -5,6 +5,7 @@ import me.jiangcai.chanpay.model.Province;
 import me.jiangcai.dating.LoginWebTest;
 import me.jiangcai.dating.entity.LoanRequest;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.support.LoanRequestStatus;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.ProjectLoan;
 import me.jiangcai.dating.page.FinancingPage;
@@ -111,6 +112,8 @@ public class WealthControllerTest extends LoginWebTest {
         assertThat(requestList)
                 .isNotEmpty();
         LoanRequest request = requestList.get(0);
+        assertThat(request.getProcessStatus())
+                .isEqualByComparingTo(LoanRequestStatus.requested);
         assertThat(request.getLoanData().getOwner())
                 .isEqualTo(currentUser());
         assertThat(request.getLoanData().getName())
@@ -125,8 +128,8 @@ public class WealthControllerTest extends LoginWebTest {
                 .isEqualByComparingTo(new BigDecimal(amount));
         assertThat(request.getProjectId())
                 .isEqualTo(loan.getProductId());
-        assertThat(request.getMonths())
-                .isGreaterThan(0);
+//        assertThat(request.getMonths())
+//                .isGreaterThan(0);
         // 管理员 登录 并且同意这个借款请求
         assertThat(request.getSupplierRequestId()).isNull();
     }
@@ -181,6 +184,8 @@ public class WealthControllerTest extends LoginWebTest {
         assertThat(requestList)
                 .isNotEmpty();
         LoanRequest request = requestList.get(0);
+        assertThat(request.getProcessStatus())
+                .isEqualByComparingTo(LoanRequestStatus.requested);
         assertThat(request.getLoanData().getOwner())
                 .isEqualTo(currentUser());
         assertThat(request.getLoanData().getName())

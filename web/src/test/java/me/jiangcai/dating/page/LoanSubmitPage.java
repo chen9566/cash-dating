@@ -4,8 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import java.util.UUID;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -40,18 +38,29 @@ public class LoanSubmitPage extends AbstractPage {
 
     public LoanIDPage submit(String name, String number, String provinceName, String cityName, boolean hasHouse
             , int age, int familyIncome, int personalIncome) {
-
-
+        long ctime = System.currentTimeMillis();
         inputSelect(loanForm, "hasHouse", hasHouse ? "有" : "无");
+        System.out.println("cost" + (System.currentTimeMillis() - ctime) + "ms");
+        ctime = System.currentTimeMillis();
         inputText(loanForm, "age", String.valueOf(age));
+        System.out.println("cost" + (System.currentTimeMillis() - ctime) + "ms");
+        ctime = System.currentTimeMillis();
         inputText(loanForm, "familyIncome", String.valueOf(familyIncome));
+        System.out.println("cost" + (System.currentTimeMillis() - ctime) + "ms");
+        ctime = System.currentTimeMillis();
         inputText(loanForm, "personalIncome", String.valueOf(personalIncome));
+        System.out.println("cost" + (System.currentTimeMillis() - ctime) + "ms");
+        ctime = System.currentTimeMillis();
 
         // 这些字段目前都没有保存
         homeAddress.clear();
-        homeAddress.sendKeys(UUID.randomUUID().toString());
+        homeAddress.sendKeys("Y");
+        System.out.println("cost" + (System.currentTimeMillis() - ctime) + "ms");
+        ctime = System.currentTimeMillis();
         employer.clear();
-        employer.sendKeys(UUID.randomUUID().toString());
+        employer.sendKeys("X");
+        System.out.println("cost" + (System.currentTimeMillis() - ctime) + "ms");
+        ctime = System.currentTimeMillis();
 //        profitMonthly.clear();
 //        profitMonthly.sendKeys(UUID.randomUUID().toString());
 //        propose.clear();
@@ -59,6 +68,8 @@ public class LoanSubmitPage extends AbstractPage {
 
 
         fillCommonForm(name, number, provinceName, cityName);
+        System.out.println("cost" + (System.currentTimeMillis() - ctime) + "ms");
+        ctime = System.currentTimeMillis();
         return initPage(LoanIDPage.class);
     }
 
