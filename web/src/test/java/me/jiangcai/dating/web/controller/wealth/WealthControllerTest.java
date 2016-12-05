@@ -127,6 +127,12 @@ public class WealthControllerTest extends LoginWebTest {
                 .isEqualTo(wealthService.nextProjectLoanTerm());
         assertThat(projectLoanRequest.getTermDays())
                 .isEqualTo(wealthService.nextProjectLoanTerm());
+        assertThat(resourceService.getResource(projectLoanRequest.getLoanData().getBackIdResource()).isReadable())
+                .isTrue();
+        assertThat(resourceService.getResource(projectLoanRequest.getLoanData().getFrontIdResource()).isReadable())
+                .isTrue();
+        assertThat(resourceService.getResource(projectLoanRequest.getLoanData().getHandIdResource()).isReadable())
+                .isTrue();
         // 个人数据
 //        assertThat(projectLoanRequest.getLoanData().getHomeAddress())
 //                .isEqualTo();

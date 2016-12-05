@@ -29,6 +29,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -235,25 +236,29 @@ public class WealthServiceImpl implements WealthService {
 
     @Override
     public void updateLoanIDImages(long loanRequestId, String backIdResourcePath, String frontIdResourcePath
-            , String handResourcePath) {
+            , String handResourcePath) throws IOException {
         // 从原资源体系删除
         LoanRequest loanRequest = loanRequestRepository.getOne(loanRequestId);
         if (backIdResourcePath != null) {
             loanRequest.getLoanData().setBackIdResource(fromTmp(backIdResourcePath));
         }
-        if (backIdResourcePath != null) {
+        if (frontIdResourcePath != null) {
             loanRequest.getLoanData().setFrontIdResource(fromTmp(frontIdResourcePath));
         }
-        if (backIdResourcePath != null) {
+        if (handResourcePath != null) {
             loanRequest.getLoanData().setHandIdResource(fromTmp(handResourcePath));
         }
     }
 
-    private String fromTmp(String resourcePath) {
+    private String fromTmp(String resourcePath) throws IOException {
         //名字就不改了
         Resource resource = resourceService.getResource(resourcePath);
-        log.info(resource.getFilename());
-        return resourcePath;
+        String name = "ids/" + resource.getFilename();
+        try (InputStream data = resource.getInputStream()) {
+            resourceService.uploadResource(name, data);
+        }
+        resourceService.deleteResource(resourcePath);
+        return name;
     }
 
     @Override

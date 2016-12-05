@@ -174,7 +174,7 @@ public class WealthController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/loanID2")
     @Transactional
-    public String loanID(long loanRequestId, String path) {
+    public String loanID(long loanRequestId, String path) throws IOException {
         // 这个时候应该去身份证那边
         wealthService.updateLoanIDImages(loanRequestId, null, null, path);
         wealthService.submitLoanRequest(loanRequestId);
@@ -182,7 +182,7 @@ public class WealthController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/loanID")
-    public String loanID(long loanRequestId, String backId, String frontId, Model model) {
+    public String loanID(long loanRequestId, String backId, String frontId, Model model) throws IOException {
         // 这个时候应该去身份证那边
         wealthService.updateLoanIDImages(loanRequestId, backId, frontId, null);
         model.addAttribute("loanRequest", loanRequestRepository.getOne(loanRequestId));

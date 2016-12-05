@@ -116,7 +116,7 @@ public interface WealthService {
      * @param handResourcePath
      */
     @Transactional
-    void updateLoanIDImages(long loanRequestId, String backIdResourcePath, String frontIdResourcePath, String handResourcePath);
+    void updateLoanIDImages(long loanRequestId, String backIdResourcePath, String frontIdResourcePath, String handResourcePath) throws IOException;
 
     /**
      * 更新借款申请的卡号信息
