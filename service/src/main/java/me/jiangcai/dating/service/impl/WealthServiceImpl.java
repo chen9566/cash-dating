@@ -58,6 +58,7 @@ public class WealthServiceImpl implements WealthService {
     private ApplicationContext applicationContext;
     @Autowired
     private CashStrings cashStrings;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private CardRepository cardRepository;
 
@@ -193,6 +194,11 @@ public class WealthServiceImpl implements WealthService {
     @Override
     public void updateLoanCard(long loanRequestId, long cardId) {
         cardRepository.delete(cardId);
+    }
+
+    @Override
+    public int nextProjectLoanTerm() {
+        return Integer.parseInt(new ProjectLoan().getTerm()[0]);
     }
 
     private Loan[] reCacheLoan() throws IOException {

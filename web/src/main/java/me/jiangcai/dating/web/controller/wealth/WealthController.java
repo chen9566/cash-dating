@@ -8,6 +8,7 @@ import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.ProjectLoan;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 import me.jiangcai.dating.service.PayResourceService;
+import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.TourongjiaService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.service.WealthService;
@@ -45,6 +46,8 @@ public class WealthController {
     private UserService userService;
 
     ///////////理财
+    @Autowired
+    private SystemService systemService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/financing")
     public String financing(@AuthenticationPrincipal User user, Model model) throws IOException {
@@ -94,8 +97,11 @@ public class WealthController {
     @RequestMapping(method = RequestMethod.GET, value = "/loanStart")
     public String loanStart(Model model, @RequestParam String id) throws IOException {
         Loan loan = putLoanAsProject(model, id);
-        if (loan instanceof ProjectLoan)
+        if (loan instanceof ProjectLoan) {
+            model.addAttribute("creditLimitYears", systemService.getProjectLoanCreditLimit());
+            model.addAttribute("loanTermDays", wealthService.nextProjectLoanTerm());
             return "itemloan.html";
+        }
         return "loan.html";
     }
 

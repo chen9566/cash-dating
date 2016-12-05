@@ -65,8 +65,8 @@ public class WealthControllerTest extends LoginWebTest {
 
         LoanAmountPage page = loanPage.choose(loan.getProductName());
 
-        page.checkAgreement();
-        page.assertLoan(loan);
+//        page.checkAgreement();
+        page.assertLoan(loan, wealthService.nextProjectLoanTerm());
         // 随机从50000-max
         int amount = 50000 + random.nextInt((loan.getAmountInteger() - 50000));
         String term = loan.getTerm()[random.nextInt(loan.getTerm().length)];
@@ -143,7 +143,7 @@ public class WealthControllerTest extends LoginWebTest {
         LoanAmountPage page = loanPage.choose(loan.getProductName());
 
         page.checkAgreement();
-        page.assertLoan(loan);
+        page.assertLoan(loan, 0);
         // 随机从50000-max
         int amount = 50000 + random.nextInt((loan.getAmountInteger() - 50000));
         String term = loan.getTerm()[random.nextInt(loan.getTerm().length)];

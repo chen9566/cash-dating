@@ -1,6 +1,7 @@
 package me.jiangcai.dating.page;
 
 import me.jiangcai.dating.model.trj.Loan;
+import me.jiangcai.dating.model.trj.ProjectLoan;
 import org.apache.commons.lang.RandomStringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -41,6 +42,10 @@ public class LoanAmountPage extends AbstractPage {
     @FindBy(id = "_btn1")
     private WebElement button;
 
+    // 项目贷款专用
+    private WebElement limitYears;
+    private WebElement termDays;
+
     public LoanAmountPage(WebDriver webDriver) {
         super(webDriver);
     }
@@ -55,10 +60,10 @@ public class LoanAmountPage extends AbstractPage {
         input.sendKeys(RandomStringUtils.randomAlphabetic(1));
         assertThat(button.isEnabled())
                 .isFalse();
-        input.clear();
-        input.sendKeys(RandomStringUtils.randomAscii(1));
-        assertThat(button.isEnabled())
-                .isFalse();
+//        input.clear();
+//        input.sendKeys(RandomStringUtils.randomAscii(1));
+//        assertThat(button.isEnabled())
+//                .isFalse();
     }
 
     /**
@@ -80,8 +85,9 @@ public class LoanAmountPage extends AbstractPage {
      * 确定现在展示的信息符合这个产品的说明
      *
      * @param loan
+     * @param nextTerm 项目贷款专有
      */
-    public void assertLoan(Loan loan) {
+    public void assertLoan(Loan loan, int nextTerm) {
         Random random = new Random();
         // 输入最小额可以
         input.clear();
@@ -110,18 +116,25 @@ public class LoanAmountPage extends AbstractPage {
         assertThat(button.isEnabled())
                 .isFalse();
 
-        //
-        assertThat(limitSpan.isDisplayed())
-                .isTrue();
-        assertThat(limitSpan.getText())
-                .contains(loan.getAmountInteger() + "元");
+        if (loan instanceof ProjectLoan) {
+            assertThat(limitYears.getText())
+                    .contains("借款授信期限" + getSystemService().getProjectLoanCreditLimit() + "年");
+            assertThat(termDays.getText())
+                    .contains(nextTerm + "天");
+        } else {
+            assertThat(limitSpan.isDisplayed())
+                    .isTrue();
+            assertThat(limitSpan.getText())
+                    .contains(loan.getAmountInteger() + "元");
 
-        List<String> terms = period.findElements(By.tagName("option")).stream()
-                .map(webElement -> webElement.getText().trim())
-                .collect(Collectors.toList());
+            List<String> terms = period.findElements(By.tagName("option")).stream()
+                    .map(webElement -> webElement.getText().trim())
+                    .collect(Collectors.toList());
 
-        assertThat(terms)
-                .containsOnly(loan.getTerm());
+            assertThat(terms)
+                    .containsOnly(loan.getTerm());
+        }
+
     }
 
     /**

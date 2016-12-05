@@ -102,6 +102,11 @@ public interface WealthService {
      */
     @Transactional
     void updateLoanCard(long loanRequestId, long cardId);
+
+    /**
+     * @return 下一个项目贷款期限周期, 单位:天
+     */
+    int nextProjectLoanTerm();
 //
 //    /**
 //     * @return 总投资金额

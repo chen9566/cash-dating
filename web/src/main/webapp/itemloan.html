@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="project" type="me.jiangcai.dating.model.trj.Loan"*/-->
+<!--/*@thymesVar id="creditLimitYears" type="java.lang.Integer"*/-->
+<!--/*@thymesVar id="loanTermDays" type="java.lang.Integer"*/-->
 <!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.service.CashStrings"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -23,26 +25,23 @@
             <p class="jk c33"><img src="images/1.png"><input placeholder="0.00" type="tel" id="_content" name="amount">
             </p>
             <ul>
-                <li class="bo-b">借款期限
-                    <span class="pull-right c33">30天</span>
-                    <!--<select name="period" class="pull-right" style="margin-top: 11px;">
-                        <option value="3" th:each="term:${project.term}" th:text="${term}"
-                                th:value="${#cashStrings.termInteger(term)}">12个月
-                        </option>
-                    </select>-->
+                <li class="bo-b" th:name="termDays">借款期限
+                    <span class="pull-right c33" th:text="${loanTermDays+'天'}">30天</span>
                 </li>
-                <li><img src="images/miicon.png"/> 借款授信期限2年</li>
+                <li th:name="limitYears"><img src="images/miicon.png"/> <span
+                        th:text="'借款授信期限'+${creditLimitYears}+'年'">借款授信期限2年</span></li>
             </ul>
         </div>
     </div>
 
     <div class="p-15 ">
-        <input value="立即借款" type="submit" class="redremove"/>
+        <input value="立即借款" type="submit" class="redremove" id="_btn1"/>
     </div>
 </form>
 <p class="notes" data-toggle="modal" data-target=".safecode">产品介绍</p>
 <script th:inline="javascript">
-    $.maxLoanAmount = /*[[${project.amountInteger}]]*/500000;
+    $.maxLoanAmount = /*[[${project.amountInteger}]]*/200000;
+    $.minLoanAmount = /*[[${project.minAmount}]]*/1;
 </script>
 <script src="js/loan.js"></script>
 <!-- 产品介绍 -->
@@ -51,7 +50,8 @@
         <div class="modal-content ">
             <div class="safeshow">
                 <h1>产品介绍</h1>
-                <p class="txt"> 产品系指借款人将其拥有的车辆评估后抵押给保险公司，经保险公司的严格筛选与审查，确认借款人借款用途合法，还款来源充足的，由保险公司为借款人在借款项目项下的借款本息出具贷款履约保证保险单，保单的被保险人为该项目的平台投资人，保险范围为借款项目下的借款本息。保险公司承诺如借款人发生违约的，将由保险公司对于借款人的本息损失进行赔偿。</p>
+                <p class="txt">
+                    产品系指借款人将其拥有的车辆评估后抵押给保险公司，经保险公司的严格筛选与审查，确认借款人借款用途合法，还款来源充足的，由保险公司为借款人在借款项目项下的借款本息出具贷款履约保证保险单，保单的被保险人为该项目的平台投资人，保险范围为借款项目下的借款本息。保险公司承诺如借款人发生违约的，将由保险公司对于借款人的本息损失进行赔偿。</p>
                 <p data-dismiss="modal" class="know">确定</p>
             </div>
 

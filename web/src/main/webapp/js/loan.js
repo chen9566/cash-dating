@@ -1,5 +1,6 @@
 /**
  * 借款用的
+ * 应该同时支持项目贷款 特点无需显示利息,无需接受何种协议
  * Created by CJ on 13/10/2016.
  */
 
@@ -114,17 +115,19 @@ $(function () {
             return;
         }
         //先计算利息
-        var rate = myRates['f' + period.val()] || myRates.setup;
-        var p1 = value / rate.period;
-        var p2 = value * rate.rate;
-        var p3 = value * rate.manage;
-        var p4 = value * rate.it;
-        var p5 = value * rate.account;
-        var bf = Math.max(Math.ceil(value / 10000) * 25, 30) / rate.period;
+        if (period.length > 0 && spanMonthLo.length > 0) {
+            var rate = myRates['f' + period.val()] || myRates.setup;
+            var p1 = value / rate.period;
+            var p2 = value * rate.rate;
+            var p3 = value * rate.manage;
+            var p4 = value * rate.it;
+            var p5 = value * rate.account;
+            var bf = Math.max(Math.ceil(value / 10000) * 25, 30) / rate.period;
 
-        spanMonthLo.text('¥' + (p1 + p2 + p3 + p4 + p5 + bf).formatMoney(2, '.', ','));
+            spanMonthLo.text('¥' + (p1 + p2 + p3 + p4 + p5 + bf).formatMoney(2, '.', ','));
+        }
 
-        if (checked.is(":checked")) {
+        if (checked.length == 0 || checked.is(":checked")) {
             button.removeAttr('disabled');
             button.removeClass('black');
             button.addClass('redremove');

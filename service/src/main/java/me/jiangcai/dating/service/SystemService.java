@@ -88,5 +88,29 @@ public interface SystemService {
         updateSystemString("dating.project.loan.limit", new BigDecimal(years));
     }
 
+    // 这里是设置一个比例,没批准一个 下次就丢失一个
+    @Transactional(readOnly = true)
+    default BigDecimal[] getProjectLoanTermRates(String[] terms) {
+        BigDecimal[] result = new BigDecimal[terms.length];
+        for (int i = 0; i < terms.length; i++) {
+            result[i] = getSystemString("dating.project.loan.term" + terms[i], BigDecimal.class, i == 0 ? BigDecimal.ONE : BigDecimal.ZERO);
+        }
+        return result;
+    }
+
+    @Transactional
+    default void updateProjectLoanTermRates(String[] terms, BigDecimal[] rates) {
+        for (int i = 0; i < terms.length; i++) {
+            //没有设置那就是0
+            BigDecimal target;
+            if (rates.length > i) {
+                target = rates[i];
+            } else
+                target = BigDecimal.ZERO;
+            updateSystemString("dating.project.loan.term" + terms[i], target);
+        }
+    }
+
+
 //    double
 }
