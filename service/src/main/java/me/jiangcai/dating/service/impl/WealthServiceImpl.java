@@ -89,10 +89,47 @@ public class WealthServiceImpl implements WealthService {
     }
 
     @Override
+    public LoanRequest loanRequest(String openId, ProjectLoan loan, Long userDataId, BigDecimal amount, String name
+            , String number, Address address, String homeAddress, String employer, int personalIncome, int familyIncome
+            , int age) {
+        UserLoanData userLoanData = updateUserLoanData(userDataId, openId, name, number, address, homeAddress, employer
+                , personalIncome, familyIncome, age);
+
+        LoanRequest request = new LoanRequest();
+        saveLoadRequest(loan, amount, 0, userLoanData, request);
+        return loanRequestRepository.save(request);
+    }
+
+    @Override
     public LoanRequest loanRequest(String openId, Loan loan, BigDecimal amount, int period, Long userLoanDataId
             , String name
             , String number
             , Address address) throws IOException {
+        UserLoanData userLoanData = updateUserLoanData(userLoanDataId, openId, name, number, address);
+
+        LoanRequest request = new LoanRequest();
+        saveLoadRequest(loan, amount, period, userLoanData, request);
+        return loanRequestRepository.save(request);
+    }
+
+    private void saveLoadRequest(Loan loan, BigDecimal amount, int period, UserLoanData userLoanData, LoanRequest request) {
+        request.setAmount(amount);
+        request.setLoanData(userLoanData);
+        request.setMonths(period);
+        request.setProjectId(loan.getProductId());
+        request.setProjectName(loan.getProductName());
+        request.setCreatedTime(userLoanData.getLastUseTime());
+        request.setProcessStatus(LoanRequestStatus.init);
+    }
+
+    private UserLoanData updateUserLoanData(Long userLoanDataId, String openId, String name, String number
+            , Address address) {
+        return updateUserLoanData(userLoanDataId, openId, name, number, address, null, null, 0, 0, 0);
+    }
+
+    private UserLoanData updateUserLoanData(Long userLoanDataId, String openId, String name, String number
+            , Address address, String homeAddress, String employer, int personalIncome, int familyIncome
+            , int age) {
         User user = userService.byOpenId(openId);
         UserLoanData userLoanData;
         if (userLoanDataId != null) {
@@ -113,16 +150,7 @@ public class WealthServiceImpl implements WealthService {
             user.getUserLoanDataList().add(userLoanData);
         }
         userLoanData.setLastUseTime(LocalDateTime.now());
-
-        LoanRequest request = new LoanRequest();
-        request.setAmount(amount);
-        request.setLoanData(userLoanData);
-        request.setMonths(period);
-        request.setProjectId(loan.getProductId());
-        request.setProjectName(loan.getProductName());
-        request.setCreatedTime(userLoanData.getLastUseTime());
-        request.setProcessStatus(LoanRequestStatus.init);
-        return loanRequestRepository.save(request);
+        return userLoanData;
     }
 
     @Override
@@ -187,7 +215,7 @@ public class WealthServiceImpl implements WealthService {
     }
 
     @Override
-    public void updateLoanIDImages(long loanRequestId, String backIdResourcePath, String frontIdResourcePath) {
+    public void updateLoanIDImages(long loanRequestId, String backIdResourcePath, String frontIdResourcePath, String handResourcePath) {
 
     }
 

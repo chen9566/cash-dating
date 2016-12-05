@@ -79,6 +79,7 @@ $(function () {
                 provinceSelector.empty();
 
                 var provinceChanged = function () {
+                    // console.error('provinceChanged');
                     var provinceName = provinceSelector.val();
                     citySelector.empty();
 

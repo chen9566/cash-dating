@@ -18,7 +18,7 @@
 </head>
 <body>
 <form class="from-personal" id="loanForm" role="form" action="id.html" method="get" th:method="post"
-      th:action="@{/loanSubmit}">
+      th:action="@{/loanProjectSubmit}">
     <input name="id" type="hidden" th:value="${project.productId}"/>
     <input name="period" type="hidden" th:value="${period}"/>
     <input name="amount" type="hidden" th:value="${amount}"/>
