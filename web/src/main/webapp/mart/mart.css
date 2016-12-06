@@ -147,7 +147,8 @@ div.screening > ul > li {
 /* tao-content */
 .taolist {
     padding-top: 110px;
-
+    margin-bottom: 65px;
+    overflow: hidden;
 }
 
 .taolist-clear {
@@ -156,7 +157,8 @@ div.screening > ul > li {
 
 .taolist dl {
     width: 49%;
-    background: #fff
+    background: #fff;
+    margin-bottom: 10px;
 }
 
 .taolist dt {
@@ -230,27 +232,64 @@ div.screening > ul > li {
     bottom: 0;
     width: 100%;
     z-index: 99;
-    height: 88px;
+    height: 90px;
     background-size: 100%;
     overflow: hidden;
-   padding-top: 20px;
+    padding-top: 20px;
 
 }
-.tabfoot a{display: block; text-decoration: none; color: #353535  }
-.tabfoot ul {height: 88px;  margin-top:20px;background: #f8f8f8; overflow: hidden; border-top: 1px solid #dfdfdf;
+
+.tabfoot a {
+    display: block;
+    text-decoration: none;
+    color: #353535
 }
 
-.tabfoot li { width: 33.3%;position: absolute;
-    float: left; text-align: center; font-size: 9px; padding-top: 7px;
+.tabfoot ul {
+    height: 90px;
+    margin-top: 20px;
+    background: #f8f8f8;
+    overflow: hidden;
+    border-top: 1px solid #dfdfdf;
 }
-.tabfoot .pullc { position: absolute; left: 33.3%; margin-top: -21px;
-}
-.tabfoot .pullc img{width:45px; }
-.tabfoot .baby { position: absolute; color: #F65150 }
-.tabfoot .baby img{width:22px; }
-.tabfoot .my {position: absolute; left: 66.6%;color: #F65150}
-.tabfoot .my img{width:22px;}
 
+.tabfoot li {
+    width: 33.3%;
+    position: absolute;
+    float: left;
+    text-align: center;
+    font-size: 10px;
+    padding-top: 7px;
+}
+
+.tabfoot .pullc {
+    position: absolute;
+    left: 33.3%;
+    margin-top: -21px;
+}
+
+.tabfoot .pullc img {
+    width: 45px;
+}
+
+.tabfoot .baby {
+    position: absolute;
+    color: #F65150
+}
+
+.tabfoot .baby img {
+    width: 22px;
+}
+
+.tabfoot .my {
+    position: absolute;
+    left: 66.6%;
+    color: #F65150
+}
+
+.tabfoot .my img {
+    width: 22px;
+}
 
 /*产品详情*/
 .details-dy {
@@ -498,7 +537,7 @@ div.screening > ul > li {
     font-size: 16px;
     padding: 15px 15px 10px 0
 }
-
+.shoplist .navlist input{ border: 1px solid #dfdfdf}
 .shoplist .with {
     font-size: 16px;
     padding: 13px 0 13px 0;
@@ -558,7 +597,7 @@ div.screening > ul > li {
 }
 
 .shoplist .navlist .w60 {
-    width: 64%
+    width: 61%
 }
 
 .jia {
@@ -798,9 +837,24 @@ div.screening > ul > li {
 
 .save a {
     color: #fff;
-    text-decoration: none
+    text-decoration: none;
+    display: block;
+}
+.see {
+    background: #fcfcfc;
+    border-radius: 6px;
+    line-height: 42px;
+    text-align: center;
+    font-size: 18px;
+    margin: 30px 15px;
+    border: 1px solid #C7C7C7
 }
 
+.see a {
+    color: #353535;
+    text-decoration: none;
+    display: block;
+}
 .tabbuy {
     background: #fff;
     margin-bottom: 15px;
@@ -818,21 +872,43 @@ div.screening > ul > li {
     text-align: center;
     font-size: 15px;
 }
-.tabbuy a{ color: #888;text-decoration: none; display:block}
-.tabbuy .curr{
+
+.tabbuy a {
+    color: #888;
+    text-decoration: none;
+    display: block
+}
+
+.tabbuy .curr {
     border-bottom: 2px solid #F65150;
     color: #F65150;
     padding-top: -2px;
 }
-.tabbuy .curr a{  color: #F65150;
+
+.tabbuy .curr a {
+    color: #F65150;
 }
+
 .right-img {
     width: 8px !important;
     height: 12px !important;
     margin-left: 8px;
 }
-.payadd{ text-align: center; margin-bottom: 15px; background: #fff; color: #007AFF; line-height: 44px; border-bottom: 1px solid #dfdfdf}
-.payadd img{ width: 15px; margin: -3px 10px 0 0}
+
+.payadd {
+    text-align: center;
+    margin-bottom: 15px;
+    background: #fff;
+    color: #007AFF;
+    line-height: 44px;
+    border-bottom: 1px solid #dfdfdf
+}
+.payadd a{ text-decoration: none}
+.payadd img {
+    width: 16px;
+    margin: -2px 10px 0 0
+}
+
 .am-show {
     font-size: 14px;
     border-radius: 0;
@@ -895,6 +971,7 @@ div.screening > ul > li {
 .am-show-footer a {
     text-decoration: none
 }
+
 .showbg {
     background-color: rgba(0, 0, 0, 0.6);
     bottom: 0;
@@ -913,8 +990,15 @@ div.screening > ul > li {
     opacity: 1;
     display: block;
 }
-.photop{ z-index: 99;}
-.photop img{ width: 220px}
+
+.photop {
+    z-index: 99;
+}
+
+.photop img {
+    width: 220px
+}
+
 .topay {
     background: #fff;
     border-bottom: 1px solid #dfdfdf;
@@ -946,7 +1030,13 @@ div.screening > ul > li {
 .topay .bo-b {
     border-bottom: 1px solid #dfdfdf;
 }
-.topay a{ display: block; text-decoration: none; color: #353535}
+
+.topay a {
+    display: block;
+    text-decoration: none;
+    color: #353535
+}
+
 .big15 {
     display: block;
 }
@@ -954,27 +1044,231 @@ div.screening > ul > li {
 .big15 img {
     width: 15px !important;
 }
-.photo{}
-.photo ul{}
-.photo li{ position: relative; float: left; margin:4px;}
-.photo li img{ width: 75px; height: 75px;}
-.photo .curr{position: absolute; right: 1px; top:0;}
-.photo .curr img{ width: 14px; height: 14px; position: absolute; right: 3px; top:3px;}
-.footer-fix{ background:#EFEFF4; border-top: 1px solid #dfdfdf; width:100%;position: fixed; line-height: 44px; padding: 0 15px; bottom:0;}
-.whitebg{ background: #fff;}
-.footer-fix a{ text-decoration: none; border-radius: 4px; background: #F65150; color: #fff; padding: 5px 15px;}
-.pull{ padding: 15px 0 15px 15px;  background: #fff; border-bottom: 1px solid #dfdfdf; overflow: hidden; margin-bottom: 15px;}
-.pull input{ border: 0; width: 86%; margin-bottom:10px;}
-.pull textarea{ border: 0; width: 96%; height: 86px;}
-.pull .bo-r{ border-bottom: 1px solid #dfdfdf}
-.pull label{ color: #888; margin-right: 10px;}
-.pullimg{background: #fff; }
-.pullimg img{ width:68px; height: 68px; border: 1px solid #f4f4f4 }
-.pullimg ul{  overflow: hidden;}
-.pullimg li{overflow: hidden; margin: 3px; position: relative; float: left;}
-.curr img{ width: 14px; height: 14px; position: absolute; right: 3px; top:3px;}
-.pulltxt{ background: #fff; padding-left: 15px;border-bottom: 1px solid #dfdfdf;border-top: 1px solid #dfdfdf; }
-.pulltxt ul{}
-.pulltxt li{ line-height: 44px}
-.pulltxt .bo-r{ border-bottom: 1px solid #dfdfdf}
-.pulltxt img{ float: right; width: 8px; margin-top: 15px; margin-right: 15px;}
+
+.photo {
+}
+
+.photo ul {
+}
+
+.photo li {
+    position: relative;
+    float: left;
+    margin: 4px;
+}
+
+.photo li img {
+    width: 75px;
+    height: 75px;
+}
+
+.photo .curr {
+    position: absolute;
+    right: 1px;
+    top: 0;
+}
+
+.photo .curr img {
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    right: 3px;
+    top: 3px;
+}
+
+.footer-fix {
+    background: #EFEFF4;
+    border-top: 1px solid #dfdfdf;
+    width: 100%;
+    position: fixed;
+    line-height: 44px;
+    padding: 0 15px;
+    bottom: 0;
+}
+
+.whitebg {
+    background: #fff;
+}
+
+.footer-fix a {
+    text-decoration: none;
+    border-radius: 4px;
+    background: #F65150;
+    color: #fff;
+    padding: 5px 15px;
+}
+
+.pull {
+    padding: 15px 0 15px 15px;
+    background: #fff;
+    border-bottom: 1px solid #dfdfdf;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.pull input {
+    border: 0;
+    width: 86%;
+    margin-bottom: 10px;
+}
+
+.pull textarea {
+    border: 0;
+    width: 96%;
+    height: 86px;
+}
+
+.pull .bo-r {
+    border-bottom: 1px solid #dfdfdf
+}
+
+.pull label {
+    color: #888;
+    margin-right: 10px;
+}
+
+.pullimg {
+    background: #fff;
+}
+
+.pullimg img {
+    width: 68px;
+    height: 68px;
+    border: 1px solid #f4f4f4
+}
+
+.pullimg ul {
+    overflow: hidden;
+}
+
+.pullimg li {
+    overflow: hidden;
+    margin: 3px;
+    position: relative;
+    float: left;
+}
+
+.curr img {
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    right: 3px;
+    top: 3px;
+}
+
+.pulltxt {
+    background: #fff;
+    padding-left: 15px;
+    border-bottom: 1px solid #dfdfdf;
+    border-top: 1px solid #dfdfdf;
+}
+
+.pulltxt ul {
+}
+
+.pulltxt li {
+    line-height: 44px
+}
+
+.pulltxt .bo-r {
+    border-bottom: 1px solid #dfdfdf
+}
+
+.pulltxt img {
+    float: right;
+    width: 8px;
+    margin-top: 15px;
+    margin-right: 15px;
+}
+
+.agreefix {
+    padding: 9px 5px 9px 15px;
+    width: 100%;
+    position: fixed;
+    z-index: 99;
+    bottom: 0;
+    background: #f3f3f3;
+    border-top: 1px solid #dfdfdf;
+    font-size: 18px;
+}
+
+.agreefix .redpay {
+
+}
+
+.agreefix .redpay a {
+    text-decoration: none;
+    display: block;
+    float: left;
+    width: 46%;
+    line-height: 42px;
+    text-align: center;
+    margin: 0 5px;
+    background: #F65150;
+    border-radius: 6px;
+    color: #fff
+}
+
+.agreefix .white {
+
+}
+.agreefix .white a {
+    text-decoration: none;
+    display: block;
+    float: left;
+    width: 46%;
+    line-height: 42px;
+    text-align: center;
+    margin: 0 5px;
+    background: #FFF;
+    border: 1px solid #E0E0E0;
+    border-radius: 6px;
+    color: #353535
+}
+.mb120 {
+    margin-bottom: 120px
+}
+.mb60 {
+    margin-bottom: 60px
+}
+.over {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 80px 15px 0 15px;
+}
+
+.over .o1 {
+}
+
+.over .o1 img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+}
+
+.over .o2 {
+    font-size: 17px;
+}
+
+.over .o3 {
+    font-size: 13px;
+    color: #888
+}
+
+.over .ted {
+    color: #ff0000;
+    font-size: 16px;
+}
+
+.over .o4 {
+}
+
+.over .o4 img {
+    width: 125px
+}
+
+.over .o5 {
+    color: #ff0000;
+    font-size: 14px;
+    padding: 0 3px;
+}
