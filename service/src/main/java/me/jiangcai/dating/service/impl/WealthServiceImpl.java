@@ -98,7 +98,7 @@ public class WealthServiceImpl implements WealthService {
     }
 
     @Override
-    public LoanRequest loanRequest(String openId, ProjectLoan loan, Long userDataId, BigDecimal amount, String name
+    public ProjectLoanRequest loanRequest(String openId, ProjectLoan loan, Long userDataId, BigDecimal amount, String name
             , String number, Address address, String homeAddress, String employer, int personalIncome, int familyIncome
             , int age) {
         UserLoanData userLoanData = updateUserLoanData(userDataId, openId, name, number, address, homeAddress, employer

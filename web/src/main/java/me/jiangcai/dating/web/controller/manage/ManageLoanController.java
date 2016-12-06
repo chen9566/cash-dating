@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -89,10 +90,13 @@ public class ManageLoanController {
      */
     private DataFilter<LoanRequest> dataFilter(boolean pendingOnly) {
         return (user, criteriaBuilder, root) -> {
+//            User_.
+            Predicate type = criteriaBuilder.equal(root.type(), LoanRequest.class);
             if (pendingOnly) {
-                return root.get("processStatus").in(LoanRequestStatus.requested, LoanRequestStatus.forward);
+                return criteriaBuilder.and(type
+                        , root.get("processStatus").in(LoanRequestStatus.requested, LoanRequestStatus.forward));
             }
-            return criteriaBuilder.notEqual(root.get("processStatus"), LoanRequestStatus.init);
+            return criteriaBuilder.and(type, criteriaBuilder.notEqual(root.get("processStatus"), LoanRequestStatus.init));
         };
     }
 

@@ -7,7 +7,14 @@
       "userId": 1,
       "name": "大身上",
       "number": "12311110000",
-      "city": "杭州",
+      "city": {
+        "city": {
+          "name": "杭州市"
+        },
+        "province": {
+          "name": "浙江省"
+        }
+      },
       "projectName": "长江七号",
       "amount": 20001.10,
       "months": 10,
@@ -22,7 +29,14 @@
       "userId": 2,
       "name": "大身上",
       "number": "12311110000",
-      "city": "杭州",
+      "city": {
+        "city": {
+          "name": "杭州市"
+        },
+        "province": {
+          "name": "浙江省"
+        }
+      },
       "projectName": "长江七号",
       "amount": 222001.00,
       "months": 12,
@@ -37,7 +51,14 @@
       "userId": 3,
       "name": "大身上",
       "number": "12311110000",
-      "city": "杭州",
+      "city": {
+        "city": {
+          "name": "杭州市"
+        },
+        "province": {
+          "name": "浙江省"
+        }
+      },
       "projectName": "长江七号",
       "amount": 2331.00,
       "months": 6,
@@ -52,7 +73,14 @@
       "userId": 4,
       "name": "大身上",
       "number": "12311110000",
-      "city": "杭州",
+      "city": {
+        "city": {
+          "name": "杭州市"
+        },
+        "province": {
+          "name": "浙江省"
+        }
+      },
       "projectName": "长江七号",
       "amount": 9991.00,
       "months": 24,

@@ -79,7 +79,7 @@ $(function () {
             formatter: $.Manage.headImageRenderer
         }, {
             title: '城市',
-            field: 'city',
+            field: 'city.city.name',
             align: 'center',
             sortable: true
         }, {

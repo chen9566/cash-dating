@@ -3,6 +3,7 @@ package me.jiangcai.dating.service;
 import me.jiangcai.dating.Locker;
 import me.jiangcai.dating.ThreadSafe;
 import me.jiangcai.dating.entity.LoanRequest;
+import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.model.trj.Financing;
@@ -52,7 +53,7 @@ public interface WealthService {
      * @return 新建的申请
      */
     @Transactional
-    LoanRequest loanRequest(String openId, ProjectLoan loan, Long userDataId, BigDecimal amount, String name
+    ProjectLoanRequest loanRequest(String openId, ProjectLoan loan, Long userDataId, BigDecimal amount, String name
             , String number, Address address, String homeAddress, String employer, int personalIncome, int familyIncome
             , int age);
 

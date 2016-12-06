@@ -3,9 +3,11 @@ package me.jiangcai.dating.web.controller.manage;
 import com.jayway.jsonpath.JsonPath;
 import me.jiangcai.dating.AsManage;
 import me.jiangcai.dating.ManageWebTest;
+import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.model.trj.Loan;
+import me.jiangcai.dating.model.trj.ProjectLoan;
 import me.jiangcai.dating.service.CashStrings;
 import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.WealthService;
@@ -17,6 +19,7 @@ import org.springframework.mock.web.MockHttpSession;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -87,6 +90,17 @@ public class ManageLoanControllerTest extends ManageWebTest {
         assertThat(firstPaddingId)
                 .isNotEqualTo(requestId);
         approveLoan(session, firstPaddingId);
+
+        mockMvc.perform(getWeixin("/manage/data/loan/pending").session(session)
+                .param("offset", "0")
+                .param("limit", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total").value(current));
+        // 必须确保 项目贷款 它是看不到的
+        ProjectLoanRequest loanRequest = wealthService.loanRequest(userOpenId, new ProjectLoan(), null, new BigDecimal("170000"), "摆渡人"
+                , RandomStringUtils.randomNumeric(18), address, UUID.randomUUID().toString()
+                , UUID.randomUUID().toString(), 10, 10, 30);
+        wealthService.submitLoanRequest(loanRequest.getId());
 
         mockMvc.perform(getWeixin("/manage/data/loan/pending").session(session)
                 .param("offset", "0")
