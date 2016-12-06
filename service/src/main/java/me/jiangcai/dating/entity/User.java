@@ -265,7 +265,7 @@ public class User implements WeixinUser, ProfitSplit, UserDetails, Locker {
     @Override
     public boolean useLowestRate() {
         // 很少有人有
-        return manageStatus != null && (manageStatus == ManageStatus.manager || manageStatus == ManageStatus.root);
+        return manageStatus != null && (manageStatus == ManageStatus.root);
     }
 
     @Override

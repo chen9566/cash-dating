@@ -76,9 +76,7 @@ $(function () {
             align: 'center',
             title: '头像',
             width: '60px',
-            formatter: function (url, row, index) {
-                return '<img src="' + url + '" width="55px" height="55px"/>';
-            }
+            formatter: $.Manage.headImageRenderer
         }, {
             title: '城市',
             field: 'city',

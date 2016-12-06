@@ -64,10 +64,8 @@ $(function () {
             field: 'headImageUrl',
             align: 'center',
             title: '头像',
-            width: '152px',
-            formatter: function (url, row, index) {
-                return '<img src="' + url + '" width="150px" height="150px"/>';
-            }
+            width: '60px',
+            formatter: $.Manage.headImageRenderer
         }, {
             title: '昵称',
             field: 'nickname',

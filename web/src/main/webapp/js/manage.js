@@ -2,6 +2,19 @@
  * 管理后台专用
  * Created by CJ on 12/10/2016.
  */
+$.Manage = {};
+
+/**
+ * 提供标准头像显示
+ * @param url
+ * @param row
+ * @param index
+ * @returns {string}
+ */
+$.Manage.headImageRenderer = function (url, row, index) {
+    return '<img src="' + url + '" width="55px" height="55px"/>';
+};
+
 $(function () {
 
     // header
@@ -24,7 +37,7 @@ $(function () {
     var hrefLoanRequest = 'loanRequest.html';
     if (!$.prototypesMode)
         hrefLoanRequest = $.uriPrefix + '/manage/loanRequest';
-    if ($.prototypesMode || $.auths.agent)
+    if ($.prototypesMode || $.auths.loan)
         menus = menus + '<li><a href="' + hrefLoanRequest + '">审批借款</a></li>';
 
     var hrefAgentRequest = 'agentRequest.html';

@@ -48,7 +48,11 @@ public enum ManageStatus {
     /**
      * build-in
      */
-    root;
+    root,
+    /**
+     * 项目贷款供应商
+     */
+    projectLoanSupplier;
 
 
     public List<String> roles() {
@@ -75,6 +79,9 @@ public enum ManageStatus {
             case root:
                 list.addAll(Collections.singleton("ROOT"));
                 break;
+            case projectLoanSupplier:
+                list.addAll(Collections.singletonList((Role_Project_Loan_Value)));
+                break;
             default:
                 throw new IllegalArgumentException("unknown of " + this);
         }
@@ -100,6 +107,8 @@ public enum ManageStatus {
                 return "主管";
             case manager:
                 return "经理";
+            case projectLoanSupplier:
+                return "项目贷款供应商";
         }
         return super.toString();
     }

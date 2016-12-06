@@ -35,5 +35,8 @@ public class ProjectLoanRequest extends LoanRequest {
     private int applyCreditLimitYears;
     @ElementCollection
     private Map<String, String> contracts;
+    //再加入 年化利率
+    @Column(scale = 2, precision = 20)
+    private BigDecimal yearRate;
 
 }
