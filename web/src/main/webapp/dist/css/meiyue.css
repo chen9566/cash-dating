@@ -4635,6 +4635,13 @@ ul#navlist .list1 {
     border-radius: 0 !important;
     border:0;
 }
+.up-btn button {
+    font-size: 18px;
+    display: block;
+    text-decoration: none;
+    border-radius: 0 !important;
+    border:0!important;
+}
 .car {
 }
 
