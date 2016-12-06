@@ -19,6 +19,11 @@ public class MallEntryTest extends WebTest {
         mockMvc.perform(get("/mart/martindex.html"))
                 .andDo(print())
                 .andExpect(status().isOk());
+
+        mockMvc.perform(get("/carinsurance.html"))
+                .andDo(print())
+                .andExpect(status().isOk());
+
     }
 
 }

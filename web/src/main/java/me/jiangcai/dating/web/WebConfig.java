@@ -94,7 +94,10 @@ public class WebConfig {
 //            }
 
             registry
+                    // 静态展示
                     .antMatchers("/mart/**").permitAll()
+                    .antMatchers("/carinsurance.html").permitAll()
+                    //
                     .antMatchers("/uploadResource").permitAll()
                     //测试
                     .antMatchers("/qrUrl").permitAll()
