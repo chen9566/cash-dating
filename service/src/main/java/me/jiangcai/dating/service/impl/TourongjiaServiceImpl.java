@@ -8,6 +8,7 @@ import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.LoanStatus;
 import me.jiangcai.dating.model.trj.MobileToken;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
+import me.jiangcai.dating.service.CashStrings;
 import me.jiangcai.dating.service.TourongjiaService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -190,7 +191,9 @@ public class TourongjiaServiceImpl implements TourongjiaService {
                     , new BasicNameValuePair("applyLoan.province", province)
                     , new BasicNameValuePair("applyLoan.city", city)
                     , new BasicNameValuePair("applyLoan.address", address)
-                    , new BasicNameValuePair("applyLoan.term", term)
+                    , new BasicNameValuePair("applyLoan.term", String.valueOf(new CashStrings().termInteger(term)))
+                    , new BasicNameValuePair("applyLoan.termUnit", "month")
+
             );
             return client.execute(get, new TRJJsonHandler<>(ApplyLoan.class)).getApplyId();
         }
