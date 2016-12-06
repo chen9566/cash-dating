@@ -536,7 +536,7 @@ div.screening > ul > li {
     font-size: 16px;
     padding: 15px 15px 10px 0
 }
-
+.shoplist .navlist input{ border: 1px solid #dfdfdf}
 .shoplist .with {
     font-size: 16px;
     padding: 13px 0 13px 0;
@@ -904,8 +904,8 @@ div.screening > ul > li {
 }
 .payadd a{ text-decoration: none}
 .payadd img {
-    width: 15px;
-    margin: -3px 10px 0 0
+    width: 16px;
+    margin: -2px 10px 0 0
 }
 
 .am-show {
