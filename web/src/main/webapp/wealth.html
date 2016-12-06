@@ -153,7 +153,8 @@
                     contentType: 'application/json;charset=UTF-8',
                     error: function (r) {
                         console.error('error', r.responseText, r.status, r.statusText);
-                        alert('系统故障,请稍候重试');
+                        alert(r.responseText);
+//                        alert('系统故障,请稍候重试');
                     },
                     success: success
                 });

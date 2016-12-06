@@ -1,8 +1,8 @@
 [
   {
-    "name": "收银台",
+    "name": "商城",
     "type": "view",
-    "data": "http://app.kuanyes.com/cash/start"
+    "data": "http://app.kuanyes.com/cash/mart/martindex.html"
   },
   {
     "name": "推广",
@@ -10,7 +10,7 @@
     "data": "http://app.kuanyes.com/cash/myInviteCode"
   },
   {
-    "name": "我的",
+    "name": "个人中心",
     "type": "view",
     "data": "http://app.kuanyes.com/cash/my"
   }

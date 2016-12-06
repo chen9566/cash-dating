@@ -16,6 +16,8 @@ import me.jiangcai.dating.service.WealthService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -71,23 +72,33 @@ public class WealthController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/financingUrl")
-    @ResponseBody
     @Transactional(readOnly = true)
-    public String financingUrl(@AuthenticationPrincipal User user, @RequestBody Map<String, Object> data)
-            throws IOException {
+    public ResponseEntity<?> financingUrl(@AuthenticationPrincipal User user, @RequestBody Map<String, Object> data) {
         user = userService.by(user.getId());
         String id = (String) data.get("id");
         assert (id != null);
         String code = (String) data.get("code");
         if (code != null) {
-            tourongjiaService.bind(user.getMobileNumber(), code);
+            try {
+                tourongjiaService.bind(user.getMobileNumber(), code);
+            } catch (Throwable ex) {
+                log.debug("mandalay", ex);
+                return ResponseEntity.badRequest()
+                        .contentType(MediaType.valueOf(MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8"))
+                        .body(ex.getMessage());
+            }
         }
 
         try {
-            return wealthService.financingUrl(user, id).toString();
+            return ResponseEntity.ok(wealthService.financingUrl(user, id).toString());
         } catch (VerifyCodeSentException ex) {
             log.debug(user.getMobileNumber(), ex);
             return null;
+        } catch (Throwable ex) {
+            log.debug("mandalay", ex);
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.valueOf(MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8"))
+                    .body(ex.getMessage());
         }
     }
 
