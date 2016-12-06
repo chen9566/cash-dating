@@ -94,6 +94,7 @@ public class WebConfig {
 //            }
 
             registry
+                    .antMatchers("/mart/**").permitAll()
                     .antMatchers("/uploadResource").permitAll()
                     //测试
                     .antMatchers("/qrUrl").permitAll()

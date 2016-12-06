@@ -88,6 +88,7 @@ class MVCConfig extends WebMvcConfigurerAdapter {
         }
 
         registry.addResourceHandler("/agreement*.html").addResourceLocations("/");
+        registry.addResourceHandler("/mart/**").addResourceLocations("/mart/");
 //        registry.addResourceHandler("/personalok.html").addResourceLocations("/");
     }
 
