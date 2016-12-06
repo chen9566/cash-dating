@@ -24,6 +24,7 @@ import java.security.SignatureException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Semaphore;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -53,6 +54,9 @@ public class OrderControllerTest extends LoginWebTest {
         //
         int times = orderService.getOne(withdrawalFailedOrder.getId()).getPlatformWithdrawalOrderSet().size();
 
+        int count = 20;
+        Semaphore semaphore = new Semaphore(0);
+
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -61,18 +65,21 @@ public class OrderControllerTest extends LoginWebTest {
                             .andExpect(status().isFound());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
+                } finally {
+                    semaphore.release();
                 }
             }
         };
 
-        int count = 20;
+
         while (count-- > 0) {
             Thread thread = new Thread(runnable);
             thread.setDaemon(true);
             thread.start();
         }
 
-        Thread.sleep(2000);
+        semaphore.acquire(20);
+        Thread.sleep(1000);
 
         assertThat(orderService.getOne(withdrawalFailedOrder.getId()).getPlatformWithdrawalOrderSet().size())
                 .isEqualTo(times + 1);
