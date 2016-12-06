@@ -39,6 +39,15 @@ if [[ ! -e $1/bootstrap-table-1.11.0 ]]; then
     rm -rf bootstrap-table-1.11.0
 fi
 
+#download http://jqueryvalidation.org/files/jquery-validation-1.15.0.zip
+if [[ ! -e $1/jquery-validation-1.15.0 ]]; then
+    wget http://jqueryvalidation.org/files/jquery-validation-1.15.0.zip
+    unzip jquery-validation-1.15.0.zip -d jquery-validation-1.15.0
+    rm jquery-validation-1.15.0.zip
+    mv jquery-validation-1.15.0/dist $1/jquery-validation-1.15.0
+    rm -rf jquery-validation-1.15.0
+fi
+
 if [[ ! -e $1/jquery-3.1.1.min.js ]]; then
     wget http://code.jquery.com/jquery-3.1.1.min.js -O $1/jquery-3.1.1.min.js
 fi
