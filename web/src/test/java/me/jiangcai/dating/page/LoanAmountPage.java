@@ -75,7 +75,7 @@ public class LoanAmountPage extends AbstractPage {
                 .findFirst()
                 .ifPresent(WebElement::click);
         assertThat(webDriver.getTitle())
-                .contains("协议");
+                .contains("合同");
         webDriver.navigate().back();
         PageFactory.initElements(webDriver, this);
         validatePage();

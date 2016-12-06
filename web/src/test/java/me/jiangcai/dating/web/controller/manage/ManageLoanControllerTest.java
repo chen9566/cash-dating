@@ -3,11 +3,13 @@ package me.jiangcai.dating.web.controller.manage;
 import com.jayway.jsonpath.JsonPath;
 import me.jiangcai.dating.AsManage;
 import me.jiangcai.dating.ManageWebTest;
+import me.jiangcai.dating.entity.LoanRequest;
 import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.ProjectLoan;
+import me.jiangcai.dating.repository.LoanRequestRepository;
 import me.jiangcai.dating.service.CashStrings;
 import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.WealthService;
@@ -36,6 +38,9 @@ public class ManageLoanControllerTest extends ManageWebTest {
     private WealthService wealthService;
     @Autowired
     private CashStrings cashStrings;
+    @SuppressWarnings("unused")
+    @Autowired
+    private LoanRequestRepository loanRequestRepository;
 
     @Test
     public void index() {
@@ -89,6 +94,8 @@ public class ManageLoanControllerTest extends ManageWebTest {
         final long firstPaddingId = firstPadding(session);
         assertThat(firstPaddingId)
                 .isNotEqualTo(requestId);
+        assertThat(loanRequestRepository.getOne(firstPaddingId).getClass())
+                .isEqualTo(LoanRequest.class);
         approveLoan(session, firstPaddingId);
 
         mockMvc.perform(getWeixin("/manage/data/loan/pending").session(session)

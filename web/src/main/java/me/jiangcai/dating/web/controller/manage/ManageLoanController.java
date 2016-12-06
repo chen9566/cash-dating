@@ -4,6 +4,7 @@ import me.jiangcai.dating.DataField;
 import me.jiangcai.dating.DataFilter;
 import me.jiangcai.dating.core.Login;
 import me.jiangcai.dating.entity.LoanRequest;
+import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.LoanRequestStatus;
 import me.jiangcai.dating.service.DataService;
@@ -91,7 +92,7 @@ public class ManageLoanController {
     private DataFilter<LoanRequest> dataFilter(boolean pendingOnly) {
         return (user, criteriaBuilder, root) -> {
 //            User_.
-            Predicate type = criteriaBuilder.equal(root.type(), LoanRequest.class);
+            Predicate type = criteriaBuilder.notEqual(root.type(), ProjectLoanRequest.class);
             if (pendingOnly) {
                 return criteriaBuilder.and(type
                         , root.get("processStatus").in(LoanRequestStatus.requested, LoanRequestStatus.forward));
