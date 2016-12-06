@@ -902,7 +902,7 @@ div.screening > ul > li {
     line-height: 44px;
     border-bottom: 1px solid #dfdfdf
 }
-
+.payadd a{ text-decoration: none}
 .payadd img {
     width: 15px;
     margin: -3px 10px 0 0

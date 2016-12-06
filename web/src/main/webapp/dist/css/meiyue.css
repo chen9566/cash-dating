@@ -4628,7 +4628,13 @@ ul#navlist .list1 {
     text-decoration: none;
     border-radius: 0 !important;
 }
-
+.up-btn input {
+    font-size: 18px;
+    display: block;
+    text-decoration: none;
+    border-radius: 0 !important;
+    border:0;
+}
 .car {
 }
 
@@ -4780,7 +4786,7 @@ ul#navlist .list1 {
     line-height: 23px;
     border-radius: 15px;
     margin-top: 13px;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .loan-v2 .b30 {
@@ -4800,10 +4806,15 @@ ul#navlist .list1 {
     font-size: 19px;
     line-height: 34px;
 }
-
 .loan-v2 .f12 {
     color: #666;
-    font-size: 12px;
+    font-size: 13px;
+    height: 16px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    white-space: nowrap;
+    width: 79%;
 }
 
 .loan-v2 .f46 {
@@ -4814,7 +4825,7 @@ ul#navlist .list1 {
 
 .loan-v2 .f13 {
     color: #F65150;
-    font-size: 13px
+    font-size: 14px
 }
 
 .bg-one {
@@ -5099,7 +5110,7 @@ ul#navlist .list1 {
 }
 
 .hot .f19 {
-    font-size: 19px;
+    font-size: 20px;
     text-align: left;
 }
 
@@ -5108,6 +5119,7 @@ ul#navlist .list1 {
     margin-top: -4px;
     margin-right: 5px;
 }
+.loan-v2 .f19 span{ text-align: center;}
 
 .hot .f12 {
     font-size: 12px;
