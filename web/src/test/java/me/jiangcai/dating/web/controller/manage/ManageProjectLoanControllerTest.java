@@ -27,8 +27,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * 错误的测试用例 也要做
@@ -63,6 +62,11 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(), "$.total");
         int currentPending = JsonPath.read(mockMvc.perform(getWeixin("/manage/data/projectLoan/pending").session(session)
+                .param("offset", "0")
+                .param("limit", "10"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString(), "$.total");
+        int currentAccepted = JsonPath.read(mockMvc.perform(getWeixin("/manage/data/projectLoan/accepted").session(session)
                 .param("offset", "0")
                 .param("limit", "10"))
                 .andExpect(status().isOk())
@@ -110,6 +114,18 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
 
         long requestId = firstPadding(session);
         declineLoan(session, requestId).andExpect(status().isOk());
+        declineLoan(session, requestId)
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+                .andExpect(content().encoding("UTF-8"))
+//                .andDo(print())
+        ;
+        approveLoan(session, requestId, "200000", "180", "0.1")
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+                .andExpect(content().encoding("UTF-8"))
+//                .andDo(print())
+        ;
         //第二次再拿  肯定不是了
         final long firstPaddingId = firstPadding(session);
         assertThat(firstPaddingId)
@@ -118,12 +134,33 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
                 .isEqualTo(ProjectLoanRequest.class);
 
         approveLoan(session, firstPaddingId, "200000", "180", "0.1").andExpect(status().isOk());
+        declineLoan(session, firstPaddingId)
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+                .andExpect(content().encoding("UTF-8"))
+//                .andDo(print())
+        ;
+        ;
+        approveLoan(session, firstPaddingId, "200000", "180", "0.1")
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+                .andExpect(content().encoding("UTF-8"))
+//                .andDo(print())
+        ;
 
         mockMvc.perform(getWeixin("/manage/data/projectLoan/pending").session(session)
                 .param("offset", "0")
                 .param("limit", "10"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total").value(currentPending));
+
+        mockMvc.perform(getWeixin("/manage/data/projectLoan/accepted").session(session)
+                .param("offset", "0")
+                .param("limit", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total").value(currentAccepted + 1));
+
+
     }
 
 
@@ -146,6 +183,7 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
         data.put("targets", new Long[]{requestId});
 
         return mockMvc.perform(putWeixin("/manage/data/projectLoan").session(session)
+                .header("X-Requested-With", "XMLHttpRequest")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsBytes(data)));
     }
