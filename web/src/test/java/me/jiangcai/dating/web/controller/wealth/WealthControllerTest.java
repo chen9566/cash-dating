@@ -21,7 +21,6 @@ import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.WealthService;
 import me.jiangcai.gaa.sdk.repository.DistrictRepository;
-import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,8 +45,6 @@ public class WealthControllerTest extends LoginWebTest {
     private UserRepository userRepository;
     @Autowired
     private DistrictRepository districtRepository;
-    @Autowired
-    private ResourceService resourceService;
 
     /**
      * 需要关注的数据是
@@ -236,15 +232,6 @@ public class WealthControllerTest extends LoginWebTest {
                 .isGreaterThan(0);
         // 管理员 登录 并且同意这个借款请求
         assertThat(request.getSupplierRequestId()).isNull();
-    }
-
-    /**
-     * @return 随机生成的图片资源路径
-     */
-    private String randomImageResourcePath() throws IOException {
-        String name = "tmp/" + UUID.randomUUID().toString() + ".png";
-        resourceService.uploadResource(name, this.applicationContext.getResource("/images/1.png").getInputStream());
-        return name;
     }
 
     @Test

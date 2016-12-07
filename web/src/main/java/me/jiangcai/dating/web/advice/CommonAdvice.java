@@ -6,6 +6,7 @@ import me.jiangcai.dating.exception.RequestedException;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.wx.web.exception.NoWeixinClientException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -65,11 +66,11 @@ public class CommonAdvice {
     @ExceptionHandler(RequestedException.class)
     public void requestedException(RequestedException ex, HttpServletRequest request
             , HttpServletResponse response) throws IOException {
-        if (notAjax(ex, request, response))
+        if (notAjax(ex, request, response, 400))
             throw ex;
     }
 
-    private boolean notAjax(Exception ex, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private boolean notAjax(Throwable ex, HttpServletRequest request, HttpServletResponse response, Integer suggestion) throws IOException {
         if (!"XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With")))
             return true;
 //        if (!"XMLHttpRequest".equalsIgnoreCase(httpHeaders.getFirst("X-Requested-With")))
@@ -77,8 +78,8 @@ public class CommonAdvice {
 //        if (!ajaxRequest.equalsIgnoreCase("XMLHttpRequest"))
 //            return true;
         //开始ajax处理
-        response.setContentType("text/plant; charset=UTF-8");
-        response.setStatus(400);
+        response.setContentType(MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8");
+        response.setStatus(suggestion != null ? suggestion : 400);
         try (Writer writer = response.getWriter()) {
             writer.write(ex.getMessage());
             writer.flush();
@@ -90,7 +91,14 @@ public class CommonAdvice {
     @ExceptionHandler(IllegalArgumentException.class)
     public void illegalArgumentException(IllegalArgumentException ex
             , HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (notAjax(ex, request, response))
+        if (notAjax(ex, request, response, 400))
+            throw ex;
+    }
+
+    @ExceptionHandler(Throwable.class)
+    public void throwable(Throwable ex
+            , HttpServletRequest request, HttpServletResponse response) throws Throwable {
+        if (notAjax(ex, request, response, 400))
             throw ex;
     }
 }

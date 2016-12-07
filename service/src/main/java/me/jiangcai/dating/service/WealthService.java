@@ -96,6 +96,23 @@ public interface WealthService {
     void approveLoanRequest(User user, long requestId, String comment) throws IOException;
 
     /**
+     * 同意项目贷款
+     *
+     * @param user          操作用户
+     * @param loanRequestId 请求id
+     * @param amount        批准金额
+     * @param termDays      批准期限
+     * @param yearRate      批准年化利率
+     * @param comment       留言
+     */
+    @Transactional
+    void approveProjectLoanRequest(User user, long loanRequestId, BigDecimal amount, BigDecimal yearRate, int termDays, String comment) throws IOException;
+
+    // 内部方法 请勿调用
+    @ThreadSafe
+    void approveProjectLoanRequestCore(Locker locker, User user, long loanRequestId, BigDecimal amount, BigDecimal yearRate, int termDays, String comment) throws IOException;
+
+    /**
      * 拒绝借款
      *
      * @param user      操作用户
@@ -111,7 +128,8 @@ public interface WealthService {
 
     /**
      * 更新借款申请的身份证复印件信息
-     *  @param loanRequestId       借款id
+     *
+     * @param loanRequestId       借款id
      * @param backIdResourcePath  如不存在,请无视
      * @param frontIdResourcePath 如不存在,请无视
      * @param handResourcePath

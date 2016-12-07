@@ -195,9 +195,38 @@ public class WealthServiceImpl implements WealthService {
     }
 
     @Override
+    public void approveProjectLoanRequest(User user, long loanRequestId, BigDecimal amount, BigDecimal yearRate
+            , int termDays, String comment) throws IOException {
+        applicationContext.getBean(WealthService.class)
+                .approveProjectLoanRequestCore(("LoanRequest-" + loanRequestId)::intern, user, loanRequestId, amount, yearRate, termDays, comment);
+    }
+
+    // TODO 再度处理 是什么鬼?应该拒绝的
+    @Override
     public void declineLoanRequest(User user, long requestId, String comment) {
         LoanRequest request = loanRequestRepository.getOne(requestId);
+        if (request.getProcessStatus() != LoanRequestStatus.requested
+                && request.getProcessStatus() != LoanRequestStatus.forward)
+            throw new IllegalStateException("订单状态已锁定。");
         request.setProcessStatus(LoanRequestStatus.reject);
+        request.setProcessTime(LocalDateTime.now());
+        request.setProcessor(user);
+        request.setComment(comment);
+    }
+
+    @Override
+    public void approveProjectLoanRequestCore(Locker locker, User user, long loanRequestId, BigDecimal amount
+            , BigDecimal yearRate, int termDays, String comment) throws IOException {
+        ProjectLoanRequest request = (ProjectLoanRequest) loanRequestRepository.getOne(loanRequestId);
+        if (request.getSupplierRequestId() != null) {
+            throw new IllegalStateException("already submitted:" + request);
+        }
+        if (request.getProcessStatus() != LoanRequestStatus.requested
+                && request.getProcessStatus() != LoanRequestStatus.forward)
+            throw new IllegalStateException("订单状态已锁定。");
+        // 巴拉巴拉扒拉
+
+        request.setProcessStatus(LoanRequestStatus.accept);
         request.setProcessTime(LocalDateTime.now());
         request.setProcessor(user);
         request.setComment(comment);
@@ -209,6 +238,10 @@ public class WealthServiceImpl implements WealthService {
         if (request.getSupplierRequestId() != null) {
             throw new IllegalStateException("already submitted:" + request);
         }
+        if (request.getProcessStatus() != LoanRequestStatus.requested
+                && request.getProcessStatus() != LoanRequestStatus.forward)
+            throw new IllegalStateException("订单状态已锁定。");
+
         Loan loan = Stream.of(loanList())
                 .filter(loan1 -> loan1.getProductId().equals(request.getProjectId()))
                 .findFirst()
