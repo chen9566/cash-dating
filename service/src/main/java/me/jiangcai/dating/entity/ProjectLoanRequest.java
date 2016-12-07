@@ -41,6 +41,14 @@ public class ProjectLoanRequest extends LoanRequest {
     @Column(scale = 2, precision = 20)
     private BigDecimal yearRate;
 
+    /**
+     * @return 到期还款
+     */
+    public BigDecimal toReturn() {
+        return getAmount().multiply(yearRate).multiply(new BigDecimal(termDays))
+                .divide(new BigDecimal("365"), BigDecimal.ROUND_HALF_UP);
+    }
+
     public Notification toRejectNotification() {
         return new Notification(getLoanData().getOwner(), NotifyType.projectLoanRejected, null, getId()
                 , getLoanData().getName()
@@ -51,7 +59,7 @@ public class ProjectLoanRequest extends LoanRequest {
     }
 
     public Notification toAcceptNotification() {
-        return new Notification(getLoanData().getOwner(), NotifyType.projectLoanAccepted, "/projectLoan/" + getId(), getId()
+        return new Notification(getLoanData().getOwner(), NotifyType.projectLoanAccepted, "/projectLoan?id=" + getId(), getId()
                 , getLoanData().getName()
                 , "项目贷款"
                 , applyAmount

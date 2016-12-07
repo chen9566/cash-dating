@@ -23,6 +23,20 @@ public class CashStrings {
         return "**** **** **** " + end;
     }
 
+    /**
+     * @param id
+     * @return 隐藏身份证号码
+     */
+    public String idNumber(String id) {
+        StringBuilder stringBuilder = new StringBuilder(id.substring(0, 1));
+        // 最后剩下2个 那么剩下的是?
+        int count = id.length() - 2 - 1;
+        while (count-- > 0)
+            stringBuilder.append("*");
+        stringBuilder.append(id.substring(id.length() - 3));
+        return stringBuilder.toString();
+    }
+
     public int termInteger(String term) {
         final Matcher matcher = numberPattern.matcher(term);
         matcher.matches();

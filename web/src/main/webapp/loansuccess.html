@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-
+<!--/*@thymesVar id="request" type="me.jiangcai.dating.entity.ProjectLoanRequest"*/-->
+<!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.service.CashStrings"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
@@ -19,11 +20,17 @@
 </div>
 <div class="mydata">
     <ul>
-        <li class="bo-b"><span class="pull-right">目黑瞳</span>申请人姓名</li>
-        <li class="bo-b"><span class="pull-right">4****************0</span>身份证号码</li>
-        <li class="bo-b"><span class="pull-right">200000.00</span>借款金额</li>
-        <li class="bo-b"><span class="pull-right">365天</span>还款期限</li>
-        <li><span class="pull-right red-m">218000.00</span>到期还款金额</li>
+        <li class="bo-b">
+            <span class="pull-right" th:text="${request.loanData.name}">目黑瞳</span>申请人姓名
+        </li>
+        <li class="bo-b"><span class="pull-right" th:text="${#cashStrings.idNumber(request.loanData.number)}">4****************0</span>身份证号码
+        </li>
+        <li class="bo-b"><span class="pull-right"
+                               th:text="${#numbers.formatDecimal(request.amount,1,'COMMA',2,'POINT')}">200000.00</span>借款金额
+        </li>
+        <li class="bo-b"><span class="pull-right" th:text="${request.termDays}+'天'">365天</span>还款期限</li>
+        <li><span class="pull-right red-m" th:text="${#numbers.formatDecimal(request.toReturn(),1,'COMMA',2,'POINT')}">218000.00</span>到期还款金额
+        </li>
     </ul>
 </div>
 <div class="agreelist">
@@ -49,9 +56,9 @@
 
 </div>
 <p class="p-15 mb15">
-    <input value="提交" type="submit" class="black"  disabled="disabled"/>
+    <!--<input value="提交" type="submit" class="black"  disabled="disabled"/>-->
     <!--当所有协议同意后,按钮变亮  -->
-    <input value="已提交" type="submit" class="redremove" />
+    <!--<input value="已提交" type="submit" class="redremove" />-->
 </p>
 
 

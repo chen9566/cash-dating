@@ -184,6 +184,7 @@ public class WealthControllerTest extends LoginWebTest {
         // 打开通知所指向的地址
         // 就可以玩一玩签单流程了
         // TODO
+
     }
 
     /**
