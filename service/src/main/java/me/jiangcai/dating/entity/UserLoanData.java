@@ -61,6 +61,11 @@ public class UserLoanData {
     private String frontIdResource;
     @Column(length = 100)
     private String handIdResource;
+    // 1.8.1 新增
+    /**
+     * 是否拥有房地产
+     */
+    private boolean hasHouse;
 
 
 

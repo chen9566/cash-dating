@@ -75,4 +75,20 @@ public interface TourongjiaService {
      * @throws VerifyCodeSentException 如果未绑定,并且发送了验证码
      */
     URI financingURL(String financingId, String mobile) throws IOException, VerifyCodeSentException;
+
+    /**
+     * 申请项目贷款
+     *
+     * @param user     用户
+     * @param name     真实姓名
+     * @param amount   金额
+     * @param province 省id
+     * @param city     市id
+     * @param address  地址
+     * @return 申请id
+     * @throws IOException
+     */
+    String projectLoan(User user, String name, String number, BigDecimal amount, int termDays, int limitYears
+            , String province, String city, String address, int familyIncome, int personalIncome, int age
+            , boolean hasHouse, String[] attaches) throws IOException;
 }

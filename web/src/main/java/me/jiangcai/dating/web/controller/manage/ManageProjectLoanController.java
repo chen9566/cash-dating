@@ -7,6 +7,7 @@ import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.LoanRequestStatus;
 import me.jiangcai.dating.service.DataService;
+import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.WealthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
@@ -46,11 +47,13 @@ public class ManageProjectLoanController extends AbstractLoanManage {
     private WealthService wealthService;
     @Autowired
     private ConversionService conversionService;
+    @Autowired
+    private SystemService systemService;
 
     @RequestMapping(value = "/manage/projectLoanRequest", method = RequestMethod.GET)
     public String index(Model model) {
         model.addAttribute("loanTermDays", wealthService.nextProjectLoanTerm());
-        model.addAttribute("yearRate", new BigDecimal("0.1"));
+        model.addAttribute("yearRate", systemService.getProjectLoanYearRate());
         return "manage/projectLoanRequest.html";
     }
 

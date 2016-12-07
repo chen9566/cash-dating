@@ -106,11 +106,13 @@ public interface WealthService {
      * @param comment       留言
      */
     @Transactional
-    void approveProjectLoanRequest(User user, long loanRequestId, BigDecimal amount, BigDecimal yearRate, int termDays, String comment) throws IOException;
+    void approveProjectLoanRequest(User user, long loanRequestId, BigDecimal amount, BigDecimal yearRate
+            , int termDays, String comment) throws IOException;
 
     // 内部方法 请勿调用
     @ThreadSafe
-    void approveProjectLoanRequestCore(Locker locker, User user, long loanRequestId, BigDecimal amount, BigDecimal yearRate, int termDays, String comment) throws IOException;
+    void approveProjectLoanRequestCore(Locker locker, User user, long loanRequestId, BigDecimal amount
+            , BigDecimal yearRate, int termDays, String comment) throws IOException;
 
     /**
      * 拒绝借款

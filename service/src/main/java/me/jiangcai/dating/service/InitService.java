@@ -61,6 +61,9 @@ public class InitService {
             @Override
             public void upgradeToVersion(Version version) throws Exception {
                 switch (version) {
+                    case v108002:
+                        jdbcService.tableAlterAddColumn(UserLoanData.class, "hasHouse", "0");
+                        break;
                     case v108001:
                         jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {
                             @Override

@@ -225,11 +225,36 @@ public class WealthServiceImpl implements WealthService {
                 && request.getProcessStatus() != LoanRequestStatus.forward)
             throw new IllegalStateException("订单状态已锁定。");
         // 巴拉巴拉扒拉
+        final District province = districtRepository.byChanpayCode(Locale.CHINA, request.getLoanData().getAddress().getProvince().getId());
+        final District city = districtRepository.byChanpayCode(Locale.CHINA, request.getLoanData().getAddress().getCity().getId());
+        String id = tourongjiaService.projectLoan(request.getLoanData().getOwner(), request.getLoanData().getName()
+                , request.getLoanData().getNumber()
+                , amount
+                , termDays
+                , request.getApplyCreditLimitYears()
+                , province == null ? "" : province.getPostalCode()
+                , city == null ? "" : city.getPostalCode()
+                , request.getLoanData().getHomeAddress()
+                , request.getLoanData().getFamilyIncome()
+                , request.getLoanData().getPersonalIncome()
+                , request.getLoanData().getAge()
+                , request.getLoanData().isHasHouse()
+                , new String[]{
+                        resourceService.getResource(request.getLoanData().getFrontIdResource()).httpUrl().toString()
+                        , resourceService.getResource(request.getLoanData().getBackIdResource()).httpUrl().toString()
+                        , resourceService.getResource(request.getLoanData().getHandIdResource()).httpUrl().toString()
+                }
+        );
 
         request.setProcessStatus(LoanRequestStatus.accept);
         request.setProcessTime(LocalDateTime.now());
         request.setProcessor(user);
+        request.setCreditLimitYears(request.getApplyCreditLimitYears());
+        request.setAmount(amount);
+        request.setYearRate(yearRate);
+        request.setTermDays(termDays);
         request.setComment(comment);
+        request.setSupplierRequestId(id);
     }
 
     @Override

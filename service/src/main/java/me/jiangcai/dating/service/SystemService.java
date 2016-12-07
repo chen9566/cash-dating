@@ -88,6 +88,17 @@ public interface SystemService {
         updateSystemString("dating.project.loan.limit", new BigDecimal(years));
     }
 
+    /**
+     * @return 推荐年化利率(项目贷款)
+     */
+    default BigDecimal getProjectLoanYearRate() {
+        return getSystemString("dating.project.loan.yearRate", BigDecimal.class, new BigDecimal("0.1"));
+    }
+
+    default void updateProjectLoanYearRate(BigDecimal rate) {
+        updateSystemString("dating.project.loan.yearRate", rate);
+    }
+
     // 这里是设置一个比例,没批准一个 下次就丢失一个
     @Transactional(readOnly = true)
     default BigDecimal[] getProjectLoanTermRates(String[] terms) {

@@ -17,6 +17,7 @@ import me.jiangcai.dating.page.LoanIDPage;
 import me.jiangcai.dating.page.LoanPage;
 import me.jiangcai.dating.page.LoanSubmitPage;
 import me.jiangcai.dating.page.MyPage;
+import me.jiangcai.dating.repository.LoanRequestRepository;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.WealthService;
@@ -45,6 +46,9 @@ public class WealthControllerTest extends LoginWebTest {
     private UserRepository userRepository;
     @Autowired
     private DistrictRepository districtRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private LoanRequestRepository loanRequestRepository;
 
     /**
      * 需要关注的数据是
@@ -117,12 +121,12 @@ public class WealthControllerTest extends LoginWebTest {
                 .isEqualByComparingTo(new BigDecimal(amount));
         assertThat(projectLoanRequest.getApplyCreditLimitYears())
                 .isEqualTo(getSystemService().getProjectLoanCreditLimit());
-        assertThat(projectLoanRequest.getCreditLimitYears())
-                .isEqualTo(getSystemService().getProjectLoanCreditLimit());
+//        assertThat(projectLoanRequest.getCreditLimitYears())
+//                .isEqualTo(getSystemService().getProjectLoanCreditLimit());
         assertThat(projectLoanRequest.getApplyTermDays())
                 .isEqualTo(wealthService.nextProjectLoanTerm());
-        assertThat(projectLoanRequest.getTermDays())
-                .isEqualTo(wealthService.nextProjectLoanTerm());
+//        assertThat(projectLoanRequest.getApply())
+//                .isEqualTo(wealthService.nextProjectLoanTerm());
         assertThat(resourceService.getResource(projectLoanRequest.getLoanData().getBackIdResource()).isReadable())
                 .isTrue();
         assertThat(resourceService.getResource(projectLoanRequest.getLoanData().getFrontIdResource()).isReadable())
@@ -139,7 +143,7 @@ public class WealthControllerTest extends LoginWebTest {
                 .isEqualTo(familyIncome);
         assertThat(projectLoanRequest.getLoanData().getAge())
                 .isEqualTo(age);
-        
+
         assertThat(request.getProcessStatus())
                 .isEqualByComparingTo(LoanRequestStatus.requested);
         assertThat(request.getLoanData().getOwner())
@@ -160,6 +164,24 @@ public class WealthControllerTest extends LoginWebTest {
 //                .isGreaterThan(0);
         // 管理员 登录 并且同意这个借款请求
         assertThat(request.getSupplierRequestId()).isNull();
+
+        // 审批通过这个请求
+        final int realTermDays = projectLoanRequest.getApplyTermDays();
+        final BigDecimal realAmount = request.getAmount();
+        final BigDecimal realYearRate = getSystemService().getProjectLoanYearRate();
+        wealthService.approveProjectLoanRequest(null, request.getId(), realAmount, realYearRate, realTermDays, "");
+        projectLoanRequest = (ProjectLoanRequest) loanRequestRepository.getOne(request.getId());
+        assertThat(projectLoanRequest.getTermDays())
+                .isEqualTo(realTermDays);
+        assertThat(projectLoanRequest.getAmount())
+                .isEqualByComparingTo(realAmount);
+        assertThat(projectLoanRequest.getYearRate())
+                .isEqualByComparingTo(realYearRate);
+        assertThat(projectLoanRequest.getSupplierRequestId()).isNotEmpty();
+
+        // 打开通知所指向的地址
+        // 就可以玩一玩签单流程了
+        // TODO
     }
 
     /**

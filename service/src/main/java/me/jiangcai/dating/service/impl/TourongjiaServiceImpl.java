@@ -179,6 +179,45 @@ public class TourongjiaServiceImpl implements TourongjiaService {
         }
     }
 
+
+    @Override
+    public String projectLoan(User user, String name, String number, BigDecimal amount, int termDays, int limitYears
+            , String province, String city, String address, int familyIncome, int personalIncome, int age
+            , boolean hasHouse, String[] attaches) throws IOException {
+        //
+        NameValuePair[] attachPairs = new NameValuePair[attaches.length];
+        for (int i = 0; i < attaches.length; i++) {
+            attachPairs[i] = new BasicNameValuePair("attachList[" + i + "]", attaches[i]);
+        }
+        NameValuePair[] others = new NameValuePair[]{
+                new BasicNameValuePair("applyLoan.name", name)
+                , new BasicNameValuePair("applyLoan.mobile", user.getMobileNumber())
+                , new BasicNameValuePair("applyLoan.cardNo", number)
+                , new BasicNameValuePair("applyLoan.term", String.valueOf(termDays))
+                , new BasicNameValuePair("applyLoan.termUnit", "day")
+                , new BasicNameValuePair("applyLoan.prjTerm", String.valueOf(limitYears))
+                , new BasicNameValuePair("applyLoan.prjTermUnit", "year")
+                , new BasicNameValuePair("applyLoan.amount", amount.toString())
+                , new BasicNameValuePair("applyLoan.province", province)
+                , new BasicNameValuePair("applyLoan.city", city)
+                , new BasicNameValuePair("applyLoan.address", address)
+                , new BasicNameValuePair("applyLoan.personalIncome", String.valueOf(personalIncome))
+                , new BasicNameValuePair("applyLoan.familyIncome", String.valueOf(familyIncome))
+                , new BasicNameValuePair("applyLoan.age", String.valueOf(age))
+                , new BasicNameValuePair("applyLoan.hasHouse", hasHouse ? "1" : "0")
+        };
+
+        // mix them
+        NameValuePair[] parameters = new NameValuePair[attachPairs.length + others.length];
+        System.arraycopy(others, 0, parameters, 0, others.length);
+        System.arraycopy(attachPairs, 0, parameters, others.length, attachPairs.length);
+
+        try (CloseableHttpClient client = requestClient()) {
+            HttpGet get = new2Get("tenant/yt_prjApplyLoan.jhtml", parameters);
+            return client.execute(get, new TRJJsonHandler<>(ApplyLoan.class)).getApplyId();
+        }
+    }
+
     @Override
     public String loan(Loan loan, String term, User user, String name, BigDecimal amount, String province, String city
             , String address) throws IOException {
@@ -234,7 +273,6 @@ public class TourongjiaServiceImpl implements TourongjiaService {
                 , new BasicNameValuePair("token", token.getToken())
         ).getURI();
     }
-
 
     private HttpGet new1Get(String uri, NameValuePair... pairs) {
         return newGet(urlRoot1, uri, pairs);
