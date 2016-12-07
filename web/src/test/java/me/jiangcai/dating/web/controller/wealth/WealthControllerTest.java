@@ -143,6 +143,8 @@ public class WealthControllerTest extends LoginWebTest {
                 .isEqualTo(familyIncome);
         assertThat(projectLoanRequest.getLoanData().getAge())
                 .isEqualTo(age);
+        assertThat(projectLoanRequest.getLoanData().isHasHouse())
+                .isEqualTo(hasHouse);
 
         assertThat(request.getProcessStatus())
                 .isEqualByComparingTo(LoanRequestStatus.requested);
@@ -254,6 +256,8 @@ public class WealthControllerTest extends LoginWebTest {
                 .isGreaterThan(0);
         // 管理员 登录 并且同意这个借款请求
         assertThat(request.getSupplierRequestId()).isNull();
+
+        // uri 规定下
     }
 
     @Test

@@ -149,6 +149,7 @@ public class WealthController {
             , @RequestParam("province") String provinceCode, @RequestParam("city") String cityCode
             , String homeAddress, String employer
             , int personalIncome, int familyIncome, int age
+            , boolean hasHouse
             , Model model) throws IOException {
 
         Address address = new Address();
@@ -159,7 +160,7 @@ public class WealthController {
         assert loan instanceof ProjectLoan;
         ProjectLoan projectLoan = (ProjectLoan) loan;
         LoanRequest loanRequest = wealthService.loanRequest(user.getOpenId(), projectLoan, null, amount
-                , name, number, address, homeAddress, employer, personalIncome, familyIncome, age);
+                , name, number, address, homeAddress, employer, personalIncome, familyIncome, age, hasHouse);
 
         model.addAttribute("loanRequest", loanRequest);
         return "id.html";

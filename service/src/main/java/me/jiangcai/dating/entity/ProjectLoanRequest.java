@@ -3,6 +3,8 @@ package me.jiangcai.dating.entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import me.jiangcai.dating.event.Notification;
+import me.jiangcai.dating.notify.NotifyType;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -39,4 +41,21 @@ public class ProjectLoanRequest extends LoanRequest {
     @Column(scale = 2, precision = 20)
     private BigDecimal yearRate;
 
+    public Notification toRejectNotification() {
+        return new Notification(getLoanData().getOwner(), NotifyType.projectLoanRejected, null, getId()
+                , getLoanData().getName()
+                , "项目贷款"
+                , applyAmount
+                , "拒绝"
+        );
+    }
+
+    public Notification toAcceptNotification() {
+        return new Notification(getLoanData().getOwner(), NotifyType.projectLoanAccepted, "/projectLoan/" + getId(), getId()
+                , getLoanData().getName()
+                , "项目贷款"
+                , applyAmount
+                , "接受"
+        );
+    }
 }

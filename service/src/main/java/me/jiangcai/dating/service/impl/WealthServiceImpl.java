@@ -26,6 +26,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -61,6 +62,8 @@ public class WealthServiceImpl implements WealthService {
     private DistrictRepository districtRepository;
     @Autowired
     private ApplicationContext applicationContext;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
     @Autowired
     private CashStrings cashStrings;
     @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -100,9 +103,9 @@ public class WealthServiceImpl implements WealthService {
     @Override
     public ProjectLoanRequest loanRequest(String openId, ProjectLoan loan, Long userDataId, BigDecimal amount, String name
             , String number, Address address, String homeAddress, String employer, int personalIncome, int familyIncome
-            , int age) {
+            , int age, boolean hasHouse) {
         UserLoanData userLoanData = updateUserLoanData(userDataId, openId, name, number, address, homeAddress, employer
-                , personalIncome, familyIncome, age);
+                , personalIncome, familyIncome, age, hasHouse);
 
         ProjectLoanRequest request = new ProjectLoanRequest();
         request.setApplyAmount(amount);
@@ -138,12 +141,12 @@ public class WealthServiceImpl implements WealthService {
 
     private UserLoanData updateUserLoanData(Long userLoanDataId, String openId, String name, String number
             , Address address) {
-        return updateUserLoanData(userLoanDataId, openId, name, number, address, null, null, 0, 0, 0);
+        return updateUserLoanData(userLoanDataId, openId, name, number, address, null, null, 0, 0, 0, false);
     }
 
     private UserLoanData updateUserLoanData(Long userLoanDataId, String openId, String name, String number
             , Address address, String homeAddress, String employer, int personalIncome, int familyIncome
-            , int age) {
+            , int age, boolean hasHouse) {
         User user = userService.byOpenId(openId);
         UserLoanData userLoanData;
         if (userLoanDataId != null) {
@@ -164,6 +167,7 @@ public class WealthServiceImpl implements WealthService {
             userLoanData.setPersonalIncome(personalIncome);
             userLoanData.setFamilyIncome(familyIncome);
             userLoanData.setAge(age);
+            userLoanData.setHasHouse(hasHouse);
             if (user.getUserLoanDataList() == null) {
                 user.setUserLoanDataList(new HashSet<>());
             }
@@ -201,7 +205,6 @@ public class WealthServiceImpl implements WealthService {
                 .approveProjectLoanRequestCore(("LoanRequest-" + loanRequestId)::intern, user, loanRequestId, amount, yearRate, termDays, comment);
     }
 
-    // TODO 再度处理 是什么鬼?应该拒绝的
     @Override
     public void declineLoanRequest(User user, long requestId, String comment) {
         LoanRequest request = loanRequestRepository.getOne(requestId);
@@ -212,6 +215,9 @@ public class WealthServiceImpl implements WealthService {
         request.setProcessTime(LocalDateTime.now());
         request.setProcessor(user);
         request.setComment(comment);
+        if (request instanceof ProjectLoanRequest) {
+            applicationEventPublisher.publishEvent(((ProjectLoanRequest) request).toRejectNotification());
+        }
     }
 
     @Override
@@ -255,6 +261,8 @@ public class WealthServiceImpl implements WealthService {
         request.setTermDays(termDays);
         request.setComment(comment);
         request.setSupplierRequestId(id);
+
+        applicationEventPublisher.publishEvent(request.toAcceptNotification());
     }
 
     @Override

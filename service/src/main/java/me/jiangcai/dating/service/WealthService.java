@@ -50,12 +50,13 @@ public interface WealthService {
      * @param personalIncome 个人年收入（万）
      * @param familyIncome   家庭年收入(万)
      * @param age            年龄
+     * @param hasHouse
      * @return 新建的申请
      */
     @Transactional
     ProjectLoanRequest loanRequest(String openId, ProjectLoan loan, Long userDataId, BigDecimal amount, String name
             , String number, Address address, String homeAddress, String employer, int personalIncome, int familyIncome
-            , int age);
+            , int age, boolean hasHouse);
 
     /**
      * 借款申请,仅仅是开始一个申请

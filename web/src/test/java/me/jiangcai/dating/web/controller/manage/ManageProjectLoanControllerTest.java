@@ -213,7 +213,7 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
         ProjectLoanRequest loanRequest = wealthService.loanRequest(openId, projectLoan, null
                 , new BigDecimal(projectLoan.getMinAmount() + random.nextInt(projectLoan.getAmountInteger() - projectLoan.getMinAmount()))
                 , "随意人", RandomStringUtils.randomNumeric(18), address, UUID.randomUUID().toString()
-                , UUID.randomUUID().toString(), random.nextInt(100), random.nextInt(100), random.nextInt(100));
+                , UUID.randomUUID().toString(), random.nextInt(100), random.nextInt(100), random.nextInt(100), hasHouse);
         wealthService.updateLoanIDImages(loanRequest.getId(), randomImageResourcePath(), randomImageResourcePath(), randomImageResourcePath());
         return loanRequest;
     }
