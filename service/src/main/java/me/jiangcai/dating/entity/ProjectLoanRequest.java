@@ -46,7 +46,7 @@ public class ProjectLoanRequest extends LoanRequest {
      */
     public BigDecimal toReturn() {
         return getAmount().multiply(yearRate).multiply(new BigDecimal(termDays))
-                .divide(new BigDecimal("365"), BigDecimal.ROUND_HALF_UP);
+                .divide(new BigDecimal("365"), BigDecimal.ROUND_HALF_UP).add(getAmount());
     }
 
     public Notification toRejectNotification() {

@@ -17,6 +17,7 @@ import me.jiangcai.dating.page.LoanIDPage;
 import me.jiangcai.dating.page.LoanPage;
 import me.jiangcai.dating.page.LoanSubmitPage;
 import me.jiangcai.dating.page.MyPage;
+import me.jiangcai.dating.page.ProjectSuccessPage;
 import me.jiangcai.dating.repository.LoanRequestRepository;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.PayResourceService;
@@ -184,8 +185,17 @@ public class WealthControllerTest extends LoginWebTest {
 
         // 打开通知所指向的地址
         // 就可以玩一玩签单流程了
-        // TODO
+        toSuccessPage(request.getId());
+        // 更新下里面的玩意儿
+//        projectLoanRequest.setContracts(new HashMap<>());
+        projectLoanRequest.getContracts().put("foo", "bar");
+        loanRequestRepository.save(projectLoanRequest);
+        toSuccessPage(request.getId());
+    }
 
+    private ProjectSuccessPage toSuccessPage(Long id) {
+        driver.get("http://localhost/projectLoan?id=" + id);
+        return initPage(ProjectSuccessPage.class);
     }
 
     /**

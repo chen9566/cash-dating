@@ -55,6 +55,16 @@
             class="check-pos">同意<a href="agreement13.html">《委托扣款及支付协议》</a></span></p>
 
 </div>
+<script th:inline="javascript">
+    var what = /*[[${request.contracts}]]*/{};
+
+
+    //    打开这个地方的时候,应该判断自身从何处进入的
+    //    来自空 则表明是点击自消息通知 应当给予清空本地缓存（使用数据库数据）
+    //    反之则应该检查当前本地缓存中已表明同意的条款 进行AJAX操作 完成签章
+    console.log(document);
+    console.log(window);
+</script>
 <p class="p-15 mb15">
     <!--<input value="提交" type="submit" class="black"  disabled="disabled"/>-->
     <!--当所有协议同意后,按钮变亮  -->

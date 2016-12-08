@@ -1,8 +1,10 @@
 package me.jiangcai.dating.web.controller.wealth;
 
 import me.jiangcai.dating.entity.LoanRequest;
+import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.Address;
+import me.jiangcai.dating.entity.support.LoanRequestStatus;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.ProjectLoan;
@@ -18,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -103,6 +106,26 @@ public class WealthController {
     }
 
     ////////////// 借款
+
+    /**
+     * 项目贷款成功以后的展示页面
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/projectLoan")
+    public String projectLoanSuccess(@AuthenticationPrincipal User user, long id, Model model) {
+        final LoanRequest loanRequest = loanRequestRepository.getOne(id);
+        if (loanRequest.getProcessStatus() != LoanRequestStatus.accept)
+            throw new IllegalStateException("not accept project loan");
+        if (!(loanRequest instanceof ProjectLoanRequest))
+            throw new IllegalStateException("ProjectLoanRequest only");
+        if (!loanRequest.getLoanData().getOwner().equals(user))
+            throw new AccessDeniedException("");
+        model.addAttribute("request", loanRequest);
+        return "loansuccess.html";
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/loan")
     public String loan(Model model) throws IOException {
         model.addAttribute("loanList", wealthService.loanList());
