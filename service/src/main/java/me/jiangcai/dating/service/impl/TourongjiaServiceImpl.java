@@ -5,6 +5,7 @@ import me.jiangcai.dating.model.trj.ApplyLoan;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.FinancingId;
 import me.jiangcai.dating.model.trj.Loan;
+import me.jiangcai.dating.model.trj.LoanContract;
 import me.jiangcai.dating.model.trj.LoanStatus;
 import me.jiangcai.dating.model.trj.MobileToken;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
@@ -215,6 +216,17 @@ public class TourongjiaServiceImpl implements TourongjiaService {
         try (CloseableHttpClient client = requestClient()) {
             HttpGet get = new2Get("tenant/yt_prjApplyLoan.jhtml", parameters);
             return client.execute(get, new TRJJsonHandler<>(ApplyLoan.class)).getApplyId();
+        }
+    }
+
+    @Override
+    public String signContract(String requestId, String contract) throws IOException {
+        try (CloseableHttpClient client = requestClient()) {
+            HttpGet get = new2Get("tenant/yt_signContract.jhtml"
+                    , new BasicNameValuePair("applyId", requestId)
+                    , new BasicNameValuePair("templateNo", contract)
+            );
+            return client.execute(get, new TRJJsonHandler<>(LoanContract.class)).getContractId();
         }
     }
 

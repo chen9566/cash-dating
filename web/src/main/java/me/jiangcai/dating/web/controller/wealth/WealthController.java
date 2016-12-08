@@ -18,6 +18,7 @@ import me.jiangcai.dating.service.WealthService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -25,11 +26,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -107,6 +110,25 @@ public class WealthController {
 
     ////////////// 借款
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/projectLoanContract")
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    public void projectLoanContract(@RequestBody Map<String, Object> data) throws IOException {
+        // 此处签约
+        // requestId contract
+        long requestId = ((Number) data.get("requestId")).longValue();
+        String contract = (String) data.get("contract");
+        final ProjectLoanRequest loanRequest = (ProjectLoanRequest) loanRequestRepository.getOne(requestId);
+
+        if (StringUtils.isEmpty(loanRequest.getSupplierRequestId()))
+            throw new IllegalStateException("have no supplier id");
+        if (!StringUtils.isEmpty(loanRequest.getContracts().get(contract)))
+            return;
+        String id = tourongjiaService.signContract(loanRequest.getSupplierRequestId(), contract);
+
+        loanRequest.getContracts().put(contract, id);
+    }
+
     /**
      * 项目贷款成功以后的展示页面
      *
@@ -114,6 +136,7 @@ public class WealthController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/projectLoan")
+    @Transactional(readOnly = true)
     public String projectLoanSuccess(@AuthenticationPrincipal User user, long id, Model model) {
         final LoanRequest loanRequest = loanRequestRepository.getOne(id);
         if (loanRequest.getProcessStatus() != LoanRequestStatus.accept)

@@ -91,4 +91,14 @@ public interface TourongjiaService {
     String projectLoan(User user, String name, String number, BigDecimal amount, int termDays, int limitYears
             , String province, String city, String address, int familyIncome, int personalIncome, int age
             , boolean hasHouse, String[] attaches) throws IOException;
+
+    /**
+     * 用户签章
+     *
+     * @param requestId 请求id
+     * @param contract  合同类型
+     * @return 合同号
+     * @throws IOException
+     */
+    String signContract(String requestId, String contract) throws IOException;
 }

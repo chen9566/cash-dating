@@ -5,7 +5,7 @@
  */
 $(function () {
 
-    var checkbox = $('input[type=checkbox]');
+    var checkbox = $('input[class~=chk_1]');
     var button = $('input[type=submit]');
 
     checkbox.change(function () {

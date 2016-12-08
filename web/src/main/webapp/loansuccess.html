@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
+    <script src="mock/all.js" th:src="@{/all.js}"></script>
 </head>
 <body>
 <div class="success">
@@ -35,35 +36,62 @@
 </div>
 <div class="agreelist">
     <p class="f13">请您务必打开以下九份合同仔细阅读，并点击同意！</p>
-    <p class="check "><input type="checkbox" id="checkbox_a1" class="chk_1"/><label for="checkbox_a1"></label><span
-            class="check-pos">同意<a href="agreement5.html">《最高额借款合同》</a></span></p>
-    <p class="check"><input type="checkbox" id="checkbox_a2" class="chk_1"/><label for="checkbox_a2"></label><span
-            class="check-pos">同意<a href="agreement6.html">《最高额借款合同补充协议》</a></span></p>
-    <p class="check"><input type="checkbox" id="checkbox_a3" class="chk_1"/><label for="checkbox_a3"></label><span
-            class="check-pos">同意<a href="agreement7.html">《最高额保证合同》</a></span></p>
-    <p class="check"><input type="checkbox" id="checkbox_a4" class="chk_1"/><label for="checkbox_a4"></label><span
-            class="check-pos">同意<a href="agreement8.html">《融资居间服务协议》</a></span></p>
-    <p class="check"><input type="checkbox" id="checkbox_a5" class="chk_1"/><label for="checkbox_a5"></label><span
-            class="check-pos">同意<a href="agreement9.html">《额度支用申请单》</a></span></p>
-    <p class="check"><input type="checkbox" id="checkbox_a6" class="chk_1"/><label for="checkbox_a6"></label><span
-            class="check-pos">同意<a href="agreement10.html">《款爷商城商家入驻协议》</a></span></p>
-    <p class="check"><input type="checkbox" id="checkbox_a7" class="chk_1"/><label for="checkbox_a7"></label><span
-            class="check-pos">同意<a href="agreement11.html">《电子商务代运营服务合同》</a></span></p>
-    <p class="check"><input type="checkbox" id="checkbox_a8" class="chk_1"/><label for="checkbox_a8"></label><span
-            class="check-pos">同意<a href="agreement12.html">《网上商城项目借款人申请表》</a></span></p>
-    <p class="check"><input type="checkbox" id="checkbox_a9" class="chk_1"/><label for="checkbox_a9"></label><span
-            class="check-pos">同意<a href="agreement13.html">《委托扣款及支付协议》</a></span></p>
+    <p class="check "><input type="checkbox" id="CT001" class="chk_1"/><label for="CT001"></label><span
+            class="check-pos">同意<a name="A_CT001" href="agreement5.html">《最高额借款合同》</a></span></p>
+    <p class="check"><input type="checkbox" id="CT002" class="chk_1"/><label for="CT002"></label><span
+            class="check-pos">同意<a name="A_CT002" href="agreement6.html">《最高额借款合同补充协议》</a></span></p>
+    <p class="check"><input type="checkbox" id="CT003" class="chk_1"/><label for="CT003"></label><span
+            class="check-pos">同意<a name="A_CT003" href="agreement7.html">《最高额保证合同》</a></span></p>
+    <p class="check"><input type="checkbox" id="CT004" class="chk_1"/><label for="CT004"></label><span
+            class="check-pos">同意<a name="A_CT004" href="agreement8.html">《融资居间服务协议》</a></span></p>
+    <p class="check"><input type="checkbox" id="CT005" class="chk_1"/><label for="CT005"></label><span
+            class="check-pos">同意<a name="A_CT005" href="agreement9.html">《额度支用申请单》</a></span></p>
+    <p class="check"><input type="checkbox" id="CT006" class="chk_1"/><label for="CT006"></label><span
+            class="check-pos">同意<a name="A_CT006" href="agreement10.html">《款爷商城商家入驻协议》</a></span></p>
+    <p class="check"><input type="checkbox" id="CT007" class="chk_1"/><label for="CT007"></label><span
+            class="check-pos">同意<a name="A_CT007" href="agreement11.html">《电子商务代运营服务合同》</a></span></p>
+    <p class="check"><input type="checkbox" id="CT008" class="chk_1"/><label for="CT008"></label><span
+            class="check-pos">同意<a name="A_CT008" href="agreement12.html">《网上商城项目借款人申请表》</a></span></p>
+    <p class="check"><input type="checkbox" id="CT009" class="chk_1"/><label for="CT009"></label><span
+            class="check-pos">同意<a name="A_CT009" href="agreement13.html">《委托扣款及支付协议》</a></span></p>
 
 </div>
 <script th:inline="javascript">
-    var what = /*[[${request.contracts}]]*/{};
-
-
+    var requestId = /*[[${request.id}]]*/ 100;
+    var defaultDatabaseContracts = {
+        CT002: 'simple',
+        CT003: 'simple'
+    };
+    var databaseContracts = /*[[${request.contracts}]]*/ defaultDatabaseContracts;
     //    打开这个地方的时候,应该判断自身从何处进入的
     //    来自空 则表明是点击自消息通知 应当给予清空本地缓存（使用数据库数据）
     //    反之则应该检查当前本地缓存中已表明同意的条款 进行AJAX操作 完成签章
-    console.log(document);
-    console.log(window);
+</script>
+<script>
+    $(function () {
+        $('.chk_1').attr('disabled', 'disabled');
+
+        $.map(databaseContracts, function (data, id) {
+            $('#' + id).prop('checked', true);
+        });
+
+        var targetContract = window.location.hash.substr(1);
+        if (targetContract && targetContract.length > 0) {
+            $('#' + targetContract).prop('checked', true);
+            $.ajax($.uriPrefix + '/projectLoanContract', {
+                method: 'put',
+                contentType: 'application/json; charset=UTF-8',
+                data: JSON.stringify({
+                    requestId: requestId,
+                    contract: targetContract
+                }),
+                error: function (re) {
+                    alert(re.responseText);
+                }
+            });
+        }
+    });
+
 </script>
 <p class="p-15 mb15">
     <!--<input value="提交" type="submit" class="black"  disabled="disabled"/>-->

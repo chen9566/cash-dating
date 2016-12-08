@@ -59,7 +59,7 @@ public class WealthControllerTest extends LoginWebTest {
      */
     @Test
 //    @Repeat(3)
-    public void projectLoan() throws IOException {
+    public void projectLoan() throws IOException, InterruptedException {
         MyPage myPage = myPage();
         Loan[] loanList = wealthService.loanList();
 //        System.out.println(Arrays.toString(loanList));
@@ -185,12 +185,24 @@ public class WealthControllerTest extends LoginWebTest {
 
         // 打开通知所指向的地址
         // 就可以玩一玩签单流程了
-        toSuccessPage(request.getId());
+        ProjectSuccessPage projectSuccessPage = toSuccessPage(request.getId());
+        // 1-9
+        String type = "CT00" + (1 + random.nextInt(9));
+
+        projectSuccessPage.sign(type);
+
+        projectSuccessPage = toSuccessPage(request.getId());
+        projectSuccessPage.assertSign(type);
+
+        projectLoanRequest = (ProjectLoanRequest) loanRequestRepository.getOne(request.getId());
+        assertThat(projectLoanRequest.getContracts().get(type))
+                .isNotEmpty();
         // 更新下里面的玩意儿
 //        projectLoanRequest.setContracts(new HashMap<>());
-        projectLoanRequest.getContracts().put("foo", "bar");
-        loanRequestRepository.save(projectLoanRequest);
-        toSuccessPage(request.getId());
+//        projectLoanRequest.getContracts().put("foo", "bar");
+//        loanRequestRepository.save(projectLoanRequest);
+//        toSuccessPage(request.getId());
+
     }
 
     private ProjectSuccessPage toSuccessPage(Long id) {
