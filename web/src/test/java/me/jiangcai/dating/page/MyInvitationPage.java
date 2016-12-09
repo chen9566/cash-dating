@@ -7,7 +7,6 @@ import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.service.StatisticService;
 import me.jiangcai.dating.util.Common;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -24,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * 邀请明细
  *
+ * myinvitation.html
  * @author CJ
  */
 public class MyInvitationPage extends AbstractPage {
@@ -82,6 +82,7 @@ public class MyInvitationPage extends AbstractPage {
 //                .findAny()
 //                .ifPresent(element -> codeButton = element);
 
+        teamButton = null;
         webDriver.findElements(By.tagName("input")).stream()
                 .filter(WebElement::isDisplayed)
                 .filter(element -> "调整手续费".equals(element.getAttribute("value")))
@@ -175,25 +176,29 @@ public class MyInvitationPage extends AbstractPage {
     }
 
     public void assertNoTeam() {
-        if (teamButton != null) {
-            try {
-                assertThat(teamButton.isDisplayed())
-                        .isFalse();
-            } catch (NoSuchElementException ignored) {
-
-            }
-        }
+//        if (teamButton != null) {
+//            try {
+//                assertThat(teamButton.isDisplayed())
+//                        .isFalse();
+//            } catch (NoSuchElementException ignored) {
+//
+//            }
+//        }
         assertThat(withdrawButton)
                 .isNull();
     }
 
     public void assertTeam() {
-        assertThat(teamButton.isDisplayed())
-                .isTrue();
+//        assertThat(teamButton.isDisplayed())
+//                .isTrue();
         assertThat(withdrawButton)
                 .isNotNull();
     }
 
+    /**
+     * 1.8.1 以后废止
+     */
+    @Deprecated
     public void clickMyTeam() {
         teamButton.click();
     }
