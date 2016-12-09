@@ -263,6 +263,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
         order.getPlatformWithdrawalOrderSet().add(withdrawalOrder);
 
         order = userOrderRepository.save(order);
+        withdrawalOrder = chanpayWithdrawalOrderRepository.getOne(withdrawalOrder.getId());
         // 先保存,失败自然回滚
 
         PaymentToCard paymentToCard = new PaymentToCard();
@@ -310,9 +311,14 @@ public abstract class AbstractChanpayService implements ChanpayService {
             if (order.getSystemComment().length() > 100) {
                 order.setSystemComment(order.getSystemComment().substring(0, 99));
             }
-            Notification notification = order.withdrawalTransferFailedNotification(withdrawalOrder, ex.getMessage());
-            if (notification != null)
-                applicationEventPublisher.publishEvent(notification);
+            try {
+                Notification notification = order.withdrawalTransferFailedNotification(withdrawalOrder, "系统内部故障");
+                if (notification != null)
+                    applicationEventPublisher.publishEvent(notification);
+            } catch (Throwable ignored) {
+                log.debug("no dist", ignored);
+            }
+
             return null;
         }
 
