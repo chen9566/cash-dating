@@ -25,8 +25,8 @@
             <p>
                 <span class="pull-right top-m"><img src="images/blackright-r.png"></span>
                 <span class="pull-right top-m" th:case="'success'">到账</span>
-                <span class="pull-right top-m fred" th:case="'transferring'">转账中</span>
-                <span class="pull-right top-m fred" th:case="*">未到账</span>
+                <span class="pull-right top-m fred" style="color:white" th:case="'transferring'">转账中</span>
+                <span class="pull-right top-m fred" style="color:white" th:case="*">未到账</span>
                 <span class="f17"
                       th:text="${#numbers.formatDecimal(order.order.amount,1,'COMMA',2,'POINT')}">4000.00</span>
                 <span class="small-e" th:class="${order.cashOrder?'small-e':'small-s'}"

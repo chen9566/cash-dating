@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * 我的银行卡,目前只支持一张卡
  *
+ * bankcard.html
  * @author CJ
  */
 public class MyBankPage extends AbstractPage {
@@ -92,7 +93,7 @@ public class MyBankPage extends AbstractPage {
 
     private BankCard toCard(WebElement element) {
         return new BankCard(element.findElement(By.className("txt")).getText()
-                , element.findElement(By.className("code-n")).getText());
+                , element.findElement(By.className("num")).getText());
     }
 
     @Data
@@ -104,8 +105,8 @@ public class MyBankPage extends AbstractPage {
 
         boolean check(Card card) {
             //number最后4位
-            String end = number.substring(number.length() - 4);
-            return card.getBank().getName().equals(bankName) && card.getNumber().endsWith(end);
+//            String end = number.substring(number.length() - 4);
+            return card.getBank().getName().equals(bankName) && card.getNumber().endsWith(number);
         }
     }
 }

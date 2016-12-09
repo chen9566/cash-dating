@@ -26,8 +26,8 @@
             style="background: linear-gradient(to right, #588CC6 , #4669B4);">
             <dt><img src="images/logo-gs.png" th:src="@{${card.bank.imageUri}}" class="img-circle"></dt>
             <dd><span class="txt" th:text="${card.bank.name}">杭州银行</span>
-                <span class="code-n" th:text="${#cashStrings.bankCardNumber(card.number)}">储蓄卡</span>
-                <span class="mi">**** **** ****</span> <span class="num">3333</span>
+                <span class="code-n">储蓄卡</span>
+                <span class="mi">**** **** ****</span> <span class="num" th:text="${card.tailNumber}">3333</span>
             </dd>
         </dl>
     </div>
