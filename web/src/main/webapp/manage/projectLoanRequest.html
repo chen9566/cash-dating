@@ -79,20 +79,32 @@
     <button id="approveButton" class="btn btn-danger" disabled>
         <i class="iconfont icon-approve"></i> 同意
     </button>
+    <button id="messageButton" class="btn btn-danger" disabled>
+        <!--<i class="iconfont icon-approve"></i> -->
+        催促用户
+    </button>
 </div>
 
 <div>
     <label>
-        审核中
         <input name="filterType" type="radio" value="0" checked/>
+        审核中
     </label>
     <label>
-        已批准
         <input name="filterType" type="radio" value="1"/>
+        等待投融家处理
     </label>
     <label>
-        全部
         <input name="filterType" type="radio" value="2"/>
+        用户处理中
+    </label>
+    <label>
+        <input name="filterType" type="radio" value="3"/>
+        用户处理完毕
+    </label>
+    <label>
+        <input name="filterType" type="radio" value="4"/>
+        全部
     </label>
 </div>
 
@@ -101,7 +113,9 @@
        data-url0="../mock/projectLoanRequest.json"
        data-url1="../mock/projectLoanRequest.json"
        data-url2="../mock/projectLoanRequest.json"
-       th:attr="data-url=@{/manage/data/projectLoan/pending},data-url0=@{/manage/data/projectLoan/pending},data-url1=@{/manage/data/projectLoan/accepted},data-url2=@{/manage/data/projectLoan/all}"
+       data-url3="../mock/projectLoanRequest.json"
+       data-url4="../mock/projectLoanRequest.json"
+       th:attr="data-url=@{/manage/data/projectLoan/pending},data-url0=@{/manage/data/projectLoan/pending},data-url1=@{/manage/data/projectLoan/accepted},data-url2=@{/manage/data/projectLoan/contract},data-url3=@{/manage/data/projectLoan/signed},data-url4=@{/manage/data/projectLoan/all}"
        data-page-list="[10, 25, 50]"
        data-toolbar="#toolbar"
 ></table>

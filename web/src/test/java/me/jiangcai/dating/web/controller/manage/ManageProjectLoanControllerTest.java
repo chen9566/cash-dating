@@ -71,6 +71,16 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
                 .param("limit", "10"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(), "$.total");
+        int currentContract = JsonPath.read(mockMvc.perform(getWeixin("/manage/data/projectLoan/contract").session(session)
+                .param("offset", "0")
+                .param("limit", "10"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString(), "$.total");
+        int currentSigned = JsonPath.read(mockMvc.perform(getWeixin("/manage/data/projectLoan/signed").session(session)
+                .param("offset", "0")
+                .param("limit", "10"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString(), "$.total");
 
         String userOpenId = createNewUser().getOpenId();
         Loan loan = Stream.of(wealthService.loanList())
@@ -160,7 +170,48 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total").value(currentAccepted + 1));
 
+        // 此处执行一个接口 检查
+        mockMvc.perform(putWeixin("/manage/data/projectLoan/query/" + firstPaddingId).session(session))
+                .andExpect(status().isOk());
+        // 这个时候
+        mockMvc.perform(getWeixin("/manage/data/projectLoan/accepted").session(session)
+                .param("offset", "0")
+                .param("limit", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total").value(currentAccepted));
 
+        //
+        mockMvc.perform(getWeixin("/manage/data/projectLoan/contract").session(session)
+                .param("offset", "0")
+                .param("limit", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total").value(currentContract + 1));
+        // 我给填满8份合同
+        signAllContract(firstPaddingId);
+
+        mockMvc.perform(getWeixin("/manage/data/projectLoan/contract").session(session)
+                .param("offset", "0")
+                .param("limit", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total").value(currentContract));
+        mockMvc.perform(getWeixin("/manage/data/projectLoan/signed").session(session)
+                .param("offset", "0")
+                .param("limit", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total").value(currentSigned + 1));
+    }
+
+    /**
+     * 签订所有的合同
+     *
+     * @param id
+     */
+    private void signAllContract(long id) {
+        ProjectLoanRequest request = (ProjectLoanRequest) loanRequestRepository.getOne(id);
+        ManageProjectLoanController.ContractElements.forEach(type -> {
+            request.getContracts().put(type, "");
+        });
+        loanRequestRepository.save(request);
     }
 
 

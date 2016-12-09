@@ -1,11 +1,15 @@
 package me.jiangcai.dating.model.trj;
 
-import lombok.Data;
-
 /**
+ * 借款的审核结果
+ *
  * @author CJ
  */
-@Data
-public class LoanStatus {
-    private String status;
+public enum LoanStatus {
+    success,
+    failed,
+    /**
+     * 待审核
+     */
+    auditing
 }

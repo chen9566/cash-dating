@@ -20,18 +20,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.NumberUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +45,21 @@ import java.util.Map;
 @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Project_Loan_Value + "')")
 @Controller
 public class ManageProjectLoanController extends AbstractLoanManage {
+    public static final List<String> ContractElements = Collections.unmodifiableList(Arrays.asList(
+            "CT001",
+            "CT002",
+            "CT003",
+            "CT004",
+            "CT005",
+            "CT006",
+            "CT007",
+            "CT008",
+            "CT009"
+//            ,
+//            "CT0010",
+//            "CT0011",
+//            "CT0012",
+    ));
     @Autowired
     private DataService dataService;
     @Autowired
@@ -55,6 +74,16 @@ public class ManageProjectLoanController extends AbstractLoanManage {
         model.addAttribute("loanTermDays", wealthService.nextProjectLoanTerm());
         model.addAttribute("yearRate", systemService.getProjectLoanYearRate());
         return "manage/projectLoanRequest.html";
+    }
+
+    //检查投融家状态
+    @RequestMapping(value = "/manage/data/projectLoan/query/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    public void queryStatus(@PathVariable("id") long id) throws IOException {
+        // 首先确保状态是 wait 的 不然就没有任意意义
+        // 确认成功之后 就可以让他们更改状态了
+        wealthService.queryProjectLoanStatus(id);
     }
 
     @RequestMapping(value = "/manage/data/projectLoan", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -102,6 +131,34 @@ public class ManageProjectLoanController extends AbstractLoanManage {
             , int offset, int limit) {
         return dataService.data(user, search, sort, order, offset, limit, ProjectLoanRequest.class, fieldList(), dataFilter(LoanRequestStatus.accept));
     }
+
+    @RequestMapping(value = "/manage/data/projectLoan/contract", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    @Transactional(readOnly = true)
+    public Object contract(@AuthenticationPrincipal User user, String search, String sort, Sort.Direction order
+            , int offset, int limit) {
+        return dataService.data(user, search, sort, order, offset, limit, ProjectLoanRequest.class, fieldList(), new DataFilter<ProjectLoanRequest>() {
+            @Override
+            public Predicate dataFilter(User user, CriteriaBuilder criteriaBuilder, Root<ProjectLoanRequest> root) {
+                return criteriaBuilder.and(criteriaBuilder.equal(root.get("processStatus"), LoanRequestStatus.contract), criteriaBuilder.lessThan(criteriaBuilder.size(root.get("contracts")), ContractElements.size()));
+            }
+        });
+    }
+
+    // 签章完毕
+    @RequestMapping(value = "/manage/data/projectLoan/signed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    @Transactional(readOnly = true)
+    public Object signed(@AuthenticationPrincipal User user, String search, String sort, Sort.Direction order
+            , int offset, int limit) {
+        return dataService.data(user, search, sort, order, offset, limit, ProjectLoanRequest.class, fieldList(), new DataFilter<ProjectLoanRequest>() {
+            @Override
+            public Predicate dataFilter(User user, CriteriaBuilder criteriaBuilder, Root<ProjectLoanRequest> root) {
+                return criteriaBuilder.and(criteriaBuilder.equal(root.get("processStatus"), LoanRequestStatus.contract), criteriaBuilder.equal(criteriaBuilder.size(root.get("contracts")), ContractElements.size()));
+            }
+        });
+    }
+
 
     /**
      * @param status 要求现在的状态

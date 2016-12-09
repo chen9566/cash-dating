@@ -139,7 +139,7 @@ public class WealthController {
     @Transactional(readOnly = true)
     public String projectLoanSuccess(@AuthenticationPrincipal User user, long id, Model model) {
         final LoanRequest loanRequest = loanRequestRepository.getOne(id);
-        if (loanRequest.getProcessStatus() != LoanRequestStatus.accept)
+        if (loanRequest.getProcessStatus() != LoanRequestStatus.contract)
             throw new IllegalStateException("not accept project loan");
         if (!(loanRequest instanceof ProjectLoanRequest))
             throw new IllegalStateException("ProjectLoanRequest only");

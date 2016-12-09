@@ -72,7 +72,7 @@
       "familyIncome": 10,
       "age": 30,
       "createdTime": "2016-10-31",
-      "processStatus": "处理中",
+      "processStatus": "等待供应商",
       "processTime": "2016-10-31",
       "comment": "哈"
     },
@@ -97,7 +97,7 @@
       "familyIncome": 10,
       "age": 30,
       "createdTime": "2016-10-31",
-      "processStatus": "处理中",
+      "processStatus": "等待供应商",
       "processTime": "2016-10-31",
       "comment": "哈"
     }

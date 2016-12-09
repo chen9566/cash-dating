@@ -155,7 +155,19 @@ $(function () {
             title: '状态',
             field: 'processStatus',
             align: 'center',
-            sortable: true
+            sortable: true,
+            formatter: function (status, row) {
+                //此处分析状态
+                if (status == '等待供应商') {
+                    $.ajax($.uriPrefix + '/manage/data/projectLoan/query/' + row.id, {
+                        method: 'put',
+                        error: function (res) {
+                            alert(res.responseText)
+                        }
+                    })
+                }
+                return status;
+            }
         }, {
             title: '备注',
             field: 'comment',

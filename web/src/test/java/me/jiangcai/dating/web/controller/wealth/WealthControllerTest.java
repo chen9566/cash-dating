@@ -186,6 +186,7 @@ public class WealthControllerTest extends LoginWebTest {
         // 打开通知所指向的地址
         // 就可以玩一玩签单流程了
         ProjectSuccessPage projectSuccessPage = toSuccessPage(request.getId());
+        // 这会儿应该是打不开的………………这个测试无法跑下去
         // 1-9
         String type = "CT00" + (1 + random.nextInt(9));
 

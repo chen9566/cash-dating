@@ -9,6 +9,7 @@ import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.entity.support.LoanRequestStatus;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
+import me.jiangcai.dating.model.trj.LoanStatus;
 import me.jiangcai.dating.model.trj.ProjectLoan;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 import me.jiangcai.dating.repository.CardRepository;
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -261,8 +263,6 @@ public class WealthServiceImpl implements WealthService {
         request.setTermDays(termDays);
         request.setComment(comment);
         request.setSupplierRequestId(id);
-
-        applicationEventPublisher.publishEvent(request.toAcceptNotification());
     }
 
     @Override
@@ -335,6 +335,25 @@ public class WealthServiceImpl implements WealthService {
     @Override
     public int nextProjectLoanTerm() {
         return Integer.parseInt(new ProjectLoan().getTerm()[0]);
+    }
+
+    @Override
+    public void queryProjectLoanStatus(long id) throws IOException {
+        ProjectLoanRequest request = (ProjectLoanRequest) loanRequestRepository.getOne(id);
+        if (request.getProcessStatus() != LoanRequestStatus.accept && StringUtils.isEmpty(request.getSupplierRequestId()))
+            return;
+        {
+            LoanStatus loanStatus = tourongjiaService.checkLoanStatus(request.getSupplierRequestId());
+            if (loanStatus == LoanStatus.success) {
+                log.info("[TRJ] allow loan:" + request.getId());
+                request.setProcessStatus(LoanRequestStatus.contract);
+                applicationEventPublisher.publishEvent(request.toAcceptNotification());
+            } else if (loanStatus == LoanStatus.failed) {
+                log.info("[TRJ] reject loan:" + request.getId());
+                request.setProcessStatus(LoanRequestStatus.reject);
+                applicationEventPublisher.publishEvent(request.toRejectNotification());
+            }
+        }
     }
 
     private Loan[] reCacheLoan() throws IOException {

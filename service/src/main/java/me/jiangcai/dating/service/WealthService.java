@@ -154,6 +154,9 @@ public interface WealthService {
      */
     int nextProjectLoanTerm();
 
+    @Transactional
+    void queryProjectLoanStatus(long id) throws IOException;
+
 //
 //    /**
 //     * @return 总投资金额
