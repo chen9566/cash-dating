@@ -199,6 +199,10 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
                 .param("limit", "10"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total").value(currentSigned + 1));
+
+        ProjectLoanRequest projectLoanRequest = (ProjectLoanRequest) loanRequestRepository.getOne(firstPaddingId);
+        assertThat(projectLoanRequest.getContracts())
+                .hasSize(ManageProjectLoanController.ContractElements.size());
     }
 
     /**

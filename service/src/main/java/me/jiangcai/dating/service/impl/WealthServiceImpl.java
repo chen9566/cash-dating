@@ -351,6 +351,7 @@ public class WealthServiceImpl implements WealthService {
             } else if (loanStatus == LoanStatus.failed) {
                 log.info("[TRJ] reject loan:" + request.getId());
                 request.setProcessStatus(LoanRequestStatus.reject);
+                request.setComment("被投融家拒绝");
                 applicationEventPublisher.publishEvent(request.toRejectNotification());
             }
         }

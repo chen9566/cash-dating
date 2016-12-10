@@ -27,10 +27,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -137,12 +135,10 @@ public class ManageProjectLoanController extends AbstractLoanManage {
     @Transactional(readOnly = true)
     public Object contract(@AuthenticationPrincipal User user, String search, String sort, Sort.Direction order
             , int offset, int limit) {
-        return dataService.data(user, search, sort, order, offset, limit, ProjectLoanRequest.class, fieldList(), new DataFilter<ProjectLoanRequest>() {
-            @Override
-            public Predicate dataFilter(User user, CriteriaBuilder criteriaBuilder, Root<ProjectLoanRequest> root) {
-                return criteriaBuilder.and(criteriaBuilder.equal(root.get("processStatus"), LoanRequestStatus.contract), criteriaBuilder.lessThan(criteriaBuilder.size(root.get("contracts")), ContractElements.size()));
-            }
-        });
+        return dataService.data(user, search, sort, order, offset, limit, ProjectLoanRequest.class, fieldList()
+                , (user1, criteriaBuilder, root)
+                        -> criteriaBuilder.and(criteriaBuilder.equal(root.get("processStatus"), LoanRequestStatus.contract)
+                        , criteriaBuilder.lessThan(criteriaBuilder.size(root.get("contracts")), ContractElements.size())));
     }
 
     // 签章完毕
@@ -151,12 +147,10 @@ public class ManageProjectLoanController extends AbstractLoanManage {
     @Transactional(readOnly = true)
     public Object signed(@AuthenticationPrincipal User user, String search, String sort, Sort.Direction order
             , int offset, int limit) {
-        return dataService.data(user, search, sort, order, offset, limit, ProjectLoanRequest.class, fieldList(), new DataFilter<ProjectLoanRequest>() {
-            @Override
-            public Predicate dataFilter(User user, CriteriaBuilder criteriaBuilder, Root<ProjectLoanRequest> root) {
-                return criteriaBuilder.and(criteriaBuilder.equal(root.get("processStatus"), LoanRequestStatus.contract), criteriaBuilder.equal(criteriaBuilder.size(root.get("contracts")), ContractElements.size()));
-            }
-        });
+        return dataService.data(user, search, sort, order, offset, limit, ProjectLoanRequest.class, fieldList()
+                , (user1, criteriaBuilder, root)
+                        -> criteriaBuilder.and(criteriaBuilder.equal(root.get("processStatus"), LoanRequestStatus.contract)
+                        , criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.size(root.get("contracts")), ContractElements.size())));
     }
 
 
