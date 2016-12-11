@@ -6,10 +6,12 @@ import me.jiangcai.dating.core.Login;
 import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.LoanRequestStatus;
+import me.jiangcai.dating.service.DataResourceField;
 import me.jiangcai.dating.service.DataService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.WealthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -33,9 +35,9 @@ import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @author CJ
@@ -43,21 +45,6 @@ import java.util.Map;
 @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Project_Loan_Value + "')")
 @Controller
 public class ManageProjectLoanController extends AbstractLoanManage {
-    public static final List<String> ContractElements = Collections.unmodifiableList(Arrays.asList(
-            "CT001",
-            "CT002",
-            "CT003",
-            "CT004",
-            "CT005",
-            "CT006",
-            "CT007",
-            "CT008",
-            "CT009"
-//            ,
-//            "CT0010",
-//            "CT0011",
-//            "CT0012",
-    ));
     @Autowired
     private DataService dataService;
     @Autowired
@@ -66,12 +53,24 @@ public class ManageProjectLoanController extends AbstractLoanManage {
     private ConversionService conversionService;
     @Autowired
     private SystemService systemService;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @RequestMapping(value = "/manage/projectLoanRequest", method = RequestMethod.GET)
     public String index(Model model) {
         model.addAttribute("loanTermDays", wealthService.nextProjectLoanTerm());
         model.addAttribute("yearRate", systemService.getProjectLoanYearRate());
         return "manage/projectLoanRequest.html";
+    }
+
+
+    @RequestMapping(value = "/manage/data/projectLoan/sendNotify/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional(readOnly = true)
+    public void sendNotify(@PathVariable("id") long id) throws IOException {
+        // 首先确保状态是 wait 的 不然就没有任意意义
+        // 确认成功之后 就可以让他们更改状态了
+        wealthService.sendNotify(id);
     }
 
     //检查投融家状态
@@ -138,7 +137,7 @@ public class ManageProjectLoanController extends AbstractLoanManage {
         return dataService.data(user, search, sort, order, offset, limit, ProjectLoanRequest.class, fieldList()
                 , (user1, criteriaBuilder, root)
                         -> criteriaBuilder.and(criteriaBuilder.equal(root.get("processStatus"), LoanRequestStatus.contract)
-                        , criteriaBuilder.lessThan(criteriaBuilder.size(root.get("contracts")), ContractElements.size())));
+                        , criteriaBuilder.lessThan(criteriaBuilder.size(root.get("contracts")), WealthService.ContractElements.size())));
     }
 
     // 签章完毕
@@ -150,7 +149,7 @@ public class ManageProjectLoanController extends AbstractLoanManage {
         return dataService.data(user, search, sort, order, offset, limit, ProjectLoanRequest.class, fieldList()
                 , (user1, criteriaBuilder, root)
                         -> criteriaBuilder.and(criteriaBuilder.equal(root.get("processStatus"), LoanRequestStatus.contract)
-                        , criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.size(root.get("contracts")), ContractElements.size())));
+                        , criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.size(root.get("contracts")), WealthService.ContractElements.size())));
     }
 
 
@@ -243,6 +242,27 @@ public class ManageProjectLoanController extends AbstractLoanManage {
                     }
                 }, new ToStringField("processTime")
                 , new DataService.StringField("comment")
+                , applicationContext.getBean(DataResourceField.class, "frontIDUrl"
+                        , new Function<Root<?>, Expression<?>>() {
+                            @Override
+                            public Expression<?> apply(Root<?> root) {
+                                return root.join("loanData", JoinType.LEFT).get("frontIdResource");
+                            }
+                        })
+                , applicationContext.getBean(DataResourceField.class, "backIDUrl"
+                        , new Function<Root<?>, Expression<?>>() {
+                            @Override
+                            public Expression<?> apply(Root<?> root) {
+                                return root.join("loanData", JoinType.LEFT).get("backIdResource");
+                            }
+                        })
+                , applicationContext.getBean(DataResourceField.class, "handIDUrl"
+                        , new Function<Root<?>, Expression<?>>() {
+                            @Override
+                            public Expression<?> apply(Root<?> root) {
+                                return root.join("loanData", JoinType.LEFT).get("handIdResource");
+                            }
+                        })
         );
     }
 

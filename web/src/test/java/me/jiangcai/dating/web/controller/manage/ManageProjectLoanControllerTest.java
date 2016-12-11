@@ -202,7 +202,12 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
 
         ProjectLoanRequest projectLoanRequest = (ProjectLoanRequest) loanRequestRepository.getOne(firstPaddingId);
         assertThat(projectLoanRequest.getContracts())
-                .hasSize(ManageProjectLoanController.ContractElements.size());
+                .hasSize(WealthService.ContractElements.size());
+
+        // 手动通知
+        mockMvc.perform(putWeixin("/manage/data/projectLoan/sendNotify/" + firstPaddingId).session(session))
+                .andExpect(status().isOk());
+
     }
 
     /**
@@ -212,7 +217,7 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
      */
     private void signAllContract(long id) {
         ProjectLoanRequest request = (ProjectLoanRequest) loanRequestRepository.getOne(id);
-        ManageProjectLoanController.ContractElements.forEach(type -> {
+        WealthService.ContractElements.forEach(type -> {
             request.getContracts().put(type, "");
         });
         loanRequestRepository.save(request);
@@ -244,13 +249,29 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
     }
 
     private long firstPadding(MockHttpSession session) throws Exception {
-        return ((Number) JsonPath.read(mockMvc.perform(getWeixin("/manage/data/projectLoan/pending").session(session)
+        final String contentAsString = mockMvc.perform(getWeixin("/manage/data/projectLoan/pending").session(session)
                 .param("offset", "0")
                 .param("limit", "10"))
                 .andExpect(status().isOk())
                 .andExpect(simliarDataJsonAs("/mock/projectLoanRequest.json"))
 //                .andDo(print())
-                .andReturn().getResponse().getContentAsString(), "$.rows[0].id")).longValue();
+                .andReturn().getResponse().getContentAsString();
+        // 几个图必须是不同的地址的 而且必须都存在
+        String front = JsonPath.read(contentAsString, "$.rows[0].frontIDUrl");
+        String back = JsonPath.read(contentAsString, "$.rows[0].backIDUrl");
+        String hand = JsonPath.read(contentAsString, "$.rows[0].handIDUrl");
+        System.out.println(front);
+        System.out.println(back);
+        System.out.println(hand);
+        assertThat(front).isNotEmpty()
+                .isNotEqualTo(back)
+                .isNotEqualTo(hand);
+        assertThat(back).isNotEmpty()
+                .isNotEqualTo(hand);
+        assertThat(hand).isNotEmpty();
+
+
+        return ((Number) JsonPath.read(contentAsString, "$.rows[0].id")).longValue();
     }
 
     /**

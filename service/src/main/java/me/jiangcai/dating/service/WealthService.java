@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,6 +25,25 @@ import java.util.List;
  * @author CJ
  */
 public interface WealthService {
+
+    /**
+     * 所有的合同
+     */
+    List<String> ContractElements = Collections.unmodifiableList(Arrays.asList(
+            "CT001",
+            "CT002",
+            "CT003",
+            "CT004",
+            "CT005",
+            "CT006",
+            "CT007",
+            "CT008",
+            "CT009"
+//            ,
+//            "CT0010",
+//            "CT0011",
+//            "CT0012",
+    ));
 
     /**
      * @return 是否支持更多理财选择
@@ -156,6 +177,9 @@ public interface WealthService {
 
     @Transactional
     void queryProjectLoanStatus(long id) throws IOException;
+
+    @Transactional(readOnly = true)
+    void sendNotify(long id);
 
 //
 //    /**

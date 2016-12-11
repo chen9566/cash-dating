@@ -50,6 +50,29 @@
 <body>
 <div class="header"></div>
 
+<div id="detailDialog" title="详情">
+    <b class="detailName">姓名</b>
+    <ul>
+        <li>申请金额:<span class="detailAmount" style="float: right;">100</span></li>
+        <li>申请期限:<span class="detailTermDays" style="float: right;">30</span></li>
+        <li>申请时间:<span class="detailTime" style="float: right;">2016-12-10</span></li>
+    </ul>
+    <div id="imageRegion">
+        <h3>身份证正面</h3>
+        <div>
+            <img height="400" name="frontID" src=""/>
+        </div>
+        <h3>身份证背面</h3>
+        <div>
+            <img height="400" name="backID" src=""/>
+        </div>
+        <h3>手持身份证</h3>
+        <div>
+            <img height="400" name="handID" src=""/>
+        </div>
+    </div>
+</div>
+
 <div id="approveDialog" title="同意借款">
     <form action="#">
         <p>点击确定,借款申请即转交第三方处理。</p>
@@ -73,13 +96,16 @@
 </div>
 
 <div id="toolbar">
+    <button id="detailButton" class="btn btn-danger" disabled>
+        详情
+    </button>
     <button id="declineButton" class="btn btn-danger" disabled>
         <i class="iconfont icon-decline"></i> 拒绝
     </button>
     <button id="approveButton" class="btn btn-danger" disabled>
         <i class="iconfont icon-approve"></i> 同意
     </button>
-    <button id="messageButton" class="btn btn-danger" disabled>
+    <button id="messageButton" class="btn btn-danger" title="可以给用户再发一次微信推送要求他们尽快签订合同" disabled>
         <!--<i class="iconfont icon-approve"></i> -->
         催促用户
     </button>

@@ -357,6 +357,17 @@ public class WealthServiceImpl implements WealthService {
         }
     }
 
+    @Override
+    public void sendNotify(long id) {
+        ProjectLoanRequest request = (ProjectLoanRequest) loanRequestRepository.getOne(id);
+        if (request.getProcessStatus() != LoanRequestStatus.contract)
+            throw new IllegalStateException("Bad Status:" + request.getProcessStatus());
+        //都弄好了就别bb了
+//        if (request.getContracts().size() == ContractElements.size())
+//            throw new IllegalStateException("all contracts has signed");
+        applicationEventPublisher.publishEvent(request.toAcceptNotification());
+    }
+
     private Loan[] reCacheLoan() throws IOException {
         try {
             loanCache = tourongjiaService.loanList();

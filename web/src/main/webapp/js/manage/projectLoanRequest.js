@@ -3,12 +3,16 @@
  */
 
 $(function () {
+    $('#imageRegion').accordion();
     var declineButton = $('#declineButton');
     var approveButton = $('#approveButton');
+    var messageButton = $('#messageButton');
+    var detailButton = $('#detailButton');
     var table = $('#table');
 
     var approveDialog = $('#approveDialog');
     var declineDialog = $('#declineDialog');
+    var detailDialog = $('#detailDialog');
     var declineCommentInput = $('#declineCommentInput');
     var commentInput = $('#commentInput');
     var okButton = $('button[class~=btn-ok]');
@@ -25,7 +29,7 @@ $(function () {
         });
     });
 
-    approveDialog.add(declineDialog).dialog({
+    approveDialog.add(declineDialog).add(detailDialog).dialog({
         autoOpen: false,
         show: {
             effect: "blind",
@@ -174,7 +178,7 @@ $(function () {
             align: 'center',
             sortable: true
         }
-    ], approveButton.add(declineButton));
+    ], approveButton.add(declineButton).add(messageButton).add(detailButton));
 
     // if (!$.prototypesMode && !$.auths.agent)
     //     approveButton.add(declineButton).hide();
@@ -194,6 +198,38 @@ $(function () {
     declineButton.click(function () {
         declineDialog.ids = idSupplier();
         declineDialog.dialog('open');
+    });
+
+    detailButton.click(function () {
+        var data = table.bootstrapTable('getRowByUniqueId', idSupplier()[0]);
+        $('.detailName', detailDialog).text(data.name);
+        $('.detailAmount', detailDialog).text(data.applyAmount);
+        $('.detailTermDays', detailDialog).text(data.applyTermDays);
+        $('.detailTime', detailDialog).text(data.createdTime);
+        $('[name=frontID]', detailDialog).attr('src', data.frontIDUrl);
+        $('[name=backID]', detailDialog).attr('src', data.backIDUrl);
+        $('[name=handID]', detailDialog).attr('src', data.handIDUrl);
+        detailDialog.dialog("option", "width", 500);
+        detailDialog.dialog('open');
+    });
+
+    // 签章和其他
+    messageButton.click(function () {
+        $.each(idSupplier(), function (index, id) {
+            var data = table.bootstrapTable('getRowByUniqueId', id);
+            // console.log(data);
+            if (data.processStatus == '签章和其他') {
+                $.ajax($.uriPrefix + '/manage/data/projectLoan/sendNotify/' + data.id, {
+                    method: 'put',
+                    success: function () {
+                        alert('通知已发送');
+                    }
+                    // error: function (res) {
+                    //     alert(res.responseText)
+                    // }
+                })
+            }
+        })
     });
 
 });
