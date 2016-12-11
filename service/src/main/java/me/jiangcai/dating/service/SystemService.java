@@ -33,6 +33,24 @@ public interface SystemService {
     RateConfig currentRateConfig(ProfitSplit profitSplit);
 
     /**
+     * @param openId 检测openId
+     * @param number 要求数量
+     * @return 是否已邀请足够数量的有效用户
+     */
+    @Transactional(readOnly = true)
+    boolean hasInviteValidUser(String openId, int number);
+
+    /**
+     * @return 系统提供的优惠手续费率
+     */
+    BigDecimal systemPreferentialRate();
+
+    /**
+     * @return 系统提供的默认手续费率
+     */
+    BigDecimal systemDefaultRate();
+
+    /**
      * @param profitSplit 相关
      * @return 账面手续费
      */

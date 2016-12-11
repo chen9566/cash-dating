@@ -270,12 +270,15 @@ public class User implements WeixinUser, ProfitSplit, UserDetails, Locker {
 
     @Override
     public BigDecimal bookProfileRate(SystemService systemService) {
-        if (myAgentInfo == null)
-            return null;
-        if (myAgentInfo.getBookLevel() == null)
-            return null;
-
-        return myAgentInfo.getBookLevel().toRate();
+        if (systemService.hasInviteValidUser(openId, 5))
+            return systemService.systemPreferentialRate();
+        return null;
+//        if (myAgentInfo == null)
+//            return null;
+//        if (myAgentInfo.getBookLevel() == null)
+//            return null;
+//
+//        return myAgentInfo.getBookLevel().toRate();
     }
 
     @Override
