@@ -80,6 +80,8 @@ public class InviteControllerTest extends LoginWebTest {
         createSuccessCashOrder(newbie, "200");
         createSuccessCashOrder(newbie, "100");
 
+        addUserBalance(myUser.getOpenId(), randomOrderAmount());
+
         // 我再提现
         BigDecimal balance = statisticService.balance(myUser.getOpenId());
         orderService.newWithdrawOrder(myUser, balance, null);
