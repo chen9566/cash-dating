@@ -282,7 +282,8 @@ public class User implements WeixinUser, ProfitSplit, UserDetails, Locker {
     public double agentProfileRate(SystemService systemService) {
         if (agentUser == null)
             return 0;
-        return agentUser.agentInfo != null ? 0.8 : 0.2;
+//        return agentUser.agentInfo != null ? 0.8 : 0.2;
+        return 0;
     }
 
     @Override
