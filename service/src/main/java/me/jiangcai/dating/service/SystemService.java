@@ -1,7 +1,9 @@
 package me.jiangcai.dating.service;
 
 import me.jiangcai.dating.ProfitSplit;
+import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.entity.support.RateConfig;
+import me.jiangcai.dating.model.PayChannel;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -39,6 +41,12 @@ public interface SystemService {
      */
     @Transactional(readOnly = true)
     boolean hasInviteValidUser(String openId, int number);
+
+    /**
+     * @param channel 支付方式
+     * @return 套现渠道
+     */
+    ArbitrageChannel arbitrageChannel(PayChannel channel);
 
     /**
      * @return 系统提供的优惠手续费率

@@ -1,10 +1,12 @@
 package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.ProfitSplit;
+import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.SystemString;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.RateConfig;
+import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.repository.SystemStringRepository;
 import me.jiangcai.dating.service.SystemService;
 import org.apache.commons.logging.Log;
@@ -158,6 +160,11 @@ public class SystemServiceImpl implements SystemService {
         } catch (NoResultException ignored) {
             return false;
         }
+    }
+
+    @Override
+    public ArbitrageChannel arbitrageChannel(PayChannel channel) {
+        return null;
     }
 
     @Override

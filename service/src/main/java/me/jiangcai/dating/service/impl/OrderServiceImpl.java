@@ -2,7 +2,6 @@ package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.ThreadSafe;
 import me.jiangcai.dating.entity.CashOrder;
-import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
 import me.jiangcai.dating.entity.PayToUserOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
@@ -136,10 +135,12 @@ public class OrderServiceImpl implements OrderService {
 
         if (!order.getPlatformOrderSet().isEmpty())
             return order.getPlatformOrderSet().iterator().next();
-        ChanpayOrder chanpayOrder = chanpayService.createOrder(order);
-        order.getPlatformOrderSet().add(chanpayOrder);
+
+        PlatformOrder order1 = systemService.arbitrageChannel(channel).newOrder(order);
+//        ChanpayOrder chanpayOrder = chanpayService.createOrder(order);
+        order.getPlatformOrderSet().add(order1);
         cashOrderRepository.save(order);
-        return chanpayOrder;
+        return order1;
     }
 
     @Override
@@ -214,6 +215,7 @@ public class OrderServiceImpl implements OrderService {
         return toMonthly(finishedOrderFlows(openId));
     }
 
+    // 提现供应商?
     @Override
     public ChanpayWithdrawalOrder withdrawalWithCard(String orderId, Long cardId) throws IOException, SignatureException {
         CashOrder order = getOne(orderId);
