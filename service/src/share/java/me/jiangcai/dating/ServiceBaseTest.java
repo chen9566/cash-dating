@@ -18,6 +18,7 @@ import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.SubBranchBankRepository;
 import me.jiangcai.dating.repository.UserOrderRepository;
+import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.CardService;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
@@ -66,6 +67,9 @@ public abstract class ServiceBaseTest extends SpringWebTest {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     protected UserOrderRepository userOrderRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private UserRepository userRepository;
 
     public SubBranchBank randomSubBranchBank() {
         return subBranchBankRepository.findAll().stream()
@@ -235,6 +239,18 @@ public abstract class ServiceBaseTest extends SpringWebTest {
      */
     protected BigDecimal randomOrderAmount() {
         return BigDecimal.valueOf(100 + random.nextInt(100000 - 100));
+    }
+
+    /**
+     * 添加余额
+     *
+     * @param openId 用户
+     * @param amount 金额
+     */
+    protected void addUserBalance(String openId, BigDecimal amount) {
+        User user = userService.byOpenId(openId);
+        user.setSettlementBalance(user.getSettlementBalance().add(amount));
+        userRepository.save(user);
     }
 
     public static class RandomComparator implements Comparator<Object> {

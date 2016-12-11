@@ -56,6 +56,9 @@ public class StatisticServiceTest extends ServiceBaseTest {
         cashOrder = orderService.newOrder(newbie, amount, null, null);
         tradeSuccess(cashOrder);
 
+        // 手动给它加余额
+        addUserBalance(user.getOpenId(), randomOrderAmount());
+
         assertThat(statisticService.balance(user.getOpenId()))
                 .isGreaterThan(BigDecimal.ZERO);
         assertThat(statisticService.revenue(user.getOpenId()))
