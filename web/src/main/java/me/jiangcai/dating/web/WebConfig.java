@@ -84,16 +84,16 @@ public class WebConfig {
             ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry =
                     http.antMatcher("/**")
                             .authorizeRequests();
-//            if (environment.acceptsProfiles("test") || environment.acceptsProfiles("development")) {//测试阶段或者开发阶段
-//                registry = registry
-////                    .anyRequest().permitAll()//不妨这样  不要这样! 安全也是业务的一部分 同样需要测试,此处许可仅仅是为了原型测试。
-//                        .antMatchers("/manage/upload").permitAll()
-//                        .antMatchers("/manage/upload/fine").permitAll()
-//                        .antMatchers("/manage/widget/widgets").permitAll()
-//                        .antMatchers("/manage/owners").permitAll();
-//            }
+
+            if (environment.acceptsProfiles("test") || environment.acceptsProfiles("development")) {//测试阶段或者开发阶段
+                registry = registry
+                        .antMatchers("/mockChronePay/**").permitAll()
+                ;
+            }
 
             registry
+                    // 产生二维码
+                    .antMatchers("/toQR").permitAll()
                     // 静态展示
                     .antMatchers("/mart/**").permitAll()
                     .antMatchers("/carinsurance.html").permitAll()

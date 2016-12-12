@@ -1,6 +1,7 @@
 package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.ThreadSafe;
+import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
 import me.jiangcai.dating.entity.PayToUserOrder;
@@ -26,6 +27,7 @@ import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.lib.seext.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +55,7 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy年M月", Locale.CHINA);
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private CashOrderRepository cashOrderRepository;
     @Autowired
@@ -61,10 +64,13 @@ public class OrderServiceImpl implements OrderService {
     private ChanpayService chanpayService;
     @Autowired
     private SystemService systemService;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private CardRepository cardRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private PayToUserOrderRepository payToUserOrderRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private WithdrawOrderRepository withdrawOrderRepository;
     @Autowired
@@ -72,6 +78,8 @@ public class OrderServiceImpl implements OrderService {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserOrderRepository userOrderRepository;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Override
     public CashOrder newOrder(User user, BigDecimal amount, String comment, Long cardId) {
@@ -172,16 +180,35 @@ public class OrderServiceImpl implements OrderService {
                         flow.setStatus(OrderFlowStatus.transferring);
                     }
                     flow.setWithdrawalOrder(withdrawalOrder);
-                } else
-                    flow.setStatus(OrderFlowStatus.cardRequired);
+                } else {
+                    arbitrageNotFound(flow);
+                }
             } else {
-                flow.setStatus(OrderFlowStatus.cardRequired);
+                arbitrageNotFound(flow);
+
             }
 
             if (!flowArrayList.contains(flow))
                 flowArrayList.add(flow);
         });
         return flowArrayList;
+    }
+
+    private void arbitrageNotFound(OrderFlow flow) {
+        flow.setStatus(OrderFlowStatus.cardRequired);
+        // 也不见得
+//                获取支付订单
+        PlatformOrder platformOrder = flow.getOrder().getPlatformOrderSet().stream()
+                .filter(PlatformOrder::isFinish).findFirst().orElseThrow(IllegalStateException::new);
+        ArbitrageChannel channel = applicationContext.getBean(platformOrder.channelClass());
+        if (channel.useOneOrderForPayAndArbitrage()) {
+            if (flow.getOrder().isWithdrawalCompleted()) {
+                flow.setStatus(OrderFlowStatus.success);
+            } else if (flow.getOrder().getSystemComment() != null) {
+                flow.setStatus(OrderFlowStatus.failed);
+            } else
+                flow.setStatus(OrderFlowStatus.transferring);
+        }
     }
 
     @Override

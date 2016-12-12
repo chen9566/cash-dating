@@ -13,8 +13,8 @@ import me.jiangcai.chanpay.exception.SystemException;
 import me.jiangcai.chanpay.model.TradeStatus;
 import me.jiangcai.chanpay.service.TransactionService;
 import me.jiangcai.chanpay.service.impl.PayHandler;
-import me.jiangcai.dating.repository.ChanpayOrderRepository;
-import me.jiangcai.dating.repository.ChanpayWithdrawalOrderRepository;
+import me.jiangcai.dating.repository.PlatformOrderRepository;
+import me.jiangcai.dating.repository.PlatformWithdrawalOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -38,9 +38,9 @@ public class MockTransactionService implements TransactionService {
      */
     public static String FailedServiceCardNumber = null;
     @Autowired
-    private ChanpayOrderRepository chanpayOrderRepository;
+    private PlatformOrderRepository platformOrderRepository;
     @Autowired
-    private ChanpayWithdrawalOrderRepository chanpayWithdrawalOrderRepository;
+    private PlatformWithdrawalOrderRepository platformWithdrawalOrderRepository;
 
     @Override
     public Response execute(Request request) throws IOException, SignatureException, SystemException, ServiceException {
@@ -75,7 +75,7 @@ public class MockTransactionService implements TransactionService {
                     queryTradeResult.setStatus(TradeStatus.TRADE_FINISHED);
                     queryTradeResult.setTime(LocalDateTime.now());
                     // 金额?
-                    queryTradeResult.setAmount(chanpayOrderRepository.getOne(queryTrade.getSerialNumber()).getCashOrder().getAmount());
+                    queryTradeResult.setAmount(platformOrderRepository.getOne(queryTrade.getSerialNumber()).getCashOrder().getAmount());
                     return (T) queryTradeResult;
                 case WITHDRAWAL:
                     queryTradeResult = new QueryTradeResult();
@@ -84,7 +84,7 @@ public class MockTransactionService implements TransactionService {
                     queryTradeResult.setStatus(TradeStatus.success);
                     queryTradeResult.setTime(LocalDateTime.now());
                     // 金额?
-                    queryTradeResult.setAmount(chanpayWithdrawalOrderRepository.getOne(queryTrade.getSerialNumber()).getUserOrder().getWithdrawalAmount());
+                    queryTradeResult.setAmount(platformWithdrawalOrderRepository.getOne(queryTrade.getSerialNumber()).getUserOrder().getWithdrawalAmount());
                     return (T) queryTradeResult;
             }
         }

@@ -1,8 +1,9 @@
 package me.jiangcai.dating.web.controller;
 
-import me.jiangcai.chanpay.model.WithdrawalStatus;
 import me.jiangcai.dating.LoginWebTest;
+import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.OrderFlow;
@@ -48,7 +49,7 @@ public class OrderControllerTest extends LoginWebTest {
                 , user.getCards().get(0).getId());
         changeTime(withdrawalFailedOrder, LocalDateTime.now().plusHours(-2));
         tradeSuccess(withdrawalFailedOrder);
-        withdrawalFailed(withdrawalFailedOrder, WithdrawalStatus.WITHDRAWAL_FAIL, "怀孕了?");
+        withdrawalResult(withdrawalFailedOrder, false, "怀孕了?");
 
         MockHttpSession session = mvcLogin();
         //
@@ -171,10 +172,17 @@ public class OrderControllerTest extends LoginWebTest {
 
         tradeSuccess(workingOrder);
         tradeSuccess(noCardOrder);
+
         tradeSuccess(withdrawalFailedOrder);
-        withdrawalFailed(withdrawalFailedOrder, WithdrawalStatus.WITHDRAWAL_FAIL, "怀孕了?");
+        PlatformOrder withdrawalFailedOrderOrder = orderService.getOne(withdrawalFailedOrder.getId()).getPlatformOrderSet().stream()
+                .filter(PlatformOrder::isFinish)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("找不到付款订单"));
+        ArbitrageChannel channel = applicationContext.getBean(withdrawalFailedOrderOrder.channelClass());
+
+        withdrawalResult(withdrawalFailedOrder, false, "怀孕了?");
         orderPage.refresh();
-        orderPage.assertFailedOrder(0, withdrawalFailedOrder);
+        orderPage.assertFailedOrder(0, withdrawalFailedOrder, channel);
 
 //        orderPage.retry(noCardOrder.getId());
 //        orderPage.reloadPageInfo();
@@ -183,11 +191,14 @@ public class OrderControllerTest extends LoginWebTest {
 //        assertThat(flowList.get(1).getStatus())
 //                .isEqualByComparingTo(OrderFlowStatus.transferring);
 
-        orderPage.retry(withdrawalFailedOrder.getId());
-        orderPage.reloadPageInfo();
-        List<OrderFlow> flowList = orderService.orderFlows(user.getOpenId());
-        assertThat(flowList.get(0).getStatus())
-                .isEqualByComparingTo(OrderFlowStatus.transferring);
+        if (!channel.useOneOrderForPayAndArbitrage()) {
+            orderPage.retry(withdrawalFailedOrder.getId());
+            orderPage.reloadPageInfo();
+            List<OrderFlow> flowList = orderService.orderFlows(user.getOpenId());
+            assertThat(flowList.get(0).getStatus())
+                    .isEqualByComparingTo(OrderFlowStatus.transferring);
+        }
+
 
         driver.get("http://localhost/my");
         myPage = initPage(MyPage.class);

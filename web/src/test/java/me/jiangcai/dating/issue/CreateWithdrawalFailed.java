@@ -55,6 +55,7 @@ public class CreateWithdrawalFailed extends LoginWebTest {
         assertThat(order.getPlatformWithdrawalOrderSet())
                 .isNullOrEmpty();
         // 可以通过校验
+        // TODO 对于新的支付方式 似乎没什么软用
     }
 
 }

@@ -65,6 +65,23 @@ public class GlobalController {
     private OrderService orderService;
     @Autowired
     private PayResourceService payResourceService;
+    //    /**
+//     * 这是公开uri,所有人都可以参与支付,微信用户 或者 其他用户
+//     * 包括上列url的二维码url
+//     *
+//     * @param id 订单号
+//     * @return
+//     */
+//    @RequestMapping(method = RequestMethod.GET, value = "/toPayQR/{id}")
+//    public BufferedImage toPayImage(@PathVariable("id") String id, HttpServletRequest request) throws IOException
+//            , WriterException {
+//        StringBuilder urlBuilder = contextUrlBuilder(request);
+//
+//        urlBuilder.append("/toPay/").append(id);
+//        return qrCodeService.generateQRCode(urlBuilder.toString());
+//    }
+    @Autowired
+    private ResourceService resourceService;
 
 //    /**
 //     * 这是公开uri,所有人都可以参与支付,微信用户 或者 其他用户
@@ -84,24 +101,6 @@ public class GlobalController {
 //        model.addAttribute("order", order);
 //        return "pay.html";
 //    }
-
-//    /**
-//     * 这是公开uri,所有人都可以参与支付,微信用户 或者 其他用户
-//     * 包括上列url的二维码url
-//     *
-//     * @param id 订单号
-//     * @return
-//     */
-//    @RequestMapping(method = RequestMethod.GET, value = "/toPayQR/{id}")
-//    public BufferedImage toPayImage(@PathVariable("id") String id, HttpServletRequest request) throws IOException
-//            , WriterException {
-//        StringBuilder urlBuilder = contextUrlBuilder(request);
-//
-//        urlBuilder.append("/toPay/").append(id);
-//        return qrCodeService.generateQRCode(urlBuilder.toString());
-//    }
-@Autowired
-private ResourceService resourceService;
 
     public static StringBuilder contextUrlBuilder(HttpServletRequest request) {
         StringBuilder urlBuilder = new StringBuilder();
@@ -125,6 +124,11 @@ private ResourceService resourceService;
         urlBuilder.append("/my?");
         urlBuilder.append(CashFilter.guideUserFromId(userId));
         return urlBuilder;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/toQR")
+    public BufferedImage toQRCode(String text) throws IOException, WriterException {
+        return qrCodeService.generateQRCode(text);
     }
 
     /**

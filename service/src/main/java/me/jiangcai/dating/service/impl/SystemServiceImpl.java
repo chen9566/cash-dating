@@ -2,6 +2,7 @@ package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.ProfitSplit;
 import me.jiangcai.dating.channel.ArbitrageChannel;
+import me.jiangcai.dating.channel.ChroneService;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.SystemString;
 import me.jiangcai.dating.entity.User;
@@ -12,6 +13,7 @@ import me.jiangcai.dating.service.SystemService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +30,9 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * 系统会固定设置2个数据,用户账面手续费(R),平台（第三方）手续费(r)
@@ -67,7 +71,7 @@ public class SystemServiceImpl implements SystemService {
     private static final Log log = LogFactory.getLog(SystemServiceImpl.class);
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS"
             , Locale.CHINA);
-
+    private final Map<PayChannel, ArbitrageChannel> arbitrageChannelMap = new HashMap<>();
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private SystemStringRepository systemStringRepository;
@@ -80,6 +84,8 @@ public class SystemServiceImpl implements SystemService {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @PostConstruct
     @Transactional
@@ -164,7 +170,21 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public ArbitrageChannel arbitrageChannel(PayChannel channel) {
-        return null;
+        ArbitrageChannel arbitrageChannel = arbitrageChannelMap.get(channel);
+        if (arbitrageChannel == null) {
+            arbitrageChannelMap.put(channel, checkoutArbitrageChannel(channel));
+        }
+        return arbitrageChannelMap.get(channel);
+    }
+
+    /**
+     * 按照配置获取
+     *
+     * @param channel
+     * @return
+     */
+    private ArbitrageChannel checkoutArbitrageChannel(PayChannel channel) {
+        return applicationContext.getBean(ChroneService.class);
     }
 
     @Override

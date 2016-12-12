@@ -3,6 +3,7 @@ package me.jiangcai.dating.web.controller.manage;
 import me.jiangcai.dating.AsManage;
 import me.jiangcai.dating.ManageWebTest;
 import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.WithdrawOrder;
 import me.jiangcai.dating.entity.support.ManageStatus;
@@ -47,7 +48,7 @@ public class ManageOrderControllerTest extends ManageWebTest {
         String word2 = cashOrder.getFriendlyId();
         String word3 = user.getNickname();
         String word4 = cashOrder.getPlatformOrderSet().stream().findAny().orElse(null).getId();
-        String word5 = cashOrder.getPlatformWithdrawalOrderSet().stream().findAny().orElse(null).getId();
+        PlatformWithdrawalOrder word5 = cashOrder.getPlatformWithdrawalOrderSet().stream().findAny().orElse(null);
 
         assertThat(orderService.queryUserOrders(word1))
                 .contains(cashOrder);
@@ -57,8 +58,9 @@ public class ManageOrderControllerTest extends ManageWebTest {
                 .contains(cashOrder);
         assertThat(orderService.queryUserOrders(word4))
                 .contains(cashOrder);
-        assertThat(orderService.queryUserOrders(word5))
-                .contains(cashOrder);
+        if (word5 != null)
+            assertThat(orderService.queryUserOrders(word5.getId()))
+                    .contains(cashOrder);
         // 试试提现订单了!
 
 
@@ -66,14 +68,15 @@ public class ManageOrderControllerTest extends ManageWebTest {
         String word7 = withdrawOrder.getId();
         String word8 = withdrawOrder.getFriendlyId();
         String word9 = user.getNickname();
-        String word10 = withdrawOrder.getPlatformWithdrawalOrderSet().stream().findAny().orElse(null).getId();
+        PlatformWithdrawalOrder word10 = withdrawOrder.getPlatformWithdrawalOrderSet().stream().findAny().orElse(null);
 
         assertThat(orderService.queryUserOrders(word7))
                 .contains(withdrawOrder);
         assertThat(orderService.queryUserOrders(word8))
                 .contains(withdrawOrder);
-        assertThat(orderService.queryUserOrders(word10))
-                .contains(withdrawOrder);
+        if (word10 != null)
+            assertThat(orderService.queryUserOrders(word10.getId()))
+                    .contains(withdrawOrder);
         assertThat(orderService.queryUserOrders(word9))
                 .contains(withdrawOrder, cashOrder);
 

@@ -66,6 +66,7 @@ public class ManageOrderController {
                 for (PlatformOrder platformOrder : ((CashOrder) order).getPlatformOrderSet()) {
                     if (platformOrder.isFinish())
                         continue;
+
                     QueryTrade queryTrade = new QueryTrade();
                     queryTrade.setSerialNumber(platformOrder.getId());
                     queryTrade.setType(TradeType.INSTANT);

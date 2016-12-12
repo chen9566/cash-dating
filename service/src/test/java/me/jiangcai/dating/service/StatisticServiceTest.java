@@ -1,6 +1,5 @@
 package me.jiangcai.dating.service;
 
-import me.jiangcai.chanpay.model.WithdrawalStatus;
 import me.jiangcai.dating.ServiceBaseTest;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.User;
@@ -77,7 +76,7 @@ public class StatisticServiceTest extends ServiceBaseTest {
                 .isEqualTo(amount);
 
         // 提现失败
-        withdrawalFailed(withdrawOrder, WithdrawalStatus.WITHDRAWAL_FAIL, "");
+        withdrawalResult(withdrawOrder, false, "");
 
         assertThat(statisticService.balance(user.getOpenId()))
                 .isGreaterThan(BigDecimal.ZERO);

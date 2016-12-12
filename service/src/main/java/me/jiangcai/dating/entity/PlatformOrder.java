@@ -2,6 +2,7 @@ package me.jiangcai.dating.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.dating.channel.ArbitrageChannel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,4 +43,9 @@ public abstract class PlatformOrder {
      * @return 是否已支付完成
      */
     public abstract boolean isFinish();
+
+    /**
+     * @return 负责运作的渠道类
+     */
+    public abstract Class<? extends ArbitrageChannel> channelClass();
 }

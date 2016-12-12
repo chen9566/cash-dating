@@ -83,6 +83,19 @@ public class CashOrder extends UserOrder {
 
     @Override
     public Notification withdrawalTransferFailedNotification(PlatformWithdrawalOrder withdrawalOrder, String reason) {
+        if (withdrawalOrder == null) {
+            Card card = getOwner().getCards().stream()
+                    .filter(card1 -> !card1.isDisabled())
+                    .findFirst()
+                    .orElseGet(null);
+            PlatformOrder order = getPlatformOrderSet().stream()
+                    .filter(PlatformOrder::isFinish)
+                    .findFirst()
+                    .orElse(null);
+            return new Notification(getOwner(), NotifyType.orderTransferFailed, "/orderDetail/" + getId(), this, getFriendlyId()
+                    , getAmount().subtract(getWithdrawalAmount()), getWithdrawalAmount()
+                    , card.getTailNumber(), order.getFinishTime(), reason);
+        }
         return new Notification(getOwner(), NotifyType.orderTransferFailed, "/orderDetail/" + getId(), this, getFriendlyId()
                 , getAmount().subtract(getWithdrawalAmount()), getWithdrawalAmount()
                 , withdrawalOrder.getTailNumber(), withdrawalOrder.getStartTime(), reason);
