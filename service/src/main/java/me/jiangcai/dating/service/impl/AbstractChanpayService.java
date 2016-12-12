@@ -3,18 +3,24 @@ package me.jiangcai.dating.service.impl;
 import me.jiangcai.chanpay.data.trade.CreateInstantTrade;
 import me.jiangcai.chanpay.data.trade.GetPayChannel;
 import me.jiangcai.chanpay.data.trade.PaymentToCard;
+import me.jiangcai.chanpay.data.trade.QueryTrade;
+import me.jiangcai.chanpay.data.trade.QueryTradeResult;
 import me.jiangcai.chanpay.data.trade.support.EncryptString;
 import me.jiangcai.chanpay.data.trade.support.PayChannel;
+import me.jiangcai.chanpay.event.AbstractTradeEvent;
 import me.jiangcai.chanpay.event.TradeEvent;
 import me.jiangcai.chanpay.event.WithdrawalEvent;
+import me.jiangcai.chanpay.exception.ServiceException;
 import me.jiangcai.chanpay.model.CardAttribute;
 import me.jiangcai.chanpay.model.PayMode;
 import me.jiangcai.chanpay.model.SubBranch;
 import me.jiangcai.chanpay.model.TradeStatus;
+import me.jiangcai.chanpay.model.TradeType;
 import me.jiangcai.chanpay.model.WithdrawalStatus;
 import me.jiangcai.chanpay.service.TransactionService;
 import me.jiangcai.chanpay.service.impl.GetPayChannelHandler;
 import me.jiangcai.chanpay.service.impl.InstantTradeHandler;
+import me.jiangcai.chanpay.service.impl.QueryTradeHandler;
 import me.jiangcai.dating.ThreadSafe;
 import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
@@ -409,5 +415,40 @@ public abstract class AbstractChanpayService implements ChanpayService {
             withdrawalEvent.setMessage(reason);
 
         applicationEventPublisher.publishEvent(withdrawalEvent);
+    }
+
+
+    private void commitEventWithQueryResult(QueryTradeResult result, AbstractTradeEvent tradeEvent) {
+        tradeEvent.setPlatformOrderNo(result.getChanPayNumber());
+        tradeEvent.setSerialNumber(result.getSerialNumber());
+        tradeEvent.setAmount(result.getAmount());
+        tradeEvent.setTradeTime(result.getTime());
+//        tradeEvent.setMessage(result.get);
+        applicationEventPublisher.publishEvent(tradeEvent);
+    }
+
+    @Override
+    public boolean checkPayResult(PlatformOrder order) throws IOException, SignatureException {
+        QueryTrade queryTrade = new QueryTrade();
+        queryTrade.setSerialNumber(order.getId());
+        queryTrade.setType(TradeType.INSTANT);
+// ILLEGAL_OUTER_TRADE_NO 这个异常可以原谅
+        try {
+            QueryTradeResult result = transactionService.execute(queryTrade, new QueryTradeHandler());
+            if (result.getStatus() == TradeStatus.TRADE_FINISHED
+                    || result.getStatus() == TradeStatus.TRADE_SUCCESS
+                    || result.getStatus() == TradeStatus.PAY_FINISHED) {
+                // 都可被认为支付完成
+                TradeEvent tradeEvent = new TradeEvent(TradeStatus.TRADE_SUCCESS);
+                commitEventWithQueryResult(result, tradeEvent);
+                return true;
+            }
+            return false;
+        } catch (ServiceException exception) {
+            if (exception.getCode().equals("ILLEGAL_OUTER_TRADE_NO")) {
+                return false;
+            }
+            throw exception;
+        }
     }
 }

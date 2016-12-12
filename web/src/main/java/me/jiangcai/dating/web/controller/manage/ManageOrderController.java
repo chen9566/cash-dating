@@ -3,7 +3,6 @@ package me.jiangcai.dating.web.controller.manage;
 import me.jiangcai.chanpay.data.trade.QueryTrade;
 import me.jiangcai.chanpay.data.trade.QueryTradeResult;
 import me.jiangcai.chanpay.event.AbstractTradeEvent;
-import me.jiangcai.chanpay.event.TradeEvent;
 import me.jiangcai.chanpay.event.WithdrawalEvent;
 import me.jiangcai.chanpay.exception.ServiceException;
 import me.jiangcai.chanpay.model.TradeStatus;
@@ -11,6 +10,7 @@ import me.jiangcai.chanpay.model.TradeType;
 import me.jiangcai.chanpay.model.WithdrawalStatus;
 import me.jiangcai.chanpay.service.TransactionService;
 import me.jiangcai.chanpay.service.impl.QueryTradeHandler;
+import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.core.Login;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
@@ -21,6 +21,7 @@ import me.jiangcai.dating.service.OrderService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +59,8 @@ public class ManageOrderController {
     private UserOrderRepository userOrderRepository;
     @Autowired
     private TransactionService transactionService;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     private void checkOrder(UserOrder order) throws IOException, SignatureException {
         if (order instanceof CashOrder) {
@@ -66,31 +69,12 @@ public class ManageOrderController {
                 for (PlatformOrder platformOrder : ((CashOrder) order).getPlatformOrderSet()) {
                     if (platformOrder.isFinish())
                         continue;
-
-                    QueryTrade queryTrade = new QueryTrade();
-                    queryTrade.setSerialNumber(platformOrder.getId());
-                    queryTrade.setType(TradeType.INSTANT);
-// ILLEGAL_OUTER_TRADE_NO 这个异常可以原谅
-                    try {
-                        QueryTradeResult result = transactionService.execute(queryTrade, new QueryTradeHandler());
-                        if (result.getStatus() == TradeStatus.TRADE_FINISHED
-                                || result.getStatus() == TradeStatus.TRADE_SUCCESS
-                                || result.getStatus() == TradeStatus.PAY_FINISHED) {
-                            // 都可被认为支付完成
-                            TradeEvent tradeEvent = new TradeEvent(TradeStatus.TRADE_SUCCESS);
-                            commitEventWithQueryResult(result, tradeEvent);
-                            break;
-                        }
-                    } catch (ServiceException exception) {
-                        if (exception.getCode().equals("ILLEGAL_OUTER_TRADE_NO")) {
-                            continue;
-                        }
-                        throw exception;
-                    }
+                    ArbitrageChannel channel = applicationContext.getBean(platformOrder.channelClass());
+                    if (channel.checkPayResult(platformOrder))
+                        break;
                 }
             }
         }
-
         // 检查支付订单 现在系统存在一个问题需要顺手修复 及时已支付成功并不影响继续成功
         if (order.getPlatformWithdrawalOrderSet() != null)
             for (PlatformWithdrawalOrder withdrawalOrder : order.getPlatformWithdrawalOrderSet()) {

@@ -28,6 +28,16 @@ public interface ArbitrageChannel {
     void checkArbitrageResult(PlatformOrder order) throws IOException, SignatureException;
 
     /**
+     * 检查支付结果
+     *
+     * @param order 付款订单
+     * @return 是否已支付
+     * @throws IOException
+     * @throws SignatureException
+     */
+    boolean checkPayResult(PlatformOrder order) throws IOException, SignatureException;
+
+    /**
      * 如果结果是true表示用户需要支付签预先绑定借记卡
      *
      * @return 是否使用一个订单同时作用于支付和提现
@@ -68,4 +78,5 @@ public interface ArbitrageChannel {
      * @throws IOException           获取的过程发生问题
      */
     String QRCodeImageFromOrder(PlatformOrder order) throws IllegalStateException, IOException;
+
 }

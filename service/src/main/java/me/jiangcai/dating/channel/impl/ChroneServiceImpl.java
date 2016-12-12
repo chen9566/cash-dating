@@ -3,7 +3,9 @@ package me.jiangcai.dating.channel.impl;
 import me.jiangcai.chrone.ChroneGateway;
 import me.jiangcai.chrone.event.PayStatusChangeEvent;
 import me.jiangcai.chrone.exception.ServiceException;
+import me.jiangcai.chrone.model.ArbitrageStatus;
 import me.jiangcai.chrone.model.OrderInfo;
+import me.jiangcai.chrone.model.PayResult;
 import me.jiangcai.chrone.model.PaySource;
 import me.jiangcai.chrone.model.PayStatus;
 import me.jiangcai.chrone.model.TransactionType;
@@ -95,23 +97,40 @@ public class ChroneServiceImpl implements ChroneService {
                 log.debug("do not check a WithdrawalCompleted order.");
                 return;
             }
-            PayStatus payStatus = chroneGateway.queryOrder(order.getId());
-            switch (payStatus) {
+            ArbitrageStatus status = chroneGateway.queryArbitrage(order.getId());
+            switch (status) {
                 case success:
                     arbitrageSuccess(cashOrder);
                     break;
                 case failed:
                     arbitrageFailed(cashOrder, "套现结果:失败");
                     break;
-                case closed:
-                    arbitrageFailed(cashOrder, "套现结果:关闭");
-                    break;
+//                case closed:
+//                    arbitrageFailed(cashOrder, "套现结果:关闭");
+//                    break;
                 default:
                     // do nothing;
             }
         } catch (ServiceException e) {
             throw new IOException(e.getMessage(), e);
         }
+    }
+
+    @Override
+    public boolean checkPayResult(PlatformOrder order) throws IOException, SignatureException {
+        try {
+            PayResult result = chroneGateway.queryOrder(order.getId());
+            switch (result.getStatus()) {
+                case success:
+                    applicationEventPublisher.publishEvent(result.toEvent());
+                    return true;
+                default:
+                    // do nothing;
+            }
+        } catch (ServiceException ex) {
+            throw new IOException(ex.getMessage(), ex);
+        }
+        return false;
     }
 
     private void arbitrageFailed(CashOrder cashOrder, String comment) {

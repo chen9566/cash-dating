@@ -1,5 +1,7 @@
 package me.jiangcai.dating.web.controller.manage;
 
+import me.jiangcai.chrone.model.PayStatus;
+import me.jiangcai.chrone.test.bean.ChroneTestHelper;
 import me.jiangcai.dating.AsManage;
 import me.jiangcai.dating.ManageWebTest;
 import me.jiangcai.dating.entity.CashOrder;
@@ -33,6 +35,8 @@ public class ManageOrderControllerTest extends ManageWebTest {
     private WithdrawOrderRepository withdrawOrderRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ChroneTestHelper chroneTestHelper;
 
     @Test
     public void go() throws IOException, SignatureException {
@@ -108,27 +112,43 @@ public class ManageOrderControllerTest extends ManageWebTest {
         // 显然我们需要建立一个订单 这个订单的支付是没有完成的
         // 另外需要一个订单  它的支付是完成的,提现也进行了 但是没有完成
         ManageOrderResultPage resultPage = initPage(ManageOrderResultPage.class);
+        makeOrderPaied(needTradeOrder);
         resultPage.platformCheckAll();
         // 完成之后这2个订单都应该被处理了
         needTradeOrder = orderService.getOne(needTradeOrder.getId());
         assertThat(needTradeOrder.isCompleted())
                 .isTrue();
         //并且等待支付了
-        assertThat(needTradeOrder.getPlatformWithdrawalOrderSet())
-                .isNotEmpty();
-        needWithOrder = orderService.getOne(needWithOrder.getId());
-        assertThat(needWithOrder.isWithdrawalCompleted())
-                .isTrue();
+        // 有且只有允许分开订单的情况
+        if (!getSystemService().arbitrageChannel(PayChannel.weixin).useOneOrderForPayAndArbitrage()) {
+            assertThat(needTradeOrder.getPlatformWithdrawalOrderSet())
+                    .isNotEmpty();
+            needWithOrder = orderService.getOne(needWithOrder.getId());
+            assertThat(needWithOrder.isWithdrawalCompleted())
+                    .isTrue();
+        }
+
         // 再执行一个单独的订单
         needTradeOrder = orderService.newOrder(user, randomOrderAmount(), UUID.randomUUID().toString(), user.getCards().get(0).getId());
         orderService.preparePay(needTradeOrder.getId(), PayChannel.weixin);
         assertThat(needTradeOrder.isCompleted())
                 .isFalse();
         resultPage = resultPage.searchAgain(needTradeOrder.getFriendlyId());
+        makeOrderPaied(needTradeOrder);
         resultPage.platFormCheckOrder(needTradeOrder.getId());
         needTradeOrder = orderService.getOne(needTradeOrder.getId());
         assertThat(needTradeOrder.isCompleted())
                 .isTrue();
+    }
+
+    private void makeOrderPaied(CashOrder order) {
+        final String needTradeOrderId = orderService.getOne(order.getId()).getPlatformOrderSet().stream()
+                .findAny().orElse(null).getId();
+        // 我们得告诉测试系统 这个订单支付实际上是成功的
+        chroneTestHelper.getOrderList().stream()
+                .filter(testOrder -> testOrder.getSerialNumber().equals(needTradeOrderId))
+                .findFirst()
+                .ifPresent(testOrder -> testOrder.setPayStatus(PayStatus.success));
     }
 
 }
