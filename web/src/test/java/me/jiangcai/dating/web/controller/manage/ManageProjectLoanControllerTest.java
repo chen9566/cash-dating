@@ -11,6 +11,7 @@ import me.jiangcai.dating.model.trj.ProjectLoan;
 import me.jiangcai.dating.repository.LoanRequestRepository;
 import me.jiangcai.dating.service.CashStrings;
 import me.jiangcai.dating.service.PayResourceService;
+import me.jiangcai.dating.service.TourongjiaService;
 import me.jiangcai.dating.service.WealthService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
@@ -44,6 +45,8 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private LoanRequestRepository loanRequestRepository;
+    @Autowired
+    private TourongjiaService tourongjiaService;
 
     @Test
     public void index() {
@@ -170,6 +173,9 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total").value(currentAccepted + 1));
 
+        //先告诉系统应该允许通过
+        makeLoanStatusTo(firstPaddingId, true);
+
         // 此处执行一个接口 检查
         mockMvc.perform(putWeixin("/manage/data/projectLoan/query/" + firstPaddingId).session(session))
                 .andExpect(status().isOk());
@@ -208,6 +214,11 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
         mockMvc.perform(putWeixin("/manage/data/projectLoan/sendNotify/" + firstPaddingId).session(session))
                 .andExpect(status().isOk());
 
+    }
+
+    private void makeLoanStatusTo(long requestId, boolean success) throws IOException {
+        String id = loanRequestRepository.getOne(requestId).getSupplierRequestId();
+        tourongjiaService.testMakeLoanStatus(id, success);
     }
 
     /**

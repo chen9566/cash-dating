@@ -48,7 +48,7 @@ public class ProjectLoanAgreementPage extends AbstractPage {
         WebElement button = webDriver.findElement(By.cssSelector("input[type=submit]"));
         getHtmlElement(button).removeAttribute("disabled");
 
-        button.click();
+        webDriver.findElement(By.cssSelector("input[type=submit]")).click();
     }
 
     private HtmlElement getHtmlElement(WebElement element) {

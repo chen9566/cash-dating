@@ -2,13 +2,10 @@ package me.jiangcai.dating;
 
 import me.jiangcai.chanpay.test.ChanpayTestSpringConfig;
 import me.jiangcai.dating.model.VerificationType;
-import me.jiangcai.dating.model.trj.LoanStatus;
 import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.ChanpayService;
-import me.jiangcai.dating.service.TourongjiaService;
 import me.jiangcai.dating.service.VerificationCodeService;
 import me.jiangcai.dating.service.impl.AbstractVerificationCodeService;
-import me.jiangcai.dating.service.impl.TourongjiaServiceImpl;
 import me.jiangcai.lib.notice.Content;
 import me.jiangcai.lib.notice.To;
 import me.jiangcai.lib.notice.exception.NoticeException;
@@ -25,8 +22,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
-import java.io.IOException;
-
 /**
  * @author CJ
  */
@@ -41,17 +36,17 @@ public class TestConfig {
     @Autowired
     private BankService bankService;
 
-    @Bean
-    @Primary
-    public TourongjiaService tourongjiaService() {
-        return new TourongjiaServiceImpl(environment) {
-            @Override
-            public LoanStatus checkLoanStatus(String id) throws IOException {
-                return LoanStatus.success;
-//                return super.checkLoanStatus(id);
-            }
-        };
-    }
+//    @Bean
+//    @Primary
+//    public TourongjiaService tourongjiaService() {
+//        return new TourongjiaServiceImpl(environment) {
+//            @Override
+//            public LoanStatus checkLoanStatus(String id) throws IOException {
+//                return LoanStatus.success;
+////                return super.checkLoanStatus(id);
+//            }
+//        };
+//    }
 
     @Bean
     @Primary

@@ -232,6 +232,17 @@ public class TourongjiaServiceImpl implements TourongjiaService {
     }
 
     @Override
+    public void testMakeLoanStatus(String requestId, boolean success) throws IOException {
+        try (CloseableHttpClient client = requestClient()) {
+            HttpGet get = new2Get("tenant/yt_auditTest.jhtml"
+                    , new BasicNameValuePair("applyId", requestId)
+                    , new BasicNameValuePair("status", success ? "2" : "3")
+            );
+            client.execute(get).close();
+        }
+    }
+
+    @Override
     public String loan(Loan loan, String term, User user, String name, BigDecimal amount, String province, String city
             , String address) throws IOException {
         try (CloseableHttpClient client = requestClient()) {
@@ -258,9 +269,14 @@ public class TourongjiaServiceImpl implements TourongjiaService {
                     , new BasicNameValuePair("applyId", id)
             );
             String code = client.execute(get, new TRJJsonHandler<>(LoanStatusResult.class)).getStatus();
-            if (code.equals("待审核"))
-                return LoanStatus.auditing;
-            return null;
+            switch (code) {
+                case "3":
+                    return LoanStatus.failed;
+                case "2":
+                    return LoanStatus.success;
+                default:
+                    return LoanStatus.auditing;
+            }
         }
     }
 

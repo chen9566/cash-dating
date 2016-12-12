@@ -21,6 +21,7 @@ import me.jiangcai.dating.page.ProjectSuccessPage;
 import me.jiangcai.dating.repository.LoanRequestRepository;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.PayResourceService;
+import me.jiangcai.dating.service.TourongjiaService;
 import me.jiangcai.dating.service.WealthService;
 import me.jiangcai.gaa.sdk.repository.DistrictRepository;
 import org.apache.commons.lang.RandomStringUtils;
@@ -50,6 +51,8 @@ public class WealthControllerTest extends LoginWebTest {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private LoanRequestRepository loanRequestRepository;
+    @Autowired
+    private TourongjiaService tourongjiaService;
 
     /**
      * 需要关注的数据是
@@ -182,6 +185,9 @@ public class WealthControllerTest extends LoginWebTest {
         assertThat(projectLoanRequest.getYearRate())
                 .isEqualByComparingTo(realYearRate);
         assertThat(projectLoanRequest.getSupplierRequestId()).isNotEmpty();
+
+        tourongjiaService.testMakeLoanStatus(projectLoanRequest.getSupplierRequestId(), true);
+        wealthService.queryProjectLoanStatus(projectLoanRequest.getId());
 
         // 打开通知所指向的地址
         // 就可以玩一玩签单流程了

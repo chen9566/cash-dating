@@ -102,4 +102,13 @@ public interface TourongjiaService {
      * @throws IOException
      */
     String signContract(String requestId, String contract) throws IOException;
+
+    /**
+     * 仅仅工作在测试环境中
+     *
+     * @param requestId
+     * @param success
+     * @throws IOException
+     */
+    void testMakeLoanStatus(String requestId, boolean success) throws IOException;
 }
