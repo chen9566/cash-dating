@@ -231,24 +231,7 @@ public abstract class WebTest extends ServiceBaseTest {
      * @throws IOException
      */
     protected User helloNewUser(String startUrl, User invite, boolean withBindingCard) throws IOException {
-        driver.get(startUrl);
-        String mobile = randomMobile();
-        BindingMobilePage page = initPage(BindingMobilePage.class);
-
-        page.submitWithNothing();
-        page.inputMobileNumber(mobile);
-        page.sendCode();
-
-        if (invite != null)
-            if (startUrl.equals(defaultStartUrl)) {
-                page.inputInviteCode(invite.getInviteCode());
-            } else {
-                // 应该看到了邀请者
-                page.assertInvite(invite);
-            }
-
-        // 找到最近发送的验证码
-        page.submitWithCode();
+        String mobile = helloMobile(startUrl, invite);
 
         // 应该到了下一个页面了
 
@@ -301,6 +284,37 @@ public abstract class WebTest extends ServiceBaseTest {
 
 
         return user;
+    }
+
+    /**
+     * 新用户进来
+     *
+     * @param startUrl
+     * @param invite
+     * @return
+     */
+    protected String helloMobile(String startUrl, User invite) {
+        if (startUrl == null)
+            startUrl = defaultStartUrl;
+        driver.get(startUrl);
+        String mobile = randomMobile();
+        BindingMobilePage page = initPage(BindingMobilePage.class);
+
+        page.submitWithNothing();
+        page.inputMobileNumber(mobile);
+        page.sendCode();
+
+        if (invite != null)
+            if (startUrl.equals(defaultStartUrl)) {
+                page.inputInviteCode(invite.getInviteCode());
+            } else {
+                // 应该看到了邀请者
+                page.assertInvite(invite);
+            }
+
+        // 找到最近发送的验证码
+        page.submitWithCode();
+        return mobile;
     }
 
     // 1.5 以后更换之前的卡
