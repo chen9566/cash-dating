@@ -464,4 +464,9 @@ public abstract class AbstractChanpayService implements ChanpayService {
     public ArbitrageAccountStatus bindingUserStatus(User user) throws IOException, SignatureException, ArbitrageBindFailedException {
         return null;
     }
+
+    @Override
+    public int lowestAmount() {
+        return 1;
+    }
 }

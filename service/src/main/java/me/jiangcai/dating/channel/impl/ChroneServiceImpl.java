@@ -91,6 +91,11 @@ public class ChroneServiceImpl implements ChroneService {
 
 
     @Override
+    public int lowestAmount() {
+        return 10;
+    }
+
+    @Override
     public boolean arbitrageResultManually() {
         return true;
     }

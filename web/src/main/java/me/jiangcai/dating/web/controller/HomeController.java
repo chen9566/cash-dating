@@ -68,6 +68,7 @@ public class HomeController {
         }
 
         // 还有一个数字
+        model.addAttribute("lowestAmount", channel.lowestAmount());
         model.addAttribute("rate", systemService.systemBookRate(user));
 
         return "receivables.html";
