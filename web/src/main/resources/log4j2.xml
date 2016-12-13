@@ -6,6 +6,7 @@
         <RollingFile name="file" filename="logs/cash.log"
                      filePattern="logs/cash/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH}-%i.log">
             <PatternLayout>
+                <charset>UTF-8</charset>
                 <pattern>%d{yyyy/MM/dd HH:mm:ss} %class{36} %L %M - %msg%xEx%n</pattern>
             </PatternLayout>
             <Policies>

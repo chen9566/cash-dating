@@ -181,6 +181,8 @@ public class ChroneServiceImpl implements ChroneService {
                     return ArbitrageAccountStatus.auditing;
             }
         } catch (ServiceException e) {
+            if (e.getCode().equals("411"))
+                return ArbitrageAccountStatus.notYet;
             throw new IOException(e.getMessage(), e);
         }
     }
