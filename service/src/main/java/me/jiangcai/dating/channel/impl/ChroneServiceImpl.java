@@ -59,6 +59,7 @@ public class ChroneServiceImpl implements ChroneService {
 
     @Override
     public void change(PayStatusChangeEvent event) {
+        log.debug("[CHRONE]" + event);
         ChroneOrder order = (ChroneOrder) platformOrderRepository.getOne(event.getSerialNumber());
         if (order.isFinish()) {
             log.debug("got change event for finished order:" + event);
@@ -132,6 +133,7 @@ public class ChroneServiceImpl implements ChroneService {
     public boolean checkPayResult(PlatformOrder order) throws IOException, SignatureException {
         try {
             PayResult result = chroneGateway.queryOrder(order.getId());
+            log.debug("manly result:" + result);
             switch (result.getStatus()) {
                 case success:
                     applicationEventPublisher.publishEvent(result.toEvent());

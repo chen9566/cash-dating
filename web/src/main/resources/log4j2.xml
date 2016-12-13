@@ -22,7 +22,7 @@
     </appenders>
     <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
     <loggers>
-        <logger name="me.jiangcai" level="debug"/>
+        <!--<logger name="me.jiangcai" level="debug"/>-->
         <!--建立一个默认的root的logger-->
         <root level="info">
             <appender-ref ref="file"/>
