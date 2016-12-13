@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -71,6 +72,10 @@ public class ChroneServiceImpl implements ChroneService {
         }
 
         order.setStatus(event.getPayStatus());
+        // 更新平台ID
+        if (event.getPlatformOrderNo() != null && StringUtils.isEmpty(order.getPlatformId())) {
+            order.setPlatformId(event.getPlatformOrderNo());
+        }
         if (order.isFinish()) {
             order.setFinishTime(LocalDateTime.now());
             if (order.getStatus() == PayStatus.success) {
@@ -110,7 +115,8 @@ public class ChroneServiceImpl implements ChroneService {
                 log.debug("do not check a WithdrawalCompleted order.");
                 return;
             }
-            ArbitrageStatus status = chroneGateway.queryArbitrage(order.getId());
+
+            ArbitrageStatus status = chroneGateway.queryArbitrage(order.getPlatformId());
             switch (status) {
                 case success:
                     arbitrageSuccess(cashOrder);
@@ -125,6 +131,10 @@ public class ChroneServiceImpl implements ChroneService {
                     // do nothing;
             }
         } catch (ServiceException e) {
+            if (e.getCode().equals("418")) {
+                // 尚未到款
+                return;
+            }
             throw new IOException(e.getMessage(), e);
         }
     }

@@ -23,6 +23,13 @@ public abstract class PlatformOrder {
     @Id
     @Column(length = 32)
     private String id;
+    /**
+     * 平台方的id,通常我们不会给予管理
+     *
+     * @since 1.8.1
+     */
+    @Column(length = 32)
+    private String platformId;
 
     @ManyToOne
     private CashOrder cashOrder;
@@ -39,7 +46,6 @@ public abstract class PlatformOrder {
     private LocalDateTime finishTime;
 
     /**
-     *
      * @return 是否已支付完成
      */
     public abstract boolean isFinish();
