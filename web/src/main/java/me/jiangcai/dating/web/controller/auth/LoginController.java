@@ -137,7 +137,7 @@ public class LoginController {
     public String approvalLogin(@AuthenticationPrincipal User user, @PathVariable("id") long id) {
         // TODO 还需要确认么? 麻烦死
         userService.approvalLogin(id, userService.by(user.getId()));
-        return "redirect:/start";
+        return "redirect:/my";
     }
 
 }
