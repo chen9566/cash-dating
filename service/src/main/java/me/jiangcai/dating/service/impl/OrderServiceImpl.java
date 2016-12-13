@@ -26,6 +26,8 @@ import me.jiangcai.dating.service.StatisticService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.lib.seext.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.domain.Specification;
@@ -53,6 +55,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class OrderServiceImpl implements OrderService {
+
+    private static final Log log = LogFactory.getLog(OrderServiceImpl.class);
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy年M月", Locale.CHINA);
     @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -168,6 +172,8 @@ public class OrderServiceImpl implements OrderService {
             Object[] objects = (Object[]) object;
             OrderFlow flow = new OrderFlow();
             flow.setOrder((CashOrder) objects[0]);
+            final CashOrder cashOrder = flow.getOrder();
+            checkArbitrage(cashOrder);
             if (objects.length >= 2) {
                 PlatformWithdrawalOrder withdrawalOrder = (PlatformWithdrawalOrder) objects[1];
                 if (withdrawalOrder != null) {
@@ -192,6 +198,24 @@ public class OrderServiceImpl implements OrderService {
                 flowArrayList.add(flow);
         });
         return flowArrayList;
+    }
+
+    @Override
+    public void checkArbitrage(CashOrder cashOrder) {
+        if (cashOrder.isCompleted() && !cashOrder.isWithdrawalCompleted() && cashOrder.getPlatformOrderSet() != null)
+            cashOrder.getPlatformOrderSet().stream()
+                    .filter(PlatformOrder::isFinish)
+                    .findFirst()
+                    .ifPresent(platformOrder -> {
+                        ArbitrageChannel channel = applicationContext.getBean(platformOrder.channelClass());
+                        if (channel.arbitrageResultManually()) {
+                            try {
+                                channel.checkArbitrageResult(platformOrder);
+                            } catch (Exception ex) {
+                                log.debug("checkArbitrageResult", ex);
+                            }
+                        }
+                    });
     }
 
     private void arbitrageNotFound(OrderFlow flow) {

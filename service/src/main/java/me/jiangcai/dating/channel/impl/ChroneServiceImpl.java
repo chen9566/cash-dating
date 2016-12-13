@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -59,6 +60,7 @@ public class ChroneServiceImpl implements ChroneService {
 
     @Override
     public void change(PayStatusChangeEvent event) {
+        log.debug("[CHRONE]" + event);
         ChroneOrder order = (ChroneOrder) platformOrderRepository.getOne(event.getSerialNumber());
         if (order.isFinish()) {
             log.debug("got change event for finished order:" + event);
@@ -70,6 +72,10 @@ public class ChroneServiceImpl implements ChroneService {
         }
 
         order.setStatus(event.getPayStatus());
+        // 更新平台ID
+        if (event.getPlatformOrderNo() != null && StringUtils.isEmpty(order.getPlatformId())) {
+            order.setPlatformId(event.getPlatformOrderNo());
+        }
         if (order.isFinish()) {
             order.setFinishTime(LocalDateTime.now());
             if (order.getStatus() == PayStatus.success) {
@@ -91,6 +97,11 @@ public class ChroneServiceImpl implements ChroneService {
 
 
     @Override
+    public int lowestAmount() {
+        return 10;
+    }
+
+    @Override
     public boolean arbitrageResultManually() {
         return true;
     }
@@ -104,7 +115,8 @@ public class ChroneServiceImpl implements ChroneService {
                 log.debug("do not check a WithdrawalCompleted order.");
                 return;
             }
-            ArbitrageStatus status = chroneGateway.queryArbitrage(order.getId());
+
+            ArbitrageStatus status = chroneGateway.queryArbitrage(order.getPlatformId());
             switch (status) {
                 case success:
                     arbitrageSuccess(cashOrder);
@@ -119,6 +131,10 @@ public class ChroneServiceImpl implements ChroneService {
                     // do nothing;
             }
         } catch (ServiceException e) {
+            if (e.getCode().equals("418")) {
+                // 尚未到款
+                return;
+            }
             throw new IOException(e.getMessage(), e);
         }
     }
@@ -127,6 +143,7 @@ public class ChroneServiceImpl implements ChroneService {
     public boolean checkPayResult(PlatformOrder order) throws IOException, SignatureException {
         try {
             PayResult result = chroneGateway.queryOrder(order.getId());
+            log.debug("manly result:" + result);
             switch (result.getStatus()) {
                 case success:
                     applicationEventPublisher.publishEvent(result.toEvent());
@@ -181,6 +198,8 @@ public class ChroneServiceImpl implements ChroneService {
                     return ArbitrageAccountStatus.auditing;
             }
         } catch (ServiceException e) {
+            if (e.getCode().equals("411"))
+                return ArbitrageAccountStatus.notYet;
             throw new IOException(e.getMessage(), e);
         }
     }

@@ -15,6 +15,11 @@ import java.security.SignatureException;
 public interface ArbitrageChannel {
 
     /**
+     * @return 最低套现金额
+     */
+    int lowestAmount();
+
+    /**
      * @return 手动获取套现结果
      */
     boolean arbitrageResultManually();

@@ -77,6 +77,14 @@ public interface OrderService {
     List<OrderFlow> orderFlows(String openId);
 
     /**
+     * 检查到款状态
+     *
+     * @param cashOrder 相关订单
+     */
+    @Transactional
+    void checkArbitrage(CashOrder cashOrder);
+
+    /**
      * 已完成的订单流水
      *
      * @param openId 用户

@@ -43,6 +43,7 @@ public class OrderController {
     @RequestMapping(method = RequestMethod.GET, value = "/orderDetail/{id}")
     public String detail(@AuthenticationPrincipal User user, Model model, @PathVariable("id") String id) {
         final CashOrder order = orderService.getOne(id);
+        orderService.checkArbitrage(order);
         model.addAttribute("order", order);
         final PlatformWithdrawalOrder successPlatformOrder = order.getPlatformWithdrawalOrderSet().stream()
                 .filter(PlatformWithdrawalOrder::isSuccess).findFirst().orElse(null);

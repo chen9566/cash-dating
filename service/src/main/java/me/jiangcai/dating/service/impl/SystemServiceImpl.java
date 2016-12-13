@@ -200,7 +200,7 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public BigDecimal systemBookRate(ProfitSplit profitSplit) {
         if (profitSplit.useLowestRate()) {
-            return getSystemString(LowestRate, BigDecimal.class, new BigDecimal("0"));
+            return getSystemString(LowestRate, BigDecimal.class, new BigDecimal("0.003"));
         }
         BigDecimal rate = profitSplit.bookProfileRate(this);
         if (rate != null)

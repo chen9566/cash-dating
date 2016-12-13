@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <!--/*@thymesVar id="cards" type="java.lang.Iterable<me.jiangcai.dating.entity.Card>"*/-->
 <!--/*@thymesVar id="card" type="me.jiangcai.dating.entity.Card"*/-->
+<!--/*@thymesVar id="lowestAmount" type="java.lang.Number"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
@@ -77,7 +78,7 @@
         <ul class="topay">
             <h1>选择付款方式</h1>
             <li class="bo-b"><img src="images/weixin-icon.png  "/>微信支付<span class="pull-right big15"><img
-                    src="images/ok-icon.png" /> </span></li>
+                    src="images/ok-icon.png"/> </span></li>
             <li class="bo-b"><img src="images/zhifubao-icon.png"/>支付宝支付</li>
             <li><img src="images/kuaijie-icon.png"/>快捷支付</li>
         </ul>
@@ -87,6 +88,7 @@
 <script src="mock/all.js" th:src="@{/all.js}"></script>
 <script type="text/javascript" th:inline="javascript">
     $.bookRate = /*[[${rate}]]*/ 0.006;
+    $.lowestAmount = /*[[${lowestAmount}]]*/ 1;
 </script>
 <script type="text/javascript">
     function toshow() {

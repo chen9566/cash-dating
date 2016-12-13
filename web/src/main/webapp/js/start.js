@@ -34,7 +34,7 @@ $(function () {
             return;
         }
         var value = parseFloat(str);
-        if (value <= 0) {
+        if (value < $.lowestAmount || value <= 0 || isNaN(value)) {
             button.attr('disabled', 'disabled');
             button.addClass('black');
             button.removeClass('redremove');
