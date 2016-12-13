@@ -22,11 +22,15 @@
     <input type="hidden" name="workModel" th:if="${workModel!=null}" th:value="${workModel}"/>
     <div class="showcard" id="cardShower">3333333333</div>
     <p class="b1" th:if="${workModel==null}">请绑定持卡人的银行卡(<b>借记卡</b>)</p>
-    <!--<p class="b1" th:if="${'loan'==(workModel)}">请绑定您的借还款(<b>结算卡</b>)</p>-->
+    <p class="b1" th:if="${'loan'==(workModel)}">请绑定您的借还款(<b>结算卡</b>)</p>
     <ul>
         <li>
             <label>持卡人姓名</label>
             <input type="text" name="name" required minlength="2" maxlength="20" placeholder="输入真实姓名">
+        </li>
+        <li>
+            <label>持卡人身份证</label>
+            <input type="text" name="ownerId" required minlength="15" maxlength="20" placeholder="输入真实持卡人身份证">
         </li>
         <li>
             <label>银行卡号</label>
@@ -45,23 +49,24 @@
 					 <option value="2" th:remove="all">工商银行</option>
 				</select>
 				</span></span></li>
-        <!--<li>-->
-        <!--<label class="pull-left">开户地址</label>-->
-        <!--<span class="sleBG s1"-->
-        <!--style="background:url(images/Path.png) no-repeat 80px 19px;background-size:10px 6px;"> <span-->
-        <!--class="sleHid">-->
-        <!--<select class="select2 province-selector" name="province" required>-->
-        <!--<option value="1">北京</option>-->
-        <!--</select>-->
-        <!--</span></span> <span class="sleBG s3"-->
-        <!--style="background:url(images/Path.png) no-repeat right;background-size:10px 6px; "> <span-->
-        <!--class="sleHid">-->
-        <!--<select class="select3 city-selector" name="city" required>-->
-        <!--<option value="1">北京</option>-->
-        <!--</select>-->
-        <!--</span></span></li>-->
-        <li class="Regional"><label class="pull-left">开户地址</label><input type="text" placeholder="请选择省市区"><span class="b-r"><img
-                src="images/blackright-r.png"></span></li>
+        <li>
+            <label class="pull-left">开户地址</label>
+        <span class="sleBG s1"
+              style="background:url(images/Path.png) no-repeat 80px 19px;background-size:10px 6px;"> <span
+                class="sleHid">
+        <select class="select2 province-selector" name="province" required>
+        <option value="1">北京</option>
+        </select>
+        </span></span> <span class="sleBG s3"
+                             style="background:url(images/Path.png) no-repeat right;background-size:10px 6px; "> <span
+                class="sleHid">
+        <select class="select3 city-selector" name="city" required>
+        <option value="1">北京</option>
+        </select>
+        </span></span></li>
+        <!--to 春爱:时间问题 暂时先不开发新的UI-->
+        <!--<li class="Regional"><label class="pull-left">开户地址</label><input type="text" placeholder="请选择省市区"><span class="b-r"><img-->
+        <!--src="images/blackright-r.png"></span></li>-->
         <li class="clickHref noline" id="subBranchRegion" data-href="addcardlist.html"
             th:attr="data-href=@{/subBranchHtml}">
             <label class="pull-left">支行名称</label>
