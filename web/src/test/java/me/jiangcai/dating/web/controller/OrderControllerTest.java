@@ -96,7 +96,7 @@ public class OrderControllerTest extends LoginWebTest {
         //
         // 地址自己选吧
 
-        cardPage.submitWithRandomAddress(bank, owner, number);
+        cardPage.submitWithRandomAddress(bank, owner, number, randomPeopleId());
         return initPage(OrderPage.class);
     }
 

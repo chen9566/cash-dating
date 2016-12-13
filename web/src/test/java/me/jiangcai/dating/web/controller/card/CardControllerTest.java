@@ -4,6 +4,7 @@ import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.page.BindingCardPage;
 import me.jiangcai.dating.page.MyBankPage;
 import me.jiangcai.dating.page.MyPage;
@@ -11,6 +12,8 @@ import me.jiangcai.dating.page.ShowOrderPage;
 import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,12 +30,19 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class CardControllerTest extends WebTest {
 
+    private static final Log log = LogFactory.getLog(CardControllerTest.class);
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private CashOrderRepository cashOrderRepository;
 
     @Test
     public void flowNewUser() throws IOException {
+        // 这个流程只有是单独体系才有的
+        if (getSystemService().arbitrageChannel(PayChannel.weixin).useOneOrderForPayAndArbitrage()) {
+            log.info("无需这个测试流程");
+            return;
+        }
+
         User user = helloNewUser(null, false);
         driver.get("http://localhost/start");
 
@@ -129,7 +139,7 @@ public class CardControllerTest extends WebTest {
         // 地址自己选吧
 
 
-        cardPage.submitWithRandomAddress(bank, owner, number);
+        cardPage.submitWithRandomAddress(bank, owner, number, randomPeopleId());
         return initPage(MyBankPage.class);
     }
 

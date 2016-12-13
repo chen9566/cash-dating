@@ -142,7 +142,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
 //        verificationCodeService.sendCode(mobile, Function.identity()); 现在不用发验证码了
         // 16
         String card = randomBankCard();
-        cardService.addCard(detail.getOpenId(), detail.getNickname(), card
+        cardService.addCard(detail.getOpenId(), detail.getNickname(), null, card
                 , null, null, randomSubBranchBank().getCode());
         return detail;
     }
@@ -295,6 +295,15 @@ public abstract class ServiceBaseTest extends SpringWebTest {
         User user = userService.byOpenId(openId);
         user.setSettlementBalance(user.getSettlementBalance().add(amount));
         userRepository.save(user);
+    }
+
+    /**
+     * @return 随机身份证
+     */
+    protected String randomPeopleId() {
+        // 8 + 4
+        return "33032419831021"
+                + org.apache.commons.lang.RandomStringUtils.randomNumeric(4);
     }
 
     public static class RandomComparator implements Comparator<Object> {

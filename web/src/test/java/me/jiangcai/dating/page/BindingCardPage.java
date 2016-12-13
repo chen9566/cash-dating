@@ -4,7 +4,6 @@ import me.jiangcai.chanpay.model.City;
 import me.jiangcai.chanpay.model.Province;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.service.PayResourceService;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -28,6 +27,7 @@ public class BindingCardPage extends AbstractPage {
     private WebElement numberInput;
     private WebElement submitButton;
     private WebElement subBranchRegion;
+    private WebElement ownerId;
 
     public BindingCardPage(WebDriver webDriver) {
         super(webDriver);
@@ -99,21 +99,22 @@ public class BindingCardPage extends AbstractPage {
                 .filter(WebElement::isDisplayed);
     }
 
-    public void submitWithRandomAll() {
-        getTestInstance();
-        SubBranchBank subBranchBank = randomSubBranchBank();
-
-        final String owner = RandomStringUtils.randomAlphanumeric(3);
-        final String number = randomBankCard();
-        submitWithRandomAddress(subBranchBank, owner, number);
-    }
+//    public void submitWithRandomAll() {
+//        getTestInstance();
+//        SubBranchBank subBranchBank = randomSubBranchBank();
+//
+//        final String owner = RandomStringUtils.randomAlphanumeric(3);
+//        final String number = randomBankCard();
+//        submitWithRandomAddress(subBranchBank, owner, number, random);
+//    }
 
     /**
      * @param branchBank
      * @param name
      * @param number
+     * @param ownerId
      */
-    public void submitWithRandomAddress(SubBranchBank branchBank, String name, String number) {
+    public void submitWithRandomAddress(SubBranchBank branchBank, String name, String number, String ownerId) {
         // 这下省份了城市都应该有了
         City city = PayResourceService.cityById(branchBank.getCityCode());
         Province province = PayResourceService.provinceByCity(city);
@@ -142,6 +143,10 @@ public class BindingCardPage extends AbstractPage {
 //        subBranchInput.clear();
 //        subBranchInput.sendKeys(subBranch);
 
+        if (ownerId != null) {
+            this.ownerId.clear();
+            this.ownerId.sendKeys(ownerId);
+        }
         numberInput.clear();
         numberInput.sendKeys(number);
         nameInput.clear();

@@ -1,6 +1,8 @@
 package me.jiangcai.dating.web.advice;
 
 import me.jiangcai.dating.entity.LoginToken;
+import me.jiangcai.dating.exception.ArbitrageBindRequireException;
+import me.jiangcai.dating.exception.ArbitrageBindingException;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.exception.RequestedException;
 import me.jiangcai.dating.service.UserService;
@@ -23,6 +25,18 @@ public class CommonAdvice {
 
     @Autowired
     private UserService userService;
+
+    // ArbitrageBindFailedException
+
+    @ExceptionHandler(ArbitrageBindRequireException.class)
+    public String arbitrageBindRequireException() {
+        return "redirect:/card?nextAction=/start&workModel=bind";
+    }
+
+    @ExceptionHandler(ArbitrageBindingException.class)
+    public String arbitrageBindingException() {
+        return "binding.html";
+    }
 
     /**
      * 不是微信平台的话,我们会给出一个二维码 让它使用微信用户扫码以完成登录

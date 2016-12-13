@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.security.SignatureException;
@@ -38,13 +39,17 @@ public class HomeController {
     private CardService cardService;
 
     @RequestMapping(method = RequestMethod.GET, value = {"/start"})
-    public String index(@AuthenticationPrincipal User user, Model model) throws IOException, SignatureException, ArbitrageBindFailedException, ArbitrageBindingException, ArbitrageBindRequireException {
+    public String index(@AuthenticationPrincipal User user, Model model, @RequestParam(required = false) Long cardId)
+            throws IOException, SignatureException, ArbitrageBindFailedException, ArbitrageBindingException, ArbitrageBindRequireException {
         user = userService.byOpenId(user.getOpenId());
 
         // 虽然我们无法预测用户必然使用微信,但是也就差不多吧
         final ArbitrageChannel channel = systemService.arbitrageChannel(PayChannel.weixin);
         if (channel.useOneOrderForPayAndArbitrage()) {
             // 绑定的状态 尚未进行 则提示是否确认绑定
+            if (cardId != null)
+                channel.bindUser(user);
+
             switch (channel.bindingUserStatus(user)) {
                 case notYet:
                     throw new ArbitrageBindRequireException(channel.debitCardManageable());

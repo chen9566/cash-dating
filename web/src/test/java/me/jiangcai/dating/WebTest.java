@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.google.common.base.Predicate;
 import me.jiangcai.chanpay.test.mock.MockPay;
+import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.page.BindingCardPage;
 import me.jiangcai.dating.page.BindingMobilePage;
 import me.jiangcai.dating.page.CodePage;
@@ -23,6 +25,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -223,7 +226,7 @@ public abstract class WebTest extends ServiceBaseTest {
      * 磨磨唧唧的建立一个新用户
      *
      * @param invite          邀请者
-     * @param withBindingCard 是否自动绑定一个银行卡
+     * @param withBindingCard 是否自动绑定一个银行卡,如果供应商不支持分单的话就不会关注这个{@link ArbitrageChannel#useOneOrderForPayAndArbitrage()}
      * @return
      * @throws IOException
      */
@@ -248,9 +251,8 @@ public abstract class WebTest extends ServiceBaseTest {
         page.submitWithCode();
 
         // 应该到了下一个页面了
-        driver.get(defaultStartUrl);
 
-        StartOrderPage startOrderPage = initPage(StartOrderPage.class);
+        StartOrderPage startOrderPage = startOrderPage();
 
         startOrderPage.assertNoCard();
 
@@ -259,7 +261,8 @@ public abstract class WebTest extends ServiceBaseTest {
         final String owner = RandomStringUtils.randomAlphanumeric(3);
         final String number = randomBankCard();
 
-        if (withBindingCard) {
+        ArbitrageChannel channel = systemService.arbitrageChannel(PayChannel.weixin);
+        if (withBindingCard && !channel.useOneOrderForPayAndArbitrage()) {
             startOrderPage = bindCardOnOrderPage(mobile, startOrderPage, subBranchBank, owner, number);
         }
 
@@ -279,7 +282,7 @@ public abstract class WebTest extends ServiceBaseTest {
         Long userId = CashFilter.guideUserFromURL(url, null);
 
         User user = userRepository.getOne(userId);
-        if (withBindingCard) {
+        if (withBindingCard && !channel.useOneOrderForPayAndArbitrage()) {
             assertThat(user.getCards())
                     .hasSize(1);
 
@@ -317,7 +320,7 @@ public abstract class WebTest extends ServiceBaseTest {
                 .isNotNull();
         //
         // 地址自己选吧
-        cardPage.submitWithRandomAddress(subBranchBank, owner, number);
+        cardPage.submitWithRandomAddress(subBranchBank, owner, number, randomPeopleId());
     }
 
     /**
@@ -372,6 +375,28 @@ public abstract class WebTest extends ServiceBaseTest {
     protected MyPage myPage(WebDriver driver) {
         driver.get("http://localhost/my");
         return initPage(MyPage.class);
+    }
+
+    protected StartOrderPage startOrderPage() {
+        return startOrderPage(driver);
+    }
+
+    protected StartOrderPage startOrderPage(WebDriver driver) {
+        driver.get("http://localhost/start");
+
+        try {
+            return initPage(StartOrderPage.class, driver);
+        } catch (WebDriverException | Error ex) {
+            // 在发现问题的时候 可能是因为支付供应商的额外请求
+            BindingCardPage bindingCardPage = initPage(BindingCardPage.class, driver);
+            SubBranchBank subBranchBank = randomSubBranchBank();
+
+            String owner = RandomStringUtils.randomAlphanumeric(3);
+            String number = randomBankCard();
+            bindingCardPage.submitWithRandomAddress(subBranchBank, owner, number, randomPeopleId());
+
+            return initPage(StartOrderPage.class, driver);
+        }
     }
 
     protected MockHttpSession mvcLogin() throws Exception {

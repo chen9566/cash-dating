@@ -80,6 +80,8 @@ public class CardController {
                                // 这3个参数 其实用不上
             , String province, String city, String bank
             , @RequestParam(value = "workModel", required = false) String workModel
+                               // 新增的身份证号码
+            , String ownerId
             , String subBranch) {
 //
 //        Address address = new Address();
@@ -90,10 +92,10 @@ public class CardController {
         // 禁用原卡
         Card card;
         if ("loan".equals(workModel)) {
-            card = cardService.addCard(null, name, number, null, null, subBranch);
+            card = cardService.addCard(null, name, ownerId, number, null, null, subBranch);
         } else {
             cardService.disableRecommendCard(id);
-            card = cardService.addCard(id, name, number, null, null, subBranch);
+            card = cardService.addCard(id, name, ownerId, number, null, null, subBranch);
         }
 
 
@@ -108,7 +110,7 @@ public class CardController {
         }
         String url = (String) session.getAttribute(RedirectSessionKey);
         if (StringUtils.isEmpty(url))
-            return "redirect:/start";
+            return "redirect:/my";
         return "redirect:" + url;
     }
 
