@@ -3,6 +3,7 @@ package me.jiangcai.dating.service;
 import me.jiangcai.dating.Version;
 import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
+import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserLoanData;
 import me.jiangcai.dating.entity.UserOrder;

@@ -35,7 +35,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.xalan.xsltc.compiler.util.InternalError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -50,6 +49,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author CJ
@@ -85,8 +87,6 @@ public abstract class ServiceBaseTest extends SpringWebTest {
     private UserRepository userRepository;
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
-    @Autowired
-    private ApplicationContext applicationContext;
 
     public SubBranchBank randomSubBranchBank() {
         return subBranchBankRepository.findAll().stream()
