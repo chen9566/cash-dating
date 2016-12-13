@@ -139,6 +139,7 @@ class MVCConfig extends WebMvcConfigurerAdapter {
         static class ThymeleafTemplateConfig {
             @Autowired
             private WebApplicationContext webApplicationContext;
+            @SuppressWarnings("SpringJavaAutowiringInspection")
             @Autowired
             private WeixinDialect weixinDialect;
             @Autowired

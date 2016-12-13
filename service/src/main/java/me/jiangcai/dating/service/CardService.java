@@ -27,15 +27,15 @@ public interface CardService {
      *
      * @param openId    openId,如果为空,表示自己维护这个card
      * @param name      持卡人
+     * @param id        持卡人身份证号码
      * @param number    卡号
      * @param bank
      * @param address
-     * @param subBranch 支行,可以是code也可以是name
-     * @return 新增加的银行
+     * @param subBranch 支行,可以是code也可以是name     @return 新增加的银行
      * @throws IllegalVerificationCodeException 验证码无效
      */
     @Transactional
-    Card addCard(String openId, String name, String number, Bank bank, Address address, String subBranch);
+    Card addCard(String openId, String name, String id, String number, Bank bank, Address address, String subBranch);
 
     /**
      * 清空银行卡

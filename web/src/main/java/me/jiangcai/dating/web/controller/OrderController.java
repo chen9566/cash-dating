@@ -1,5 +1,6 @@
 package me.jiangcai.dating.web.controller;
 
+import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
@@ -9,6 +10,7 @@ import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.StatisticService;
 import me.jiangcai.dating.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,20 +36,33 @@ public class OrderController {
     private CardService cardService;
     @Autowired
     private StatisticService statisticService;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     // 订单详情
     @RequestMapping(method = RequestMethod.GET, value = "/orderDetail/{id}")
     public String detail(@AuthenticationPrincipal User user, Model model, @PathVariable("id") String id) {
         final CashOrder order = orderService.getOne(id);
+        orderService.checkArbitrage(order);
         model.addAttribute("order", order);
+        final PlatformWithdrawalOrder successPlatformOrder = order.getPlatformWithdrawalOrderSet().stream()
+                .filter(PlatformWithdrawalOrder::isSuccess).findFirst().orElse(null);
         model.addAttribute("successPlatformOrder",
-                order.getPlatformWithdrawalOrderSet().stream()
-                        .filter(PlatformWithdrawalOrder::isSuccess).findFirst().orElse(null));
+                successPlatformOrder);
+        final PlatformWithdrawalOrder workingPlatformOrder = order.getPlatformWithdrawalOrderSet().stream()
+                .filter(platformWithdrawalOrder -> !platformWithdrawalOrder.isFinish()).findFirst().orElse(null);
         model.addAttribute("workingPlatformOrder",
-                order.getPlatformWithdrawalOrderSet().stream()
-                        .filter(platformWithdrawalOrder -> !platformWithdrawalOrder.isFinish()).findFirst().orElse(null));
-        model.addAttribute("platformOrder", order.getPlatformOrderSet().stream()
-                .filter(PlatformOrder::isFinish).findFirst().orElseThrow(IllegalStateException::new));
+                workingPlatformOrder);
+        final PlatformOrder platformOrder = order.getPlatformOrderSet().stream()
+                .filter(PlatformOrder::isFinish).findFirst().orElseThrow(IllegalStateException::new);
+        model.addAttribute("platformOrder", platformOrder);
+
+        ArbitrageChannel channel = applicationContext.getBean(platformOrder.channelClass());
+        //noinspection SimplifiableConditionalExpression
+        model.addAttribute("workable", channel.useOneOrderForPayAndArbitrage()
+                ? false
+                : (!order.isWithdrawalCompleted() && successPlatformOrder == null && workingPlatformOrder == null));
+
         // 是否允许重试
         return "orderdetails.html";
     }

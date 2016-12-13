@@ -25,10 +25,13 @@ import java.util.ArrayList;
 public class CardServiceImpl implements CardService {
 
     private static final Log log = LogFactory.getLog(CardServiceImpl.class);
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserRepository userRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private SubBranchBankRepository subBranchBankRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private CardRepository cardRepository;
 
@@ -42,7 +45,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card addCard(String openId, String name, String number, Bank bank, Address address, String subBranch) {
+    public Card addCard(String openId, String name, String id, String number, Bank bank, Address address, String subBranch) {
 //        verificationCodeService.verify(mobile, code, VerificationType.card);
 
         SubBranchBank branchBank = subBranchBankRepository.getOne(subBranch);
@@ -50,6 +53,7 @@ public class CardServiceImpl implements CardService {
         Card card = new Card();
         card.setNumber(number);
         card.setOwner(name);
+        card.setOwnerId(id);
         card.setBank(branchBank.getBank());
 
         Address address1 = new Address();
@@ -70,9 +74,10 @@ public class CardServiceImpl implements CardService {
             user.setCards(new ArrayList<>());
         }
         user.getCards().add(card);
-        user = userRepository.save(user);
+        user = userRepository.saveAndFlush(user);
         return user.getCards().stream()
                 .filter(card1 -> card1.getNumber().equals(number))
+                .filter(card1 -> !card1.isDisabled())
                 .findAny()
                 .orElseThrow(IllegalStateException::new);
     }

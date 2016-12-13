@@ -2,7 +2,7 @@ package me.jiangcai.dating;
 
 import me.jiangcai.chanpay.data.trade.CreateInstantTrade;
 import me.jiangcai.dating.entity.CashOrder;
-import me.jiangcai.dating.entity.ChanpayOrder;
+import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.impl.AbstractChanpayService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class TestChanpayService extends AbstractChanpayService {
     private BankService bankService;
 
     @Override
-    public String QRCodeImageFromOrder(ChanpayOrder order) throws IllegalStateException, IOException {
+    public String QRCodeImageFromOrder(PlatformOrder order) throws IllegalStateException, IOException {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("http://localhost/qrUrl?url=")
                 .append(URLEncoder.encode(order.getUrl(), "UTF-8"));

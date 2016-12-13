@@ -11,6 +11,8 @@ import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.MyTeamPage;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.AgentService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -27,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class AgentControllerTest extends LoginWebTest {
 
+    private static final Log log = LogFactory.getLog(AgentControllerTest.class);
     @Autowired
     private AgentService agentService;
     @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -45,7 +48,11 @@ public class AgentControllerTest extends LoginWebTest {
         MyInvitationPage invitePage = codePage.toMyInvitationPage();
         invitePage.assertTeam();
 
-        invitePage.clickMyTeam();
+        if (true) {
+            log.info("更改团队手续费率被禁止。");
+            return;
+        }
+//        invitePage.clickMyTeam();
 
         MyTeamPage teamPage = initPage(MyTeamPage.class);
         currentUser = userService.by(currentUser.getId());

@@ -1,6 +1,7 @@
 package me.jiangcai.dating.page;
 
 import com.google.common.base.Predicate;
+import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.CashOrder;
 import org.openqa.selenium.By;
@@ -25,6 +26,7 @@ public class OrderPage extends AbstractPage {
 
     @Override
     public void validatePage() {
+        printThisPage();
 //        System.out.println(webDriver.getPageSource());
         assertThat(webDriver.getTitle())
                 .isEqualTo("我的订单");
@@ -182,7 +184,7 @@ public class OrderPage extends AbstractPage {
         reloadPageInfo();
     }
 
-    public void assertFailedOrder(int index, CashOrder order) {
+    public void assertFailedOrder(int index, CashOrder order, ArbitrageChannel channel) {
         WebElement element = checkOrder(index, order);
         assertThat(element.findElements(By.tagName("span")).stream()
                 .filter(webElement -> webElement.getText().contains("未到账"))
@@ -192,7 +194,7 @@ public class OrderPage extends AbstractPage {
 
         element.click();
         OrderDetailPage detailPage = initPage(OrderDetailPage.class);
-        detailPage.assertFailed(order);
+        detailPage.assertFailed(order, channel);
         webDriver.navigate().back();
         reloadPageInfo();
     }

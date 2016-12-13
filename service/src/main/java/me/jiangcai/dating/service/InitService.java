@@ -64,6 +64,18 @@ public class InitService {
                     case v108002:
                         jdbcService.tableAlterAddColumn(UserLoanData.class, "hasHouse", "0");
                         break;
+                    case v108011:
+                        jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {
+                            @Override
+                            public void accept(ConnectionProvider connection) throws SQLException {
+                                try (Statement statement = connection.getConnection().createStatement()) {
+                                    statement.execute("ALTER TABLE `platformOrder` ADD FEE DECIMAL(20,2) DEFAULT 0");
+                                }
+                            }
+                        });
+                        jdbcService.tableAlterAddColumn(PlatformOrder.class, "platformId", null);
+                        jdbcService.tableAlterAddColumn(Card.class, "ownerId", null);
+                        break;
                     case v108001:
                         jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {
                             @Override

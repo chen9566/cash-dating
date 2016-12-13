@@ -2,7 +2,7 @@ package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.chanpay.data.trade.CreateInstantTrade;
 import me.jiangcai.dating.entity.CashOrder;
-import me.jiangcai.dating.entity.ChanpayOrder;
+import me.jiangcai.dating.entity.PlatformOrder;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class ChanpayServiceImpl extends AbstractChanpayService {
     }
 
     @Override
-    public String QRCodeImageFromOrder(ChanpayOrder order) throws IllegalStateException, IOException {
+    public String QRCodeImageFromOrder(PlatformOrder order) throws IllegalStateException, IOException {
         return order.getUrl();
     }
 }

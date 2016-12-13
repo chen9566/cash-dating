@@ -16,6 +16,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * 合伙人管理自己团队的手续费
+ * 在1.8.1以后废止这个功能<a href="https://github.com/JoleneOL/cash-dating/issues/7">详情</a>
+ * myteam.html
  * @author CJ
  */
 public class MyTeamPage extends AbstractPage {

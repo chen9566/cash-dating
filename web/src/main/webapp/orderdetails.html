@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="workable" type="boolean"*/-->
 <!--/*@thymesVar id="order" type="me.jiangcai.dating.entity.CashOrder"*/-->
 <!--/*@thymesVar id="platformOrder" type="me.jiangcai.dating.entity.PlatformOrder"*/-->
 <!--/*@thymesVar id="successPlatformOrder" type="me.jiangcai.dating.entity.PlatformWithdrawalOrder"*/-->
@@ -34,17 +35,17 @@
         <li class="bo-b">
             <span class="pull-right" th:text="${#numbers.formatDecimal(order.amount,1,'COMMA',2,'POINT')}">50.00</span>收款金额
         </li>
-        <li class="bo-b" th:if="${successPlatformOrder!=null}">
+        <li class="bo-b" th:if="${order.withdrawalCompleted}">
             <span class="pull-right"
                   th:text="${#numbers.formatDecimal(order.amount.subtract(order.withdrawalAmount),1,'COMMA',2,'POINT')}">50.00</span>手续费
         </li>
-        <li class="collect" th:if="${successPlatformOrder!=null}">
+        <li class="collect" th:if="${order.withdrawalCompleted}">
             <span class="pull-right red-m"
                   th:text="${#numbers.formatDecimal(order.withdrawalAmount,1,'COMMA',2,'POINT')}">2950</span>实收金额
         </li>
     </ul>
 </div>
-<form th:if="${successPlatformOrder==null && workingPlatformOrder==null}" action="myorder.html"
+<form th:if="${workable}" action="myorder.html"
       th:action="@{/touchOrder}" method="get" th:method="post">
     <input name="id" type="hidden" th:value="${order.id}"/>
     <p class="p-15">

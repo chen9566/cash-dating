@@ -1,23 +1,38 @@
 package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.ProfitSplit;
+import me.jiangcai.dating.channel.ArbitrageChannel;
+import me.jiangcai.dating.channel.ChroneService;
+import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.SystemString;
+import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.RateConfig;
+import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.repository.SystemStringRepository;
 import me.jiangcai.dating.service.SystemService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * 系统会固定设置2个数据,用户账面手续费(R),平台（第三方）手续费(r)
@@ -38,7 +53,14 @@ import java.util.Locale;
 @Service("systemService")
 public class SystemServiceImpl implements SystemService {
 
+    /**
+     * 平台成本
+     */
     private static final String ChannelRate = "dating.rate.channel";
+    /**
+     * 优惠手续费率
+     */
+    private static final String PreferentialRate = "dating.rate.preferential";
     private static final String LowestRate = "dating.rate.lowest";
     private static final String BookRate = "dating.rate.book";
     private static final String AgentRate = "dating.rate.agent";
@@ -49,7 +71,7 @@ public class SystemServiceImpl implements SystemService {
     private static final Log log = LogFactory.getLog(SystemServiceImpl.class);
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS"
             , Locale.CHINA);
-
+    private final Map<PayChannel, ArbitrageChannel> arbitrageChannelMap = new HashMap<>();
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private SystemStringRepository systemStringRepository;
@@ -59,7 +81,11 @@ public class SystemServiceImpl implements SystemService {
 //    private WeixinService weixinService;
     @Autowired
     private Environment environment;
-
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private EntityManager entityManager;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @PostConstruct
     @Transactional
@@ -68,7 +94,6 @@ public class SystemServiceImpl implements SystemService {
         // 无事可做的
 
     }
-
 
     @Override
     public RateConfig currentRateConfig(ProfitSplit profitSplit) {
@@ -117,14 +142,70 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
+    public boolean hasInviteValidUser(String openId, int number) {
+
+//        TypedQuery<Long> query = entityManager.createQuery("select count(u) from User as u,CashOrder as o where u.guideUser.openId=?1 and o.owner=u and o.completed=true and count(o)>=1", Long.class);
+//        query.setParameter(1, openId);
+        final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+        Root<User> userRoot = criteriaQuery.from(User.class);
+        Root<CashOrder> cashOrderRoot = criteriaQuery.from(CashOrder.class);
+        Predicate fromOpenPredicate = criteriaBuilder.equal(userRoot.get("guideUser").get("openId"), openId);
+        Predicate ourOrder = criteriaBuilder.equal(cashOrderRoot.get("owner"), userRoot);
+        Predicate validOrder = criteriaBuilder.isTrue(cashOrderRoot.get("completed"));
+        Predicate enoughOrders = criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.count(cashOrderRoot), 1L);
+        criteriaQuery.having(enoughOrders);
+        criteriaQuery.where(fromOpenPredicate, ourOrder, validOrder);
+        criteriaQuery.select(criteriaBuilder.count(userRoot));
+
+        //
+        TypedQuery<Long> query = entityManager.createQuery(criteriaQuery);
+
+        try {
+            return query.getSingleResult() > number;
+        } catch (NoResultException ignored) {
+            return false;
+        }
+    }
+
+    @Override
+    public ArbitrageChannel arbitrageChannel(PayChannel channel) {
+        ArbitrageChannel arbitrageChannel = arbitrageChannelMap.get(channel);
+        if (arbitrageChannel == null) {
+            arbitrageChannelMap.put(channel, checkoutArbitrageChannel(channel));
+        }
+        return arbitrageChannelMap.get(channel);
+    }
+
+    /**
+     * 按照配置获取
+     *
+     * @param channel
+     * @return
+     */
+    private ArbitrageChannel checkoutArbitrageChannel(PayChannel channel) {
+        return applicationContext.getBean(ChroneService.class);
+    }
+
+    @Override
+    public BigDecimal systemPreferentialRate() {
+        return getSystemString(PreferentialRate, BigDecimal.class, new BigDecimal("0.003"));
+    }
+
+    @Override
+    public BigDecimal systemDefaultRate() {
+        return getSystemString(BookRate, BigDecimal.class, new BigDecimal("0.006"));
+    }
+
+    @Override
     public BigDecimal systemBookRate(ProfitSplit profitSplit) {
         if (profitSplit.useLowestRate()) {
-            return getSystemString(LowestRate, BigDecimal.class, new BigDecimal("0"));
+            return getSystemString(LowestRate, BigDecimal.class, new BigDecimal("0.003"));
         }
         BigDecimal rate = profitSplit.bookProfileRate(this);
         if (rate != null)
             return rate;
-        return getSystemString(BookRate, BigDecimal.class, new BigDecimal("0.006"));
+        return systemDefaultRate();
     }
 
     @Override

@@ -3,8 +3,7 @@ package me.jiangcai.dating.service;
 import me.jiangcai.chanpay.event.TradeEvent;
 import me.jiangcai.chanpay.event.WithdrawalEvent;
 import me.jiangcai.dating.ThreadSafe;
-import me.jiangcai.dating.entity.CashOrder;
-import me.jiangcai.dating.entity.ChanpayOrder;
+import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
 import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.event.MyTradeEvent;
@@ -23,18 +22,18 @@ import java.security.SignatureException;
  *
  * @author CJ
  */
-public interface ChanpayService {
+public interface ChanpayService extends ArbitrageChannel {
 
-    /**
-     * 建立支付订单
-     *
-     * @param order 对应订单
-     * @return 已建立的支付订单
-     * @throws IOException
-     * @throws SignatureException
-     */
-    //    @Transactional
-    ChanpayOrder createOrder(CashOrder order) throws IOException, SignatureException;
+//    /**
+//     * 建立支付订单
+//     *
+//     * @param order 对应订单
+//     * @return 已建立的支付订单
+//     * @throws IOException
+//     * @throws SignatureException
+//     */
+//    //    @Transactional
+//    ChanpayOrder createOrder(CashOrder order) throws IOException, SignatureException;
 
     /**
      * 检查是否可以提现一个支付订单
@@ -62,17 +61,6 @@ public interface ChanpayService {
     @PostConstruct
     @Transactional
     void init() throws IOException, SignatureException;
-
-    /**
-     * 从一个畅捷支付的订单中获取可以获取支付二维码的链接
-     *
-     * @param order 畅捷订单
-     * @return 二维码
-     * @throws IllegalStateException 如果这个订单已经无效或者根本没生成
-     * @throws IOException           获取的过程发生问题
-     */
-    String QRCodeImageFromOrder(ChanpayOrder order) throws IllegalStateException, IOException;
-
 
     @EventListener(TradeEvent.class)
     void tradeUpdate(TradeEvent event) throws IOException, SignatureException;

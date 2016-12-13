@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.function.Predicate;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 /**
  * @author CJ
  */
@@ -49,7 +52,9 @@ public abstract class AbstractPage extends me.jiangcai.lib.test.page.AbstractPag
         String url = webTest.getQrCodeService().scanImage(payCode);
         if (url.startsWith("trade"))
             getWebTest().tradeSuccess(order);
-        else
+        else if (url.startsWith("http://localhost/")) {
+            getWebTest().mockMVC().perform(get(url)).andExpect(status().isOk());
+        } else
             webTest.getPay().pay(order.getPlatformOrderSet().iterator().next().getId(), url);
         Thread.sleep(2500);
     }

@@ -1,6 +1,11 @@
 package me.jiangcai.dating.web.controller;
 
+import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.exception.ArbitrageBindFailedException;
+import me.jiangcai.dating.exception.ArbitrageBindRequireException;
+import me.jiangcai.dating.exception.ArbitrageBindingException;
+import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.service.CardService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.UserService;
@@ -10,7 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
+import java.security.SignatureException;
 import java.util.ArrayList;
 
 /**
@@ -31,8 +39,26 @@ public class HomeController {
     private CardService cardService;
 
     @RequestMapping(method = RequestMethod.GET, value = {"/start"})
-    public String index(@AuthenticationPrincipal User user, Model model) {
+    public String index(@AuthenticationPrincipal User user, Model model, @RequestParam(required = false) Long cardId)
+            throws IOException, SignatureException, ArbitrageBindFailedException, ArbitrageBindingException, ArbitrageBindRequireException {
         user = userService.byOpenId(user.getOpenId());
+
+        // 虽然我们无法预测用户必然使用微信,但是也就差不多吧
+        final ArbitrageChannel channel = systemService.arbitrageChannel(PayChannel.weixin);
+        if (channel.useOneOrderForPayAndArbitrage()) {
+            // 绑定的状态 尚未进行 则提示是否确认绑定
+            if (cardId != null)
+                channel.bindUser(user);
+
+            switch (channel.bindingUserStatus(user)) {
+                case notYet:
+                    throw new ArbitrageBindRequireException(channel.debitCardManageable());
+                case auditing:
+                    throw new ArbitrageBindingException();
+            }
+            // 绑定中 则提示
+        }
+
         if (user.getCards() != null && !user.getCards().isEmpty()) {
             model.addAttribute("card", cardService.recommend(user));
             model.addAttribute("cards", user.getCards());
@@ -42,6 +68,7 @@ public class HomeController {
         }
 
         // 还有一个数字
+        model.addAttribute("lowestAmount", channel.lowestAmount());
         model.addAttribute("rate", systemService.systemBookRate(user));
 
         return "receivables.html";

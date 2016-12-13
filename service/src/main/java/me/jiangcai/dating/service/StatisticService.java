@@ -28,6 +28,8 @@ public interface StatisticService {
     BigDecimal totalExpense(String openId);
 
     /**
+     * 这次版本更新后基本都是0了
+     *
      * @param openId 用户openId
      * @return 实时余额
      */

@@ -1,6 +1,7 @@
 package me.jiangcai.dating.mall;
 
 import me.jiangcai.dating.WebTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -10,8 +11,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * 商城入口测试
  *
+ * 静态商城已移除项目
+ *
  * @author CJ
  */
+@Ignore
 public class MallEntryTest extends WebTest {
 
     @Test

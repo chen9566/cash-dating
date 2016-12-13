@@ -1,8 +1,8 @@
 package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.ThreadSafe;
+import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.entity.CashOrder;
-import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
 import me.jiangcai.dating.entity.PayToUserOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
@@ -26,7 +26,10 @@ import me.jiangcai.dating.service.StatisticService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.lib.seext.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +56,10 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
 
+    private static final Log log = LogFactory.getLog(OrderServiceImpl.class);
+
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy年M月", Locale.CHINA);
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private CashOrderRepository cashOrderRepository;
     @Autowired
@@ -62,10 +68,13 @@ public class OrderServiceImpl implements OrderService {
     private ChanpayService chanpayService;
     @Autowired
     private SystemService systemService;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private CardRepository cardRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private PayToUserOrderRepository payToUserOrderRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private WithdrawOrderRepository withdrawOrderRepository;
     @Autowired
@@ -73,6 +82,8 @@ public class OrderServiceImpl implements OrderService {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserOrderRepository userOrderRepository;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Override
     public CashOrder newOrder(User user, BigDecimal amount, String comment, Long cardId) {
@@ -136,10 +147,12 @@ public class OrderServiceImpl implements OrderService {
 
         if (!order.getPlatformOrderSet().isEmpty())
             return order.getPlatformOrderSet().iterator().next();
-        ChanpayOrder chanpayOrder = chanpayService.createOrder(order);
-        order.getPlatformOrderSet().add(chanpayOrder);
+
+        PlatformOrder order1 = systemService.arbitrageChannel(channel).newOrder(order);
+//        ChanpayOrder chanpayOrder = chanpayService.createOrder(order);
+        order.getPlatformOrderSet().add(order1);
         cashOrderRepository.save(order);
-        return chanpayOrder;
+        return order1;
     }
 
     @Override
@@ -159,6 +172,8 @@ public class OrderServiceImpl implements OrderService {
             Object[] objects = (Object[]) object;
             OrderFlow flow = new OrderFlow();
             flow.setOrder((CashOrder) objects[0]);
+            final CashOrder cashOrder = flow.getOrder();
+            checkArbitrage(cashOrder);
             if (objects.length >= 2) {
                 PlatformWithdrawalOrder withdrawalOrder = (PlatformWithdrawalOrder) objects[1];
                 if (withdrawalOrder != null) {
@@ -171,16 +186,53 @@ public class OrderServiceImpl implements OrderService {
                         flow.setStatus(OrderFlowStatus.transferring);
                     }
                     flow.setWithdrawalOrder(withdrawalOrder);
-                } else
-                    flow.setStatus(OrderFlowStatus.cardRequired);
+                } else {
+                    arbitrageNotFound(flow);
+                }
             } else {
-                flow.setStatus(OrderFlowStatus.cardRequired);
+                arbitrageNotFound(flow);
+
             }
 
             if (!flowArrayList.contains(flow))
                 flowArrayList.add(flow);
         });
         return flowArrayList;
+    }
+
+    @Override
+    public void checkArbitrage(CashOrder cashOrder) {
+        if (cashOrder.isCompleted() && !cashOrder.isWithdrawalCompleted() && cashOrder.getPlatformOrderSet() != null)
+            cashOrder.getPlatformOrderSet().stream()
+                    .filter(PlatformOrder::isFinish)
+                    .findFirst()
+                    .ifPresent(platformOrder -> {
+                        ArbitrageChannel channel = applicationContext.getBean(platformOrder.channelClass());
+                        if (channel.arbitrageResultManually()) {
+                            try {
+                                channel.checkArbitrageResult(platformOrder);
+                            } catch (Exception ex) {
+                                log.debug("checkArbitrageResult", ex);
+                            }
+                        }
+                    });
+    }
+
+    private void arbitrageNotFound(OrderFlow flow) {
+        flow.setStatus(OrderFlowStatus.cardRequired);
+        // 也不见得
+//                获取支付订单
+        PlatformOrder platformOrder = flow.getOrder().getPlatformOrderSet().stream()
+                .filter(PlatformOrder::isFinish).findFirst().orElseThrow(IllegalStateException::new);
+        ArbitrageChannel channel = applicationContext.getBean(platformOrder.channelClass());
+        if (channel.useOneOrderForPayAndArbitrage()) {
+            if (flow.getOrder().isWithdrawalCompleted()) {
+                flow.setStatus(OrderFlowStatus.success);
+            } else if (flow.getOrder().getSystemComment() != null) {
+                flow.setStatus(OrderFlowStatus.failed);
+            } else
+                flow.setStatus(OrderFlowStatus.transferring);
+        }
     }
 
     @Override
@@ -214,6 +266,7 @@ public class OrderServiceImpl implements OrderService {
         return toMonthly(finishedOrderFlows(openId));
     }
 
+    // 提现供应商?
     @Override
     public ChanpayWithdrawalOrder withdrawalWithCard(String orderId, Long cardId) throws IOException, SignatureException {
         CashOrder order = getOne(orderId);

@@ -1,5 +1,6 @@
 package me.jiangcai.dating.page;
 
+import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.util.Common;
 import org.openqa.selenium.By;
@@ -23,6 +24,7 @@ public class OrderDetailPage extends AbstractPage {
 
     @Override
     public void validatePage() {
+        printThisPage();
         assertThat(webDriver.getTitle())
                 .isEqualTo("订单详情");
 
@@ -36,7 +38,8 @@ public class OrderDetailPage extends AbstractPage {
     public void assertSuccess(CashOrder order) {
         commonAssert(order);
         // 银行
-        fieldCheck(webElement -> webElement.getText().contains("尾号"));
+//        fieldCheck(webElement -> webElement.getText().contains("尾号"));
+        // 银行卡就不显示了
         fieldCheck(webElement -> webElement.getText().equals(Common.CurrencyFormat(order.getWithdrawalAmount())));
         // 找不到重试按钮
         assertThat(button)
@@ -49,10 +52,12 @@ public class OrderDetailPage extends AbstractPage {
                 .isNull();
     }
 
-    public void assertFailed(CashOrder order) {
+    public void assertFailed(CashOrder order, ArbitrageChannel channel) {
         commonAssert(order);
         // 银行
         // 找不到重试按钮
+        if (channel.useOneOrderForPayAndArbitrage())
+            return;
         assertThat(button)
                 .isNotNull();
         assertThat(button.isDisplayed())

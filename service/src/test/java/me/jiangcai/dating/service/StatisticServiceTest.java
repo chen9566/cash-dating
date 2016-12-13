@@ -1,6 +1,5 @@
 package me.jiangcai.dating.service;
 
-import me.jiangcai.chanpay.model.WithdrawalStatus;
 import me.jiangcai.dating.ServiceBaseTest;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.User;
@@ -56,6 +55,9 @@ public class StatisticServiceTest extends ServiceBaseTest {
         cashOrder = orderService.newOrder(newbie, amount, null, null);
         tradeSuccess(cashOrder);
 
+        // 手动给它加余额
+        addUserBalance(user.getOpenId(), randomOrderAmount());
+
         assertThat(statisticService.balance(user.getOpenId()))
                 .isGreaterThan(BigDecimal.ZERO);
         assertThat(statisticService.revenue(user.getOpenId()))
@@ -74,7 +76,7 @@ public class StatisticServiceTest extends ServiceBaseTest {
                 .isEqualTo(amount);
 
         // 提现失败
-        withdrawalFailed(withdrawOrder, WithdrawalStatus.WITHDRAWAL_FAIL, "");
+        withdrawalResult(withdrawOrder, false, "");
 
         assertThat(statisticService.balance(user.getOpenId()))
                 .isGreaterThan(BigDecimal.ZERO);

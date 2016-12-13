@@ -73,9 +73,7 @@ public class HomeControllerTest extends LoginWebTest {
 
     @Test
     public void index() throws Exception {
-        driver.get("http://localhost/start");
-
-        StartOrderPage page = initPage(StartOrderPage.class);
+        StartOrderPage page = startOrderPage();
 
         // 小数点前 只可以有7位
         // 最大 9,999,999.99

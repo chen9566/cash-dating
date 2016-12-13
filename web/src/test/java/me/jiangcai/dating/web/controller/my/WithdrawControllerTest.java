@@ -1,9 +1,7 @@
 package me.jiangcai.dating.web.controller.my;
 
 import me.jiangcai.dating.LoginWebTest;
-import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.SubBranchBank;
-import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.page.CodePage;
 import me.jiangcai.dating.page.MyInvitationPage;
 import me.jiangcai.dating.page.MyPage;
@@ -98,10 +96,11 @@ public class WithdrawControllerTest extends LoginWebTest {
     }
 
     private void makeBalance() throws IOException, SignatureException {
-        User newbie = userService.byOpenId(createNewUser(currentUser()).getOpenId());
-        CashOrder cashOrder = orderService.newOrder(newbie, new BigDecimal("100000"), null, null);
-        tradeSuccess(cashOrder);
-        withdrawalSuccess(cashOrder);
+        addUserBalance(currentUser().getOpenId(), randomOrderAmount());
+//        User newbie = userService.byOpenId(createNewUser(currentUser()).getOpenId());
+//        CashOrder cashOrder = orderService.newOrder(newbie, new BigDecimal("100000"), null, null);
+//        tradeSuccess(cashOrder);
+//        withdrawalSuccess(cashOrder);
     }
 
 }
