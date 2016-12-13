@@ -22,6 +22,7 @@ import me.jiangcai.chanpay.service.impl.GetPayChannelHandler;
 import me.jiangcai.chanpay.service.impl.InstantTradeHandler;
 import me.jiangcai.chanpay.service.impl.QueryTradeHandler;
 import me.jiangcai.dating.ThreadSafe;
+import me.jiangcai.dating.channel.ArbitrageAccountStatus;
 import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.CashOrder;
@@ -29,10 +30,12 @@ import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
+import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.event.MyTradeEvent;
 import me.jiangcai.dating.event.MyWithdrawalEvent;
 import me.jiangcai.dating.event.Notification;
+import me.jiangcai.dating.exception.ArbitrageBindFailedException;
 import me.jiangcai.dating.notify.NotifyType;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.ChanpayOrderRepository;
@@ -450,5 +453,15 @@ public abstract class AbstractChanpayService implements ChanpayService {
             }
             throw exception;
         }
+    }
+
+    @Override
+    public void bindUser(User user) throws IOException, SignatureException {
+
+    }
+
+    @Override
+    public ArbitrageAccountStatus bindingUserStatus(User user) throws IOException, SignatureException, ArbitrageBindFailedException {
+        return null;
     }
 }

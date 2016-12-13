@@ -2,6 +2,8 @@ package me.jiangcai.dating.channel;
 
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
+import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.exception.ArbitrageBindFailedException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
@@ -38,11 +40,32 @@ public interface ArbitrageChannel {
     boolean checkPayResult(PlatformOrder order) throws IOException, SignatureException;
 
     /**
-     * 如果结果是true表示用户需要支付签预先绑定借记卡
+     * 如果结果是true表示用户需要支付签预先绑定借记卡,也表示需要调用{@link #bindUser(User)}
      *
      * @return 是否使用一个订单同时作用于支付和提现
      */
     boolean useOneOrderForPayAndArbitrage();
+
+    /**
+     * 绑定用户的状态
+     *
+     * @param user 用户
+     * @return 状态
+     * @throws IOException
+     * @throws SignatureException
+     */
+    void bindUser(User user) throws IOException, SignatureException;
+
+    /**
+     * 绑定用户的状态
+     *
+     * @param user 用户
+     * @return 状态
+     * @throws IOException
+     * @throws SignatureException
+     * @throws ArbitrageBindFailedException 如果绑定失败的话
+     */
+    ArbitrageAccountStatus bindingUserStatus(User user) throws IOException, SignatureException, ArbitrageBindFailedException;
 
     /**
      * 如果不可以管理则需要给予警告

@@ -9,14 +9,19 @@ import me.jiangcai.chrone.model.PayResult;
 import me.jiangcai.chrone.model.PaySource;
 import me.jiangcai.chrone.model.PayStatus;
 import me.jiangcai.chrone.model.TransactionType;
+import me.jiangcai.dating.channel.ArbitrageAccountStatus;
 import me.jiangcai.dating.channel.ChroneService;
+import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
+import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.channel.ChroneOrder;
 import me.jiangcai.dating.event.Notification;
+import me.jiangcai.dating.exception.ArbitrageBindFailedException;
 import me.jiangcai.dating.notify.NotifyType;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.PlatformOrderRepository;
+import me.jiangcai.dating.service.CardService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +54,8 @@ public class ChroneServiceImpl implements ChroneService {
     private ApplicationEventPublisher applicationEventPublisher;
     @Autowired
     private Environment environment;
+    @Autowired
+    private CardService cardService;
 
     @Override
     public void change(PayStatusChangeEvent event) {
@@ -146,6 +153,36 @@ public class ChroneServiceImpl implements ChroneService {
     @Override
     public boolean useOneOrderForPayAndArbitrage() {
         return true;
+    }
+
+    @Override
+    public void bindUser(User user) throws IOException, SignatureException {
+        Card card = cardService.recommend(user);
+        if (card.getOwnerId() == null)
+            throw new IOException("必须填写身份证号码");
+        try {
+            chroneGateway.register(card.getSubBranchBank().getCode(), card.getOwnerId(), user.getMobileNumber(), "XZA123"
+                    , card.getNumber(), card.getOwner(), null, null, null, null, null);
+        } catch (ServiceException e) {
+            throw new IOException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public ArbitrageAccountStatus bindingUserStatus(User user) throws IOException, SignatureException
+            , ArbitrageBindFailedException {
+        try {
+            switch (chroneGateway.accountStatus(user.getMobileNumber())) {
+                case unknown:
+                    return ArbitrageAccountStatus.notYet;
+                case success:
+                    return ArbitrageAccountStatus.done;
+                default:
+                    return ArbitrageAccountStatus.auditing;
+            }
+        } catch (ServiceException e) {
+            throw new IOException(e.getMessage(), e);
+        }
     }
 
     @Override
