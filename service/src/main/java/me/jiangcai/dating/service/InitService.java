@@ -62,6 +62,14 @@ public class InitService {
             public void upgradeToVersion(Version version) throws Exception {
                 switch (version) {
                     case v108011:
+                        jdbcService.runStandaloneJdbcWork(new ConnectionConsumer() {
+                            @Override
+                            public void accept(ConnectionProvider connection) throws SQLException {
+                                try (Statement statement = connection.getConnection().createStatement()) {
+                                    statement.execute("ALTER TABLE `platformOrder` ADD FEE DECIMAL(20,2) DEFAULT 0");
+                                }
+                            }
+                        });
                         jdbcService.tableAlterAddColumn(Card.class, "ownerId", null);
                         break;
                     case v108001:
