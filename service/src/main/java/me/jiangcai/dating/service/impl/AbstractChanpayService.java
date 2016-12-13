@@ -3,29 +3,39 @@ package me.jiangcai.dating.service.impl;
 import me.jiangcai.chanpay.data.trade.CreateInstantTrade;
 import me.jiangcai.chanpay.data.trade.GetPayChannel;
 import me.jiangcai.chanpay.data.trade.PaymentToCard;
+import me.jiangcai.chanpay.data.trade.QueryTrade;
+import me.jiangcai.chanpay.data.trade.QueryTradeResult;
 import me.jiangcai.chanpay.data.trade.support.EncryptString;
 import me.jiangcai.chanpay.data.trade.support.PayChannel;
+import me.jiangcai.chanpay.event.AbstractTradeEvent;
 import me.jiangcai.chanpay.event.TradeEvent;
 import me.jiangcai.chanpay.event.WithdrawalEvent;
+import me.jiangcai.chanpay.exception.ServiceException;
 import me.jiangcai.chanpay.model.CardAttribute;
 import me.jiangcai.chanpay.model.PayMode;
 import me.jiangcai.chanpay.model.SubBranch;
 import me.jiangcai.chanpay.model.TradeStatus;
+import me.jiangcai.chanpay.model.TradeType;
 import me.jiangcai.chanpay.model.WithdrawalStatus;
 import me.jiangcai.chanpay.service.TransactionService;
 import me.jiangcai.chanpay.service.impl.GetPayChannelHandler;
 import me.jiangcai.chanpay.service.impl.InstantTradeHandler;
+import me.jiangcai.chanpay.service.impl.QueryTradeHandler;
 import me.jiangcai.dating.ThreadSafe;
+import me.jiangcai.dating.channel.ArbitrageAccountStatus;
 import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
+import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
+import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.event.MyTradeEvent;
 import me.jiangcai.dating.event.MyWithdrawalEvent;
 import me.jiangcai.dating.event.Notification;
+import me.jiangcai.dating.exception.ArbitrageBindFailedException;
 import me.jiangcai.dating.notify.NotifyType;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.ChanpayOrderRepository;
@@ -214,25 +224,6 @@ public abstract class AbstractChanpayService implements ChanpayService {
     }
 
     @Override
-    public ChanpayOrder createOrder(CashOrder order) throws IOException, SignatureException {
-//        Card card = order.getOwner().getCards().get(0);
-        CreateInstantTrade request = new CreateInstantTrade();
-        request.setAmount(order.getAmount());
-//        request.setPayerName(card.getOwner());
-        request.setProductName(order.getComment());
-
-        beforeExecute(order, request);
-
-        String url = transactionService.execute(request, new InstantTradeHandler());
-        ChanpayOrder chanpayOrder = new ChanpayOrder();
-        chanpayOrder.setCashOrder(order);
-//        chanpayOrder.setStatus();
-        chanpayOrder.setId(request.getSerialNumber());
-        chanpayOrder.setUrl(url);
-        return chanpayOrder;
-    }
-
-    @Override
     public ChanpayWithdrawalOrder withdrawalOrderCore(UserOrder order) throws IOException, SignatureException {
         log.debug("prepare to withdrawal " + order);
         order = userOrderRepository.getOne(order.getId());
@@ -370,5 +361,107 @@ public abstract class AbstractChanpayService implements ChanpayService {
         withdrawalOrder.setSubBranch(card.getSubBranch());
         withdrawalOrder.setOwner(card.getOwner());
         withdrawalOrder.setNumber(card.getNumber());
+    }
+
+
+    @Override
+    public boolean arbitrageResultManually() {
+        return false;
+    }
+
+    @Override
+    public void checkArbitrageResult(PlatformOrder order) throws IOException, SignatureException {
+
+    }
+
+    @Override
+    public boolean useOneOrderForPayAndArbitrage() {
+        return false;
+    }
+
+    @Override
+    public boolean debitCardManageable() {
+        return false;
+    }
+
+    @Override
+    public PlatformOrder newOrder(CashOrder order) throws IOException, SignatureException {
+        //        Card card = order.getOwner().getCards().get(0);
+        CreateInstantTrade request = new CreateInstantTrade();
+        request.setAmount(order.getAmount());
+//        request.setPayerName(card.getOwner());
+        request.setProductName(order.getComment());
+
+        beforeExecute(order, request);
+
+        String url = transactionService.execute(request, new InstantTradeHandler());
+        ChanpayOrder chanpayOrder = new ChanpayOrder();
+        chanpayOrder.setCashOrder(order);
+//        chanpayOrder.setStatus();
+        chanpayOrder.setId(request.getSerialNumber());
+        chanpayOrder.setUrl(url);
+        return chanpayOrder;
+    }
+
+    @Override
+    public void mockArbitrageResult(CashOrder order, boolean success, String reason) {
+        PlatformWithdrawalOrder withdrawalOrder = order.getPlatformWithdrawalOrderSet().stream()
+                .max((o1, o2) -> o1.getStartTime().compareTo(o2.getStartTime()))
+                .orElseThrow(IllegalStateException::new);
+
+        WithdrawalEvent withdrawalEvent = new WithdrawalEvent(success ? WithdrawalStatus.WITHDRAWAL_SUCCESS : WithdrawalStatus.WITHDRAWAL_FAIL);
+        withdrawalEvent.setTradeTime(LocalDateTime.now());
+        withdrawalEvent.setPlatformOrderNo(UUID.randomUUID().toString().replaceAll("-", ""));
+        withdrawalEvent.setAmount(order.getWithdrawalAmount());
+        withdrawalEvent.setSerialNumber(withdrawalOrder.getId());
+        if (reason != null)
+            withdrawalEvent.setMessage(reason);
+
+        applicationEventPublisher.publishEvent(withdrawalEvent);
+    }
+
+
+    private void commitEventWithQueryResult(QueryTradeResult result, AbstractTradeEvent tradeEvent) {
+        tradeEvent.setPlatformOrderNo(result.getChanPayNumber());
+        tradeEvent.setSerialNumber(result.getSerialNumber());
+        tradeEvent.setAmount(result.getAmount());
+        tradeEvent.setTradeTime(result.getTime());
+//        tradeEvent.setMessage(result.get);
+        applicationEventPublisher.publishEvent(tradeEvent);
+    }
+
+    @Override
+    public boolean checkPayResult(PlatformOrder order) throws IOException, SignatureException {
+        QueryTrade queryTrade = new QueryTrade();
+        queryTrade.setSerialNumber(order.getId());
+        queryTrade.setType(TradeType.INSTANT);
+// ILLEGAL_OUTER_TRADE_NO 这个异常可以原谅
+        try {
+            QueryTradeResult result = transactionService.execute(queryTrade, new QueryTradeHandler());
+            if (result.getStatus() == TradeStatus.TRADE_FINISHED
+                    || result.getStatus() == TradeStatus.TRADE_SUCCESS
+                    || result.getStatus() == TradeStatus.PAY_FINISHED) {
+                // 都可被认为支付完成
+                TradeEvent tradeEvent = new TradeEvent(TradeStatus.TRADE_SUCCESS);
+                commitEventWithQueryResult(result, tradeEvent);
+                return true;
+            }
+            return false;
+        } catch (ServiceException exception) {
+            if (exception.getCode().equals("ILLEGAL_OUTER_TRADE_NO")) {
+                return false;
+            }
+            throw exception;
+        }
+    }
+
+    @Override
+    public void bindUser(User user) throws IOException, SignatureException {
+
+    }
+
+    @Override
+    public ArbitrageAccountStatus bindingUserStatus(User user) throws IOException, SignatureException, ArbitrageBindFailedException {
+        return null;
     }
 }

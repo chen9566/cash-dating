@@ -3,6 +3,8 @@ package me.jiangcai.dating.entity;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.chanpay.model.TradeStatus;
+import me.jiangcai.dating.channel.ArbitrageChannel;
+import me.jiangcai.dating.service.ChanpayService;
 
 import javax.persistence.Entity;
 
@@ -26,5 +28,10 @@ public class ChanpayOrder extends PlatformOrder {
     @Override
     public boolean isFinish() {
         return status == PAY_FINISHED || status == TRADE_SUCCESS || status == TRADE_FINISHED;
+    }
+
+    @Override
+    public Class<? extends ArbitrageChannel> channelClass() {
+        return ChanpayService.class;
     }
 }

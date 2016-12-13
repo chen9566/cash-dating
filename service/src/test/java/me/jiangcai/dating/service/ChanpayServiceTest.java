@@ -59,7 +59,7 @@ public class ChanpayServiceTest extends ServiceBaseTest {
 
 
         CashOrder cashOrder = orderService.newOrder(user, new BigDecimal("0.1"), UUID.randomUUID().toString(), null);
-        chanpayService.createOrder(cashOrder);
+        chanpayService.newOrder(cashOrder);
         chanpayService.withdrawalOrder(cashOrder);
     }
 

@@ -44,6 +44,14 @@ public class Card {
      */
     @Column(length = OWNER_LENGTH, nullable = false)
     private String owner;
+    /**
+     * 持卡人身份证号码
+     * 这个字段在1.8.1以后变成必须字段
+     *
+     * @since 1.8.1
+     */
+    @Column(length = 20)
+    private String ownerId;
 
     /**
      * 开户行地址
@@ -63,8 +71,9 @@ public class Card {
 
     /**
      * 是否已禁用（被替换）
-     * @since 1.5
+     *
      * @see me.jiangcai.dating.Version#v105000
+     * @since 1.5
      */
     private boolean disabled;
 

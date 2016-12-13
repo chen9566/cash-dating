@@ -6,7 +6,9 @@ import me.jiangcai.dating.entity.support.RateConfig;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.SignatureException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,6 +19,39 @@ public class SystemServiceTest extends ServiceBaseTest {
 
     @Autowired
     private SystemService systemService;
+
+    /**
+     * 任意用户邀请了5个有效用户之后 即可获得「优惠手续费率」
+     */
+    @Test
+    public void rate() throws IOException, SignatureException {
+        String root = createNewUser().getOpenId();
+        assertThat(makeFinishCashOrder(userService.byOpenId(root), randomOrderAmount(), null).getThatRateConfig().getBookRate())
+                .isEqualByComparingTo(systemService.systemDefaultRate());
+        //来5个哥们
+        String user1 = createNewUser(userService.byOpenId(root)).getOpenId();
+        String user2 = createNewUser(userService.byOpenId(root)).getOpenId();
+        String user3 = createNewUser(userService.byOpenId(root)).getOpenId();
+        String user4 = createNewUser(userService.byOpenId(root)).getOpenId();
+        String user5 = createNewUser(userService.byOpenId(root)).getOpenId();
+
+        //依然还是原来的
+        assertThat(makeFinishCashOrder(userService.byOpenId(root), randomOrderAmount(), null).getThatRateConfig().getBookRate())
+                .isEqualByComparingTo(systemService.systemDefaultRate());
+        makeFinishCashOrder(userService.byOpenId(user1), randomOrderAmount(), null);
+        makeFinishCashOrder(userService.byOpenId(user2), randomOrderAmount(), null);
+        makeFinishCashOrder(userService.byOpenId(user3), randomOrderAmount(), null);
+        makeFinishCashOrder(userService.byOpenId(user4), randomOrderAmount(), null);
+        assertThat(makeFinishCashOrder(userService.byOpenId(root), randomOrderAmount(), null).getThatRateConfig().getBookRate())
+                .isEqualByComparingTo(systemService.systemDefaultRate());
+        makeFinishCashOrder(userService.byOpenId(user4), randomOrderAmount(), null);
+        assertThat(makeFinishCashOrder(userService.byOpenId(root), randomOrderAmount(), null).getThatRateConfig().getBookRate())
+                .isEqualByComparingTo(systemService.systemDefaultRate());
+
+        makeFinishCashOrder(userService.byOpenId(user5), randomOrderAmount(), null);
+        assertThat(makeFinishCashOrder(userService.byOpenId(root), randomOrderAmount(), null).getThatRateConfig().getBookRate())
+                .isEqualByComparingTo(systemService.systemPreferentialRate());
+    }
 
     @Test(expected = InternalError.class)
     public void badCurrentRateConfig() {

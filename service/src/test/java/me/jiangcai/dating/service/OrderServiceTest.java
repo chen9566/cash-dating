@@ -1,6 +1,5 @@
 package me.jiangcai.dating.service;
 
-import me.jiangcai.chanpay.model.WithdrawalStatus;
 import me.jiangcai.dating.ServiceBaseTest;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.User;
@@ -101,7 +100,7 @@ public class OrderServiceTest extends ServiceBaseTest {
                 .isEqualTo(withdrawalFailedOrder);
         assertThat(list.get(0).getStatus())
                 .isEqualTo(OrderFlowStatus.transferring);
-        withdrawalFailed(orderService.getOne(withdrawalFailedOrder.getId()), WithdrawalStatus.WITHDRAWAL_FAIL, "心情不好吧");
+        withdrawalResult(orderService.getOne(withdrawalFailedOrder.getId()), false, "心情不好吧");
 
         list = orderService.orderFlows(user.getOpenId());
         assertThat(list)

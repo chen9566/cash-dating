@@ -5,19 +5,23 @@ import me.jiangcai.chanpay.event.TradeEvent;
 import me.jiangcai.chanpay.event.WithdrawalEvent;
 import me.jiangcai.chanpay.model.TradeStatus;
 import me.jiangcai.chanpay.model.WithdrawalStatus;
+import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.core.CoreConfig;
 import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.entity.WithdrawOrder;
+import me.jiangcai.dating.entity.channel.ChroneOrder;
 import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.SubBranchBankRepository;
 import me.jiangcai.dating.repository.UserOrderRepository;
+import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.CardService;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
@@ -27,9 +31,13 @@ import me.jiangcai.lib.test.SpringWebTest;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import me.jiangcai.wx.test.WeixinUserMocker;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.xalan.xsltc.compiler.util.InternalError;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -40,6 +48,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author CJ
@@ -66,6 +77,13 @@ public abstract class ServiceBaseTest extends SpringWebTest {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     protected UserOrderRepository userOrderRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     public SubBranchBank randomSubBranchBank() {
         return subBranchBankRepository.findAll().stream()
@@ -149,12 +167,23 @@ public abstract class ServiceBaseTest extends SpringWebTest {
         order = cashOrderRepository.getOne(order.getId());
         PlatformOrder platformOrder = orderService.preparePay(order.getId(), PayChannel.weixin);
 
-        TradeEvent tradeEvent = new TradeEvent(TradeStatus.TRADE_SUCCESS);
-        mockEventInfo(tradeEvent);
-        tradeEvent.setAmount(order.getAmount());
-        tradeEvent.setSerialNumber(platformOrder.getId());
-
-        chanpayService.tradeUpdate(tradeEvent);
+        if (platformOrder instanceof ChanpayOrder) {
+            TradeEvent tradeEvent = new TradeEvent(TradeStatus.TRADE_SUCCESS);
+            mockEventInfo(tradeEvent);
+            tradeEvent.setAmount(order.getAmount());
+            tradeEvent.setSerialNumber(platformOrder.getId());
+            applicationEventPublisher.publishEvent(tradeEvent);
+        } else if (platformOrder instanceof ChroneOrder) {
+            // 访问它的URL即可
+            try {
+                mockMvc.perform(get(platformOrder.getUrl()))
+                        .andExpect(status().isOk());
+            } catch (Exception e) {
+                throw new InternalError(e.getMessage());
+            }
+        } else
+            throw new NoSuchMethodError("no support for " + platformOrder);
+//        chanpayService.tradeUpdate(tradeEvent);
 //        System.out.println("1");
     }
 
@@ -164,26 +193,41 @@ public abstract class ServiceBaseTest extends SpringWebTest {
     }
 
     /**
-     * 使这个订单提现失败
+     * 让一个可提现的订单拥有最终结果
      *
-     * @param order  订单
-     * @param status 转移状态
-     * @param reason 原因
+     * @param order   订单
+     * @param success 是否成功
+     * @param reason  原因
      */
-    protected void withdrawalFailed(UserOrder order, WithdrawalStatus status, String reason) {
+    protected void withdrawalResult(UserOrder order, boolean success, String reason) {
         order = userOrderRepository.getOne(order.getId());
-        PlatformWithdrawalOrder withdrawalOrder = order.getPlatformWithdrawalOrderSet().stream()
-                .max((o1, o2) -> o1.getStartTime().compareTo(o2.getStartTime()))
-                .orElseThrow(IllegalStateException::new);
+        // 如果是提现订单 那就得考虑关于提现的事儿了
+        if (!order.isArbitrage()) {
+            // TODO 提现服务渠道以后也将建立
+            PlatformWithdrawalOrder withdrawalOrder = order.getPlatformWithdrawalOrderSet().stream()
+                    .max((o1, o2) -> o1.getStartTime().compareTo(o2.getStartTime()))
+                    .orElseThrow(IllegalStateException::new);
 
-        WithdrawalEvent withdrawalEvent = new WithdrawalEvent(status);
-        mockEventInfo(withdrawalEvent);
-        withdrawalEvent.setAmount(order.getWithdrawalAmount());
-        withdrawalEvent.setSerialNumber(withdrawalOrder.getId());
-        if (reason != null)
-            withdrawalEvent.setMessage(reason);
+            WithdrawalEvent withdrawalEvent = new WithdrawalEvent(success ? WithdrawalStatus.WITHDRAWAL_SUCCESS : WithdrawalStatus.WITHDRAWAL_FAIL);
+            mockEventInfo(withdrawalEvent);
+            withdrawalEvent.setAmount(order.getWithdrawalAmount());
+            withdrawalEvent.setSerialNumber(withdrawalOrder.getId());
+            if (reason != null)
+                withdrawalEvent.setMessage(reason);
 
-        chanpayService.withdrawalUpdate(withdrawalEvent);
+            applicationEventPublisher.publishEvent(withdrawalEvent);
+//            chanpayService.withdrawalUpdate(withdrawalEvent);
+        } else {
+            // 获取付款订单
+            CashOrder cashOrder = (CashOrder) order;
+            PlatformOrder platformOrder = cashOrder.getPlatformOrderSet().stream()
+                    .filter(PlatformOrder::isFinish)
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("没有找到成功的付款单,无法模拟支付结果。"));
+
+            final ArbitrageChannel bean = applicationContext.getBean(platformOrder.channelClass());
+            bean.mockArbitrageResult(cashOrder, success, reason);
+        }
 //        System.out.println("1");
     }
 
@@ -193,7 +237,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
      * @param order
      */
     protected void withdrawalSuccess(UserOrder order) throws IOException, SignatureException {
-        withdrawalFailed(order, WithdrawalStatus.WITHDRAWAL_SUCCESS, null);
+        withdrawalResult(order, true, null);
     }
 
     /**
@@ -228,6 +272,10 @@ public abstract class ServiceBaseTest extends SpringWebTest {
         return order;
     }
 
+    public MockMvc mockMVC() {
+        return mockMvc;
+    }
+
     /**
      * 100-100000
      *
@@ -235,6 +283,18 @@ public abstract class ServiceBaseTest extends SpringWebTest {
      */
     protected BigDecimal randomOrderAmount() {
         return BigDecimal.valueOf(100 + random.nextInt(100000 - 100));
+    }
+
+    /**
+     * 添加余额
+     *
+     * @param openId 用户
+     * @param amount 金额
+     */
+    protected void addUserBalance(String openId, BigDecimal amount) {
+        User user = userService.byOpenId(openId);
+        user.setSettlementBalance(user.getSettlementBalance().add(amount));
+        userRepository.save(user);
     }
 
     public static class RandomComparator implements Comparator<Object> {

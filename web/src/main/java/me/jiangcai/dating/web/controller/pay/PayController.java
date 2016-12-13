@@ -1,19 +1,19 @@
 package me.jiangcai.dating.web.controller.pay;
 
 import com.google.zxing.WriterException;
+import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.entity.CashOrder;
-import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.PayToUserOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.PayChannel;
-import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.web.controller.GlobalController;
 import me.jiangcai.wx.OpenId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -41,12 +41,14 @@ public class PayController {
 
     @Autowired
     private OrderService orderService;
-    @Autowired
-    private ChanpayService chanpayService;
+    //    @Autowired
+//    private ChanpayService chanpayService;
     @Autowired
     private UserService userService;
     @Autowired
     private QRCodeService qrCodeService;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @RequestMapping(method = RequestMethod.GET, value = "/payToMe")
     public String payToMe(@AuthenticationPrincipal User user, Model model) {
@@ -171,10 +173,12 @@ public class PayController {
     private String showPayCode(Model model, CashOrder order) throws IOException, SignatureException {
         PlatformOrder platformOrder = orderService.preparePay(order.getId(), PayChannel.weixin);
 
-        if (platformOrder instanceof ChanpayOrder) {
-            model.addAttribute("qrUrl", chanpayService.QRCodeImageFromOrder((ChanpayOrder) platformOrder));
-        } else
-            throw new IllegalStateException("no chanpayOrder??" + platformOrder);
+        final ArbitrageChannel channel = applicationContext.getBean(platformOrder.channelClass());
+        model.addAttribute("qrUrl", channel.QRCodeImageFromOrder(platformOrder));
+//        if (platformOrder instanceof ChanpayOrder) {
+//            model.addAttribute("qrUrl", chanpayService.QRCodeImageFromOrder((ChanpayOrder) platformOrder));
+//        } else
+//            throw new IllegalStateException("no chanpayOrder??" + platformOrder);
 
         model.addAttribute("order", order);
         return "paycode.html";

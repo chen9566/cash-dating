@@ -1,6 +1,7 @@
 package me.jiangcai.dating;
 
 import me.jiangcai.chanpay.test.ChanpayTestSpringConfig;
+import me.jiangcai.chrone.test.ChroneTestConfig;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.ChanpayService;
@@ -25,7 +26,8 @@ import org.springframework.core.env.Environment;
 /**
  * @author CJ
  */
-@Import({TestConfig.Config.class, WeixinTestConfig.class, DSConfig.class, ChanpayTestSpringConfig.class})
+@Import({TestConfig.Config.class, WeixinTestConfig.class, DSConfig.class, ChanpayTestSpringConfig.class
+        , ChroneTestConfig.class})
 @ImportResource("classpath:/datasource_local.xml")
 @ComponentScan("me.jiangcai.dating.mock")
 public class TestConfig {
