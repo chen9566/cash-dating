@@ -37,7 +37,11 @@ public class ManageControllerTest extends ManageWebTest {
 
         User user = userService.newUser(UUID.randomUUID().toString().replaceAll("-", ""), null);
 
-        ManageStatus manageStatus = ManageStatus.values()[random.nextInt(ManageStatus.values().length - 1)];
+        ManageStatus manageStatus = null;
+        while (manageStatus == null || manageStatus == ManageStatus.root || manageStatus == ManageStatus.manager) {
+            manageStatus = ManageStatus.values()[random.nextInt(ManageStatus.values().length)];
+        }
+
         mockMvc.perform(putWeixin("/manage/grant/{0}", String.valueOf(user.getId()))
                 .content(manageStatus.name())
                 .session(session))
