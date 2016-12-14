@@ -93,16 +93,7 @@ public class AgentRequestController extends DataController<AgentRequest> {
                         if (origin == null)
                             return null;
                         AgentRequestStatus processStatus = (AgentRequestStatus) origin;
-                        switch (processStatus) {
-                            case requested:
-                                return "处理中";
-                            case forward:
-                                return "转发中";
-                            case reject:
-                                return "已被拒绝";
-                            default:
-                                return "已处理";
-                        }
+                        return processStatus.toHtml();
                     }
                 }, new ToStringField("processTime")
                 , new DataService.StringField("comment")

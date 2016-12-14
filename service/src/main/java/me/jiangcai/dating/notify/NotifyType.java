@@ -42,7 +42,18 @@ public enum NotifyType {
             , new NotifyParameter("转账金额", Number.class)
             , new NotifyParameter("银行卡号", String.class)
             , new NotifyParameter("转账时间", Date.class)
-            , new NotifyParameter("原因", String.class));
+            , new NotifyParameter("原因", String.class)),
+    projectLoanRejected("OPENTM407618125", "贷款申请进度通知", "项目贷款被拒绝", "项目贷款被拒绝时向用户发送的消息", 0
+            , new NotifyParameter("申请人姓名", String.class)
+            , new NotifyParameter("业务名称", String.class)
+            , new NotifyParameter("申请金额", String.class)
+            , new NotifyParameter("审核状态", String.class)),
+    projectLoanAccepted("OPENTM407618125", "贷款申请进度通知", "项目贷款被接受", "项目贷款被接受时向用户发送的消息", 0
+            , new NotifyParameter("申请人姓名", String.class)
+            , new NotifyParameter("业务名称", String.class)
+            , new NotifyParameter("申请金额", Number.class)
+            , new NotifyParameter("审核状态", String.class)
+    );
 
     private final String recommendShortId;
     private final String recommendTemplateTitle;

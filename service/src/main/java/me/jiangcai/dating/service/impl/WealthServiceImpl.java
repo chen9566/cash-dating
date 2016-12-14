@@ -9,6 +9,7 @@ import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.entity.support.LoanRequestStatus;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
+import me.jiangcai.dating.model.trj.LoanStatus;
 import me.jiangcai.dating.model.trj.ProjectLoan;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 import me.jiangcai.dating.repository.CardRepository;
@@ -26,7 +27,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,6 +64,8 @@ public class WealthServiceImpl implements WealthService {
     private DistrictRepository districtRepository;
     @Autowired
     private ApplicationContext applicationContext;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
     @Autowired
     private CashStrings cashStrings;
     @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -100,9 +105,9 @@ public class WealthServiceImpl implements WealthService {
     @Override
     public ProjectLoanRequest loanRequest(String openId, ProjectLoan loan, Long userDataId, BigDecimal amount, String name
             , String number, Address address, String homeAddress, String employer, int personalIncome, int familyIncome
-            , int age) {
+            , int age, boolean hasHouse) {
         UserLoanData userLoanData = updateUserLoanData(userDataId, openId, name, number, address, homeAddress, employer
-                , personalIncome, familyIncome, age);
+                , personalIncome, familyIncome, age, hasHouse);
 
         ProjectLoanRequest request = new ProjectLoanRequest();
         request.setApplyAmount(amount);
@@ -138,12 +143,12 @@ public class WealthServiceImpl implements WealthService {
 
     private UserLoanData updateUserLoanData(Long userLoanDataId, String openId, String name, String number
             , Address address) {
-        return updateUserLoanData(userLoanDataId, openId, name, number, address, null, null, 0, 0, 0);
+        return updateUserLoanData(userLoanDataId, openId, name, number, address, null, null, 0, 0, 0, false);
     }
 
     private UserLoanData updateUserLoanData(Long userLoanDataId, String openId, String name, String number
             , Address address, String homeAddress, String employer, int personalIncome, int familyIncome
-            , int age) {
+            , int age, boolean hasHouse) {
         User user = userService.byOpenId(openId);
         UserLoanData userLoanData;
         if (userLoanDataId != null) {
@@ -164,6 +169,7 @@ public class WealthServiceImpl implements WealthService {
             userLoanData.setPersonalIncome(personalIncome);
             userLoanData.setFamilyIncome(familyIncome);
             userLoanData.setAge(age);
+            userLoanData.setHasHouse(hasHouse);
             if (user.getUserLoanDataList() == null) {
                 user.setUserLoanDataList(new HashSet<>());
             }
@@ -195,12 +201,68 @@ public class WealthServiceImpl implements WealthService {
     }
 
     @Override
+    public void approveProjectLoanRequest(User user, long loanRequestId, BigDecimal amount, BigDecimal yearRate
+            , int termDays, String comment) throws IOException {
+        applicationContext.getBean(WealthService.class)
+                .approveProjectLoanRequestCore(("LoanRequest-" + loanRequestId)::intern, user, loanRequestId, amount, yearRate, termDays, comment);
+    }
+
+    @Override
     public void declineLoanRequest(User user, long requestId, String comment) {
         LoanRequest request = loanRequestRepository.getOne(requestId);
+        if (request.getProcessStatus() != LoanRequestStatus.requested
+                && request.getProcessStatus() != LoanRequestStatus.forward)
+            throw new IllegalStateException("订单状态已锁定。");
         request.setProcessStatus(LoanRequestStatus.reject);
         request.setProcessTime(LocalDateTime.now());
         request.setProcessor(user);
         request.setComment(comment);
+        if (request instanceof ProjectLoanRequest) {
+            applicationEventPublisher.publishEvent(((ProjectLoanRequest) request).toRejectNotification());
+        }
+    }
+
+    @Override
+    public void approveProjectLoanRequestCore(Locker locker, User user, long loanRequestId, BigDecimal amount
+            , BigDecimal yearRate, int termDays, String comment) throws IOException {
+        ProjectLoanRequest request = (ProjectLoanRequest) loanRequestRepository.getOne(loanRequestId);
+        if (request.getSupplierRequestId() != null) {
+            throw new IllegalStateException("already submitted:" + request);
+        }
+        if (request.getProcessStatus() != LoanRequestStatus.requested
+                && request.getProcessStatus() != LoanRequestStatus.forward)
+            throw new IllegalStateException("订单状态已锁定。");
+        // 巴拉巴拉扒拉
+        final District province = districtRepository.byChanpayCode(Locale.CHINA, request.getLoanData().getAddress().getProvince().getId());
+        final District city = districtRepository.byChanpayCode(Locale.CHINA, request.getLoanData().getAddress().getCity().getId());
+        String id = tourongjiaService.projectLoan(request.getLoanData().getOwner(), request.getLoanData().getName()
+                , request.getLoanData().getNumber()
+                , amount
+                , termDays
+                , request.getApplyCreditLimitYears()
+                , province == null ? "" : province.getPostalCode()
+                , city == null ? "" : city.getPostalCode()
+                , request.getLoanData().getHomeAddress()
+                , request.getLoanData().getFamilyIncome()
+                , request.getLoanData().getPersonalIncome()
+                , request.getLoanData().getAge()
+                , request.getLoanData().isHasHouse()
+                , new String[]{
+                        resourceService.getResource(request.getLoanData().getFrontIdResource()).httpUrl().toString()
+                        , resourceService.getResource(request.getLoanData().getBackIdResource()).httpUrl().toString()
+                        , resourceService.getResource(request.getLoanData().getHandIdResource()).httpUrl().toString()
+                }
+        );
+
+        request.setProcessStatus(LoanRequestStatus.accept);
+        request.setProcessTime(LocalDateTime.now());
+        request.setProcessor(user);
+        request.setCreditLimitYears(request.getApplyCreditLimitYears());
+        request.setAmount(amount);
+        request.setYearRate(yearRate);
+        request.setTermDays(termDays);
+        request.setComment(comment);
+        request.setSupplierRequestId(id);
     }
 
     @Override
@@ -209,6 +271,10 @@ public class WealthServiceImpl implements WealthService {
         if (request.getSupplierRequestId() != null) {
             throw new IllegalStateException("already submitted:" + request);
         }
+        if (request.getProcessStatus() != LoanRequestStatus.requested
+                && request.getProcessStatus() != LoanRequestStatus.forward)
+            throw new IllegalStateException("订单状态已锁定。");
+
         Loan loan = Stream.of(loanList())
                 .filter(loan1 -> loan1.getProductId().equals(request.getProjectId()))
                 .findFirst()
@@ -269,6 +335,37 @@ public class WealthServiceImpl implements WealthService {
     @Override
     public int nextProjectLoanTerm() {
         return Integer.parseInt(new ProjectLoan().getTerm()[0]);
+    }
+
+    @Override
+    public void queryProjectLoanStatus(long id) throws IOException {
+        ProjectLoanRequest request = (ProjectLoanRequest) loanRequestRepository.getOne(id);
+        if (request.getProcessStatus() != LoanRequestStatus.accept && StringUtils.isEmpty(request.getSupplierRequestId()))
+            return;
+        {
+            LoanStatus loanStatus = tourongjiaService.checkLoanStatus(request.getSupplierRequestId());
+            if (loanStatus == LoanStatus.success) {
+                log.info("[TRJ] allow loan:" + request.getId());
+                request.setProcessStatus(LoanRequestStatus.contract);
+                applicationEventPublisher.publishEvent(request.toAcceptNotification());
+            } else if (loanStatus == LoanStatus.failed) {
+                log.info("[TRJ] reject loan:" + request.getId());
+                request.setProcessStatus(LoanRequestStatus.reject);
+                request.setComment("被投融家拒绝");
+                applicationEventPublisher.publishEvent(request.toRejectNotification());
+            }
+        }
+    }
+
+    @Override
+    public void sendNotify(long id) {
+        ProjectLoanRequest request = (ProjectLoanRequest) loanRequestRepository.getOne(id);
+        if (request.getProcessStatus() != LoanRequestStatus.contract)
+            throw new IllegalStateException("Bad Status:" + request.getProcessStatus());
+        //都弄好了就别bb了
+//        if (request.getContracts().size() == ContractElements.size())
+//            throw new IllegalStateException("all contracts has signed");
+        applicationEventPublisher.publishEvent(request.toAcceptNotification());
     }
 
     private Loan[] reCacheLoan() throws IOException {

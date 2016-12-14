@@ -1,8 +1,10 @@
 package me.jiangcai.dating.web.controller.wealth;
 
 import me.jiangcai.dating.entity.LoanRequest;
+import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.Address;
+import me.jiangcai.dating.entity.support.LoanRequestStatus;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.ProjectLoan;
@@ -16,17 +18,21 @@ import me.jiangcai.dating.service.WealthService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -103,6 +109,46 @@ public class WealthController {
     }
 
     ////////////// 借款
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/projectLoanContract")
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    public void projectLoanContract(@RequestBody Map<String, Object> data) throws IOException {
+        // 此处签约
+        // requestId contract
+        long requestId = ((Number) data.get("requestId")).longValue();
+        String contract = (String) data.get("contract");
+        final ProjectLoanRequest loanRequest = (ProjectLoanRequest) loanRequestRepository.getOne(requestId);
+
+        if (StringUtils.isEmpty(loanRequest.getSupplierRequestId()))
+            throw new IllegalStateException("have no supplier id");
+        if (!StringUtils.isEmpty(loanRequest.getContracts().get(contract)))
+            return;
+        String id = tourongjiaService.signContract(loanRequest.getSupplierRequestId(), contract);
+
+        loanRequest.getContracts().put(contract, id);
+    }
+
+    /**
+     * 项目贷款成功以后的展示页面
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/projectLoan")
+    @Transactional(readOnly = true)
+    public String projectLoanSuccess(@AuthenticationPrincipal User user, long id, Model model) {
+        final LoanRequest loanRequest = loanRequestRepository.getOne(id);
+        if (loanRequest.getProcessStatus() != LoanRequestStatus.contract)
+            throw new IllegalStateException("not accept project loan");
+        if (!(loanRequest instanceof ProjectLoanRequest))
+            throw new IllegalStateException("ProjectLoanRequest only");
+        if (!loanRequest.getLoanData().getOwner().equals(user))
+            throw new AccessDeniedException("");
+        model.addAttribute("request", loanRequest);
+        return "loansuccess.html";
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/loan")
     public String loan(Model model) throws IOException {
         model.addAttribute("loanList", wealthService.loanList());
@@ -149,6 +195,7 @@ public class WealthController {
             , @RequestParam("province") String provinceCode, @RequestParam("city") String cityCode
             , String homeAddress, String employer
             , int personalIncome, int familyIncome, int age
+            , boolean hasHouse
             , Model model) throws IOException {
 
         Address address = new Address();
@@ -159,7 +206,7 @@ public class WealthController {
         assert loan instanceof ProjectLoan;
         ProjectLoan projectLoan = (ProjectLoan) loan;
         LoanRequest loanRequest = wealthService.loanRequest(user.getOpenId(), projectLoan, null, amount
-                , name, number, address, homeAddress, employer, personalIncome, familyIncome, age);
+                , name, number, address, homeAddress, employer, personalIncome, familyIncome, age, hasHouse);
 
         model.addAttribute("loanRequest", loanRequest);
         return "id.html";

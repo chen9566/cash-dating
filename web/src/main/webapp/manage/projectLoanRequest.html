@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="yearRate" type="java.math.BigDecimal"*/-->
+<!--/*@thymesVar id="loanTermDays" type="java.lang.Integer"*/-->
+<head>
+    <meta charset="UTF-8">
+    <title>项目贷款</title>
+    <link rel="stylesheet" href="../css/manage.css" th:href="@{/css/manage.css}">
+    <link rel="stylesheet" href="../css/iconfont.css" th:href="@{/css/iconfont.css}">
+    <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdn.kuanyes.com/bootstrap-3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-table-1.11.0/bootstrap-table.min.css">
+    <script src="//cdn.kuanyes.com/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
+    <script src="//cdn.kuanyes.com/bootstrap-table-1.11.0/bootstrap-table-locale-all.min.js"></script>
+    <script src="//cdn.kuanyes.com/bootstrap-table-1.11.0/extensions/editable/bootstrap-table-editable.min.js"></script>
+    <script src="//cdn.kuanyes.com/bootstrap-table-1.11.0/extensions/export/bootstrap-table-export.min.js"></script>
+
+    <link rel="stylesheet" href="//cdn.kuanyes.com/jquery-ui-1.12.1/jquery-ui.min.css">
+    <script src="//cdn.kuanyes.com/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+    <script src="//cdn.kuanyes.com/jquery-validation-1.15.0/jquery.validate.min.js"></script>
+    <script src="//cdn.kuanyes.com/jquery-validation-1.15.0/localization/messages_zh.js"></script>
+
+    <script src="../dist/js/share.js" th:src="@{/dist/js/share.js}"></script>
+    <script src="../mock/all.js" th:src="@{/all.js}"></script>
+    <script th:replace="fragment/auth.html::code"></script>
+    <script src="../js/manage.js" th:src="@{/js/manage.js}"></script>
+    <style>
+        #approveDialog input {
+            color: #5d5d5d;
+        }
+
+        #declineDialog input {
+            color: #5d5d5d;
+        }
+    </style>
+
+</head>
+<body>
+<div class="header"></div>
+
+<div id="detailDialog" title="详情">
+    <b class="detailName">姓名</b>
+    <ul>
+        <li>申请金额:<span class="detailAmount" style="float: right;">100</span></li>
+        <li>申请期限:<span class="detailTermDays" style="float: right;">30</span></li>
+        <li>申请时间:<span class="detailTime" style="float: right;">2016-12-10</span></li>
+    </ul>
+    <div id="imageRegion">
+        <h3>身份证正面</h3>
+        <div>
+            <img height="400" name="frontID" src=""/>
+        </div>
+        <h3>身份证背面</h3>
+        <div>
+            <img height="400" name="backID" src=""/>
+        </div>
+        <h3>手持身份证</h3>
+        <div>
+            <img height="400" name="handID" src=""/>
+        </div>
+    </div>
+</div>
+
+<div id="approveDialog" title="同意借款">
+    <form action="#">
+        <p>点击确定,借款申请即转交第三方处理。</p>
+
+        <label for="amount">批准金额<input id="amount" type="number" number="true" min="1" max="200000"
+                                       style="width: 200px;"/></label>
+        <label for="termDays">批准期限<input id="termDays" data-origin="180" th:attr="data-origin=${loanTermDays}"
+                                         type="number" number="true" min="1" max="999" style="width: 200px;"/></label>
+        <label for="yearRate">批准年化利率<input id="yearRate" data-origin="0.0003" th:attr="data-origin=${yearRate}"
+                                           type="number" number="true" min="0" max="1" style="width: 200px;"/></label>
+        <label for="commentInput">备注<input id="commentInput" type="text"/></label>
+
+        <button class="btn btn-ok">确定</button>
+    </form>
+</div>
+<div id="declineDialog" title="拒绝借款">
+    <p>点击确定,这个界面将不会再出现相关请求。</p>
+    <label for="declineCommentInput">备注</label>
+    <input id="declineCommentInput" type="text"/>
+    <button class="btn btn-ok">确定</button>
+</div>
+
+<div id="toolbar">
+    <button id="detailButton" class="btn btn-danger" disabled>
+        详情
+    </button>
+    <button id="declineButton" class="btn btn-danger" disabled>
+        <i class="iconfont icon-decline"></i> 拒绝
+    </button>
+    <button id="approveButton" class="btn btn-danger" disabled>
+        <i class="iconfont icon-approve"></i> 同意
+    </button>
+    <button id="messageButton" class="btn btn-danger" title="可以给用户再发一次微信推送要求他们尽快签订合同" disabled>
+        <!--<i class="iconfont icon-approve"></i> -->
+        催促用户
+    </button>
+</div>
+
+<div>
+    <label>
+        <input name="filterType" type="radio" value="0" checked/>
+        审核中
+    </label>
+    <label>
+        <input name="filterType" type="radio" value="1"/>
+        等待投融家处理
+    </label>
+    <label>
+        <input name="filterType" type="radio" value="2"/>
+        用户处理中
+    </label>
+    <label>
+        <input name="filterType" type="radio" value="3"/>
+        用户处理完毕
+    </label>
+    <label>
+        <input name="filterType" type="radio" value="4"/>
+        全部
+    </label>
+</div>
+
+<table id="table"
+       data-url="../mock/projectLoanRequest.json"
+       data-url0="../mock/projectLoanRequest.json"
+       data-url1="../mock/projectLoanRequest.json"
+       data-url2="../mock/projectLoanRequest.json"
+       data-url3="../mock/projectLoanRequest.json"
+       data-url4="../mock/projectLoanRequest.json"
+       th:attr="data-url=@{/manage/data/projectLoan/pending},data-url0=@{/manage/data/projectLoan/pending},data-url1=@{/manage/data/projectLoan/accepted},data-url2=@{/manage/data/projectLoan/contract},data-url3=@{/manage/data/projectLoan/signed},data-url4=@{/manage/data/projectLoan/all}"
+       data-page-list="[10, 25, 50]"
+       data-toolbar="#toolbar"
+></table>
+
+<script src="../js/manage/projectLoanRequest.js" th:src="@{/js/manage/projectLoanRequest.js}"></script>
+<script>
+
+</script>
+
+</body>
+</html>

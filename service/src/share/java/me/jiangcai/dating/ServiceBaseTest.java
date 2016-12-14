@@ -27,6 +27,7 @@ import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.service.VerificationCodeService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import me.jiangcai.lib.test.SpringWebTest;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import me.jiangcai.wx.test.WeixinUserMocker;
@@ -77,13 +78,15 @@ public abstract class ServiceBaseTest extends SpringWebTest {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     protected UserOrderRepository userOrderRepository;
+    @Autowired
+    protected ResourceService resourceService;
+    @Autowired
+    protected ApplicationContext applicationContext;
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
-    @Autowired
-    private ApplicationContext applicationContext;
 
     public SubBranchBank randomSubBranchBank() {
         return subBranchBankRepository.findAll().stream()
@@ -283,6 +286,16 @@ public abstract class ServiceBaseTest extends SpringWebTest {
      */
     protected BigDecimal randomOrderAmount() {
         return BigDecimal.valueOf(100 + random.nextInt(100000 - 100));
+    }
+
+
+    /**
+     * @return 随机生成的图片资源路径
+     */
+    protected String randomImageResourcePath() throws IOException {
+        String name = "tmp/" + UUID.randomUUID().toString() + ".png";
+        resourceService.uploadResource(name, applicationContext.getResource("/images/1.png").getInputStream());
+        return name;
     }
 
     /**
