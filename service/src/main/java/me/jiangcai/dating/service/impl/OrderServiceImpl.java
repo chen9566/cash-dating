@@ -148,7 +148,7 @@ public class OrderServiceImpl implements OrderService {
         if (!order.getPlatformOrderSet().isEmpty())
             return order.getPlatformOrderSet().iterator().next();
 
-        PlatformOrder order1 = systemService.arbitrageChannel(channel).newOrder(order);
+        PlatformOrder order1 = systemService.arbitrageChannel(channel).newOrder(order, channel);
 //        ChanpayOrder chanpayOrder = chanpayService.createOrder(order);
         order.getPlatformOrderSet().add(order1);
         cashOrderRepository.save(order);

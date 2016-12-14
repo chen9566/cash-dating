@@ -112,6 +112,7 @@ public class WebConfig {
                     .antMatchers("/loginToken/**").permitAll()
                     // 支付分享的
                     .antMatchers("/inviteQR/**").permitAll()
+                    .antMatchers("/orderQRURL").permitAll()
                     .antMatchers("/order/**").permitAll()
                     .antMatchers("/orderCompleted/**").permitAll()
                     // 给他人支付

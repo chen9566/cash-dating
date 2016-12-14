@@ -5,6 +5,7 @@ import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.PayToUserOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.OrderFlow;
+import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.PayToMePage;
 import me.jiangcai.dating.page.PayToPage;
@@ -75,7 +76,7 @@ public class PayControllerTest extends WebTest {
         PayToPage payToPage = initPage(PayToPage.class);
 
         String text = "111.11";
-        payToPage.pay(text, true);
+        payToPage.pay(text, true, PayChannel.weixin);
         //订单已支付
         OrderFlow flow = orderService.orderFlows(user.getOpenId()).get(0);
         assertThat(flow.getOrder())

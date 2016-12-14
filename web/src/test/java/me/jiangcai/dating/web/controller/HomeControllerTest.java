@@ -1,8 +1,10 @@
 package me.jiangcai.dating.web.controller;
 
+import com.google.common.base.Predicate;
 import me.jiangcai.chanpay.test.mock.MockPay;
 import me.jiangcai.dating.LoginWebTest;
 import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.page.MyBankPage;
 import me.jiangcai.dating.page.MyDataPage;
 import me.jiangcai.dating.page.MyPage;
@@ -14,8 +16,11 @@ import me.jiangcai.dating.service.StatisticService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -84,13 +89,13 @@ public class HomeControllerTest extends LoginWebTest {
         //    6491427.62 work
 
 //        page.
-        page.pay(amount, UUID.randomUUID().toString(), null);
+        ShowOrderPage codePage = page.pay(amount, UUID.randomUUID().toString(), null);
 
         // 这个时候应该是到了二维码界面,在这个界面 我们可以分享它
-        ShowOrderPage codePage = initPage(ShowOrderPage.class);
         codePage.assertAmount(amount);
 
-        codePage.pay();
+        PayChannel channel = PayChannel.values()[random.nextInt(PayChannel.values().length)];
+        codePage.pay(channel);
 
         List<CashOrder> orderList = currentOrders();
         assertThat(orderList)
@@ -102,6 +107,15 @@ public class HomeControllerTest extends LoginWebTest {
                 .isNotEmpty()
                 .hasSize(1);
 
+        new WebDriverWait(driver, 5)
+                .until(new Predicate<WebDriver>() {
+                    @Override
+                    public boolean apply(@Nullable WebDriver input) {
+                        if (input == null)
+                            return false;
+                        return input.getTitle().equals("付款成功");
+                    }
+                });
         //
         PayCompletedPage payCompletedPage = initPage(PayCompletedPage.class);
         // 刚打款

@@ -68,44 +68,28 @@
             </p>
         </div>
         <div class="p-15">
-            <input value="确定" onclick="return toshow()" type="submit" id="_btn1" class="black" name="btn1"
+            <input value="确定" type="submit" id="_btn1" class="black" name="btn1"
                    disabled="disabled"/>
         </div>
+        <!--<input type="hidden" name="channel" />-->
     </form>
 </div>
-<div class="am-show ">
+<div class="am-show">
     <div class="back-c">
         <ul class="topay">
+            <!--<span class="pull-right big15"><img-->
+            <!--src="images/ok-icon.png"/> </span>-->
             <h1>选择付款方式</h1>
-            <li class="bo-b"><img src="images/weixin-icon.png  "/>微信支付<span class="pull-right big15"><img
-                    src="images/ok-icon.png"/> </span></li>
-            <li class="bo-b"><img src="images/zhifubao-icon.png"/>支付宝支付</li>
-            <li><img src="images/kuaijie-icon.png"/>快捷支付</li>
+            <li class="bo-b payChannel" data-id="weixin"><img src="images/weixin-icon.png  "/>微信支付</li>
+            <li class="bo-b payChannel" data-id="alipay"><img src="images/zhifubao-icon.png"/>支付宝支付</li>
+            <!--<li><img src="images/kuaijie-icon.png"/>快捷支付</li>-->
         </ul>
     </div>
-
 </div>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
 <script type="text/javascript" th:inline="javascript">
     $.bookRate = /*[[${rate}]]*/ 0.006;
     $.lowestAmount = /*[[${lowestAmount}]]*/ 1;
-</script>
-<script type="text/javascript">
-    function toshow() {
-        if (true) {
-            // 在开发优先级上较低,暂时无视相关内容 ???
-            // 看汉字
-            return true;
-        }
-        $(".am-show").addClass("am-modal-active");
-        if ($(".showebg").length > 0) {
-            $(".showbg").addClass("showbg-active");
-        } else {
-            $("body").append('<div class="showbg"></div>');
-            $(".showbg").addClass("showbg-active");
-        }
-        return false;
-    }
 </script>
 </body>
 </html>

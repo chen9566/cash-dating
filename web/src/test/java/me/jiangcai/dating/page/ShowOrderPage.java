@@ -1,12 +1,17 @@
 package me.jiangcai.dating.page;
 
+import com.google.common.base.Predicate;
+import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.util.Common;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,9 +39,7 @@ public class ShowOrderPage extends AbstractPage {
                 .findAny()
                 .ifPresent(element -> amountSpan = element);
 
-        webDriver.findElements(By.tagName("img")).stream()
-                .filter(element -> "qrCode".equals(element.getAttribute("name")) && element.isDisplayed())
-                .findAny()
+        getQRImage(webDriver)
                 .ifPresent(element -> image = element);
 
         shareButton = webDriver.findElement(By.tagName("button"));
@@ -50,6 +53,12 @@ public class ShowOrderPage extends AbstractPage {
                 .isNotNull();
     }
 
+    private Optional<WebElement> getQRImage(WebDriver webDriver) {
+        return webDriver.findElements(By.tagName("img")).stream()
+                .filter(element -> "qrCode".equals(element.getAttribute("name")) && element.isDisplayed())
+                .findAny();
+    }
+
     public String orderId() {
         String url = webDriver.getCurrentUrl();
         String id = url.substring(url.lastIndexOf("/") + 1);
@@ -61,8 +70,24 @@ public class ShowOrderPage extends AbstractPage {
     }
 
 
-    public BufferedImage scanCode() throws IOException {
-        return toImage(image);
+    private BufferedImage scanCode(PayChannel channel) throws IOException {
+        WebElement ele = webDriver.findElements(By.className("payChannel")).stream()
+                .filter(webElement -> webElement.getAttribute("data-id").equals(channel.name()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("找不到渠道" + channel));
+        assertThat(ele.isDisplayed())
+                .isTrue();
+        ele.click();
+        // 等待知道图片出来
+        new WebDriverWait(webDriver, 2).until(new Predicate<WebDriver>() {
+            @Override
+            public boolean apply(@Nullable WebDriver input) {
+                if (input == null)
+                    return false;
+                return getQRImage(input).orElse(null).getAttribute("src") != null;
+            }
+        });
+        return toImage(getQRImage(webDriver).orElse(null));
     }
 
     public void assertAmount(double amount) {
@@ -72,9 +97,11 @@ public class ShowOrderPage extends AbstractPage {
 
     /**
      * 支付这个订单
+     *
+     * @param channel
      */
-    public void pay() throws Exception {
-        mockWeixinPay(orderId(), scanCode());
+    public void pay(PayChannel channel) throws Exception {
+        mockWeixinPay(orderId(), scanCode(channel));
     }
 
 }

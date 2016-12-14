@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * 开始收款页面
  * 1.5 更新至可以换卡,但不可以加卡,同样无需把卡号传过来,所谓更换就是禁用原卡
+ * receivables.html
  *
  * @author CJ
  */
@@ -65,7 +66,7 @@ public class StartOrderPage extends AbstractPage {
                 .isTrue();
     }
 
-    public void pay(double amount, String comment, Predicate<WebElement> cardChooser) {
+    public ShowOrderPage pay(double amount, String comment, Predicate<WebElement> cardChooser) {
         if (cardChooser != null) {
             WebElement all = webDriver.findElement(By.className("all-cards"));
             assertThat(all.isDisplayed())
@@ -106,6 +107,7 @@ public class StartOrderPage extends AbstractPage {
 //        commentInput.clear();
 //        commentInput.sendKeys(comment);
         button.click();
+        return initPage(ShowOrderPage.class);
     }
 
     public void assertNoCard() {
