@@ -4,6 +4,7 @@ import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.exception.ArbitrageBindFailedException;
+import me.jiangcai.dating.model.PayChannel;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
@@ -83,9 +84,10 @@ public interface ArbitrageChannel {
      * 建立一份实际支付订单
      *
      * @param order 系统订单
+     * @param channel
      * @return 平台订单
      */
-    PlatformOrder newOrder(CashOrder order) throws IOException, SignatureException;
+    PlatformOrder newOrder(CashOrder order, PayChannel channel) throws IOException, SignatureException;
 
     /**
      * 模拟套现的结果

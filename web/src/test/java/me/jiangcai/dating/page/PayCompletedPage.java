@@ -26,6 +26,7 @@ public class PayCompletedPage extends AbstractPage {
      * 断言 这个订单尚未提现但刚刚完成支付
      */
     public void assertJustPayWithoutWithdrawal() {
+//        printThisPage();
         webDriver.findElements(By.className("pay-done-1")).stream()
                 .filter(WebElement::isDisplayed)
                 .findAny()

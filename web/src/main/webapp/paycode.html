@@ -22,18 +22,35 @@
         <span class="nun"
               th:text="${#numbers.formatDecimal(order.amount,1,'COMMA',2,'POINT')}">123</span>
     </p>
-    <p class="t4"><img name="qrCode" src="images/temp2.png" th:src="${qrUrl}"/></p>
+    <!--src="images/temp2.png" th:src="${qrUrl}"-->
+    <p class="t4"><img name="qrCode" id="qrCode"/></p>
     <p class="t5">长按二维码可进行支付</p>
     <p class="t6">
         <button type="button" class="btn btn-default btn-lg btn-block weixinShare">发送收款二维码</button>
     </p>
+</div>
+<div class="am-show">
+    <div class="back-c">
+        <ul class="topay">
+            <!--<span class="pull-right big15"><img-->
+            <!--src="images/ok-icon.png"/> </span>-->
+            <h1>选择付款方式</h1>
+            <li class="bo-b payChannel" data-id="weixin"><img src="images/weixin-icon.png"
+                                                              th:src="@{/images/weixin-icon.png}"/>微信支付
+            </li>
+            <li class="bo-b payChannel" data-id="alipay"><img src="images/zhifubao-icon.png"
+                                                              th:src="@{/images/zhifubao-icon.png}"/>支付宝支付
+            </li>
+            <!--<li><img src="images/kuaijie-icon.png"/>快捷支付</li>-->
+        </ul>
+    </div>
 </div>
 
 <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js" th:remove="all"></script>
 <script wx:js=""></script>
 <script wx:share="${#share.title(order)}|${#share.desc(order)}|${#share.link(order,#request)}|${#share.imageUrl(order)}"></script>
 <script type="text/javascript" th:inline="javascript">
-    $.targetOrderId = /*[[${order.id}]]*/ null;
+    $.targetOrderId = /*[[${order.id}]]*/ 'myOrder11';
 </script>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
 <script src="js/pay.js" th:src="@{/js/pay.js}"></script>
