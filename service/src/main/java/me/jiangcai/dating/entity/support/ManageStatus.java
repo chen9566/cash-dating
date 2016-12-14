@@ -68,13 +68,13 @@ public enum ManageStatus {
                 list.addAll(Collections.singletonList((Role_Order_Value)));
                 break;
             case financial:
-                list.addAll(Arrays.asList(Role_Finance_Value, Role_Loan_Value));
+                list.addAll(Arrays.asList(Role_Finance_Value, Role_Loan_Value, Role_Project_Loan_Value));
                 break;
             case general:
-                list.addAll(Arrays.asList(Role_Finance_Value, Role_Loan_Value, Role_Order_Value, Role_Edit_Value, Role_Agent_Value));
+                list.addAll(Arrays.asList(Role_Finance_Value, Role_Loan_Value, Role_Project_Loan_Value, Role_Order_Value, Role_Edit_Value, Role_Agent_Value));
                 break;
             case manager:
-                list.addAll(Arrays.asList(Role_Finance_Value, Role_Loan_Value, Role_Order_Value, Role_Edit_Value, Role_Agent_Value, Role_Grant_Value));
+                list.addAll(Arrays.asList(Role_Finance_Value, Role_Loan_Value, Role_Project_Loan_Value, Role_Order_Value, Role_Edit_Value, Role_Agent_Value, Role_Grant_Value));
                 break;
             case root:
                 list.addAll(Collections.singleton("ROOT"));

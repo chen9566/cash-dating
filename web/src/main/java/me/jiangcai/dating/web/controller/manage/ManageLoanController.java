@@ -39,7 +39,7 @@ import java.util.Map;
  */
 @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Loan_Value + "')")
 @Controller
-public class ManageLoanController {
+public class ManageLoanController extends AbstractLoanManage {
     @Autowired
     private DataService dataService;
     @Autowired
@@ -147,16 +147,7 @@ public class ManageLoanController {
                         if (origin == null)
                             return null;
                         LoanRequestStatus processStatus = (LoanRequestStatus) origin;
-                        switch (processStatus) {
-                            case requested:
-                                return "处理中";
-                            case forward:
-                                return "转发中";
-                            case reject:
-                                return "已被拒绝";
-                            default:
-                                return "已处理";
-                        }
+                        return processStatus.toHtml();
                     }
                 }, new ToStringField("processTime")
                 , new DataService.StringField("comment")

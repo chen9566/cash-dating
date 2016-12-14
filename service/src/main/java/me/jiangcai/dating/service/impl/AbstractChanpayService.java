@@ -385,7 +385,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
     }
 
     @Override
-    public PlatformOrder newOrder(CashOrder order) throws IOException, SignatureException {
+    public PlatformOrder newOrder(CashOrder order, me.jiangcai.dating.model.PayChannel channel) throws IOException, SignatureException {
         //        Card card = order.getOwner().getCards().get(0);
         CreateInstantTrade request = new CreateInstantTrade();
         request.setAmount(order.getAmount());

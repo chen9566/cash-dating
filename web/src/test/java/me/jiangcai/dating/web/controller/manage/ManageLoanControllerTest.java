@@ -106,7 +106,7 @@ public class ManageLoanControllerTest extends ManageWebTest {
         // 必须确保 项目贷款 它是看不到的
         ProjectLoanRequest loanRequest = wealthService.loanRequest(userOpenId, new ProjectLoan(), null, new BigDecimal("170000"), "摆渡人"
                 , RandomStringUtils.randomNumeric(18), address, UUID.randomUUID().toString()
-                , UUID.randomUUID().toString(), 10, 10, 30);
+                , UUID.randomUUID().toString(), 10, 10, 30, random.nextBoolean());
         wealthService.submitLoanRequest(loanRequest.getId());
 
         mockMvc.perform(getWeixin("/manage/data/loan/pending").session(session)

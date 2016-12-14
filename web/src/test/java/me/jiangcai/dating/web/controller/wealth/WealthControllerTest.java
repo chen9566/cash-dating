@@ -17,11 +17,13 @@ import me.jiangcai.dating.page.LoanIDPage;
 import me.jiangcai.dating.page.LoanPage;
 import me.jiangcai.dating.page.LoanSubmitPage;
 import me.jiangcai.dating.page.MyPage;
+import me.jiangcai.dating.page.ProjectSuccessPage;
+import me.jiangcai.dating.repository.LoanRequestRepository;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.PayResourceService;
+import me.jiangcai.dating.service.TourongjiaService;
 import me.jiangcai.dating.service.WealthService;
 import me.jiangcai.gaa.sdk.repository.DistrictRepository;
-import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,8 +48,11 @@ public class WealthControllerTest extends LoginWebTest {
     private UserRepository userRepository;
     @Autowired
     private DistrictRepository districtRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
-    private ResourceService resourceService;
+    private LoanRequestRepository loanRequestRepository;
+    @Autowired
+    private TourongjiaService tourongjiaService;
 
     /**
      * 需要关注的数据是
@@ -57,7 +61,8 @@ public class WealthControllerTest extends LoginWebTest {
      * @throws IOException
      */
     @Test
-    public void projectLoan() throws IOException {
+//    @Repeat(3)
+    public void projectLoan() throws IOException, InterruptedException {
         MyPage myPage = myPage();
         Loan[] loanList = wealthService.loanList();
 //        System.out.println(Arrays.toString(loanList));
@@ -121,12 +126,12 @@ public class WealthControllerTest extends LoginWebTest {
                 .isEqualByComparingTo(new BigDecimal(amount));
         assertThat(projectLoanRequest.getApplyCreditLimitYears())
                 .isEqualTo(getSystemService().getProjectLoanCreditLimit());
-        assertThat(projectLoanRequest.getCreditLimitYears())
-                .isEqualTo(getSystemService().getProjectLoanCreditLimit());
+//        assertThat(projectLoanRequest.getCreditLimitYears())
+//                .isEqualTo(getSystemService().getProjectLoanCreditLimit());
         assertThat(projectLoanRequest.getApplyTermDays())
                 .isEqualTo(wealthService.nextProjectLoanTerm());
-        assertThat(projectLoanRequest.getTermDays())
-                .isEqualTo(wealthService.nextProjectLoanTerm());
+//        assertThat(projectLoanRequest.getApply())
+//                .isEqualTo(wealthService.nextProjectLoanTerm());
         assertThat(resourceService.getResource(projectLoanRequest.getLoanData().getBackIdResource()).isReadable())
                 .isTrue();
         assertThat(resourceService.getResource(projectLoanRequest.getLoanData().getFrontIdResource()).isReadable())
@@ -143,7 +148,9 @@ public class WealthControllerTest extends LoginWebTest {
                 .isEqualTo(familyIncome);
         assertThat(projectLoanRequest.getLoanData().getAge())
                 .isEqualTo(age);
-        
+        assertThat(projectLoanRequest.getLoanData().isHasHouse())
+                .isEqualTo(hasHouse);
+
         assertThat(request.getProcessStatus())
                 .isEqualByComparingTo(LoanRequestStatus.requested);
         assertThat(request.getLoanData().getOwner())
@@ -164,6 +171,50 @@ public class WealthControllerTest extends LoginWebTest {
 //                .isGreaterThan(0);
         // 管理员 登录 并且同意这个借款请求
         assertThat(request.getSupplierRequestId()).isNull();
+
+        // 审批通过这个请求
+        final int realTermDays = projectLoanRequest.getApplyTermDays();
+        final BigDecimal realAmount = request.getAmount();
+        final BigDecimal realYearRate = getSystemService().getProjectLoanYearRate();
+        wealthService.approveProjectLoanRequest(null, request.getId(), realAmount, realYearRate, realTermDays, "");
+        projectLoanRequest = (ProjectLoanRequest) loanRequestRepository.getOne(request.getId());
+        assertThat(projectLoanRequest.getTermDays())
+                .isEqualTo(realTermDays);
+        assertThat(projectLoanRequest.getAmount())
+                .isEqualByComparingTo(realAmount);
+        assertThat(projectLoanRequest.getYearRate())
+                .isEqualByComparingTo(realYearRate);
+        assertThat(projectLoanRequest.getSupplierRequestId()).isNotEmpty();
+
+        tourongjiaService.testMakeLoanStatus(projectLoanRequest.getSupplierRequestId(), true);
+        wealthService.queryProjectLoanStatus(projectLoanRequest.getId());
+
+        // 打开通知所指向的地址
+        // 就可以玩一玩签单流程了
+        ProjectSuccessPage projectSuccessPage = toSuccessPage(request.getId());
+        // 这会儿应该是打不开的………………这个测试无法跑下去
+        // 1-9
+        String type = "CT00" + (1 + random.nextInt(9));
+
+        projectSuccessPage.sign(type);
+
+        projectSuccessPage = toSuccessPage(request.getId());
+        projectSuccessPage.assertSign(type);
+
+        projectLoanRequest = (ProjectLoanRequest) loanRequestRepository.getOne(request.getId());
+        assertThat(projectLoanRequest.getContracts().get(type))
+                .isNotEmpty();
+        // 更新下里面的玩意儿
+//        projectLoanRequest.setContracts(new HashMap<>());
+//        projectLoanRequest.getContracts().put("foo", "bar");
+//        loanRequestRepository.save(projectLoanRequest);
+//        toSuccessPage(request.getId());
+
+    }
+
+    private ProjectSuccessPage toSuccessPage(Long id) {
+        driver.get("http://localhost/projectLoan?id=" + id);
+        return initPage(ProjectSuccessPage.class);
     }
 
     /**
@@ -236,15 +287,8 @@ public class WealthControllerTest extends LoginWebTest {
                 .isGreaterThan(0);
         // 管理员 登录 并且同意这个借款请求
         assertThat(request.getSupplierRequestId()).isNull();
-    }
 
-    /**
-     * @return 随机生成的图片资源路径
-     */
-    private String randomImageResourcePath() throws IOException {
-        String name = "tmp/" + UUID.randomUUID().toString() + ".png";
-        resourceService.uploadResource(name, this.applicationContext.getResource("/images/1.png").getInputStream());
-        return name;
+        // uri 规定下
     }
 
     @Test

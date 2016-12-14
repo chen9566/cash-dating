@@ -1,8 +1,7 @@
 /**
+ * 付款时才选择支付方式
  * Created by CJ on 13/10/2016.
  */
-
-
 $(function () {
 
     var uri;
@@ -33,4 +32,46 @@ $(function () {
     };
 
     setTimeout('$._loginCheck()', 2000);
+
+    function currentBackground() {
+        return $(".showbg");
+    }
+
+    $('.payChannel').click(function () {
+        var name = $(this).attr('data-id');
+        var url;
+        if ($.prototypesMode) {
+            url = 'mock/qr.txt';
+        } else {
+            url = $.uriPrefix + "/orderQRURL";
+        }
+        $.ajax(url, {
+            method: 'get',
+            data: {
+                id: $.targetOrderId,
+                channel: name
+            },
+            error: function (res) {
+                alert(res.responseText);
+            },
+            success: function (data) {
+                $('#qrCode').attr('src', data);
+                $(".am-show").removeClass('am-modal-active');
+                currentBackground().remove();
+            }
+        })
+    });
+
+    $(".am-show").addClass("am-modal-active");
+    if (currentBackground().length > 0) {
+        currentBackground().addClass("showbg-active");
+    } else {
+        $("body").append('<div class="showbg"></div>');
+        currentBackground().click(function () {
+            // 不可取消
+            // $(".am-show").removeClass('am-modal-active');
+            // currentBackground().remove();
+        });
+        currentBackground().addClass("showbg-active");
+    }
 });

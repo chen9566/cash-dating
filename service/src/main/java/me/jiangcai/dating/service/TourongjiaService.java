@@ -3,6 +3,7 @@ package me.jiangcai.dating.service;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
+import me.jiangcai.dating.model.trj.LoanStatus;
 import me.jiangcai.dating.model.trj.MobileToken;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 
@@ -55,7 +56,7 @@ public interface TourongjiaService {
      * @return
      * @throws IOException
      */
-    String checkLoanStatus(String id) throws IOException;
+    LoanStatus checkLoanStatus(String id) throws IOException;
 
     MobileToken token(String mobile) throws IOException;
 
@@ -75,4 +76,39 @@ public interface TourongjiaService {
      * @throws VerifyCodeSentException 如果未绑定,并且发送了验证码
      */
     URI financingURL(String financingId, String mobile) throws IOException, VerifyCodeSentException;
+
+    /**
+     * 申请项目贷款
+     *
+     * @param user     用户
+     * @param name     真实姓名
+     * @param amount   金额
+     * @param province 省id
+     * @param city     市id
+     * @param address  地址
+     * @return 申请id
+     * @throws IOException
+     */
+    String projectLoan(User user, String name, String number, BigDecimal amount, int termDays, int limitYears
+            , String province, String city, String address, int familyIncome, int personalIncome, int age
+            , boolean hasHouse, String[] attaches) throws IOException;
+
+    /**
+     * 用户签章
+     *
+     * @param requestId 请求id
+     * @param contract  合同类型
+     * @return 合同号
+     * @throws IOException
+     */
+    String signContract(String requestId, String contract) throws IOException;
+
+    /**
+     * 仅仅工作在测试环境中
+     *
+     * @param requestId
+     * @param success
+     * @throws IOException
+     */
+    void testMakeLoanStatus(String requestId, boolean success) throws IOException;
 }

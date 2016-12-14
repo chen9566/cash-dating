@@ -15,6 +15,7 @@ import me.jiangcai.wx.OpenId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -117,6 +118,13 @@ public class PayController {
         return orderService.isComplete(id);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/orderQRURL")
+    public ResponseEntity<String> orderQRURL(String id, PayChannel channel) throws IOException, SignatureException {
+        CashOrder order = orderService.getOne(id);
+        return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN)
+                .body(createPlatformOrder(order, channel));
+    }
+
     /**
      * 打开这个付款二维码展示界面,开放显示
      * 这个页面应该会存在多个效果  比如微信平台的效果和非微信平台的效果
@@ -167,19 +175,22 @@ public class PayController {
 //            return "redirect:/";
 //        }
         // 直接建立订单
-        return showPayCode(model, order);
+//        return showPayCode(model, order);
+        model.addAttribute("order", order);
+        return "paycode.html";
+    }
+
+    private String createPlatformOrder(CashOrder order, PayChannel channel) throws IOException, SignatureException {
+        if (channel == null)
+            channel = PayChannel.weixin;
+        PlatformOrder platformOrder = orderService.preparePay(order.getId(), channel);
+
+        final ArbitrageChannel arbitrageChannel = applicationContext.getBean(platformOrder.channelClass());
+        return arbitrageChannel.QRCodeImageFromOrder(platformOrder);
     }
 
     private String showPayCode(Model model, CashOrder order) throws IOException, SignatureException {
-        PlatformOrder platformOrder = orderService.preparePay(order.getId(), PayChannel.weixin);
-
-        final ArbitrageChannel channel = applicationContext.getBean(platformOrder.channelClass());
-        model.addAttribute("qrUrl", channel.QRCodeImageFromOrder(platformOrder));
-//        if (platformOrder instanceof ChanpayOrder) {
-//            model.addAttribute("qrUrl", chanpayService.QRCodeImageFromOrder((ChanpayOrder) platformOrder));
-//        } else
-//            throw new IllegalStateException("no chanpayOrder??" + platformOrder);
-
+        model.addAttribute("qrUrl", createPlatformOrder(order, PayChannel.weixin));
         model.addAttribute("order", order);
         return "paycode.html";
     }

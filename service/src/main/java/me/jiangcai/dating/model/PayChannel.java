@@ -8,4 +8,8 @@ public enum PayChannel {
      * 目前仅支持,支持方:畅捷支付
      */
     weixin,
+    /**
+     * 支付宝
+     */
+    alipay,
 }

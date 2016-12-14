@@ -105,7 +105,7 @@ public class CardControllerTest extends WebTest {
         orderPage.assertCard(exceptedCard);
 
         // 1.5 不再有选卡的功能
-        orderPage.pay(100, "", null);
+        ShowOrderPage codePage = orderPage.pay(100, "", null);
 
 //        orderPage.pay(100, "", webElement -> {
 //            return webElement.findElements(By.tagName("span")).stream()
@@ -118,7 +118,6 @@ public class CardControllerTest extends WebTest {
 //                    .count() == 2;
 //        });
 
-        ShowOrderPage codePage = initPage(ShowOrderPage.class);
         // 应该去检查这个订单信息 以确保卡号是一致了
         // 没有意义了
 //        CashOrder order = cashOrderRepository.getOne(codePage.orderId());

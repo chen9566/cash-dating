@@ -104,4 +104,31 @@ $(function () {
         all.slideUp();
         return false;
     });
+    //
+    //
+    // $('.payChannel').click(function () {
+    //     var form = $('form');
+    //     var channel = $('input[name=channel]', form);
+    //     channel.val($(this).attr('data-id'));
+    //     form.submit();
+    // });
+    //
+    // function currentBackground() {
+    //     return $(".showbg");
+    // }
+    //
+    // button.click(function () {
+    //     $(".am-show").addClass("am-modal-active");
+    //     if (currentBackground().length > 0) {
+    //         currentBackground().addClass("showbg-active");
+    //     } else {
+    //         $("body").append('<div class="showbg"></div>');
+    //         currentBackground().click(function () {
+    //             $(".am-show").removeClass('am-modal-active');
+    //             currentBackground().remove();
+    //         });
+    //         currentBackground().addClass("showbg-active");
+    //     }
+    //     return false;
+    // });
 });

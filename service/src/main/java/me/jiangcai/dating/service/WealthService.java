@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,6 +25,25 @@ import java.util.List;
  * @author CJ
  */
 public interface WealthService {
+
+    /**
+     * 所有的合同
+     */
+    List<String> ContractElements = Collections.unmodifiableList(Arrays.asList(
+            "CT001",
+            "CT002",
+            "CT003",
+            "CT004",
+            "CT005",
+            "CT006",
+            "CT007",
+            "CT008",
+            "CT009"
+//            ,
+//            "CT0010",
+//            "CT0011",
+//            "CT0012",
+    ));
 
     /**
      * @return 是否支持更多理财选择
@@ -50,12 +71,13 @@ public interface WealthService {
      * @param personalIncome 个人年收入（万）
      * @param familyIncome   家庭年收入(万)
      * @param age            年龄
+     * @param hasHouse
      * @return 新建的申请
      */
     @Transactional
     ProjectLoanRequest loanRequest(String openId, ProjectLoan loan, Long userDataId, BigDecimal amount, String name
             , String number, Address address, String homeAddress, String employer, int personalIncome, int familyIncome
-            , int age);
+            , int age, boolean hasHouse);
 
     /**
      * 借款申请,仅仅是开始一个申请
@@ -96,6 +118,25 @@ public interface WealthService {
     void approveLoanRequest(User user, long requestId, String comment) throws IOException;
 
     /**
+     * 同意项目贷款
+     *
+     * @param user          操作用户
+     * @param loanRequestId 请求id
+     * @param amount        批准金额
+     * @param termDays      批准期限
+     * @param yearRate      批准年化利率
+     * @param comment       留言
+     */
+    @Transactional
+    void approveProjectLoanRequest(User user, long loanRequestId, BigDecimal amount, BigDecimal yearRate
+            , int termDays, String comment) throws IOException;
+
+    // 内部方法 请勿调用
+    @ThreadSafe
+    void approveProjectLoanRequestCore(Locker locker, User user, long loanRequestId, BigDecimal amount
+            , BigDecimal yearRate, int termDays, String comment) throws IOException;
+
+    /**
      * 拒绝借款
      *
      * @param user      操作用户
@@ -111,7 +152,8 @@ public interface WealthService {
 
     /**
      * 更新借款申请的身份证复印件信息
-     *  @param loanRequestId       借款id
+     *
+     * @param loanRequestId       借款id
      * @param backIdResourcePath  如不存在,请无视
      * @param frontIdResourcePath 如不存在,请无视
      * @param handResourcePath
@@ -132,6 +174,12 @@ public interface WealthService {
      * @return 下一个项目贷款期限周期, 单位:天
      */
     int nextProjectLoanTerm();
+
+    @Transactional
+    void queryProjectLoanStatus(long id) throws IOException;
+
+    @Transactional(readOnly = true)
+    void sendNotify(long id);
 
 //
 //    /**

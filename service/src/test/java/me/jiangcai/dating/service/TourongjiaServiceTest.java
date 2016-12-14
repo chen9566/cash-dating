@@ -88,9 +88,9 @@ public class TourongjiaServiceTest extends ServiceBaseTest {
         assertThat(id)
                 .isNotEmpty();
 
-        String status = tourongjiaService.checkLoanStatus(id);
+        Object status = tourongjiaService.checkLoanStatus(id);
         assertThat(status)
-                .isNotEmpty();
+                .isNotNull();
         System.out.println(status);
     }
 

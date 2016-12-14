@@ -38,6 +38,18 @@ public class TestConfig {
     @Autowired
     private BankService bankService;
 
+//    @Bean
+//    @Primary
+//    public TourongjiaService tourongjiaService() {
+//        return new TourongjiaServiceImpl(environment) {
+//            @Override
+//            public LoanStatus checkLoanStatus(String id) throws IOException {
+//                return LoanStatus.success;
+////                return super.checkLoanStatus(id);
+//            }
+//        };
+//    }
+
     @Bean
     @Primary
     @DependsOn("initService")

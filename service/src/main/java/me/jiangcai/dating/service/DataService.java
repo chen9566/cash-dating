@@ -17,6 +17,7 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * 数据查询服务
@@ -45,6 +46,9 @@ public interface DataService {
             , int offset, int limit, Class<T> target, List<DataField> dataFields, DataFilter<T> filter);
 
     class UnsearchableField extends DataService.ClassicsField {
+        public UnsearchableField(String name, Function<Root<?>, Expression<?>> select) {
+            super(name, select);
+        }
 
         public UnsearchableField(String name) {
             super(name);
@@ -64,13 +68,21 @@ public interface DataService {
     abstract class ClassicsField implements DataField {
 
         protected final String name;
+        protected final Function<Root<?>, Expression<?>> select;
+
+        public ClassicsField(String name, Function<Root<?>, Expression<?>> select) {
+            this.name = name;
+            this.select = select;
+        }
 
         public ClassicsField(String name) {
-            this.name = name;
+            this(name, null);
         }
 
         protected Expression<?> selectExpression(Root<?> root) {
-            return root.get(name());
+            if (select == null)
+                return root.get(name());
+            return select.apply(root);
         }
 
         @Override
@@ -100,6 +112,9 @@ public interface DataService {
      * @author CJ
      */
     class BooleanField extends UnsearchableField {
+        public BooleanField(String name, Function<Root<?>, Expression<?>> select) {
+            super(name, select);
+        }
 
         public BooleanField(String name) {
             super(name);
@@ -110,8 +125,11 @@ public interface DataService {
      * @author CJ
      */
     class EnumField extends UnsearchableField {
+        public EnumField(String name, Function<Root<?>, Expression<?>> select) {
+            super(name, select);
+        }
 
-        public EnumField(String name) {
+        protected EnumField(String name) {
             super(name);
         }
     }
@@ -122,6 +140,11 @@ public interface DataService {
     class NumberField extends ClassicsField {
 
         private final Class<? extends Number> numberType;
+
+        public NumberField(String name, Function<Root<?>, Expression<?>> select, Class<? extends Number> numberType) {
+            super(name, select);
+            this.numberType = numberType;
+        }
 
         public NumberField(String name, Class<? extends Number> numberType) {
             super(name);
@@ -147,6 +170,10 @@ public interface DataService {
      * @author CJ
      */
     class StringField extends ClassicsField {
+
+        public StringField(String name, Function<Root<?>, Expression<?>> select) {
+            super(name, select);
+        }
 
         public StringField(String name) {
             super(name);
