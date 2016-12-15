@@ -14,6 +14,7 @@
 
 <script th:inline="javascript" th:fragment="code">
     $.auths = {};
+    $.auths.script = /*[[${#authorization.expression('hasAnyRole(''ROOT'',''SCRIPT'')')}]]*/ false;
     $.auths.agent = /*[[${#authorization.expression('hasAnyRole(''ROOT'',''AGENT'')')}]]*/ false;
     $.auths.loan = /*[[${#authorization.expression('hasAnyRole(''ROOT'',''LOAN'')')}]]*/ false;
     $.auths.projectLoan = /*[[${#authorization.expression('hasAnyRole(''ROOT'',''PROJECT_LOAN'')')}]]*/ false;

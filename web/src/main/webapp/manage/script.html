@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>执行脚本</title>
+    <link rel="stylesheet" href="../css/manage.css" th:href="@{/css/manage.css}">
+    <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdn.kuanyes.com/bootstrap-3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="//cdn.kuanyes.com/jquery-ui-1.12.1/jquery-ui.min.css">
+    <script src="//cdn.kuanyes.com/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+
+    <script src="../dist/js/share.js" th:src="@{/dist/js/share.js}"></script>
+    <script src="../mock/all.js" th:src="@{/all.js}"></script>
+    <script th:replace="fragment/auth.html::code"></script>
+    <script src="../js/manage.js" th:src="@{/js/manage.js}"></script>
+</head>
+<body>
+<div class="header"></div>
+<span>使用帮助</span>
+<ul>
+    <li>
+        <a href="https://github.com/JoleneOL/cash-dating/blob/master/service/src/main/java/me/jiangcai/dating/service/SystemService.java"
+           target="_blank">调用系统服务</a>
+        <pre>
+    <code>
+        applicationContext.getBean('systemService'); // 可以获取系统服务
+    </code>
+</pre>
+    </li>
+</ul>
+
+<label>
+    脚本:
+    <textarea name="script" rows="10" cols="200" style="width: 100%;margin-left: 10px;"></textarea>
+</label>
+<button name="exec">执行</button>
+<br/>
+<p id="result" style="color:red">执行结果</p>
+<script>
+    $(function () {
+        var $script = $('[name=script]');
+        var result = $('#result');
+        result.text('');
+        var $button = $('button[name=exec]');
+        $button.button();
+
+        $button.click(function () {
+            $.ajax($.uriPrefix + '/manage/script', {
+                method: 'put',
+                data: {
+                    script: $script.val()
+                },
+                success: function (r) {
+                    result.text(r);
+                }
+            })
+        });
+
+    });
+</script>
+</body>
+</html>
