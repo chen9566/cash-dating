@@ -9,6 +9,8 @@ import me.jiangcai.dating.service.NotifyService;
 import me.jiangcai.wx.PublicAccountSupplier;
 import me.jiangcai.wx.model.Template;
 import me.jiangcai.wx.protocol.Protocol;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,6 +43,8 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/manage/notify")
 public class NotifyController {
+
+    private static final Log log = LogFactory.getLog(NotifyController.class);
 
     @Autowired
     private NotifyService notifyService;
@@ -178,7 +182,11 @@ public class NotifyController {
             }
         }
         //发送消息
-        notifyService.sendMessage(user, null, message, parameters, vars.toArray(new Object[vars.size()]));
+        try {
+            notifyService.sendMessage(user, null, message, parameters, vars.toArray(new Object[vars.size()]));
+        } catch (Throwable ex) {
+            log.debug("", ex);
+        }
     }
 
     private Set<NotifyMessageParameter> clone(Set<NotifyMessageParameter> input) {
