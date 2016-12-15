@@ -236,7 +236,7 @@ public class TourongjiaServiceImpl implements TourongjiaService {
         try (CloseableHttpClient client = requestClient()) {
             HttpGet get = new2Get("tenant/yt_auditTest.jhtml"
                     , new BasicNameValuePair("applyId", requestId)
-                    , new BasicNameValuePair("status", success ? "2" : "3")
+                    , new BasicNameValuePair("status", success ? "3" : "2")
             );
             client.execute(get).close();
         }

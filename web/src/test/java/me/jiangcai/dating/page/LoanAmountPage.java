@@ -53,7 +53,7 @@ public class LoanAmountPage extends AbstractPage {
     @Override
     public void validatePage() {
         assertThat(webDriver.getTitle())
-                .isIn("款爷借款", "项目贷款")
+                .isIn("款爷借款", "项目贷款", "网商宝")
 //                .isEqualTo("款爷借款")
         ;
         input.clear();

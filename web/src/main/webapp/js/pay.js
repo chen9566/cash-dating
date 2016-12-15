@@ -39,10 +39,10 @@ $(function () {
 
     $('.payChannel').click(function () {
         var name = $(this).attr('data-id');
-        if (name == 'alipay') {
-            window.location.href = $('#goAlipay').attr('href');
-            return;
-        }
+        // if (name == 'alipay') {
+        //     window.location.href = $('#goAlipay').attr('href');
+        //     return;
+        // }
         var url;
         if ($.prototypesMode) {
             url = 'mock/qr.txt';
@@ -62,6 +62,7 @@ $(function () {
                 $('#qrCode').attr('src', data);
                 $(".am-show").removeClass('am-modal-active');
                 currentBackground().remove();
+                $('.' + name).show();
             }
         })
     });
@@ -78,4 +79,15 @@ $(function () {
         });
         currentBackground().addClass("showbg-active");
     }
+
+    $("#alipayTip").click(function (event) {
+        $(".helpshow1").css({"display": "block"});
+    });
+    $(".helpshow1").click(function (event) {
+        $(".helpshow2").css({"display": "block"});
+        $(".helpshow1").css({"display": "none"});
+    });
+    $(".helpshow2").click(function (event) {
+        $(".helpshow2").css({"display": "none"});
+    });
 });
