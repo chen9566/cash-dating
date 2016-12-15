@@ -10,33 +10,8 @@
     <script src="dist/js/jquery.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
     <script src="dist/js/share.js"></script>
-    <script src="js/passwordBox.min.js"></script>
-    <script>
-        window.onload=function(){
-            /**
-             * init传入参数依次是：正确密码(传空时不对比输入是否正确),密码键盘背景，标题，副标题
-             * */
-            PwdBox.init('123456','images/pwd_keyboard.png','请输入支付密码','安全支付环境，请放心使用！');
-            /**
-             *res格式：{status:'true或false',password:'用户输入的密码'}
-             *
-             */
-            PwdBox.show(function(res){
-                if(res.status){
-                    //重置输入
-                    alert('密码正确');
-                    //关闭并重置密码输入
-                    PwdBox.reset();
-                }else{
-                    alert(JSON.stringify(arguments));
-                }
-            });
-        };
-    </script>
 </head>
-
 <body>
-
 <div class="wealth">
     <p><img src="images/lcbig01.png" class="b"></p>
     <!--<div class="wealth-abs">-->
@@ -69,6 +44,7 @@
             <p class="f12">预期年化收益率</p>
         </li>
         <li class="b60">
+
             <p class="f15" id="financingName" th:text="${currentFinancing.projectTypeName}">投融宝1号</p>
             <p class="f12 t-size" id="financingDesc" th:text="${currentFinancing.projectSlogan}">期限<span
                     class="f13">30</span>天 截止时间<span class="f13">12</span>小时</p>
@@ -124,32 +100,23 @@
 <div class="picc">
     <img src="images/picc.png"/>
 </div>
-<!--<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
-    <!--<div class="modal-dialog">-->
-        <!--<div class="modal-content">-->
-            <!--<div class="modal-body show-c">-->
-                <!--<h4>确认帐号</h4>-->
-                <!--<p>验证码已经发向您的手机。</p>-->
-                <!--<p class="sn">-->
-                    <!--<input type="text" name="code" size="30" placeholder="请输入验证码">-->
-                <!--</p>-->
-            <!--</div>-->
-            <!--<div class="modal-footer">-->
-                <!--<div class="show-c3" id="ok" style="cursor: pointer">确定</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-<div>
-    <div style="text-align: center;padding-top: 10px;p"><span id="set_text" style="font-size: large;"></span></div>
-    <div style="padding-top: 20px;text-align: center;">
-        <form id="password" >
-            <input readonly class="pass" type="password"maxlength="1"value=""><input readonly class="pass" type="password"maxlength="1"value=""><input readonly class="pass" type="password"maxlength="1"value=""><input readonly class="pass" type="password"maxlength="1"value=""><input readonly class="pass" type="password"maxlength="1"value=""><input readonly class="pass pass_right" type="password"maxlength="1"value="">
-        </form>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body show-c">
+                <h4>确认帐号</h4>
+                <p>验证码已经发向您的手机。</p>
+                <p class="sn">
+                    <input type="text" name="code" size="30" placeholder="请输入验证码">
+                </p>
+            </div>
+            <div class="modal-footer">
+                <div class="show-c3" id="ok" style="cursor: pointer">确定</div>
+            </div>
+        </div>
     </div>
 </div>
-<div id="keyboardDIV"></div>
-<script type="text/javascript" src="ladingPasswordConfirm.js"></script>
+</div>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
 <script>
     $(function () {
