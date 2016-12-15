@@ -15,6 +15,12 @@ Number.prototype.formatMoney = function (c, d, t) {
 
 $(function () {
 
+    function round(value, step) {
+        step || (step = 1.0);
+        var inv = 1.0 / step;
+        return Math.round(value * inv) / inv;
+    }
+
     var amount = $('[name=amount]');
     var totalCost = $('#totalCost');
     var totalRate = $('#totalRate');
@@ -46,8 +52,11 @@ $(function () {
         button.removeClass('black');
         button.addClass('redremove');
 
-        var money = value * (parseFloat(1) - $.bookRate);
-        var myRate = value - money;
+        // 先计算手续费
+        var myRate = round(value * $.bookRate, 0.01);
+        // var money = value * (parseFloat(1) - $.bookRate);
+        var money = value - myRate;
+        // var myRate = value - money;
         // console.error(money, myRate);
         totalCost.text('到账金额 ' + money.formatMoney(2, '.', ','));
         totalRate.text('手续费 ' + myRate.formatMoney(2, '.', ','));
