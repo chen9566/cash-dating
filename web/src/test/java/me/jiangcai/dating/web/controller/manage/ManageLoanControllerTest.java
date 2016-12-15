@@ -107,6 +107,7 @@ public class ManageLoanControllerTest extends ManageWebTest {
         ProjectLoanRequest loanRequest = wealthService.loanRequest(userOpenId, new ProjectLoan(), null, new BigDecimal("170000"), "摆渡人"
                 , RandomStringUtils.randomNumeric(18), address, UUID.randomUUID().toString()
                 , UUID.randomUUID().toString(), 10, 10, 30, random.nextBoolean());
+        wealthService.updateLoanIDImages(loanRequest.getId(), randomImageResourcePath(), randomImageResourcePath(), randomImageResourcePath());
         wealthService.submitLoanRequest(loanRequest.getId());
 
         mockMvc.perform(getWeixin("/manage/data/loan/pending").session(session)

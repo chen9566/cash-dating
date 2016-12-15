@@ -98,9 +98,11 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
         wealthService.loanRequest(userOpenId, loan, new BigDecimal("20000"), cashStrings.termInteger(term), null
                 , "摆渡人", RandomStringUtils.randomNumeric(18), address);
 
-        wealthService.submitLoanRequest(wealthService.loanRequest(userOpenId, loan, new BigDecimal("20000"), cashStrings.termInteger(term), null
+        wealthService.submitLoanRequest(wealthService.loanRequest(userOpenId, loan, new BigDecimal("20000")
+                , cashStrings.termInteger(term), null
                 , "摆渡人", RandomStringUtils.randomNumeric(18), address).getId());
-        wealthService.submitLoanRequest(wealthService.loanRequest(userOpenId, loan, new BigDecimal("20000"), cashStrings.termInteger(term), null
+        wealthService.submitLoanRequest(wealthService.loanRequest(userOpenId, loan, new BigDecimal("20000")
+                , cashStrings.termInteger(term), null
                 , "摆渡人", RandomStringUtils.randomNumeric(18), address).getId());
 
         // 这是普通贷款跟我们无关的
