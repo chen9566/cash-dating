@@ -221,6 +221,8 @@ public class SystemServiceImpl implements SystemService {
         }
         if (exceptedType == LocalDateTime.class)
             return (T) LocalDateTime.from(dateTimeFormatter.parse(ss.getValue()));
+        if (exceptedType == BigDecimal.class)
+            return (T) new BigDecimal(ss.getValue());
         return (T) ss.getValue();
 //        throw new IllegalArgumentException("unknown of default value:" + defaultValue);
     }

@@ -173,6 +173,7 @@ public interface WealthService {
     /**
      * @return 下一个项目贷款期限周期, 单位:天
      */
+    @Transactional(readOnly = true)
     int nextProjectLoanTerm();
 
     @Transactional

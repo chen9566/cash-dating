@@ -183,6 +183,13 @@ $(function () {
     // if (!$.prototypesMode && !$.auths.agent)
     //     approveButton.add(declineButton).hide();
 
+    var termChanged = function () {
+        // console.log('changed', inputTermDays.val());
+        var rate = $.yearRates[inputTermDays.val()];
+        // console.log(rate);
+        inputYearRate.val(rate);
+    };
+
     approveButton.click(function () {
         approveDialog.ids = idSupplier();
         // 恢复默认数据 再加上当前的数据
@@ -190,10 +197,36 @@ $(function () {
         var data = table.bootstrapTable('getRowByUniqueId', approveDialog.ids[0]);
         // console.log(data);
         inputAmount.val(data.applyAmount);
-        inputTermDays.val(inputTermDays.attr('data-origin'));
-        inputYearRate.val(inputYearRate.attr('data-origin'));
         commentInput.val('');
-        approveDialog.dialog('open');
+
+        var url;
+        if ($.prototypesMode) {
+            // 随机获取1-3
+            var targetNum;
+            var randomX = Math.random() * 3;
+            if (randomX > 2) {
+                targetNum = 3;
+            } else if (randomX > 1) {
+                targetNum = 2;
+            } else
+                targetNum = 1;
+            url = '../mock/projectLoanRequestNextTerm' + targetNum + ".json";
+        } else {
+            url = $.uriPrefix + '/manage/projectLoanRequestNextTerm';
+        }
+        $.ajax(url, {
+            method: 'get',
+            async: false,
+            dataType: 'json',
+            success: function (re) {
+                // console.log(re);
+                inputTermDays.val(re);
+                termChanged();
+                // inputYearRate.val(inputYearRate.attr('data-origin'));
+                approveDialog.dialog('open');
+            }
+        });
+
     });
     declineButton.click(function () {
         declineDialog.ids = idSupplier();
@@ -231,5 +264,7 @@ $(function () {
             }
         })
     });
+
+    inputTermDays.change(termChanged);
 
 });
