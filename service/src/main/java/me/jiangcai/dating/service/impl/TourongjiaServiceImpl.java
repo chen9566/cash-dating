@@ -270,9 +270,9 @@ public class TourongjiaServiceImpl implements TourongjiaService {
             );
             String code = client.execute(get, new TRJJsonHandler<>(LoanStatusResult.class)).getStatus();
             switch (code) {
-                case "3":
-                    return LoanStatus.failed;
                 case "2":
+                    return LoanStatus.failed;
+                case "3":
                     return LoanStatus.success;
                 default:
                     return LoanStatus.auditing;

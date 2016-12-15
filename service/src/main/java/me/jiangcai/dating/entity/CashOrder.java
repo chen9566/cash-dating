@@ -12,6 +12,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Set;
 
 /**
@@ -46,7 +47,9 @@ public class CashOrder extends UserOrder {
 
     @Override
     public BigDecimal getWithdrawalAmount() {
-        return getAmount().multiply(BigDecimal.ONE.subtract(thatRateConfig.getBookRate()));
+        // 计算手续费
+        BigDecimal fee = getAmount().multiply(thatRateConfig.getBookRate()).setScale(2, RoundingMode.HALF_UP);
+        return getAmount().subtract(fee);
     }
 
     @Override
