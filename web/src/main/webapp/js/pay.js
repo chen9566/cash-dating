@@ -39,6 +39,10 @@ $(function () {
 
     $('.payChannel').click(function () {
         var name = $(this).attr('data-id');
+        if (name == 'alipay') {
+            window.location.href = $('#goAlipay').attr('href');
+            return;
+        }
         var url;
         if ($.prototypesMode) {
             url = 'mock/qr.txt';
