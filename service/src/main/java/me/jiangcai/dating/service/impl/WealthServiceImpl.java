@@ -334,7 +334,30 @@ public class WealthServiceImpl implements WealthService {
 
     @Override
     public int nextProjectLoanTerm() {
-        return Integer.parseInt(new ProjectLoan().getTerm()[0]);
+        // 所有通过的统计一下
+        long count = loanRequestRepository.countByProcessStatus(LoanRequestStatus.contract);
+        int[] terms = systemService.getProjectLoanTermsStyle();
+        int[] counts = new int[terms.length];
+        for (int i = 0; i < terms.length; i++) {
+            counts[i] = systemService.getProjectLoanCountRate(terms[i]);
+        }
+
+        int last = (int) (count % sum(counts));
+        for (int i = 0; i < terms.length; i++) {
+            if (last < counts[i]) {
+                return terms[i];
+            }
+            last -= counts[i];
+        }
+
+        return terms[terms.length - 1];
+    }
+
+    private long sum(int[] data) {
+        long sum = 0;
+        for (int x : data)
+            sum = sum + x;
+        return sum;
     }
 
     @Override

@@ -110,42 +110,99 @@ public interface SystemService {
         return getSystemString("dating.project.loan.limit", BigDecimal.class, new BigDecimal(2)).intValue();
     }
 
+    /**
+     * 可在脚本环境中调用
+     *
+     * @param years 项目贷款授信年限
+     */
     default void updateProjectLoanCreditLimit(int years) {
         updateSystemString("dating.project.loan.limit", new BigDecimal(years));
     }
 
     /**
+     * @return 贷款期限周期规格 单位：天
+     */
+    default int[] getProjectLoanTermsStyle() {
+        String terms = getSystemString("dating.project.loan.terms.style", String.class, "30,90,180");
+        String[] termStrings = terms.split(",");
+        int[] termInt = new int[termStrings.length];
+        for (int i = 0; i < termStrings.length; i++) {
+            termInt[i] = Integer.parseInt(termStrings[i]);
+        }
+        return termInt;
+    }
+
+    /**
+     * 更新
+     *
+     * @param terms 贷款期限周期规格 单位：天
+     */
+    default void updateProjectLoanTermsStyle(int... terms) {
+        String[] termStrings = new String[terms.length];
+        for (int i = 0; i < terms.length; i++) {
+            termStrings[i] = String.valueOf(terms[i]);
+        }
+        updateSystemString("dating.project.loan.terms.style", String.join(",", (CharSequence[]) termStrings));
+    }
+
+    /**
+     * @param term 贷款期限周期规格 单位：天
      * @return 推荐年化利率(项目贷款)
      */
-    default BigDecimal getProjectLoanYearRate() {
-        return getSystemString("dating.project.loan.yearRate", BigDecimal.class, new BigDecimal("0.1"));
-    }
-
-    default void updateProjectLoanYearRate(BigDecimal rate) {
-        updateSystemString("dating.project.loan.yearRate", rate);
-    }
-
-    // 这里是设置一个比例,没批准一个 下次就丢失一个
-    @Transactional(readOnly = true)
-    default BigDecimal[] getProjectLoanTermRates(String[] terms) {
-        BigDecimal[] result = new BigDecimal[terms.length];
-        for (int i = 0; i < terms.length; i++) {
-            result[i] = getSystemString("dating.project.loan.term" + terms[i], BigDecimal.class, i == 0 ? BigDecimal.ONE : BigDecimal.ZERO);
+    default BigDecimal getProjectLoanYearRate(int term) {
+        BigDecimal rate = getSystemString("dating.project.loan.yearRate." + term, BigDecimal.class, null);
+        if (rate == null) {
+            switch (term) {
+                case 30:
+                    rate = new BigDecimal("0.07");
+                    break;
+                case 90:
+                    rate = new BigDecimal("0.09");
+                    break;
+                default:
+                    rate = new BigDecimal("0.1");
+            }
         }
-        return result;
+        return rate;
     }
 
-    @Transactional
-    default void updateProjectLoanTermRates(String[] terms, BigDecimal[] rates) {
-        for (int i = 0; i < terms.length; i++) {
-            //没有设置那就是0
-            BigDecimal target;
-            if (rates.length > i) {
-                target = rates[i];
-            } else
-                target = BigDecimal.ZERO;
-            updateSystemString("dating.project.loan.term" + terms[i], target);
+    /**
+     * 更新推荐年化利率
+     *
+     * @param term 贷款期限周期规格 单位：天
+     * @param rate 推荐年化利率(项目贷款)
+     */
+    default void updateProjectLoanYearRate(int term, BigDecimal rate) {
+        updateSystemString("dating.project.loan.yearRate." + term, rate);
+    }
+
+    /**
+     * @param term 贷款期限周期规格 单位：天
+     * @return 批准数量比例 默认20
+     */
+    default int getProjectLoanCountRate(int term) {
+        BigDecimal rate = getSystemString("dating.project.loan.countRate." + term, BigDecimal.class, null);
+        if (rate == null) {
+            switch (term) {
+                case 30:
+                    rate = new BigDecimal("30");
+                    break;
+                case 90:
+                    rate = new BigDecimal("50");
+                    break;
+                default:
+                    rate = new BigDecimal("20");
+            }
         }
+        return rate.intValue();
+    }
+
+    /**
+     * @param term  贷款期限周期规格 单位：天
+     * @param count 批准数量比例
+     */
+    default void updateProjectLoanCountRate(int term, int count) {
+        updateSystemString("dating.project.loan.countRate." + term, new BigDecimal(count));
     }
 
 

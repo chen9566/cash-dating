@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<!--/*@thymesVar id="yearRate" type="java.math.BigDecimal"*/-->
-<!--/*@thymesVar id="loanTermDays" type="java.lang.Integer"*/-->
 <head>
     <meta charset="UTF-8">
     <title>项目贷款</title>
@@ -38,6 +36,10 @@
     <script src="../js/manage.js" th:src="@{/js/manage.js}"></script>
     <style>
         #approveDialog input {
+            color: #5d5d5d;
+        }
+
+        #approveDialog select {
             color: #5d5d5d;
         }
 
@@ -79,10 +81,18 @@
 
         <label for="amount">批准金额<input id="amount" type="number" number="true" min="1" max="200000"
                                        style="width: 200px;"/></label>
-        <label for="termDays">批准期限<input id="termDays" data-origin="180" th:attr="data-origin=${loanTermDays}"
-                                         type="number" number="true" min="1" max="999" style="width: 200px;"/></label>
-        <label for="yearRate">批准年化利率<input id="yearRate" data-origin="0.0003" th:attr="data-origin=${yearRate}"
-                                           type="number" number="true" min="0" max="1" style="width: 200px;"/></label>
+        <label for="termDays">批准期限
+            <select id="termDays">
+                <!--/*@thymesVar id="terms" type="java.lang.Integer[]"*/-->
+                <option th:each="term:${terms}" th:value="${term}" th:text="${term}+'天'" value="30">30天</option>
+                <option th:remove="all" value="90">90天</option>
+                <option th:remove="all" value="180">180天</option>
+            </select>
+        </label>
+        <!--<label for="termDays">批准期限<input id="termDays" data-origin="180" th:attr="data-origin=${loanTermDays}"-->
+        <!--type="number" number="true" min="1" max="999" style="width: 200px;"/></label>-->
+        <label for="yearRate">批准年化利率<input id="yearRate" type="number" number="true" min="0" max="1"
+                                           style="width: 200px;"/></label>
         <label for="commentInput">备注<input id="commentInput" type="text"/></label>
 
         <button class="btn btn-ok">确定</button>
@@ -147,8 +157,8 @@
 ></table>
 
 <script src="../js/manage/projectLoanRequest.js" th:src="@{/js/manage/projectLoanRequest.js}"></script>
-<script>
-
+<script th:inline="javascript">
+    $.yearRates = /*[[${yearRates}]]*/{"30": 0.07, "90": 0.09, "180": 0.1};
 </script>
 
 </body>

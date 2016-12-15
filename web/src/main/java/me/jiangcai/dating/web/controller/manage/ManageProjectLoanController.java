@@ -35,6 +35,7 @@ import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -56,10 +57,27 @@ public class ManageProjectLoanController extends AbstractLoanManage {
     @Autowired
     private ApplicationContext applicationContext;
 
+    @RequestMapping(value = "/manage/projectLoanRequestNextTerm", method = RequestMethod.GET)
+    @Transactional(readOnly = true)
+    @ResponseBody
+    public int nextProjectLoanTerm() {
+        return wealthService.nextProjectLoanTerm();
+    }
+
     @RequestMapping(value = "/manage/projectLoanRequest", method = RequestMethod.GET)
+    @Transactional(readOnly = true)
     public String index(Model model) {
-        model.addAttribute("loanTermDays", wealthService.nextProjectLoanTerm());
-        model.addAttribute("yearRate", systemService.getProjectLoanYearRate());
+//        model.addAttribute("loanTermDays", wealthService.nextProjectLoanTerm());
+//        model.addAttribute("yearRate", systemService.getProjectLoanYearRate());
+        // 这里保存的是一个规格
+        Map<Integer, BigDecimal> yearRates = new HashMap<>();
+        final int[] terms = systemService.getProjectLoanTermsStyle();
+        model.addAttribute("terms", terms);
+        for (int term : terms) {
+            yearRates.put(term, systemService.getProjectLoanYearRate(term));
+        }
+        model.addAttribute("yearRates", yearRates);
+
         return "manage/projectLoanRequest.html";
     }
 

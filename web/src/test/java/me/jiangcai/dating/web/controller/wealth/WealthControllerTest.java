@@ -175,7 +175,7 @@ public class WealthControllerTest extends LoginWebTest {
         // 审批通过这个请求
         final int realTermDays = projectLoanRequest.getApplyTermDays();
         final BigDecimal realAmount = request.getAmount();
-        final BigDecimal realYearRate = getSystemService().getProjectLoanYearRate();
+        final BigDecimal realYearRate = getSystemService().getProjectLoanYearRate(realTermDays);
         wealthService.approveProjectLoanRequest(null, request.getId(), realAmount, realYearRate, realTermDays, "");
         projectLoanRequest = (ProjectLoanRequest) loanRequestRepository.getOne(request.getId());
         assertThat(projectLoanRequest.getTermDays())
