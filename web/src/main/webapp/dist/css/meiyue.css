@@ -1801,7 +1801,7 @@ ul#navlist .list1 {
 .pay-new .t5 {
     color: #F65150;
     line-height: 40px;
-    font-size: 15px;
+    font-size: 16px;
     margin-bottom: 20px
 }
 
@@ -5246,7 +5246,12 @@ ul#navlist .list1 {
     margin-bottom: 20px
 }
 .pay-alipay .t5 img{ width: 15px; margin-left: 8px; margin-top: -2px;}
+.pay-alipay .t6 {
+    color: #F65150;
+    line-height: 40px;
+    font-size: 16px;
 
+}
 .pay-alipay button {
     margin-bottom: 15px;
 }
