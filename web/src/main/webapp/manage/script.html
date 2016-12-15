@@ -57,11 +57,10 @@
         $button.button();
 
         $button.click(function () {
-            $.ajax($.uriPrefix + '/manage/script', {
+            $.ajax($.uriPrefix + '/manage/execScript', {
                 method: 'put',
-                data: {
-                    script: $script.val()
-                },
+                contentType: 'text/plain; charset=UTF-8',
+                data: $script.val(),
                 success: function (r) {
                     result.text(r);
                 }

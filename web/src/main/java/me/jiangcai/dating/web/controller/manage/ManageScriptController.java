@@ -11,6 +11,7 @@ import org.springframework.scripting.support.StandardScriptEvaluator;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -35,7 +36,7 @@ public class ManageScriptController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/manage/execScript")
     @Transactional
-    public ResponseEntity<String> exec(String script) throws UnsupportedEncodingException {
+    public ResponseEntity<String> exec(@RequestBody String script) throws UnsupportedEncodingException {
         String type = "js";// 类型默认是js
         StandardScriptEvaluator scriptEvaluator = new StandardScriptEvaluator(getClass().getClassLoader());
 

@@ -35,8 +35,11 @@ public class ManageScriptControllerTest extends ManageWebTest {
 
     private void runScript(MockHttpSession session, String script) throws Exception {
         String response = mockMvc.perform(putWeixin("/manage/execScript")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE + " ;charset=UTF-8")
-                .param("script", script).session(session))
+//                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE + " ;charset=UTF-8")
+                .contentType(MediaType.TEXT_PLAIN_VALUE + " ;charset=UTF-8")
+//                .param("script", script)
+                .content(script)
+                .session(session))
                 .andReturn().getResponse().getContentAsString();
         System.out.println(response);
     }
