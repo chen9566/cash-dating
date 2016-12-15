@@ -1781,7 +1781,6 @@ ul#navlist .list1 {
     font-size: 36px;
     padding-bottom: 15px;
     line-height: 30px;
-    border-bottom: 1px dashed #dfdfdf
 }
 
 .pay-new .t3 i img {
@@ -4992,7 +4991,7 @@ ul#navlist .list1 {
 .topay .bo-b {
     border-bottom: 1px solid #dfdfdf;
 }
-
+.topay a{ color: #353535; text-decoration: none}
 .back-c {
     background: #fff;
     padding-bottom: 20px

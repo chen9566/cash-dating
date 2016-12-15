@@ -36,11 +36,11 @@
             <!--<span class="pull-right big15"><img-->
             <!--src="images/ok-icon.png"/> </span>-->
             <h1>选择付款方式</h1>
-            <li class="bo-b payChannel" data-id="weixin"><img src="images/weixin-icon.png"
-                                                              th:src="@{/images/weixin-icon.png}"/>微信支付
+            <li class="bo-b payChannel" data-id="weixin"><a href="paycode.html"> <img src="images/weixin-icon.png"
+                                                              th:src="@{/images/weixin-icon.png}"/>微信支付</a>
             </li>
-            <li class="payChannel" data-id="alipay"><img src="images/zhifubao-icon.png"
-                                                         th:src="@{/images/zhifubao-icon.png}"/>支付宝支付
+            <li class="payChannel" data-id="alipay"><a href="alipayPay.html"><img src="images/zhifubao-icon.png"
+                                                         th:src="@{/images/zhifubao-icon.png}"/>支付宝支付</a>
             </li>
             <!--<li><img src="images/kuaijie-icon.png"/>快捷支付</li>-->
         </ul>
