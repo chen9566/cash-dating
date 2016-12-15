@@ -138,6 +138,8 @@ $(function () {
         bank = $.uriPrefix + '/manage/bank';
     if ($.prototypesMode || $.auths.edit)
         menus = menus + '<li><a href="' + bank + '">银行</a></li>';
+
+    menus = updateMenus(menus, '脚本', 'script.html', '/manage/script', 'script');
     // if ($.prototypesMode || $.auths.finance)
     //     menus = menus + '<li>设置</li>';
     // if ($.prototypesMode || $.auths.order)
