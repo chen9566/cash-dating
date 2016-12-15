@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>支付宝收款二维码</title>
     <link rel="stylesheet" href="dist/css/bootstrap.min.css" th:href="@{/dist/css/bootstrap.min.css}">
-    <link rel="stylesheet" href="dist/css/font-awesome.min.css" th:href="@{/dist/css/font-awesome.min.css}">
     <link rel="stylesheet" href="dist/css/meiyue.css" th:href="@{/dist/css/meiyue.css}">
     <script src="dist/js/jquery.js" th:src="@{/dist/js/jquery.js}"></script>
     <script src="dist/js/bootstrap.min.js" th:src="@{/dist/js/bootstrap.min.js}"></script>
@@ -16,14 +15,13 @@
 <body>
 
 <div class="pay-alipay">
-    <p class="t1" th:if="${order.cashOrder}" th:text="${order.owner.username}">呵呵</p>
-    <p class="t2" th:if="${order.cashOrder}"><span th:text="${order.owner.realName}">*春风</span> 向您发起一笔收款申请</p>
-    <p class="t3"><i><img src="images/1.png" th:src="@{/images/1.png}"></i>
-        <span class="nun"
-              th:text="${#numbers.formatDecimal(order.amount,1,'COMMA',2,'POINT')}">123</span>
+    <p class="t1" >*春风</p>
+    <p class="t2" >向您发起一笔收款申请</p>
+    <p class="t3"><i><img src="images/1.png" ></i>
+        <span class="nun">123</span>
     </p>
     <!--src="images/temp2.png" th:src="${qrUrl}"-->
-    <p class="t4"><img name="qrCode" id="qrCode"/></p>
+    <p class="t4"><img src="images/temp2.png"/></p>
     <p class="t5">支付帮助<img src="images/Imported.png"/> </p>
 </div>
 <!--支付帮助说明!-->
@@ -37,25 +35,15 @@
             <!--src="images/ok-icon.png"/> </span>-->
             <h1>选择付款方式</h1>
             <li class="bo-b payChannel" data-id="weixin"><a href="paycode.html"> <img src="images/weixin-icon.png"
-                                                              th:src="@{/images/weixin-icon.png}"/>微信支付</a>
+                                                             />微信支付</a>
             </li>
             <li class="payChannel" data-id="alipay"><a href="alipayPay.html"><img src="images/zhifubao-icon.png"
-                                                         th:src="@{/images/zhifubao-icon.png}"/>支付宝支付</a>
+                                                         />支付宝支付</a>
             </li>
             <!--<li><img src="images/kuaijie-icon.png"/>快捷支付</li>-->
         </ul>
     </div>
 </div>
-
-<script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js" th:remove="all"></script>
-<script wx:js=""></script>
-<script wx:share="${#share.title(order)}|${#share.desc(order)}|${#share.link(order,#request)}|${#share.imageUrl(order)}"></script>
-<script type="text/javascript" th:inline="javascript">
-    $.targetOrderId = /*[[${order.id}]]*/ 'myOrder11';
-</script>
-<script src="mock/all.js" th:src="@{/all.js}"></script>
-<script src="js/pay.js" th:src="@{/js/pay.js}"></script>
-<script src="dist/js/share.js" th:src="@{/dist/js/share.js}"></script>
 <script>
     $(document).ready(function ($) {
 
