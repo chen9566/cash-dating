@@ -194,7 +194,7 @@ public class WealthControllerTest extends LoginWebTest {
         ProjectSuccessPage projectSuccessPage = toSuccessPage(request.getId());
         // 这会儿应该是打不开的………………这个测试无法跑下去
         // 1-9
-        String type = "CT00" + (1 + random.nextInt(9));
+        String type = WealthService.ContractElements.stream().max(new RandomComparator()).orElse(null);
 
         projectSuccessPage.sign(type);
 
