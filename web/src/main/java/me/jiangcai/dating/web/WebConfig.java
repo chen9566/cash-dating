@@ -45,7 +45,7 @@ public class WebConfig {
 //                manager.setPassword(passwordEncoder.encode(BuildIn_Password));
 //                return manager;
 //            }
-            UserDetails userDetails = userRepository.findByOpenId(username);
+            UserDetails userDetails = userRepository.findByMobileNumber(username);
             if (userDetails == null)
                 throw new UsernameNotFoundException("没有找到用户名");
             return userDetails;
@@ -92,6 +92,8 @@ public class WebConfig {
             }
 
             registry
+                    // 密码登录页
+                    .antMatchers("/passwordLogin").permitAll()
                     // 产生二维码
                     .antMatchers("/toQR").permitAll()
                     // 静态展示
@@ -133,9 +135,9 @@ public class WebConfig {
                     .and().csrf().disable()
                     .formLogin()
 //                .failureHandler()
-//                    .loginProcessingUrl("/manage/auth")
+                    .loginProcessingUrl("/passwordAuth")
                     .loginPage("/login")
-                    .failureUrl("/login?type=error")
+                    .failureUrl("/passwordLogin?type=error")
                     .permitAll()
                     .and()
                     .logout().logoutUrl("/logout").permitAll()

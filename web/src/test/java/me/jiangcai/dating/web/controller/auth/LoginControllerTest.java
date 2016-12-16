@@ -6,8 +6,10 @@ import me.jiangcai.dating.entity.AgentInfo;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.ManageStatus;
+import me.jiangcai.dating.page.ManagePasswordPage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.PCLoginPage;
+import me.jiangcai.dating.page.PasswordLoginPage;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.AgentService;
 import me.jiangcai.dating.service.QRCodeService;
@@ -21,6 +23,7 @@ import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDr
 
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -41,12 +44,51 @@ public class LoginControllerTest extends WebTest {
     private UserRepository userRepository;
 
     @Test
+    public void pcPasswordLogin() throws IOException {
+        WebDriver pcDriver = MockMvcHtmlUnitDriverBuilder
+                .mockMvcSetup(mockMvc)
+                .build();
+        User user = pcLoginInto(pcDriver);
+        assertThat(user.getMobileNumber())
+                .isNotEmpty();
+
+        pcDriver.get("http://localhost/manage/password");
+        ManagePasswordPage managePasswordPage = initPage(ManagePasswordPage.class, pcDriver);
+        String password = UUID.randomUUID().toString();
+        managePasswordPage.submitPassword(password);
+
+        pcDriver = MockMvcHtmlUnitDriverBuilder
+                .mockMvcSetup(mockMvc)
+                .build();
+
+        pcDriver.get("http://localhost/manage");
+
+        PCLoginPage page = initPage(PCLoginPage.class, pcDriver);
+
+        PasswordLoginPage passwordLoginPage = page.password();
+//        passwordLoginPage.printThisPage();
+        passwordLoginPage.submit(user.getMobileNumber(), password);
+        System.out.println(pcDriver.getCurrentUrl());
+        System.out.println(pcDriver.getPageSource());
+    }
+
+    @Test
     public void pcLogin() throws IOException, InterruptedException {
         // 需要一个新的driver实例
         WebDriver pcDriver = MockMvcHtmlUnitDriverBuilder
                 .mockMvcSetup(mockMvc)
                 .build();
 
+        pcLoginInto(pcDriver);
+//        StartOrderPage page = PageFactory.initElements(pcDriver, StartOrderPage.class);
+//        // 应该没有管理权 所以是这个
+//        page.validatePage();
+
+//        driver.get("http://localhost/start");
+//        System.out.println(driver.getPageSource());
+    }
+
+    private User pcLoginInto(WebDriver pcDriver) throws IOException {
         pcDriver.get("http://localhost/");
 
 
@@ -71,6 +113,7 @@ public class LoginControllerTest extends WebTest {
 
 
         String url = qrCodeService.scanImage(loginPage.codeImage());
+
 
         // 好了 一会儿让我们的
         User user = helloNewUser(url, null, true);
@@ -104,12 +147,8 @@ public class LoginControllerTest extends WebTest {
                 }
             }
         });
-//        StartOrderPage page = PageFactory.initElements(pcDriver, StartOrderPage.class);
-//        // 应该没有管理权 所以是这个
-//        page.validatePage();
 
-//        driver.get("http://localhost/start");
-//        System.out.println(driver.getPageSource());
+        return user;
     }
 
     @Test

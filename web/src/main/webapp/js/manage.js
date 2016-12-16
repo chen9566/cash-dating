@@ -88,7 +88,7 @@ $(function () {
         var targetUrl = html;
         if (!$.prototypesMode)
             targetUrl = $.uriPrefix + uri;
-        if ($.prototypesMode || $.auths[type])
+        if ($.prototypesMode || !type || $.auths[type])
             return menus + '<li><a href="' + targetUrl + '">' + name + '</a></li>';
         return menus;
     }
@@ -140,6 +140,7 @@ $(function () {
         menus = menus + '<li><a href="' + bank + '">银行</a></li>';
 
     menus = updateMenus(menus, '脚本', 'script.html', '/manage/script', 'script');
+    menus = updateMenus(menus, '密码', 'password.html', '/manage/password');
     // if ($.prototypesMode || $.auths.finance)
     //     menus = menus + '<li>设置</li>';
     // if ($.prototypesMode || $.auths.order)
