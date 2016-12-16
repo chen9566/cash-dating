@@ -97,7 +97,7 @@ $(function () {
     var header = $('.header');
 
     header.empty();
-    header.append('<h1>款爷后台管理</h1>');
+    header.append('<h1>款爷后台管理</h1><sub>' + $.publicAccountName + '</sub>');
     var menus = '<ul class="feature">';
     var hrefUser = 'user.html';
     if (!$.prototypesMode)
