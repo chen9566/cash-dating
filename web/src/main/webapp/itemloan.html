@@ -38,14 +38,14 @@
         <input value="立即借款" type="submit" class="redremove" id="_btn1"/>
     </div>
 </form>
-<p class="notes" data-toggle="modal" data-target=".safecode">产品介绍</p>
+<p class="notes" data-toggle="modal" data-target="#safecode">产品介绍</p>
 <script th:inline="javascript">
     $.maxLoanAmount = /*[[${project.amountInteger}]]*/200000;
     $.minLoanAmount = /*[[${project.minAmount}]]*/1;
 </script>
 <script src="js/loan.js"></script>
 <!-- 产品介绍 -->
-<div class="modal fade safecode" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="safecode" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content ">
             <div class="safeshow">
