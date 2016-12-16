@@ -115,4 +115,13 @@ public interface UserService {
 
     @Transactional(readOnly = true)
     User by(Long id);
+
+    /**
+     * 更新密码
+     *
+     * @param user        用户
+     * @param rawPassword 明文密码
+     */
+    @Transactional
+    void updatePassword(User user, String rawPassword);
 }

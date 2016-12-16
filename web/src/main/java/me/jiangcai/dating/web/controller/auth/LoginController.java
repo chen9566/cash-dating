@@ -50,6 +50,12 @@ public class LoginController {
     @Autowired
     private SystemService systemService;
 
+    // 此处执行密码登录
+    @RequestMapping(method = RequestMethod.GET, value = "/passwordLogin")
+    public String passwordLogin() {
+        return "password.html";
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/justLogout")
     public String logout(Model model) {
         // 已登出页面

@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -47,14 +48,19 @@ public class UserServiceImpl implements UserService {
             = new HttpSessionSecurityContextRepository();
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private LoginTokenRepository loginTokenRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private VerificationCodeService verificationCodeService;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserAgentInfoRepository userAgentInfoRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public boolean mobileRequired(String openId) {
@@ -221,6 +227,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User by(Long id) {
         return userRepository.getOne(id);
+    }
+
+    @Override
+    public void updatePassword(User user, String rawPassword) {
+        user.setPassword(passwordEncoder.encode(rawPassword));
     }
 
 }

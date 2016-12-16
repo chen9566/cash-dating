@@ -13,6 +13,7 @@
 <body>
 
 <script th:inline="javascript" th:fragment="code">
+    $.publicAccountName = /*[[${@systemService.publicAccountName}]]*/ '小名儿';
     $.auths = {};
     $.auths.script = /*[[${#authorization.expression('hasAnyRole(''ROOT'',''SCRIPT'')')}]]*/ false;
     $.auths.agent = /*[[${#authorization.expression('hasAnyRole(''ROOT'',''AGENT'')')}]]*/ false;
