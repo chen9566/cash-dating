@@ -124,7 +124,6 @@ ul, li {
 
 .form-register input[type="text"], .form-register input[type="password"], .form-register input[type="tel"] {
     font-size: 15px;
-    height: auto;
     width: 95%;
     outline: none;
     border: 0;
@@ -199,13 +198,6 @@ input::-webkit-inner-spin-button {
 
 .form-register .service {
     margin: 20px 0 30px 20px
-}
-
-.form-register .service checkbox {
-    width: 25px;
-    height: 25px;
-    background: #fff;
-    border: 1px solid #dfdfdf
 }
 
 .form-register .iphone img, .form-register .passwrod img {
@@ -301,34 +293,7 @@ input::-webkit-inner-spin-button {
     border-right: 0;
 }
 
-/* screening */
-div.screening {
-    width: 100%;
-    overflow: hidden;
-    background: #fff;
-    position: fixed;
-    z-index: 4;
-    top: 48px;
 
-}
-
-div.screening > ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    border-bottom: solid 1px #dfdfdf;
-    border-top: solid 1px #dfdfdf;
-    overflow: hidden;
-}
-
-div.screening > ul > li {
-    float: left;
-    width: 33.3%;
-    text-align: center;
-    line-height: 44px;
-    border-left: solid 1px #d3d3d3;
-    background: url("on_1.png") no-repeat 85% center;
-}
 
 /* grade */
 .grade-eject, .Category-eject, .Sort-eject {
@@ -475,95 +440,6 @@ div.screening > ul > li {
 
 .taolist .mr {
     margin-right: 2%
-}
-
-/*footer*/
-.footer {
-    position: fixed;
-    bottom: -18px;
-    left: 0;
-    right: 0;
-    margin: auto;
-    z-index: 10;
-}
-
-.footer_menu {
-    background: #f8f8f8;
-    border-top: 1px solid #c3c3c6;
-    display: block;
-    width: 100%;
-    height: 48px;
-    margin: 0;
-    padding: 0;
-}
-
-.footer .footer_menu > li {
-    position: relative;
-    text-align: center;
-    display: inline-block;
-    width: 33.3%;
-    float: left;
-}
-
-.footer_menu li:first-child {
-    background: none;
-}
-
-.footer .footer_menu > li > a {
-    height: 48px;
-    margin-right: 1px;
-    display: block;
-    text-align: center;
-    color: #FFF;
-    text-decoration: none;
-    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
-}
-
-.footer .footer_menu > li.home {
-    width: 33.4%;
-}
-
-.footer .footer_menu > li.home a {
-    height: 66px;
-    width: 66px;
-    margin: auto;
-    border-radius: 60px;
-    position: relative;
-    top: -22px;
-    left: 0;
-    background: url(home_icon.png) no-repeat center center;
-    background-size: 100% 100%;
-}
-
-.footer .footer_menu > li > a label {
-    color: #7e7e80;
-    overflow: hidden;
-    margin: 0 0 0 0;
-    font-size: 12px;
-    display: block !important;
-    line-height: 18px;
-    text-align: center;
-}
-
-.footer .footer_menu > li > a img {
-    padding: 3px 0 0 0;
-    height: 24px;
-    width: 24px;
-    line-height: 48px;
-    vertical-align: middle;
-}
-
-.footer li:first-child a {
-    display: block;
-}
-
-.footer_menu li:last-of-type a {
-    background: none;
-    overflow: hidden;
-}
-
-.footer .footer_menu > li > a:hover, .footer .footer_menu > li > a:active {
-    color: #f65150
 }
 
 /*产品详情*/
@@ -4427,6 +4303,9 @@ ul#navlist .list1 {
     width: 100%;
     text-align: center;
     bottom: 15px;
+    height: 30px;
+    display: block;
+    z-index: 999;
 }
 
 .notes a {
