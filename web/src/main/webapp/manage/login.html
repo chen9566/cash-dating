@@ -13,8 +13,9 @@
 </head>
 <body>
 <h1 class="center">请使用微信扫一扫已完成登录</h1>
+<h2 class="center"><a href="../password.html" th:href="@{/passwordLogin}">太懒的话可以点此登录</a></h2>
 <div class="center">
-    <img src="../images/temp.jpg" name="qrCode" th:src="@{/loginToken/{id}(id=${token.id})}" title="登录二维码" width="466"
+    <img src="../images/temp2.png" name="qrCode" th:src="@{/loginToken/{id}(id=${token.id})}" title="登录二维码" width="466"
          height="446"/>
 </div>
 <!--<script src="../mock/all.js" th:src="@{/all.js}"></script>-->

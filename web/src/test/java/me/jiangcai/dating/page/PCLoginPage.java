@@ -10,6 +10,7 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * manage/login.html
  * @author CJ
  */
 public class PCLoginPage extends AbstractPage {
@@ -28,6 +29,11 @@ public class PCLoginPage extends AbstractPage {
 
         qrCodeImage = webDriver.findElement(By.name("qrCode"));
 
+    }
+
+    public PasswordLoginPage password() {
+        webDriver.findElement(By.tagName("h2")).findElement(By.tagName("a")).click();
+        return initPage(PasswordLoginPage.class);
     }
 
     public BufferedImage codeImage() throws IOException {
