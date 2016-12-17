@@ -4299,7 +4299,7 @@ ul#navlist .list1 {
 
 .notes {
     color: #5F7593;
-    position: absolute;
+    position: fixed;
     width: 100%;
     text-align: center;
     bottom: 15px;

@@ -25,8 +25,14 @@
             <p class="jk c33"><img src="images/1.png"><input placeholder="0.00" type="tel" id="_content" name="amount">
             </p>
             <ul>
-                <li class="bo-b" th:name="termDays">借款期限
-                    <span class="pull-right c33" th:text="${loanTermDays+'天'}">30天</span>
+                <li class="bo-b" th:name="termDays">借款期限<span class="pull-right bright-w"><img src="images/blackright-r.png"></span>
+                    <!--<span class="pull-right c33" th:text="${loanTermDays+'天'}">30天</span>-->
+                    <select name="period" class="pull-right" style="margin-top: 12px;">
+                        <option value="30">30天年化7%
+                        </option>
+                        <option value="90">90天年化9%</option>
+                        <option value="180">180天年化10%</option>
+                    </select>
                 </li>
                 <li th:name="limitYears"><img src="images/miicon.png"/> <span
                         th:text="'借款授信期限'+${creditLimitYears}+'年'">借款授信期限2年</span></li>
@@ -38,7 +44,7 @@
         <input value="立即借款" type="submit" class="redremove" id="_btn1"/>
     </div>
 </form>
-<p class="notes" data-toggle="modal" data-target="#safecode">产品介绍</p>
+<p class="notes" ><a href="#"data-toggle="modal" data-target="#safecode" >产品介绍</a></p>
 <script th:inline="javascript">
     $.maxLoanAmount = /*[[${project.amountInteger}]]*/200000;
     $.minLoanAmount = /*[[${project.minAmount}]]*/1;
