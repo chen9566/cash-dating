@@ -14,7 +14,7 @@ public class ProjectLoan extends Loan {
         setProductName("网商宝");
         setAmount("20万");
         setCondition("");
-        setIntroduce("12个月还本付息9%");
+        setIntroduce("个人网店经营性借款");
         setTerm(new String[]{"30", "60", "90", "180", "365"});
     }
 

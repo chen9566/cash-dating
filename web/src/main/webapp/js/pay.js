@@ -39,6 +39,11 @@ $(function () {
 
     $('.payChannel').click(function () {
         var name = $(this).attr('data-id');
+        if (name == 'alipay') {
+            document.title = '支付宝支付';
+        } else {
+            document.title = '微信支付';
+        }
         // if (name == 'alipay') {
         //     window.location.href = $('#goAlipay').attr('href');
         //     return;
