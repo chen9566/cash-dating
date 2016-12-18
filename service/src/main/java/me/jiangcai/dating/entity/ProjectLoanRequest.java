@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import me.jiangcai.dating.event.Notification;
 import me.jiangcai.dating.notify.NotifyType;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -50,11 +51,12 @@ public class ProjectLoanRequest extends LoanRequest {
     }
 
     public Notification toRejectNotification() {
+        String comment = StringUtils.isEmpty(getComment()) ? "拒绝" : getComment();
         return new Notification(getLoanData().getOwner(), NotifyType.projectLoanRejected, null, getId()
                 , getLoanData().getName()
                 , "项目贷款"
                 , applyAmount
-                , "拒绝"
+                , comment
         );
     }
 
