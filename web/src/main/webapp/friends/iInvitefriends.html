@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>邀请好友</title>
+    <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/friends.css">
+    <script src="../dist/js/jquery.js"></script>
+</head>
+<body>
+<div class="rate">
+    <p class="f14">当前消费费率(%)</p>
+    <h1>0.60</h1>
+</div>
+<div class="code-i">
+    <div class="ewmimg">
+        <p class="f16">邀请码: iFCxNb5</p>
+        <p><img src="images/temp2.png"/></p>
+    </div>
+    <p class="f15">成功邀请<span class="red">5位好友</span>注册消费, 可享受<span class="red">0.30%</span><br>的消费利率</p>
+    <p>
+        <button type="submit" class="btn btn-danger btn-lg btn-block share">快速分享给好友</button>
+    </p>
+    <p class="f14">成功邀请好友：<span class="r16">1</span>人</p>
+    <ul>
+        <li class="ntxt ctxt">第1人<img src="images/idimg.png"/>昵称</li>
+        <li class="ntxt">第2人<img src="images/none.png"/></li>
+        <li class="ntxt">第3人<img src="images/none.png"/></li>
+        <li class="ntxt">第4人<img src="images/none.png"/></li>
+        <li class="ntxt">第5人<img src="images/none.png"/></li>
+        <span class="fr"><img src="images/right-icon.png"/></span>
+    </ul>
+
+</div>
+<div class="sharebg">
+    <p><img src="images/sharebgok.png"/></p>
+</div>
+<script>
+    $(document).ready(function ($) {
+
+        $(".share").click(function (event) {
+            $(".sharebg").css({"display": "block"});
+        });
+    });
+</script>
+</body>
+</html>
