@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cash-dating</artifactId>
         <groupId>me.jiangcai.dating</groupId>
-        <version>1.9.3-SNAPSHOT</version>
+        <version>1.9.4-SNAPSHOT</version>
     </parent>
 
     <artifactId>web</artifactId>
