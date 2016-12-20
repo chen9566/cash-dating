@@ -114,6 +114,8 @@ $(function () {
     if ($.prototypesMode || $.auths.order)
         menus = menus + '<li><a href="' + hrefOrder + '">订单查询</a></li>';
 
+    menus = updateMenus(menus, '台卡管理', 'pay123.html', '/manage/pay123', 'order');
+
     var hrefLoanRequest = 'loanRequest.html';
     if (!$.prototypesMode)
         hrefLoanRequest = $.uriPrefix + '/manage/loanRequest';

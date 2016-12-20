@@ -3,6 +3,9 @@ package me.jiangcai.dating.service.impl;
 import me.jiangcai.dating.CashFilter;
 import me.jiangcai.dating.entity.LoginToken;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.UserPaymentExtend;
+import me.jiangcai.dating.entity.supplier.Pay123Card;
+import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.event.Notification;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.CashWeixinUserDetail;
@@ -11,6 +14,7 @@ import me.jiangcai.dating.notify.NotifyType;
 import me.jiangcai.dating.repository.LoginTokenRepository;
 import me.jiangcai.dating.repository.UserAgentInfoRepository;
 import me.jiangcai.dating.repository.UserRepository;
+import me.jiangcai.dating.repository.supplier.Pay123CardRepository;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.service.VerificationCodeService;
 import me.jiangcai.dating.util.WeixinAuthentication;
@@ -20,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,6 +40,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Random;
+import java.util.concurrent.ScheduledFuture;
+import java.util.stream.Stream;
 
 /**
  * @author CJ
@@ -61,6 +69,12 @@ public class UserServiceImpl implements UserService {
     private UserAgentInfoRepository userAgentInfoRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    private ScheduledFuture<?> lastScheduledFuture;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private Pay123CardRepository pay123CardRepository;
+    @Autowired
+    private TaskScheduler taskScheduler;
 
     @Override
     public boolean mobileRequired(String openId) {
@@ -232,6 +246,43 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updatePassword(User user, String rawPassword) {
         user.setPassword(passwordEncoder.encode(rawPassword));
+    }
+
+    private Stream<User> allWaiters() {
+        return userRepository.findByEnabledTrueAndManageStatus(ManageStatus.waiter).stream()
+                .filter(user -> user.getOpenId() != null);
+    }
+
+    @Override
+    public Pay123Card updatePay123Card(User user) {
+        if (user.getUserPaymentExtend() != null && user.getUserPaymentExtend().getPay123Card() != null)
+            return user.getUserPaymentExtend().getPay123Card();
+        if (user.getUserPaymentExtend() == null) {
+            user.setUserPaymentExtend(new UserPaymentExtend());
+        }
+        user.getUserPaymentExtend().setPay123Card(pay123CardRepository.findAllUnused().stream()
+                .max((o1, o2) -> new Random().nextInt()).orElse(null));
+        if (user.getUserPaymentExtend().getPay123Card() == null) {
+            try {
+                allWaiters().forEach(waiter -> {
+                    Notification notification = new Notification(waiter, NotifyType.notEnoughPay123, null, "notEnoughPay123");
+                    applicationEventPublisher.publishEvent(notification);
+                });
+            } catch (Throwable ignored) {
+            }
+            return null;
+        }
+
+        user.getUserPaymentExtend().setPay123AssignTime(LocalDateTime.now());
+        // 5分钟后提醒
+        if (lastScheduledFuture == null || lastScheduledFuture.isDone())
+            lastScheduledFuture = taskScheduler.scheduleWithFixedDelay(()
+                    -> allWaiters().forEach(waiter
+                    -> {
+                Notification notification = new Notification(waiter, NotifyType.pay123CheckRequired, null, "pay123CheckRequired");
+                applicationEventPublisher.publishEvent(notification);
+            }), 5 * 60 * 1000);
+        return user.getUserPaymentExtend().getPay123Card();
     }
 
 }

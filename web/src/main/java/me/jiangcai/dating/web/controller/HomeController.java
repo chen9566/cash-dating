@@ -2,6 +2,7 @@ package me.jiangcai.dating.web.controller;
 
 import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.supplier.Pay123Card;
 import me.jiangcai.dating.exception.ArbitrageBindFailedException;
 import me.jiangcai.dating.exception.ArbitrageBindRequireException;
 import me.jiangcai.dating.exception.ArbitrageBindingException;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.security.SignatureException;
 import java.util.ArrayList;
 
@@ -42,6 +44,14 @@ public class HomeController {
     public String index(@AuthenticationPrincipal User user, Model model, @RequestParam(required = false) Long cardId)
             throws IOException, SignatureException, ArbitrageBindFailedException, ArbitrageBindingException, ArbitrageBindRequireException {
         user = userService.byOpenId(user.getOpenId());
+
+        if (systemService.isEnablePay123()) {
+            Pay123Card card = userService.updatePay123Card(user);
+            if (card != null) {
+                model.addAttribute("qrUrl", "/toQR?text=" + URLEncoder.encode(card.getQrUrl(), "UTF-8"));
+                return "paycode123.html";
+            }
+        }
 
         // 虽然我们无法预测用户必然使用微信,但是也就差不多吧
         final ArbitrageChannel channel = systemService.arbitrageChannel(PayChannel.weixin);

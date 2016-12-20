@@ -205,6 +205,21 @@ public interface SystemService {
         updateSystemString("dating.project.loan.countRate." + term, new BigDecimal(count));
     }
 
+    /**
+     * @return 是否启用pay123
+     */
+    default boolean isEnablePay123() {
+        return getSystemString("dating.pay123.enable", BigDecimal.class, BigDecimal.ZERO).intValue() > 0;
+    }
+
+    /**
+     * 更新pay123状态
+     *
+     * @param enabled 新状态
+     */
+    default void updateEnablePay123(boolean enabled) {
+        updateSystemString("dating.pay123.enable", enabled ? BigDecimal.ONE : BigDecimal.ZERO);
+    }
 
 //    double
 }

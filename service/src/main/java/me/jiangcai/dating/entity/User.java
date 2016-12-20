@@ -126,6 +126,10 @@ public class User implements WeixinUser, ProfitSplit, UserDetails, Locker {
     @PrimaryKeyJoinColumn
     private UserAgentInfo myAgentInfo;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private UserPaymentExtend userPaymentExtend;
+
     // 微信信息
     @Column(length = 32)
     private String openId;

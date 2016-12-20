@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="qrUrl" type="java.lang.String"*/-->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>收款二维码</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css" th:href="@{/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="dist/css/font-awesome.min.css" th:href="@{/dist/css/font-awesome.min.css}">
+    <link rel="stylesheet" href="dist/css/meiyue.css" th:href="@{/dist/css/meiyue.css}">
+    <script src="dist/js/jquery.js" th:src="@{/dist/js/jquery.js}"></script>
+    <script src="dist/js/bootstrap.min.js" th:src="@{/dist/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+<div class="pay-new">
+    <p class="t4"><img name="qrCode" id="qrCode" src="images/temp2.png" th:src="@{${qrUrl}}"/></p>
+    <p class="t5" style="display: block;">长按扫码支付或者分享给他人</p>
+</div>
+
+<script src="mock/all.js" th:src="@{/all.js}"></script>
+<script src="dist/js/share.js" th:src="@{/dist/js/share.js}"></script>
+</body>
+</html>

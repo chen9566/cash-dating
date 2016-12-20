@@ -2,6 +2,7 @@ package me.jiangcai.dating.service;
 
 import me.jiangcai.dating.entity.LoginToken;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.supplier.Pay123Card;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import org.springframework.transaction.annotation.Transactional;
@@ -124,4 +125,13 @@ public interface UserService {
      */
     @Transactional
     void updatePassword(User user, String rawPassword);
+
+    /**
+     * 检查这个用户的卡,如果用户尚未持有则将分配一个给他,并且在5分钟后提示客服检查新的卡
+     *
+     * @param user
+     * @return 新配到的卡, null 如果可用的台卡不足;需要马上发送消息给客服
+     */
+    @Transactional
+    Pay123Card updatePay123Card(User user);
 }

@@ -40,6 +40,22 @@ public abstract class AbstractPage extends me.jiangcai.lib.test.page.AbstractPag
     }
 
     /**
+     * 你懂的
+     *
+     * @param element
+     * @return
+     * @throws IOException
+     */
+    public static BufferedImage toImage(WebElement element) throws IOException {
+        try {
+            HtmlImage image = (HtmlImage) elementField.get(element);
+            return image.getImageReader().read(0);
+        } catch (IllegalAccessException e) {
+            throw new InternalError("炸!,版本更新了?", e);
+        }
+    }
+
+    /**
      * 模拟微信支付
      *
      * @param orderId 我方订单号
@@ -61,23 +77,6 @@ public abstract class AbstractPage extends me.jiangcai.lib.test.page.AbstractPag
 
     protected void assertAlert(String text) {
     }
-
-    /**
-     * 你懂的
-     *
-     * @param element
-     * @return
-     * @throws IOException
-     */
-    protected BufferedImage toImage(WebElement element) throws IOException {
-        try {
-            HtmlImage image = (HtmlImage) elementField.get(element);
-            return image.getImageReader().read(0);
-        } catch (IllegalAccessException e) {
-            throw new InternalError("炸!,版本更新了?", e);
-        }
-    }
-
 
     public void inputSelect(WebElement formElement, String inputName, String label) {
         Predicate<String> predicate = label::equals;

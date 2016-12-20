@@ -53,7 +53,7 @@ public enum NotifyType {
             , new NotifyParameter("业务名称", String.class)
             , new NotifyParameter("申请金额", Number.class)
             , new NotifyParameter("审核状态", String.class)
-    );
+    ), notEnoughPay123("OPENTM208008253", "无货提醒", "台卡不足", "台卡不足以供用户使用", 0), pay123CheckRequired("OPENTM401916771", "商品审核提醒", "用户审核提醒", "当用户分配到一个新的台卡,则会提醒客服处理", 0);
 
     private final String recommendShortId;
     private final String recommendTemplateTitle;

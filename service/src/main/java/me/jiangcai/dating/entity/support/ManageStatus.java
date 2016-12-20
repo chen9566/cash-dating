@@ -65,7 +65,7 @@ public enum ManageStatus {
                 list.addAll(Arrays.asList(Role_User_Value, Role_Edit_Value, Role_Agent_Value));
                 break;
             case waiter:
-                list.addAll(Collections.singletonList((Role_Order_Value)));
+                list.addAll(Arrays.asList(Role_Order_Value, Role_Project_Loan_Value));
                 break;
             case financial:
                 list.addAll(Arrays.asList(Role_Finance_Value, Role_Loan_Value, Role_Project_Loan_Value));

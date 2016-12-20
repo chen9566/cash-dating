@@ -32,6 +32,14 @@ public class SystemServiceTest extends ServiceBaseTest {
 
     @Test
     public void wealth() {
+        boolean pay123 = random.nextBoolean();
+        systemService.updateEnablePay123(pay123);
+        assertThat(systemService.isEnablePay123())
+                .isEqualTo(pay123);
+
+        systemService.updateEnablePay123(false);
+
+
         int year = Math.abs(random.nextInt());
         systemService.updateProjectLoanCreditLimit(year);
         assertThat(systemService.getProjectLoanCreditLimit())
