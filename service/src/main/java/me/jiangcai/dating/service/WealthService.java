@@ -36,8 +36,8 @@ public interface WealthService {
             "CT004",
             "CT005",
             "CT006",
-            "CT007",
-            "CT008"
+            "CT007"
+//            "CT008"
 //            "CT009"
 //            ,
 //            "CT0010",
