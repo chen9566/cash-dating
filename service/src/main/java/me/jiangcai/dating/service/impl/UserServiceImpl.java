@@ -254,11 +254,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pay123Card updatePay123Card(User user) {
+    public Pay123Card updatePay123Card(String openId) {
+        User user = byOpenId(openId);
         if (user.getUserPaymentExtend() != null && user.getUserPaymentExtend().getPay123Card() != null)
             return user.getUserPaymentExtend().getPay123Card();
         if (user.getUserPaymentExtend() == null) {
             user.setUserPaymentExtend(new UserPaymentExtend());
+            user.getUserPaymentExtend().setId(user.getId());
         }
         user.getUserPaymentExtend().setPay123Card(pay123CardRepository.findAllUnused().stream()
                 .max((o1, o2) -> new Random().nextInt()).orElse(null));
@@ -282,6 +284,7 @@ public class UserServiceImpl implements UserService {
                 Notification notification = new Notification(waiter, NotifyType.pay123CheckRequired, null, "pay123CheckRequired");
                 applicationEventPublisher.publishEvent(notification);
             }), 5 * 60 * 1000);
+
         return user.getUserPaymentExtend().getPay123Card();
     }
 

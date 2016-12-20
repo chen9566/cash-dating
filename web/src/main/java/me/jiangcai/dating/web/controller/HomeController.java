@@ -46,7 +46,7 @@ public class HomeController {
         user = userService.byOpenId(user.getOpenId());
 
         if (systemService.isEnablePay123()) {
-            Pay123Card card = userService.updatePay123Card(user);
+            Pay123Card card = userService.updatePay123Card(user.getOpenId());
             if (card != null) {
                 model.addAttribute("qrUrl", "/toQR?text=" + URLEncoder.encode(card.getQrUrl(), "UTF-8"));
                 return "paycode123.html";

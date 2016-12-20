@@ -11,10 +11,10 @@ import java.util.List;
  */
 public interface Pay123CardRepository extends JpaRepository<Pay123Card, String> {
 
-    @Query("select card from Pay123Card as card where card not in (select e.pay123Card from UserPaymentExtend as e)")
+    @Query("select card from Pay123Card as card where card not in (select e.pay123Card from UserPaymentExtend as e where e.pay123Card is not null)")
     List<Pay123Card> findAllUnused();
 
-    @Query("select count(card) from Pay123Card as card where card not in (select e.pay123Card from UserPaymentExtend as e)")
+    @Query("select count(card) from Pay123Card as card where card not in (select e.pay123Card from UserPaymentExtend as e where e.pay123Card is not null)")
     long countAllUnused();
 
     Pay123Card findByQrUrl(String url);
