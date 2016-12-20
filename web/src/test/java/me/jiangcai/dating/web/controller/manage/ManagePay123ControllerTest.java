@@ -2,9 +2,9 @@ package me.jiangcai.dating.web.controller.manage;
 
 import me.jiangcai.dating.AsManage;
 import me.jiangcai.dating.ManageWebTest;
+import me.jiangcai.dating.entity.UserPaymentExtend;
 import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.page.AbstractPage;
-import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.repository.supplier.Pay123CardRepository;
 import me.jiangcai.dating.service.QRCodeService;
 import org.junit.Test;
@@ -64,7 +64,7 @@ public class ManagePay123ControllerTest extends ManageWebTest {
 //            WebDriver pcDriver = MockMvcHtmlUnitDriverBuilder
 //                    .mockMvcSetup(mockMvc)
 //                    .build();
-            StartOrderPage orderPage = startOrderPage();
+            startOrderPage();
 //            orderPage.printThisPage();
 
             MockHttpSession session = mvcLogin();
@@ -74,17 +74,34 @@ public class ManagePay123ControllerTest extends ManageWebTest {
                     .session(session))
                     .andExpect(status().isFound());
 
+            long old = pay123CardRepository.countAllUnused();
+
             try {
-                orderPage = startOrderPage();
-                orderPage.printThisPage();
+                startOrderPage();
             } catch (Throwable ignored) {
             }
+            System.out.println(driver.getPageSource());
             BufferedImage image = AbstractPage.toImage(driver.findElement(By.id("qrCode")));
             // 解析出来的结果应该是仓库里的一个值
             String url = qrCodeService.scanImage(image);
 
             assertThat(pay123CardRepository.findByQrUrl(url))
                     .isNotNull();
+            // 可用卡数量应该减少1
+            assertThat(pay123CardRepository.countAllUnused())
+                    .isEqualTo(old - 1);
+
+            assertThat(currentUser().getUserPaymentExtend())
+                    .isNotNull();
+
+            UserPaymentExtend extend = currentUser().getUserPaymentExtend();
+            assertThat(extend.getPay123AssignTime())
+                    .isNotNull();
+            assertThat(extend.getPay123Card())
+                    .isNotNull();
+            assertThat(extend.getPay123Card().getId())
+                    .isNotNull();
+            // 当前用户 应该标记为卡扩展
         } finally {
             getSystemService().updateEnablePay123(false);
         }

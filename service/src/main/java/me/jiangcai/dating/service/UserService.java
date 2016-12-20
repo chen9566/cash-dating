@@ -129,9 +129,9 @@ public interface UserService {
     /**
      * 检查这个用户的卡,如果用户尚未持有则将分配一个给他,并且在5分钟后提示客服检查新的卡
      *
-     * @param user
+     * @param openId
      * @return 新配到的卡, null 如果可用的台卡不足;需要马上发送消息给客服
      */
     @Transactional
-    Pay123Card updatePay123Card(User user);
+    Pay123Card updatePay123Card(String openId);
 }
