@@ -5,11 +5,15 @@ import lombok.Setter;
 import lombok.ToString;
 import me.jiangcai.dating.event.Notification;
 import me.jiangcai.dating.notify.NotifyType;
+import me.jiangcai.dating.service.WealthService;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.util.Map;
 
@@ -41,6 +45,27 @@ public class ProjectLoanRequest extends LoanRequest {
     //再加入 年化利率
     @Column(scale = 2, precision = 20)
     private BigDecimal yearRate;
+
+    /**
+     * @param builder CriteriaBuilder
+     * @param root    root
+     * @return 判断已经完成签章
+     */
+    public static Predicate HasSignedPredicate(CriteriaBuilder builder, Root<?> root) {
+//        Subquery subquery;
+//        builder.sub
+        return builder.greaterThanOrEqualTo(builder.size(root.get("contracts")), WealthService.ContractElements.size());
+//        ArrayList<Predicate> predicateArrayList = new ArrayList<>(WealthService.ContractElements.size());
+////        builder.keys()
+//        Expression<Set<String>> cs = root.get("contracts");
+//        for (String c : WealthService.ContractElements) {
+////            MapJoin<ProjectLoanRequest, String, String> map = root.joinMap("contracts", JoinType.LEFT);
+////            map = builder.treat(map, String.class);
+////            predicateArrayList.add(builder.and(builder.equal(map.key(), c), builder.isNotNull(map.value())));
+//            predicateArrayList.add(builder.isMember(c, cs));
+//        }
+//        return builder.and(predicateArrayList.toArray(new Predicate[predicateArrayList.size()]));
+    }
 
     /**
      * @return 到期还款

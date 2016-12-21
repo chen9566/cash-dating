@@ -27,7 +27,8 @@
       "createdTime": "2016-10-31",
       "processStatus": "处理中",
       "processTime": "2016-10-31",
-      "comment": "哈"
+      "comment": "哈",
+      "signed": false
     },
     {
       "id": 2,
@@ -55,7 +56,8 @@
       "createdTime": "2016-10-31",
       "processStatus": "处理中",
       "processTime": "2016-10-31",
-      "comment": "哈"
+      "comment": "哈",
+      "signed": false
     },
     {
       "id": 3,
@@ -83,7 +85,8 @@
       "createdTime": "2016-10-31",
       "processStatus": "等待供应商",
       "processTime": "2016-10-31",
-      "comment": "哈"
+      "comment": "哈",
+      "signed": false
     },
     {
       "id": 66,
@@ -111,7 +114,8 @@
       "createdTime": "2016-10-31",
       "processStatus": "签章和其他",
       "processTime": "2016-10-31",
-      "comment": "哈"
+      "comment": "哈",
+      "signed": true
     }
   ]
 }

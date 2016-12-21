@@ -155,7 +155,9 @@ public class ManageProjectLoanController extends AbstractLoanManage {
         return dataService.data(user, search, sort, order, offset, limit, ProjectLoanRequest.class, fieldList()
                 , (user1, criteriaBuilder, root)
                         -> criteriaBuilder.and(criteriaBuilder.equal(root.get("processStatus"), LoanRequestStatus.contract)
-                        , criteriaBuilder.lessThan(criteriaBuilder.size(root.get("contracts")), WealthService.ContractElements.size())));
+//                        , criteriaBuilder.lessThan(criteriaBuilder.size(root.get("contracts")), WealthService.ContractElements.size())
+                        , ProjectLoanRequest.HasSignedPredicate(criteriaBuilder, root).not()
+                ));
     }
 
     // 签章完毕
@@ -167,7 +169,9 @@ public class ManageProjectLoanController extends AbstractLoanManage {
         return dataService.data(user, search, sort, order, offset, limit, ProjectLoanRequest.class, fieldList()
                 , (user1, criteriaBuilder, root)
                         -> criteriaBuilder.and(criteriaBuilder.equal(root.get("processStatus"), LoanRequestStatus.contract)
-                        , criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.size(root.get("contracts")), WealthService.ContractElements.size())));
+                        , ProjectLoanRequest.HasSignedPredicate(criteriaBuilder, root)
+//                        , criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.size(root.get("contracts")), WealthService.ContractElements.size())
+                ));
     }
 
 
@@ -281,6 +285,18 @@ public class ManageProjectLoanController extends AbstractLoanManage {
                                 return root.join("loanData", JoinType.LEFT).get("handIdResource");
                             }
                         })
+                , new DataService.BooleanField("signed") {
+                    @Override
+                    public Object export(Object origin, MediaType type) {
+                        ProjectLoanRequest request = (ProjectLoanRequest) origin;
+                        return request.getContracts().size() >= WealthService.ContractElements.size();
+                    }
+
+                    @Override
+                    protected Expression<?> selectExpression(Root<?> root) {
+                        return root;
+                    }
+                }
         );
     }
 

@@ -15,6 +15,10 @@ $.Manage.headImageRenderer = function (url, row, index) {
     return '<img src="' + url + '" width="55px" height="55px"/>';
 };
 
+$.Manage.enableRenderer = function (data, row, index) {
+    return data ? '√' : '×';
+};
+
 
 /**
  *

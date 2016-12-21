@@ -173,6 +173,11 @@ $(function () {
                 return status;
             }
         }, {
+            title: '签章',
+            field: 'signed',
+            align: 'center',
+            formatter: $.Manage.enableRenderer
+        }, {
             title: '备注',
             field: 'comment',
             align: 'center',

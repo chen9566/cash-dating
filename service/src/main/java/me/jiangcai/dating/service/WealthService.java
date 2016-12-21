@@ -32,12 +32,12 @@ public interface WealthService {
     List<String> ContractElements = Collections.unmodifiableList(Arrays.asList(
             "CT001",
             "CT002",
-            "CT003",
+//            "CT003",
             "CT004",
             "CT005",
             "CT006",
-            "CT007"
-//            "CT008"
+            "CT007",
+            "CT008"
 //            "CT009"
 //            ,
 //            "CT0010",
