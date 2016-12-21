@@ -104,6 +104,11 @@ public interface DataService {
         }
 
         @Override
+        public String hqlSelection(String rootName) {
+            return rootName + "." + name;
+        }
+
+        @Override
         public Object export(Object origin, MediaType type) {
             return origin;
         }
@@ -170,6 +175,7 @@ public interface DataService {
     /**
      * @author CJ
      */
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     class StringField extends ClassicsField {
 
         public StringField(String name, Function<Root<?>, Expression<?>> select) {

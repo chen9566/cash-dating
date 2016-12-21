@@ -8,8 +8,6 @@ import me.jiangcai.dating.service.DataService;
 import me.jiangcai.dating.web.controller.support.DataController;
 import me.jiangcai.wx.model.Gender;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
@@ -20,8 +18,8 @@ import java.util.List;
 /**
  * @author CJ
  */
-@Controller
-@RequestMapping(value = "/manage/data/user")
+//@Controller
+//@RequestMapping(value = "/manage/data/user")
 public class UserController extends DataController<User> {
 
     @Override
@@ -40,11 +38,31 @@ public class UserController extends DataController<User> {
                     protected Expression<?> selectExpression(Root<?> root) {
                         return root.join("guideUser", JoinType.LEFT).get("nickname");
                     }
+
+                    @Override
+                    public String hqlSelection(String rootName) {
+                        return "_s1.nickname";
+                    }
+
+                    @Override
+                    public String hqlFromMore(String rootName) {
+                        return "left join " + rootName + ".guideUser as _s1";
+                    }
                 }
                 , new DataService.StringField("agent") {
                     @Override
                     protected Expression<?> selectExpression(Root<?> root) {
                         return root.join("agentUser", JoinType.LEFT).get("nickname");
+                    }
+
+                    @Override
+                    public String hqlSelection(String rootName) {
+                        return "_s2.nickname";
+                    }
+
+                    @Override
+                    public String hqlFromMore(String rootName) {
+                        return "left join " + rootName + ".agentUser as _s2";
                     }
                 }
                 , new DataService.StringField("nickname")
@@ -74,21 +92,33 @@ public class UserController extends DataController<User> {
                         return origin.toString();
                     }
                 }
-// , new DataService.NumberField("completedCashOrders", Long.class) {
+                , new DataService.NumberField("completedCashOrders", Long.class) {
+                    @Override
+                    public String hqlSelection(String rootName) {
+                        return "(select count(o) from CashOrder as o where o.completed=true and o.owner=" + rootName + ")";
+                    }
+
+                    @Override
+                    public boolean searchSupport() {
+                        return false;
+                    }
 //                    @Override
-//                    public Selection<?> select(CriteriaBuilder builder, CriteriaQuery<?> query, Root<?> root) {
-//                        Subquery
-//                        // Predicate type = criteriaBuilder.notEqual(root.type(), ProjectLoanRequest.class);
-////                        Subquery<Long> userOrderSubQuery = query.subquery(Long.class);
-////                        Root<CashOrder> userOrderRoot = userOrderSubQuery.from(CashOrder.class);
-////                        userOrderSubQuery = userOrderSubQuery.where(builder.equal(userOrderRoot.get("owner"), root)
-////                                , builder.isTrue(userOrderRoot.get("completed")));
-//////                        userOrderSubQuery = userOrderSubQuery.groupBy(root);
-////                        userOrderSubQuery = userOrderSubQuery.select(builder.count(userOrderRoot));
-//////                        userOrderSubQuery.
-////                        return userOrderSubQuery;
+//                    public String hqlFromMore(String rootName) {
+//                        return "left join (select count(o) from CashOrder as o where o.completed=true and o.owner=" + rootName + ")";
 //                    }
-//                }
+                    //                    @Override
+//                    public Selection<?> select(CriteriaBuilder builder, CriteriaQuery<?> query, Root<?> root) {
+                    // Predicate type = criteriaBuilder.notEqual(root.type(), ProjectLoanRequest.class);
+//                        Subquery<Long> userOrderSubQuery = query.subquery(Long.class);
+//                        Root<CashOrder> userOrderRoot = userOrderSubQuery.from(CashOrder.class);
+//                        userOrderSubQuery = userOrderSubQuery.where(builder.equal(userOrderRoot.get("owner"), root)
+//                                , builder.isTrue(userOrderRoot.get("completed")));
+////                        userOrderSubQuery = userOrderSubQuery.groupBy(root);
+//                        userOrderSubQuery = userOrderSubQuery.select(builder.count(userOrderRoot));
+////                        userOrderSubQuery.
+//                        return userOrderSubQuery;
+//                    }
+                }
         );
     }
 

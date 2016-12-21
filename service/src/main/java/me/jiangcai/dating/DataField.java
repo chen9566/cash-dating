@@ -46,4 +46,20 @@ public interface DataField {
      * @return 要返回的字段
      */
     Selection<?> select(CriteriaBuilder builder, CriteriaQuery<?> query, Root<?> root);
+
+    /**
+     * @param rootName 当前From的别名
+     * @return hql选择
+     */
+    String hqlSelection(String rootName);
+
+    /**
+     * 是否需要链接到更多的表
+     *
+     * @param rootName 当前From的别名
+     * @return 如果无需请返回空字符串
+     */
+    default String hqlFromMore(String rootName) {
+        return "";
+    }
 }

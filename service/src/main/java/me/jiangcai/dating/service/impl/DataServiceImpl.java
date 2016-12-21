@@ -35,6 +35,21 @@ public class DataServiceImpl implements DataService {
     @Autowired
     private EntityManager entityManager;
 
+    public static void printListIntoMap(List<DataField> dataFields, List<?> list, Map<String, Object> result) {
+        result.put("rows", list.stream()
+                .map(o -> {
+                    Object[] data = (Object[]) o;
+                    HashMap<String, Object> row = new HashMap<>();
+                    if (data == null)
+                        return null;
+                    for (int i = 0; i < data.length; i++) {
+                        DataField name = dataFields.get(i);
+                        row.put(name.name(), name.export(data[i], MediaType.APPLICATION_JSON));
+                    }
+                    return row;
+                }).collect(Collectors.toList()));
+    }
+
     private <X, T> CriteriaQuery<X> where(User user
             , String search
             , CriteriaBuilder criteriaBuilder
@@ -65,7 +80,6 @@ public class DataServiceImpl implements DataService {
         }
         return query;
     }
-
 
     @Override
     public <T> Map<String, ?> data(User user, String search, String sort, Sort.Direction order, int offset, int limit
@@ -122,18 +136,7 @@ public class DataServiceImpl implements DataService {
         // to json
         HashMap<String, Object> result = new HashMap<>();
         result.put("total", total);
-        result.put("rows", list.stream()
-                .map(o -> {
-                    Object[] data = (Object[]) o;
-                    HashMap<String, Object> row = new HashMap<>();
-                    if (data == null)
-                        return null;
-                    for (int i = 0; i < data.length; i++) {
-                        DataField name = dataFields.get(i);
-                        row.put(name.name(), name.export(data[i], MediaType.APPLICATION_JSON));
-                    }
-                    return row;
-                }).collect(Collectors.toList()));
+        printListIntoMap(dataFields, list, result);
         return result;
     }
 }
