@@ -71,16 +71,22 @@ $(function () {
             field: 'nickname',
             align: 'center',
             sortable: true
-        }, {
-            title: '合伙人',
-            field: 'agent',
-            align: 'center',
-            sortable: true
+            // }, {
+            //     title: '合伙人',
+            //     field: 'agent',
+            //     align: 'center',
+            //     sortable: true
         }, {
             title: '发展人',
             field: 'guide',
             align: 'center',
             sortable: true
+            // }, {
+            //     title: '订单数',
+            //     titleTooltip: '是指所有已完成的支付订单数（包括他人向TA支付）',
+            //     field: 'completedCashOrders',
+            //     align: 'right',
+            //     sortable: true
         }, {
             title: '城市',
             field: 'city',

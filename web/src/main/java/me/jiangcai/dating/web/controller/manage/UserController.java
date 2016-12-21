@@ -74,6 +74,21 @@ public class UserController extends DataController<User> {
                         return origin.toString();
                     }
                 }
+// , new DataService.NumberField("completedCashOrders", Long.class) {
+//                    @Override
+//                    public Selection<?> select(CriteriaBuilder builder, CriteriaQuery<?> query, Root<?> root) {
+//                        Subquery
+//                        // Predicate type = criteriaBuilder.notEqual(root.type(), ProjectLoanRequest.class);
+////                        Subquery<Long> userOrderSubQuery = query.subquery(Long.class);
+////                        Root<CashOrder> userOrderRoot = userOrderSubQuery.from(CashOrder.class);
+////                        userOrderSubQuery = userOrderSubQuery.where(builder.equal(userOrderRoot.get("owner"), root)
+////                                , builder.isTrue(userOrderRoot.get("completed")));
+//////                        userOrderSubQuery = userOrderSubQuery.groupBy(root);
+////                        userOrderSubQuery = userOrderSubQuery.select(builder.count(userOrderRoot));
+//////                        userOrderSubQuery.
+////                        return userOrderSubQuery;
+//                    }
+//                }
         );
     }
 

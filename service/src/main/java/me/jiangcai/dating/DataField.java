@@ -4,6 +4,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
@@ -24,7 +25,7 @@ public interface DataField {
     }
 
     /**
-     * @return 字段名, 必须跟原Entity名保持一致?不再需要了
+     * @return 字段名, 逻辑名称,自定义
      */
     String name();
 
@@ -36,5 +37,13 @@ public interface DataField {
 
     Object export(Object origin, MediaType type);
 
-    Selection<?> select(Root<?> root);
+    /**
+     * 这个字段所选择的JPA
+     *
+     * @param builder builder
+     * @param query   所使用的query
+     * @param root    当前From
+     * @return 要返回的字段
+     */
+    Selection<?> select(CriteriaBuilder builder, CriteriaQuery<?> query, Root<?> root);
 }

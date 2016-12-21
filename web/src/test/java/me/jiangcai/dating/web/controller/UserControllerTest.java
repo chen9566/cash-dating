@@ -6,6 +6,7 @@ import me.jiangcai.dating.entity.support.ManageStatus;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpSession;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -47,6 +48,29 @@ public class UserControllerTest extends ManageWebTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
         System.out.println(content);
+
+        System.out.println(currentUser().getNickname());
+
+        mockMvc.perform(getWeixin("/manage/data/user")
+                .param("sort", "nickname")
+                .param("order", "desc")
+                .param("search", currentUser().getNickname())
+                .param("offset", "0")
+                .param("limit", "10").session(session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total").value(1))
+                .andExpect(jsonPath("$.rows[0].completedCashOrders").value(0));
+        makeFinishCashOrder(currentUser(), randomOrderAmount(), null);
+        mockMvc.perform(getWeixin("/manage/data/user")
+                .param("sort", "nickname")
+                .param("order", "desc")
+                .param("search", currentUser().getNickname())
+                .param("offset", "0")
+                .param("limit", "10").session(session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total").value(1))
+                .andExpect(jsonPath("$.rows[0].completedCashOrders").value(1));
+
 
     }
 

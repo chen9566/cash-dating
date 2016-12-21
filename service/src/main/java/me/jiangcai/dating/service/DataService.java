@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.NumberUtils;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
@@ -86,7 +87,7 @@ public interface DataService {
         }
 
         @Override
-        public Selection<?> select(Root<?> root) {
+        public Selection<?> select(CriteriaBuilder builder, CriteriaQuery<?> query, Root<?> root) {
             return selectExpression(root);
         }
 

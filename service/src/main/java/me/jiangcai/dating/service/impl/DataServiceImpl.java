@@ -31,6 +31,7 @@ public class DataServiceImpl implements DataService {
 
     private static final Log log = LogFactory.getLog(DataServiceImpl.class);
 
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private EntityManager entityManager;
 
@@ -82,15 +83,15 @@ public class DataServiceImpl implements DataService {
         Root<T> countRoot = countQuery.from(target);
 
         // select
-        query = query.multiselect(dataFields.stream()
+        CriteriaQuery<?> updatedQuery = query.multiselect(dataFields.stream()
                 .map(dataField
-                        -> dataField.select(root))
+                        -> dataField.select(criteriaBuilder, query, root))
                 .collect(Collectors.toList()));
 
         countQuery = countQuery.select(criteriaBuilder.count(countRoot));
 
         // where
-        query = where(user, search, criteriaBuilder, query, root, dataFields, filter);
+        updatedQuery = where(user, search, criteriaBuilder, updatedQuery, root, dataFields, filter);
         countQuery = where(user, search, criteriaBuilder, countQuery, countRoot, dataFields, filter);
 
         // sort order
@@ -102,18 +103,18 @@ public class DataServiceImpl implements DataService {
                     .orElseThrow(IllegalStateException::new)
                     .order(criteriaBuilder, order, root);
             if (defaultOrder != null)
-                query = query.orderBy(order1, defaultOrder);
+                updatedQuery = updatedQuery.orderBy(order1, defaultOrder);
             else
-                query = query.orderBy(order1);
+                updatedQuery = updatedQuery.orderBy(order1);
         } else {
             if (defaultOrder != null)
-                query = query.orderBy(defaultOrder);
+                updatedQuery = updatedQuery.orderBy(defaultOrder);
         }
 
 
         // limit
         long total = entityManager.createQuery(countQuery).getSingleResult();
-        List<?> list = entityManager.createQuery(query)
+        List<?> list = entityManager.createQuery(updatedQuery)
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();

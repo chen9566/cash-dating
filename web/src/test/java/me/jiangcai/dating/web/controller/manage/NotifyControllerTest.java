@@ -73,6 +73,9 @@ public class NotifyControllerTest extends ManageWebTest {
                 .getMessageParameters().stream()
                 .map(notifyMessageParameter -> {
                     // 自行组装随机的业务参数
+                    if (type.getParameters().length == 0) {
+                        return new BasicNameValuePair(notifyMessageParameter.getName(), "");
+                    }
                     StringBuilder pattern = new StringBuilder();
                     int index = random.nextInt(type.getParameters().length);
                     NotifyType.NotifyParameter notifyParameter = type.getParameters()[index];
