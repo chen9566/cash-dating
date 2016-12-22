@@ -83,7 +83,8 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
                 .isEqualTo(requestReport.getData().size());
 
         // 提交一个
-        wealthService.submitLoanRequest(newProjectLoanRequest(userOpenId).getId());
+        final Long workingLoanRequestId = newProjectLoanRequest(userOpenId).getId();
+        wealthService.submitLoanRequest(workingLoanRequestId);
 
         mockMvc.perform(getWeixin("/manage/export/projectLoan")
                 .session(session)
@@ -131,6 +132,65 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
         assertThat(TestReportHandler.lastReport.getData())
                 .hasSize(notTodays);
 
+        //
+        int toTestMinAmount = requestReport3.getData().stream().max(new RandomComparator()).orElse(null).getApplyAmount().intValue();
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("minAmount", "" + toTestMinAmount)
+        )
+                .andExpect(status().isOk());
+        Report<ProjectLoanRequest> afterMinAmount = TestReportHandler.lastReport;
+        afterMinAmount.getData().stream()
+                .forEach(projectLoanRequest
+                        -> assertThat(projectLoanRequest.getApplyAmount()).isGreaterThanOrEqualTo(BigDecimal.valueOf(toTestMinAmount)));
+        int toTestMaxAmount = requestReport3.getData().stream().max(new RandomComparator()).orElse(null).getApplyAmount().intValue();
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("maxAmount", "" + toTestMaxAmount)
+        )
+                .andExpect(status().isOk());
+        Report<ProjectLoanRequest> afterMaxAmount = TestReportHandler.lastReport;
+        afterMaxAmount.getData().stream()
+                .forEach(projectLoanRequest
+                        -> assertThat(projectLoanRequest.getApplyAmount()).isLessThanOrEqualTo(BigDecimal.valueOf(toTestMaxAmount)));
+
+        // 周期  随便找一个周期 然后算一下同类型的有多少个
+        int theTerm = requestReport3.getData().stream()
+                .max(new RandomComparator()).orElse(null).getApplyTermDays();
+        int withTheTerms = (int) requestReport3.getData().stream()
+                .filter(projectLoanRequest -> projectLoanRequest.getApplyTermDays() == theTerm)
+                .count();
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("term", "" + theTerm)
+        )
+                .andExpect(status().isOk());
+        assertThat(TestReportHandler.lastReport.getData())
+                .hasSize(withTheTerms);
+
+        // 处理者
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("worker", currentUser().getNickname())
+        )
+                .andExpect(status().isOk());
+        assertThat(TestReportHandler.lastReport.getData())
+                .isEmpty();
+
+        // 状态 好了以后 再跑一次处理者
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("status", "0")
+        )
+                .andExpect(status().isOk());
+        int waitingWe = TestReportHandler.lastReport.getData().size();
+        ProjectLoanRequest workingLoanRequest = (ProjectLoanRequest) loanRequestRepository.getOne(workingLoanRequestId);
+        final String comment = UUID.randomUUID().toString();
+        wealthService.approveProjectLoanRequest(currentUser(), workingLoanRequestId, workingLoanRequest.getApplyAmount()
+                , workingLoanRequest.getYearRate(), workingLoanRequest.getApplyTermDays(), comment);
+
+
+        // 备注
 
     }
 
