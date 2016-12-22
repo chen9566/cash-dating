@@ -6,6 +6,7 @@ import me.jiangcai.dating.core.Login;
 import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.LoanRequestStatus;
+import me.jiangcai.dating.selection.Report;
 import me.jiangcai.dating.service.DataResourceField;
 import me.jiangcai.dating.service.DataService;
 import me.jiangcai.dating.service.SystemService;
@@ -42,6 +43,7 @@ import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -337,21 +339,23 @@ public class ManageProjectLoanController extends AbstractLoanManage {
         CriteriaQuery<ProjectLoanRequest> criteriaQuery = builder.createQuery(ProjectLoanRequest.class);
 
         Root<ProjectLoanRequest> root = criteriaQuery.from(ProjectLoanRequest.class);
-        Expression createdTime = root.get("createdTime");
+        Expression<LocalDateTime> createdTime = root.get("createdTime");
 
         if (startDate != null) {
-            predicateArrayList.add(builder.greaterThanOrEqualTo(createdTime, startDate));
+            LocalDateTime startTime = LocalDateTime.now().with(startDate).withHour(0).withMinute(0).withSecond(0);
+            predicateArrayList.add(builder.greaterThanOrEqualTo(createdTime, startTime));
         }
         if (endDate != null) {
-            predicateArrayList.add(builder.lessThanOrEqualTo(createdTime, endDate));
+            LocalDateTime endTime = LocalDateTime.now().with(endDate).withHour(23).withMinute(59).withSecond(59);
+            predicateArrayList.add(builder.lessThanOrEqualTo(createdTime, endTime));
         }
 
-        Expression amount = root.get("applyAmount");
+        Expression<BigDecimal> amount = root.get("applyAmount");
         if (minAmount != null) {
-            predicateArrayList.add(builder.greaterThanOrEqualTo(amount, minAmount));
+            predicateArrayList.add(builder.greaterThanOrEqualTo(amount, BigDecimal.valueOf(minAmount.longValue())));
         }
         if (maxAmount != null) {
-            predicateArrayList.add(builder.lessThanOrEqualTo(amount, maxAmount));
+            predicateArrayList.add(builder.lessThanOrEqualTo(amount, BigDecimal.valueOf(maxAmount.longValue())));
         }
 
         //周期
@@ -402,7 +406,7 @@ public class ManageProjectLoanController extends AbstractLoanManage {
 
         TypedQuery<ProjectLoanRequest> typedQuery = entityManager.createQuery(criteriaQuery);
 
-        return typedQuery.getResultList();
+        return new Report<>("网商宝报表", typedQuery.getResultList(), Arrays.asList());
     }
 
     // 导出报表

@@ -1,6 +1,7 @@
 package me.jiangcai.dating.web;
 
 import me.jiangcai.dating.web.converter.LocalDateFormatter;
+import me.jiangcai.dating.web.converter.ReportHandler;
 import me.jiangcai.dating.web.mvc.ImageResolver;
 import me.jiangcai.dating.web.thymeleaf.CashDialect;
 import me.jiangcai.wx.web.thymeleaf.WeixinDialect;
@@ -53,6 +54,8 @@ class MVCConfig extends WebMvcConfigurerAdapter {
     private ThymeleafViewResolver thymeleafViewResolver;
     @Autowired
     private LocalDateFormatter localDateFormatter;
+    @Autowired
+    private ReportHandler reportHandler;
 
     @Bean
     public CommonsMultipartResolver multipartResolver() {
@@ -118,6 +121,7 @@ class MVCConfig extends WebMvcConfigurerAdapter {
     public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> returnValueHandlers) {
         super.addReturnValueHandlers(returnValueHandlers);
         returnValueHandlers.add(0, new ImageResolver());
+        returnValueHandlers.add(reportHandler);
     }
 
     @Override

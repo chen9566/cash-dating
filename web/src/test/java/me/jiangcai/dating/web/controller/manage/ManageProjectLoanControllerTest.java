@@ -9,10 +9,13 @@ import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.ProjectLoan;
 import me.jiangcai.dating.repository.LoanRequestRepository;
+import me.jiangcai.dating.selection.Report;
 import me.jiangcai.dating.service.CashStrings;
 import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.TourongjiaService;
 import me.jiangcai.dating.service.WealthService;
+import me.jiangcai.dating.test.TestReportHandler;
+import me.jiangcai.dating.web.converter.LocalDateFormatter;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +25,13 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -48,14 +51,87 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
     private LoanRequestRepository loanRequestRepository;
     @Autowired
     private TourongjiaService tourongjiaService;
+    @Autowired
+    private LocalDateFormatter localDateFormatter;
 
+    @SuppressWarnings("unchecked")
     @Test
     public void export() throws Exception {
         MockHttpSession session = mvcLogin();
+
+        String userOpenId = createNewUser().getOpenId();
+        Loan loan = new ProjectLoan();
+        Address address = new Address();
+        address.setProvince(PayResourceService.listProvince().stream().max(new RandomComparator()).orElse(null));
+        address.setCity(address.getProvince().getCityList().stream().max(new RandomComparator()).orElse(null));
+
         mockMvc.perform(getWeixin("/manage/export/projectLoan")
                 .session(session)
         )
-                .andDo(print());
+                .andExpect(status().isOk());
+
+        Report<ProjectLoanRequest> requestReport = TestReportHandler.lastReport;
+
+        newProjectLoanRequest(userOpenId);
+
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+        )
+                .andExpect(status().isOk());
+        Report<ProjectLoanRequest> requestReport2 = TestReportHandler.lastReport;
+        assertThat(requestReport2.getData().size())
+                .isEqualTo(requestReport.getData().size());
+
+        // 提交一个
+        wealthService.submitLoanRequest(newProjectLoanRequest(userOpenId).getId());
+
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+        )
+                .andExpect(status().isOk());
+        Report<ProjectLoanRequest> requestReport3 = TestReportHandler.lastReport;
+        assertThat(requestReport3.getData())
+                .hasSize(requestReport.getData().size() + 1);
+
+        LocalDate today = LocalDate.now();
+        // 如果今天是startDay应该还是能看到这条记录的
+        int todays = (int) requestReport3.getData().stream()
+                .filter(projectLoanRequest -> projectLoanRequest.getCreatedTime().toLocalDate().isEqual(today))
+                .count();
+        int notTodays = requestReport3.getData().size() - todays;
+
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("startDate", localDateFormatter.print(today, null))
+        )
+                .andExpect(status().isOk());
+        assertThat(TestReportHandler.lastReport.getData())
+                .hasSize(todays);
+        // 如果是明天那么将是0
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("startDate", localDateFormatter.print(today.plusDays(1), null))
+        )
+                .andExpect(status().isOk());
+        assertThat(TestReportHandler.lastReport.getData()).isEmpty();
+        // 如果今天是endDay 那看到的也是todays 提前一天则看到了 total-todays
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("endDate", localDateFormatter.print(today, null))
+        )
+                .andExpect(status().isOk());
+        assertThat(TestReportHandler.lastReport.getData())
+                .hasSize(todays);
+
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("endDate", localDateFormatter.print(today.minusDays(1), null))
+        )
+                .andExpect(status().isOk());
+        assertThat(TestReportHandler.lastReport.getData())
+                .hasSize(notTodays);
+
+
     }
 
     @Test
