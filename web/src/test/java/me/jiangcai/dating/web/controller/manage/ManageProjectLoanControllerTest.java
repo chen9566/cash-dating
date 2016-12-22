@@ -28,6 +28,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -47,6 +48,15 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
     private LoanRequestRepository loanRequestRepository;
     @Autowired
     private TourongjiaService tourongjiaService;
+
+    @Test
+    public void export() throws Exception {
+        MockHttpSession session = mvcLogin();
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+        )
+                .andDo(print());
+    }
 
     @Test
     public void index() {

@@ -1,5 +1,6 @@
 package me.jiangcai.dating.web;
 
+import me.jiangcai.dating.web.converter.LocalDateFormatter;
 import me.jiangcai.dating.web.mvc.ImageResolver;
 import me.jiangcai.dating.web.thymeleaf.CashDialect;
 import me.jiangcai.wx.web.thymeleaf.WeixinDialect;
@@ -29,6 +30,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,7 +39,7 @@ import java.util.Locale;
  */
 @Configuration
 @Import(MVCConfig.ThymeleafConfig.class)
-@ComponentScan({"me.jiangcai.dating.web.controller", "me.jiangcai.dating.web.advice"})
+@ComponentScan({"me.jiangcai.dating.web.converter", "me.jiangcai.dating.web.controller", "me.jiangcai.dating.web.advice"})
 @EnableWebMvc
 class MVCConfig extends WebMvcConfigurerAdapter {
     private static String[] STATIC_RESOURCE_PATHS = new String[]{
@@ -49,6 +51,8 @@ class MVCConfig extends WebMvcConfigurerAdapter {
     private Environment environment;
     @Autowired
     private ThymeleafViewResolver thymeleafViewResolver;
+    @Autowired
+    private LocalDateFormatter localDateFormatter;
 
     @Bean
     public CommonsMultipartResolver multipartResolver() {
@@ -72,6 +76,7 @@ class MVCConfig extends WebMvcConfigurerAdapter {
                 return Sort.Direction.fromStringOrNull(text);
             }
         });
+        registry.addFormatterForFieldType(LocalDate.class, localDateFormatter);
     }
 
     @Override

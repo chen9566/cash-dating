@@ -26,19 +26,31 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+
+import static me.jiangcai.dating.entity.support.LoanRequestStatus.init;
+import static me.jiangcai.dating.entity.support.LoanRequestStatus.requested;
 
 /**
  * @author CJ
@@ -56,6 +68,9 @@ public class ManageProjectLoanController extends AbstractLoanManage {
     private SystemService systemService;
     @Autowired
     private ApplicationContext applicationContext;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private EntityManager entityManager;
 
     @RequestMapping(value = "/manage/projectLoanRequestNextTerm", method = RequestMethod.GET)
     @Transactional(readOnly = true)
@@ -80,7 +95,6 @@ public class ManageProjectLoanController extends AbstractLoanManage {
 
         return "manage/projectLoanRequest.html";
     }
-
 
     @RequestMapping(value = "/manage/data/projectLoan/sendNotify/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
@@ -136,7 +150,7 @@ public class ManageProjectLoanController extends AbstractLoanManage {
     @Transactional(readOnly = true)
     public Object padding(@AuthenticationPrincipal User user, String search, String sort, Sort.Direction order
             , int offset, int limit) {
-        return dataService.data(user, search, sort, order, offset, limit, ProjectLoanRequest.class, fieldList(), dataFilter(LoanRequestStatus.requested));
+        return dataService.data(user, search, sort, order, offset, limit, ProjectLoanRequest.class, fieldList(), dataFilter(requested));
     }
 
     @RequestMapping(value = "/manage/data/projectLoan/accepted", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -174,7 +188,6 @@ public class ManageProjectLoanController extends AbstractLoanManage {
                 ));
     }
 
-
     /**
      * @param status 要求现在的状态
      * @return
@@ -188,7 +201,7 @@ public class ManageProjectLoanController extends AbstractLoanManage {
 //                return criteriaBuilder.and(type
 //                        , root.get("processStatus").in(LoanRequestStatus.requested, LoanRequestStatus.forward));
 //            }
-            return criteriaBuilder.notEqual(root.get("processStatus"), LoanRequestStatus.init);
+            return criteriaBuilder.notEqual(root.get("processStatus"), init);
         };
     }
 
@@ -299,6 +312,100 @@ public class ManageProjectLoanController extends AbstractLoanManage {
                 }
         );
     }
+
+    /**
+     * @param startDate 闭合开始时间
+     * @param endDate   闭合结束时间
+     * @param minAmount 闭合最小值
+     * @param maxAmount 闭合最大值
+     * @param term      可选期限
+     * @param worker    可选处理者姓名
+     * @param status    0 待款爷审核 1 待投融家审核 2 待签章 3 完成
+     * @param comment   可选备注
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/manage/export/projectLoan")
+    @Transactional(readOnly = true)
+    public Object export(@RequestParam(required = false) LocalDate startDate, @RequestParam(required = false) LocalDate endDate
+            , Integer minAmount, Integer maxAmount, Integer term
+            , String worker, Integer status, String comment) {
+        // 用户申请时间 申请人姓名 申请人身份证号码 申请人电话 借款金额 产品期限 款爷审核时间 投融家审核时间 审核人 审核状态 备注
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+
+        final ArrayList<Predicate> predicateArrayList = new ArrayList<>();
+
+        CriteriaQuery<ProjectLoanRequest> criteriaQuery = builder.createQuery(ProjectLoanRequest.class);
+
+        Root<ProjectLoanRequest> root = criteriaQuery.from(ProjectLoanRequest.class);
+        Expression createdTime = root.get("createdTime");
+
+        if (startDate != null) {
+            predicateArrayList.add(builder.greaterThanOrEqualTo(createdTime, startDate));
+        }
+        if (endDate != null) {
+            predicateArrayList.add(builder.lessThanOrEqualTo(createdTime, endDate));
+        }
+
+        Expression amount = root.get("applyAmount");
+        if (minAmount != null) {
+            predicateArrayList.add(builder.greaterThanOrEqualTo(amount, minAmount));
+        }
+        if (maxAmount != null) {
+            predicateArrayList.add(builder.lessThanOrEqualTo(amount, maxAmount));
+        }
+
+        //周期
+        Expression applyTermDays = root.get("applyTermDays");
+        if (term != null) {
+            predicateArrayList.add(builder.equal(applyTermDays, applyTermDays));
+        }
+
+        //处理者
+        if (worker != null) {
+            Join processor = root.join("processor", JoinType.LEFT);
+            predicateArrayList.add(builder.like(processor.get("nickName"), "%" + worker + "%"));
+        }
+
+        //状态
+//        0 待款爷审核 1 待投融家审核 2 待签章 3 完成
+        Expression processStatus = root.get("processStatus");
+        if (status == null) {
+            predicateArrayList.add(builder.notEqual(processStatus, LoanRequestStatus.init));
+        } else {
+            switch (status) {
+                case 0:
+                    predicateArrayList.add(builder.equal(processStatus, LoanRequestStatus.requested));
+                    break;
+                case 1:
+                    predicateArrayList.add(builder.equal(processStatus, LoanRequestStatus.accept));
+                    break;
+                case 2:
+                    predicateArrayList.add(builder.equal(processStatus, LoanRequestStatus.contract));
+                    predicateArrayList.add(ProjectLoanRequest.HasSignedPredicate(builder, root).not());
+                    break;
+                case 3:
+                    predicateArrayList.add(builder.equal(processStatus, LoanRequestStatus.contract));
+                    predicateArrayList.add(ProjectLoanRequest.HasSignedPredicate(builder, root));
+                    break;
+                default:
+                    predicateArrayList.add(builder.notEqual(processStatus, LoanRequestStatus.init));
+            }
+        }
+
+        //备注
+        Expression<String> expressionComment = root.get("comment");
+        if (comment != null) {
+            predicateArrayList.add(builder.like(expressionComment, "%" + comment + "%"));
+        }
+
+        criteriaQuery = criteriaQuery.where(predicateArrayList.toArray(new Predicate[predicateArrayList.size()]));
+
+        TypedQuery<ProjectLoanRequest> typedQuery = entityManager.createQuery(criteriaQuery);
+
+        return typedQuery.getResultList();
+    }
+
+    // 导出报表
 
     protected class ToStringField extends DataService.UnsearchableField {
 
