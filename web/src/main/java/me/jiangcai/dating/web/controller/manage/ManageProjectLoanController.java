@@ -303,7 +303,7 @@ public class ManageProjectLoanController extends AbstractLoanManage {
     protected class ToStringField extends DataService.UnsearchableField {
 
         public ToStringField(String name) {
-            super(name);
+            super(name, Object.class);
         }
 
         @Override

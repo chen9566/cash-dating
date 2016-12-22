@@ -35,6 +35,11 @@ public interface DataField {
 
     Order order(CriteriaBuilder criteriaBuilder, Sort.Direction direction, Root<?> root);
 
+    /**
+     * @return 数据目标类型
+     */
+    Class<?> getTargetType();
+
     Object export(Object origin, MediaType type);
 
     /**
@@ -62,4 +67,5 @@ public interface DataField {
     default String hqlFromMore(String rootName) {
         return "";
     }
+
 }

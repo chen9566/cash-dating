@@ -47,12 +47,12 @@ public interface DataService {
             , int offset, int limit, Class<T> target, List<DataField> dataFields, DataFilter<T> filter);
 
     class UnsearchableField extends DataService.ClassicsField {
-        public UnsearchableField(String name, Function<Root<?>, Expression<?>> select) {
-            super(name, select);
+        public UnsearchableField(String name, Class<?> targetType, Function<Root<?>, Expression<?>> select) {
+            super(name, targetType == null ? Object.class : targetType, select);
         }
 
-        public UnsearchableField(String name) {
-            super(name);
+        public UnsearchableField(String name, Class<?> targetType) {
+            super(name, targetType);
         }
 
         @Override
@@ -69,15 +69,17 @@ public interface DataService {
     abstract class ClassicsField implements DataField {
 
         protected final String name;
+        protected final Class<?> targetType;
         protected final Function<Root<?>, Expression<?>> select;
 
-        public ClassicsField(String name, Function<Root<?>, Expression<?>> select) {
+        public ClassicsField(String name, Class<?> targetType, Function<Root<?>, Expression<?>> select) {
             this.name = name;
             this.select = select;
+            this.targetType = targetType;
         }
 
-        public ClassicsField(String name) {
-            this(name, null);
+        public ClassicsField(String name, Class<?> targetType) {
+            this(name, targetType, null);
         }
 
         protected Expression<?> selectExpression(Root<?> root) {
@@ -112,6 +114,11 @@ public interface DataService {
         public Object export(Object origin, MediaType type) {
             return origin;
         }
+
+        @Override
+        public Class<?> getTargetType() {
+            return targetType;
+        }
     }
 
     /**
@@ -119,11 +126,11 @@ public interface DataService {
      */
     class BooleanField extends UnsearchableField {
         public BooleanField(String name, Function<Root<?>, Expression<?>> select) {
-            super(name, select);
+            super(name, Boolean.class, select);
         }
 
         public BooleanField(String name) {
-            super(name);
+            super(name, Boolean.class);
         }
     }
 
@@ -132,11 +139,11 @@ public interface DataService {
      */
     class EnumField extends UnsearchableField {
         public EnumField(String name, Function<Root<?>, Expression<?>> select) {
-            super(name, select);
+            super(name, Enum.class, select);
         }
 
         protected EnumField(String name) {
-            super(name);
+            super(name, Enum.class);
         }
     }
 
@@ -148,12 +155,12 @@ public interface DataService {
         private final Class<? extends Number> numberType;
 
         public NumberField(String name, Function<Root<?>, Expression<?>> select, Class<? extends Number> numberType) {
-            super(name, select);
+            super(name, numberType, select);
             this.numberType = numberType;
         }
 
         public NumberField(String name, Class<? extends Number> numberType) {
-            super(name);
+            super(name, numberType);
             this.numberType = numberType;
         }
 
@@ -179,11 +186,11 @@ public interface DataService {
     class StringField extends ClassicsField {
 
         public StringField(String name, Function<Root<?>, Expression<?>> select) {
-            super(name, select);
+            super(name, String.class, select);
         }
 
         public StringField(String name) {
-            super(name);
+            super(name, String.class);
         }
 
         @Override

@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -71,8 +72,8 @@ public class UserController2 extends UserController {
         commonPredicate(countSQL);
 
         if (!StringUtils.isEmpty(search)) {
-            hqlWhere(sql, fields);
-            hqlWhere(countSQL, fields);
+            searchPredicate(search, sql, fields);
+            searchPredicate(search, countSQL, fields);
         }
 
         if (!StringUtils.isEmpty(sort) && order != null) {
@@ -96,8 +97,10 @@ public class UserController2 extends UserController {
         commonPredicate(countQuery);
         commonPredicate(dataQuery);
         if (!StringUtils.isEmpty(search)) {
-            countQuery.setParameter("search", "%" + search + "%");
-            dataQuery.setParameter("search", "%" + search + "%");
+            // 字符串? 或者 指定的数据格式?
+//            countQuery.setp
+            searchPredicate(search, countQuery, fields);
+            searchPredicate(search, dataQuery, fields);
 //            int pIndex = 0;
 //            for (DataField dataField : fields) {
 //                if (dataField.searchSupport()) {
@@ -123,19 +126,62 @@ public class UserController2 extends UserController {
         return result;
     }
 
-    private void hqlWhere(StringBuilder sql, List<DataField> fields) {
+    private void searchPredicate(String search, Query query, List<DataField> fields) {
+        fields.stream()
+                .filter(DataField::searchSupport)
+                .map(DataField::getTargetType)
+                .distinct()
+                .forEach(type -> {
+                    if (type == String.class)
+                        query.setParameter("searchText", "%" + search + "%");
+                    else if (Number.class.isAssignableFrom(type)) {
+                        try {
+                            //noinspection unchecked
+                            query.setParameter("search" + type.getSimpleName(), NumberUtils.parseNumber(search, (Class<Number>) type));
+                        } catch (Throwable ignored) {
+                        }
+                    }
+                });
+
+
+    }
+
+    @SuppressWarnings("unchecked")
+    private void searchPredicate(String search, StringBuilder sql, List<DataField> fields) {
         sql.append("AND (");
         int x = 0;
         for (DataField dataField : fields) {
             if (dataField.searchSupport()) {
-                if (x > 0) {
-                    sql.append("or ");
+                if (dataField.getTargetType() == String.class) {
+                    if (x > 0) {
+                        sql.append("or ");
+                    }
+                    sql.append(dataField.hqlSelection("u")).append(" like :searchText ");
+                    x++;
+                } else if (Number.class.isAssignableFrom(dataField.getTargetType())) {
+                    if (StringNumber(search, (Class<Number>) dataField.getTargetType())) {
+                        if (x > 0) {
+                            sql.append("or ");
+                        }
+                        sql.append(dataField.hqlSelection("u")).append(" = :search").append(dataField.getTargetType().getSimpleName()).append(" ");
+                        x++;
+                    }
+                } else {
+                    throw new IllegalArgumentException("can not search those dataField:" + dataField.getTargetType());
                 }
-                sql.append(dataField.hqlSelection("u")).append(" like :search ");
-                x++;
+
             }
         }
         sql.append(") ");
+    }
+
+    private boolean StringNumber(String text, Class<Number> numberClass) {
+        try {
+            NumberUtils.parseNumber(text, numberClass);
+            return true;
+        } catch (Throwable ignored) {
+            return false;
+        }
     }
 
     private void commonPredicate(Query query) {
