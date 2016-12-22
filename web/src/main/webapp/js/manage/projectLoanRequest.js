@@ -24,6 +24,9 @@ $(function () {
 
     $('input[name=filterType]').change(function () {
         var target = $(this).val();
+        table.bootstrapTable('refreshOptions', {
+            url: table.attr('data-url' + target)
+        });
         table.bootstrapTable('refresh', {
             url: table.attr('data-url' + target)
         });
