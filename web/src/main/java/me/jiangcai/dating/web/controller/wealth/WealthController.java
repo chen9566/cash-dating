@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Map;
@@ -232,20 +233,29 @@ public class WealthController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/loanID2")
     @Transactional
-    public String loanID(long loanRequestId, String path) throws IOException {
+    public String loanID(long loanRequestId, String path, Model model) throws IOException {
         // 这个时候应该去身份证那边
-        wealthService.updateLoanIDImages(loanRequestId, null, null, path);
-        wealthService.submitLoanRequest(loanRequestId);
-        return "personalok.html";
+        try {
+            wealthService.updateLoanIDImages(loanRequestId, null, null, path);
+            wealthService.submitLoanRequest(loanRequestId);
+            return "personalok.html";
+        } catch (FileNotFoundException ex) {
+            model.addAttribute("loanRequest", loanRequestRepository.getOne(loanRequestId));
+            return "handid.html";
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/loanID")
     public String loanID(long loanRequestId, String backId, String frontId, Model model) throws IOException {
         // 这个时候应该去身份证那边
-        wealthService.updateLoanIDImages(loanRequestId, backId, frontId, null);
-        model.addAttribute("loanRequest", loanRequestRepository.getOne(loanRequestId));
-//        return "redirect:/card?nextAction=/loanCard/" + loanRequestId + "&workModel=loan";
-        return "handid.html";
+        try {
+            wealthService.updateLoanIDImages(loanRequestId, backId, frontId, null);
+            model.addAttribute("loanRequest", loanRequestRepository.getOne(loanRequestId));
+            return "handid.html";
+        } catch (FileNotFoundException ex) {
+            model.addAttribute("loanRequest", loanRequestRepository.getOne(loanRequestId));
+            return "id.html";
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/loanCard/{loanRequestId}")
