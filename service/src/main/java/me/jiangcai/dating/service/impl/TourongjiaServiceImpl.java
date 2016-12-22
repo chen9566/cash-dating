@@ -191,14 +191,19 @@ public class TourongjiaServiceImpl implements TourongjiaService {
         for (int i = 0; i < attaches.length; i++) {
             attachPairs[i] = new BasicNameValuePair("attachList[" + i + "]", attaches[i]);
         }
+        // 项目期限是页面上选1个月，3个月，6个月那个，借款期限合同上现在是3年
         NameValuePair[] others = new NameValuePair[]{
                 new BasicNameValuePair("applyLoan.name", name)
                 , new BasicNameValuePair("applyLoan.mobile", user.getMobileNumber())
                 , new BasicNameValuePair("applyLoan.cardNo", number)
-                , new BasicNameValuePair("applyLoan.term", String.valueOf(termDays))
-                , new BasicNameValuePair("applyLoan.termUnit", "day")
-                , new BasicNameValuePair("applyLoan.prjTerm", String.valueOf(limitYears))
-                , new BasicNameValuePair("applyLoan.prjTermUnit", "year")
+                , new BasicNameValuePair("applyLoan.prjTerm", String.valueOf(termDays))
+                , new BasicNameValuePair("applyLoan.prjTermUnit", "day")
+                , new BasicNameValuePair("applyLoan.term", String.valueOf(limitYears))
+                , new BasicNameValuePair("applyLoan.termUnit", "year")
+//                , new BasicNameValuePair("applyLoan.term", String.valueOf(termDays))
+//                , new BasicNameValuePair("applyLoan.termUnit", "day")
+//                , new BasicNameValuePair("applyLoan.prjTerm", String.valueOf(limitYears))
+//                , new BasicNameValuePair("applyLoan.prjTermUnit", "year")
                 , new BasicNameValuePair("applyLoan.amount", amount.toString())
                 , new BasicNameValuePair("applyLoan.province", province)
                 , new BasicNameValuePair("applyLoan.city", city)

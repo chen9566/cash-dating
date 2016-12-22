@@ -71,22 +71,8 @@ public class UserController2 extends UserController {
         commonPredicate(countSQL);
 
         if (!StringUtils.isEmpty(search)) {
-            sql.append("AND (");
-            countSQL.append("AND (");
-            int x = 0;
-            for (DataField dataField : fields) {
-                if (dataField.searchSupport()) {
-                    if (x > 0) {
-                        sql.append("or ");
-                        countSQL.append("or ");
-                    }
-                    sql.append(dataField.hqlSelection("u")).append(" like :search ");
-                    countSQL.append(dataField.hqlSelection("u")).append(" like :search ");
-                    x++;
-                }
-            }
-            sql.append(") ");
-            countSQL.append(") ");
+            hqlWhere(sql, fields);
+            hqlWhere(countSQL, fields);
         }
 
         if (!StringUtils.isEmpty(sort) && order != null) {
@@ -135,6 +121,21 @@ public class UserController2 extends UserController {
         result.put("total", total);
         DataServiceImpl.printListIntoMap(fields, list, result);
         return result;
+    }
+
+    private void hqlWhere(StringBuilder sql, List<DataField> fields) {
+        sql.append("AND (");
+        int x = 0;
+        for (DataField dataField : fields) {
+            if (dataField.searchSupport()) {
+                if (x > 0) {
+                    sql.append("or ");
+                }
+                sql.append(dataField.hqlSelection("u")).append(" like :search ");
+                x++;
+            }
+        }
+        sql.append(") ");
     }
 
     private void commonPredicate(Query query) {
