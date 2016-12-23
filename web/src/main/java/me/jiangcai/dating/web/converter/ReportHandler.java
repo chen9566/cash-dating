@@ -1,5 +1,6 @@
 package me.jiangcai.dating.web.converter;
 
+import me.jiangcai.dating.csv.CVSWriter;
 import me.jiangcai.dating.selection.Report;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 
 /**
  * @author CJ
@@ -25,17 +27,16 @@ public class ReportHandler implements HandlerMethodReturnValueHandler {
             return;
         HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
 
-//        DownloadableFile file = (DownloadableFile) returnValue;
-//
-//        if (file.getType() != null) {
-//            response.setContentType(file.getType().toString());
-//        }
-//        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(file.getFileName(), "UTF-8"));
-//        byte[] buffer = StreamUtils.copyToByteArray(file.getData());
-//        response.setContentLength(buffer.length);
-        response.setStatus(200);
+        Report report = (Report) returnValue;
+        ReportWriter writer = new CVSWriter();
 
-//        StreamUtils.copy(buffer, response.getOutputStream());
+        response.setContentType(writer.mimeType());
+        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(report.getName() + "." + writer.extension(), "UTF-8"));
+
+        response.setStatus(200);
+        // length?
+        writer.writeTo(report, response.getOutputStream());
+
         mavContainer.setRequestHandled(true);
     }
 }
