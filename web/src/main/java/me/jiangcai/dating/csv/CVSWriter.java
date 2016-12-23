@@ -4,6 +4,7 @@ import me.jiangcai.dating.selection.Report;
 import me.jiangcai.dating.selection.Selection;
 import me.jiangcai.dating.web.converter.ReportWriter;
 import org.supercsv.cellprocessor.FmtNumber;
+import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.cellprocessor.time.FmtLocalDateTime;
 import org.supercsv.io.CsvListWriter;
@@ -35,11 +36,11 @@ public class CVSWriter implements ReportWriter {
 
     private CellProcessor processorFor(Class<?> type) {
         if (type == String.class)
-            return null;
+            return new Optional();
         if (type == BigDecimal.class)
-            return new FmtNumber(new DecimalFormat(",,###.##"));
+            return new Optional(new FmtNumber(new DecimalFormat(",,###.##")));
         if (type == LocalDateTime.class)
-            return new FmtLocalDateTime(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            return new Optional(new FmtLocalDateTime(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         throw new IllegalArgumentException("CSV not support " + type);
     }
 
