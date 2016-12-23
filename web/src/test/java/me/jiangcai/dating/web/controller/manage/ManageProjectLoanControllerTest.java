@@ -60,10 +60,10 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
         MockHttpSession session = mvcLogin();
 
         String userOpenId = createNewUser().getOpenId();
-        Loan loan = new ProjectLoan();
-        Address address = new Address();
-        address.setProvince(PayResourceService.listProvince().stream().max(new RandomComparator()).orElse(null));
-        address.setCity(address.getProvince().getCityList().stream().max(new RandomComparator()).orElse(null));
+//        Loan loan = new ProjectLoan();
+//        Address address = new Address();
+//        address.setProvince(PayResourceService.listProvince().stream().max(new RandomComparator()).orElse(null));
+//        address.setCity(address.getProvince().getCityList().stream().max(new RandomComparator()).orElse(null));
 
         mockMvc.perform(getWeixin("/manage/export/projectLoan")
                 .session(session)
@@ -178,20 +178,96 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
                 .isEmpty();
 
         // 状态 好了以后 再跑一次处理者
+//        0 待款爷审核 1 待投融家审核 2 待签章 3 完成
         mockMvc.perform(getWeixin("/manage/export/projectLoan")
                 .session(session)
                 .param("status", "0")
         )
                 .andExpect(status().isOk());
         int waitingWe = TestReportHandler.lastReport.getData().size();
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("status", "1")
+        )
+                .andExpect(status().isOk());
+        int waitingTRJ = TestReportHandler.lastReport.getData().size();
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("status", "2")
+        )
+                .andExpect(status().isOk());
+        int waitingSign = TestReportHandler.lastReport.getData().size();
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("status", "3")
+        )
+                .andExpect(status().isOk());
+        int dones = TestReportHandler.lastReport.getData().size();
         ProjectLoanRequest workingLoanRequest = (ProjectLoanRequest) loanRequestRepository.getOne(workingLoanRequestId);
         final String comment = UUID.randomUUID().toString();
         wealthService.approveProjectLoanRequest(currentUser(), workingLoanRequestId, workingLoanRequest.getApplyAmount()
                 , workingLoanRequest.getYearRate(), workingLoanRequest.getApplyTermDays(), comment);
 
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("status", "0")
+        )
+                .andExpect(status().isOk());
+        assertThat(TestReportHandler.lastReport.getData())
+                .hasSize(waitingWe - 1);
 
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("status", "1")
+        )
+                .andExpect(status().isOk());
+        assertThat(TestReportHandler.lastReport.getData())
+                .hasSize(waitingTRJ + 1);
+
+        makeLoanStatusTo(workingLoanRequestId, true);
+
+        wealthService.queryProjectLoanStatus(workingLoanRequestId);
+
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("status", "1")
+        )
+                .andExpect(status().isOk());
+        assertThat(TestReportHandler.lastReport.getData())
+                .hasSize(waitingTRJ);
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("status", "2")
+        )
+                .andExpect(status().isOk());
+        assertThat(TestReportHandler.lastReport.getData())
+                .hasSize(waitingSign + 1);
+        // 完成签名
+        // 这里插一句处理者
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("worker", currentUser().getNickname())
+        )
+                .andExpect(status().isOk());
+        assertThat(TestReportHandler.lastReport.getData())
+                .hasSize(1);
+        // 继续签名
+        signAllContract(workingLoanRequestId);
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("status", "2")
+        )
+                .andExpect(status().isOk());
+        assertThat(TestReportHandler.lastReport.getData())
+                .hasSize(waitingSign);
+        mockMvc.perform(getWeixin("/manage/export/projectLoan")
+                .session(session)
+                .param("status", "3")
+        )
+                .andExpect(status().isOk());
+        assertThat(TestReportHandler.lastReport.getData())
+                .hasSize(dones + 1);
         // 备注
-
     }
 
     @Test

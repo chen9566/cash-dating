@@ -366,8 +366,8 @@ public class ManageProjectLoanController extends AbstractLoanManage {
 
         //处理者
         if (worker != null) {
-            Join processor = root.join("processor", JoinType.LEFT);
-            predicateArrayList.add(builder.like(processor.get("nickName"), "%" + worker + "%"));
+            Join<ProjectLoanRequest, User> processor = root.join("processor", JoinType.LEFT);
+            predicateArrayList.add(builder.like(processor.get("nickname"), "%" + worker + "%"));
         }
 
         //状态
