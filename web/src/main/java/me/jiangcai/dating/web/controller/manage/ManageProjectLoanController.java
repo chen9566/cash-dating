@@ -228,6 +228,11 @@ public class ManageProjectLoanController extends AbstractLoanManage {
                     protected Expression<?> selectExpression(Root<?> root) {
                         return root.join("loanData", JoinType.LEFT).get("name");
                     }
+                }, new DataService.StringField("mobileNumber") {
+                    @Override
+                    protected Expression<?> selectExpression(Root<?> root) {
+                        return root.join("loanData", JoinType.LEFT).join("owner", JoinType.LEFT).get("mobileNumber");
+                    }
                 }, new DataService.StringField("city") {
                     @Override
                     protected Expression<?> selectExpression(Root<?> root) {

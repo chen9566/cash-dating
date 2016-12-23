@@ -127,6 +127,11 @@ $(function () {
             align: 'center',
             sortable: true
         }, {
+            title: '手机',
+            field: 'mobileNumber',
+            align: 'center',
+            sortable: true
+        }, {
             title: '申请金额',
             field: 'applyAmount',
             align: 'right',
