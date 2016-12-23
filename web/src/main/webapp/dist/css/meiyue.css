@@ -3346,7 +3346,12 @@ ul#navlist .list1 {
     margin: 5px 0;
     border: 0;
 }
-
+.from-personal input[type="number"] {
+    -moz-appearance: textfield;
+    border: 0;
+    background: none;
+    width: 70%;
+}
 .from-personal .icon {
     width: 25px
 }
