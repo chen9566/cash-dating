@@ -436,7 +436,7 @@ public class ManageProjectLoanController extends AbstractLoanManage {
         //周期
         Expression applyTermDays = root.get("applyTermDays");
         if (term != null) {
-            predicateArrayList.add(builder.equal(applyTermDays, applyTermDays));
+            predicateArrayList.add(builder.equal(applyTermDays, term));
         }
 
         //处理者
