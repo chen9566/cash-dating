@@ -401,6 +401,8 @@ public class ManageProjectLoanController extends AbstractLoanManage {
                             if (request.getContracts().size() >= WealthService.ContractElements.size())
                                 return "完成";
                             return "待签章";
+                        case reject:
+                            return "被拒绝";
                     }
                     return "未知";
                 })
@@ -463,6 +465,9 @@ public class ManageProjectLoanController extends AbstractLoanManage {
                 case 3:
                     predicateArrayList.add(builder.equal(processStatus, LoanRequestStatus.contract));
                     predicateArrayList.add(ProjectLoanRequest.HasSignedPredicate(builder, root));
+                    break;
+                case 4:
+                    predicateArrayList.add(builder.equal(processStatus, LoanRequestStatus.reject));
                     break;
                 default:
                     predicateArrayList.add(builder.notEqual(processStatus, LoanRequestStatus.init));
