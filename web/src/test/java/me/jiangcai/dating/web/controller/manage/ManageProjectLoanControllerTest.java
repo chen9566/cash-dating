@@ -60,6 +60,10 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
     @SuppressWarnings("unchecked")
     @Test
     public void export() throws Exception {
+
+        System.out.println(localDateFormatter.print(LocalDate.now(), null));
+        System.out.println(localDateFormatter.parse("2016-12-1", null));
+
         MockHttpSession session = mvcLogin();
 
         String userOpenId = createNewUser().getOpenId();
