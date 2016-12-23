@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>网商宝报表</title>
+    <link rel="stylesheet" href="../css/manage.css" th:href="@{/css/manage.css}">
+    <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdn.kuanyes.com/bootstrap-3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="//cdn.kuanyes.com/jquery-ui-1.12.1/jquery-ui.min.css">
+    <script src="//cdn.kuanyes.com/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+
+    <script src="../dist/js/share.js" th:src="@{/dist/js/share.js}"></script>
+    <script src="../mock/all.js" th:src="@{/all.js}"></script>
+    <script th:replace="fragment/auth.html::code"></script>
+    <script src="../js/manage.js" th:src="@{/js/manage.js}"></script>
+</head>
+<body>
+<div class="header"></div>
+<form method="get">
+    <fieldset>
+        <legend>查询条件</legend>
+        <label>
+            开始日期
+            <input type="text" name="startDate" class="date" size="10"/>
+        </label>
+        <label>
+            结束日期
+            <input type="text" name="endDate" class="date" size="10"/>
+        </label>
+        <label>
+            最小申请金额
+            <input type="number" name="minAmount" size="6"/>
+        </label>
+        <label>
+            最大申请金额
+            <input type="number" name="maxAmount" size="6"/>
+        </label>
+        <label>
+            项目期限
+            <select name="term">
+                <option value="">所有</option>
+                <option th:each="term:${@systemService.projectLoanTermsStyle}" th:value="${term}" th:text="${term}+'天'"
+                        value="30">30天
+                </option>
+                <option th:remove="all" value="90">90天</option>
+                <option th:remove="all" value="180">180天</option>
+            </select>
+        </label>
+        <label>
+            处理者
+            <input type="text" name="worker" size="8"/>
+        </label>
+        <label>
+            状态
+            <select name="status">
+                <option value="">所有</option>
+                <option value="0">待款爷审核</option>
+                <option value="1">待投融家审核</option>
+                <option value="2">待签章</option>
+                <option value="3">完成</option>
+            </select>
+        </label>
+        <label>
+            备注
+            <input type="text" name="comment" size="8"/>
+        </label>
+
+    </fieldset>
+    <p style="margin: 10px;">数量:<span style="color: rebeccapurple;" id="count">0</span>
+        <input type="submit" value="下载"/></p>
+
+</form>
+<script>
+    $(function () {
+        var dateInputs = $('input[class~=date]');
+        dateInputs.datepicker();
+        dateInputs.datepicker("option", "dateFormat", 'yy-m-d');
+        $('input[type=submit]').button();
+
+        // 所有值的变化都会尝试获取数量
+        function onChange() {
+            var paramObj = {};
+            $.each($('form').serializeArray(), function (_, kv) {
+                if (paramObj.hasOwnProperty(kv.name)) {
+                    paramObj[kv.name] = $.makeArray(paramObj[kv.name]);
+                    paramObj[kv.name].push(kv.value);
+                }
+                else {
+                    paramObj[kv.name] = kv.value;
+                }
+            });
+
+            $.ajax($.uriPrefix + '/manage/exportTotal/projectLoan', {
+                method: 'get',
+                dataType: 'json',
+                data: paramObj,
+                success: function (res) {
+                    $('#count').text(res);
+                },
+                error: function (res) {
+                    alert(res.responseText);
+                }
+            })
+        }
+
+        var allTexts = $('input[type=text]').add($('input[type=number]'));
+        allTexts.change(onChange);
+//        allTexts.blur(onChange);
+        allTexts.keyup(onChange);
+        var allSelects = $('select');
+        allSelects.change(onChange);
+//        allSelects.blur(onChange);
+    });
+</script>
+</body>
+</html>

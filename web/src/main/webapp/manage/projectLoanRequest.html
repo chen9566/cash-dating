@@ -142,6 +142,7 @@
         <input name="filterType" type="radio" value="4"/>
         全部
     </label>
+    <a href="projectLoanRequestReport.html" th:href="@{/manage/export/projectLoan/index}" name="reportLink">查询报表</a>
 </div>
 
 <table id="table"
@@ -159,6 +160,9 @@
 <script src="../js/manage/projectLoanRequest.js" th:src="@{/js/manage/projectLoanRequest.js}"></script>
 <script th:inline="javascript">
     $.yearRates = /*[[${yearRates}]]*/{"30": 0.07, "90": 0.09, "180": 0.1};
+    $(function () {
+        $('[name=reportLink]').button();
+    });
 </script>
 
 </body>

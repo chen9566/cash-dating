@@ -3,10 +3,12 @@ package me.jiangcai.dating.web.controller.manage;
 import me.jiangcai.dating.DataField;
 import me.jiangcai.dating.DataFilter;
 import me.jiangcai.dating.core.Login;
+import me.jiangcai.dating.entity.LoanRequest;
 import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.LoanRequestStatus;
 import me.jiangcai.dating.selection.Report;
+import me.jiangcai.dating.selection.SimpleSelection;
 import me.jiangcai.dating.service.DataResourceField;
 import me.jiangcai.dating.service.DataService;
 import me.jiangcai.dating.service.SystemService;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.NumberUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -315,6 +318,32 @@ public class ManageProjectLoanController extends AbstractLoanManage {
         );
     }
 
+    // 报表
+    @RequestMapping(method = RequestMethod.GET, value = "/manage/export/projectLoan/index")
+    public String exportIndex() {
+        return "manage/projectLoanRequestReport.html";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/manage/exportTotal/projectLoan")
+    @Transactional(readOnly = true)
+    @ResponseBody
+    public long exportTotal(@RequestParam(required = false) LocalDate startDate
+            , @RequestParam(required = false) LocalDate endDate
+            , Integer minAmount, Integer maxAmount, Integer term
+            , String worker, Integer status, String comment) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
+        Root<ProjectLoanRequest> root = criteriaQuery.from(ProjectLoanRequest.class);
+
+        Predicate[] predicates = getPredicates(root, startDate, endDate, minAmount, maxAmount, term, worker, status
+                , comment
+                , builder);
+
+        criteriaQuery = criteriaQuery.where(predicates);
+        criteriaQuery = criteriaQuery.select(builder.count(root));
+        return entityManager.createQuery(criteriaQuery).getSingleResult();
+    }
+
     /**
      * @param startDate 闭合开始时间
      * @param endDate   闭合结束时间
@@ -328,17 +357,56 @@ public class ManageProjectLoanController extends AbstractLoanManage {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/manage/export/projectLoan")
     @Transactional(readOnly = true)
-    public Object export(@RequestParam(required = false) LocalDate startDate, @RequestParam(required = false) LocalDate endDate
+    public Object export(@RequestParam(required = false) LocalDate startDate
+            , @RequestParam(required = false) LocalDate endDate
             , Integer minAmount, Integer maxAmount, Integer term
             , String worker, Integer status, String comment) {
         // 用户申请时间 申请人姓名 申请人身份证号码 申请人电话 借款金额 产品期限 款爷审核时间 投融家审核时间 审核人 审核状态 备注
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
+        CriteriaQuery<ProjectLoanRequest> criteriaQuery = builder.createQuery(ProjectLoanRequest.class);
+        Root<ProjectLoanRequest> root = criteriaQuery.from(ProjectLoanRequest.class);
+
+        Predicate[] predicates = getPredicates(root, startDate, endDate, minAmount, maxAmount, term, worker, status
+                , comment
+                , builder);
+
+        criteriaQuery = criteriaQuery.where(predicates);
+
+        TypedQuery<ProjectLoanRequest> typedQuery = entityManager.createQuery(criteriaQuery);
+
+        // 用户申请时间 申请人姓名 申请人身份证号码 申请人电话 借款金额 产品期限 款爷审核时间 投融家审核时间 审核人 审核状态 备注
+
+        return new Report<>("网商宝报表", typedQuery.getResultList(), Arrays.asList(
+                new SimpleSelection<>("用户申请时间", LocalDateTime.class, ProjectLoanRequest::getCreatedTime)
+                , new SimpleSelection<>("申请人姓名", String.class, request -> request.getLoanData().getName())
+                , new SimpleSelection<>("申请人身份证号码", String.class, request -> request.getLoanData().getNumber())
+                , new SimpleSelection<>("申请人电话", String.class, request -> request.getLoanData().getOwner().getMobileNumber())
+                , new SimpleSelection<>("借款金额", BigDecimal.class, ProjectLoanRequest::getApplyAmount)
+                , new SimpleSelection<>("产品期限", String.class, request -> request.getApplyTermDays() + "天")
+                , new SimpleSelection<>("款爷审核时间", LocalDateTime.class, LoanRequest::getProcessTime)
+                , new SimpleSelection<>("审核人", String.class, request -> request.getProcessor() == null ? "" : request.getProcessor().getNickname())
+                , new SimpleSelection<>("审核状态", String.class, request -> {
+                    switch (request.getProcessStatus()) {
+                        case requested:
+                            return "待款爷审核";
+                        case accept:
+                            return "待投融家审核";
+                        case contract:
+                            if (request.getContracts().size() >= WealthService.ContractElements.size())
+                                return "完成";
+                            return "待签章";
+                    }
+                    return "未知";
+                })
+                , new SimpleSelection<>("备注", String.class, LoanRequest::getComment)
+        ));
+    }
+
+    private Predicate[] getPredicates(Root<ProjectLoanRequest> root, LocalDate startDate, LocalDate endDate, Integer minAmount, Integer maxAmount
+            , Integer term, String worker, Integer status, String comment, CriteriaBuilder builder) {
         final ArrayList<Predicate> predicateArrayList = new ArrayList<>();
 
-        CriteriaQuery<ProjectLoanRequest> criteriaQuery = builder.createQuery(ProjectLoanRequest.class);
-
-        Root<ProjectLoanRequest> root = criteriaQuery.from(ProjectLoanRequest.class);
         Expression<LocalDateTime> createdTime = root.get("createdTime");
 
         if (startDate != null) {
@@ -365,7 +433,7 @@ public class ManageProjectLoanController extends AbstractLoanManage {
         }
 
         //处理者
-        if (worker != null) {
+        if (!StringUtils.isEmpty(worker)) {
             Join<ProjectLoanRequest, User> processor = root.join("processor", JoinType.LEFT);
             predicateArrayList.add(builder.like(processor.get("nickname"), "%" + worker + "%"));
         }
@@ -398,15 +466,11 @@ public class ManageProjectLoanController extends AbstractLoanManage {
 
         //备注
         Expression<String> expressionComment = root.get("comment");
-        if (comment != null) {
+        if (!StringUtils.isEmpty(comment)) {
             predicateArrayList.add(builder.like(expressionComment, "%" + comment + "%"));
         }
 
-        criteriaQuery = criteriaQuery.where(predicateArrayList.toArray(new Predicate[predicateArrayList.size()]));
-
-        TypedQuery<ProjectLoanRequest> typedQuery = entityManager.createQuery(criteriaQuery);
-
-        return new Report<>("网商宝报表", typedQuery.getResultList(), Arrays.asList());
+        return predicateArrayList.toArray(new Predicate[predicateArrayList.size()]);
     }
 
     // 导出报表

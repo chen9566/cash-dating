@@ -3,6 +3,7 @@ package me.jiangcai.dating.web.controller.manage;
 import com.jayway.jsonpath.JsonPath;
 import me.jiangcai.dating.AsManage;
 import me.jiangcai.dating.ManageWebTest;
+import me.jiangcai.dating.csv.CVSWriter;
 import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.entity.support.ManageStatus;
@@ -23,6 +24,8 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -93,6 +96,14 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
         Report<ProjectLoanRequest> requestReport3 = TestReportHandler.lastReport;
         assertThat(requestReport3.getData())
                 .hasSize(requestReport.getData().size() + 1);
+
+        // input字段测试
+        mockMvc.perform(getWeixin("/manage/export/projectLoan?startDate=&endDate=&minAmount=&maxAmount=&term=&worker=&status=&comment=")
+                .session(session)
+        )
+                .andExpect(status().isOk());
+        assertThat(TestReportHandler.lastReport.getData())
+                .hasSize(requestReport3.getData().size());
 
         LocalDate today = LocalDate.now();
         // 如果今天是startDay应该还是能看到这条记录的
@@ -268,6 +279,13 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
         assertThat(TestReportHandler.lastReport.getData())
                 .hasSize(dones + 1);
         // 备注
+        Report report = TestReportHandler.lastReport;
+        CVSWriter writer = new CVSWriter();
+        File file = new File("target/" + report.getName() + "." + writer.extension());
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
+            writer.writeTo(report, outputStream);
+            outputStream.flush();
+        }
     }
 
     @Test
@@ -276,6 +294,10 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
         assertThat(driver.getTitle())
                 .isEqualTo("项目贷款");
 //        System.out.println(driver.getPageSource());
+        driver.get("http://localhost/manage/export/projectLoan/index");
+        assertThat(driver.getTitle())
+                .isEqualTo("网商宝报表");
+
     }
 
     @Test
