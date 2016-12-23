@@ -1,32 +1,26 @@
 [
   {
-    "title": "款爷推广賺钱啦",
-    "description": "款爷推广賺钱啦",
+    "title": "款爷收银台极速到账",
+    "description": "款爷收银台极速到账",
     "imageUrl": "https://mmbiz.qlogo.cn/mmbiz_jpg/n294V6eF0dLiciaN6XtKas6FJTe04QKY2qjcdBRUxOOQbb4AAq7JjqIYxVbT74pGhqRYtCnZ50eKV9d6s3GVxl8w/0?wx_fmt=jpeg",
     "url": "http://www.kuanyes.com/help/extension.html"
   },
   {
-    "title": "规则相关问题",
-    "description": "规则相关问题",
+    "title": "网商宝使用相关说明",
+    "description": "网商宝使用相关说明",
     "imageUrl": "https://mmbiz.qlogo.cn/mmbiz_jpg/n294V6eF0dLiciaN6XtKas6FJTe04QKY2qdPe4kzEuUz9RBib4MKBHiaQ8kzO1SlSL8Gu7CRF9bqSN4wHkichquiakCg/0?wx_fmt=jpeg",
     "url": "http://www.kuanyes.com/help/userhelp.html"
-  },
-  {
-    "title": "合伙人相关问题",
-    "description": "合伙人相关问题",
-    "imageUrl": "https://mmbiz.qlogo.cn/mmbiz_jpg/n294V6eF0dLiciaN6XtKas6FJTe04QKY2qzD9ALkiaS6P7Db4OOfSM7RQsVAvs8BPU2dIna61yFUhhoJvFqfxmEJA/0?wx_fmt=jpeg",
-    "url": "http://www.kuanyes.com/help/partherhelp-q.html"
-  },
-  {
-    "title": "如何成为合伙人",
-    "description": "如何成为合伙人",
-    "imageUrl": "https://mmbiz.qlogo.cn/mmbiz_jpg/n294V6eF0dLiciaN6XtKas6FJTe04QKY2qWg0ibeY07c6aVJxNBOjHUq3rjhBrloXtBibv6PiaPe378Z1RhlZ60WYJQ/0?wx_fmt=jpeg",
-    "url": "http://www.kuanyes.com/help/partnerhelp.html"
   },
   {
     "title": "款爷使用攻略",
     "description": "款爷使用攻略",
     "imageUrl": "https://mmbiz.qlogo.cn/mmbiz_jpg/n294V6eF0dLiciaN6XtKas6FJTe04QKY2qiav41MPGehInD3CUrbr6UYtvYg4XqvuSDWIrIZPmoawic9DibzNJkwpsA/0?wx_fmt=jpeg",
     "url": "http://www.kuanyes.com/help/kuanyehelp.html"
+  },
+  {
+    "title": "收银台使用注意事项",
+    "description": "收银台使用注意事项",
+    "imageUrl": "https://mmbiz.qlogo.cn/mmbiz_jpg/n294V6eF0dLiciaN6XtKas6FJTe04QKY2qWg0ibeY07c6aVJxNBOjHUq3rjhBrloXtBibv6PiaPe378Z1RhlZ60WYJQ/0?wx_fmt=jpeg",
+    "url": "http://www.kuanyes.com/help/partherhelp-q.html"
   }
 ]
