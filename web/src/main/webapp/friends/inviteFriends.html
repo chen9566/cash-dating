@@ -37,14 +37,14 @@
         <li class="ntxt" th:each="u,st:${inviteUsers}" th:classappend="${u.payed?'ctxt':''}">
             <span th:text="${'第'+st.count+'人'}">第1人</span>
             <img th:if="${u.headImageUrl!=null}" src="images/idimg.png" th:src="${u.headImageUrl}"/>
-            <img th:if="${u.headImageUrl==null}" src="images/none.png" th:src="@{friends/images/none.png}"/>
+            <img th:if="${u.headImageUrl==null}" src="images/none.png" th:src="@{/friends/images/none.png}"/>
             <span th:text="${u.nickname}">昵称</span>
         </li>
         <li class="ntxt" th:remove="all">第2人<img src="images/none.png"/></li>
         <li class="ntxt" th:remove="all">第3人<img src="images/none.png"/></li>
         <li class="ntxt" th:remove="all">第4人<img src="images/none.png"/></li>
         <li class="ntxt" th:remove="all">第5人<img src="images/none.png"/></li>
-        <span class="fr"><img src="images/right-icon.png" th:src="@{/images/right-icon.png}"/></span>
+        <span class="fr"><img src="images/right-icon.png" th:src="@{/friends/images/right-icon.png}"/></span>
     </ul>
 
 </div>
@@ -57,6 +57,10 @@
 <script src="../mock/all.js" th:src="@{/all.js}"></script>
 <script>
     $(document).ready(function ($) {
+
+        $(".sharebg").click(function () {
+            $(".sharebg").css({"display": "none"});
+        });
 
         $(".share").click(function (event) {
             $(".sharebg").css({"display": "block"});
