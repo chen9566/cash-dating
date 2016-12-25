@@ -214,11 +214,12 @@ public class MyInvitationPage extends AbstractPage {
                 .isNull();
     }
 
+    @Deprecated
     public void assertTeam() {
 //        assertThat(teamButton.isDisplayed())
 //                .isTrue();
-        assertThat(withdrawButton)
-                .isNotNull();
+//        assertThat(withdrawButton)
+//                .isNotNull();
     }
 
     /**

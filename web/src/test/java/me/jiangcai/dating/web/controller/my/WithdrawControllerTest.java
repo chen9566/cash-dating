@@ -11,7 +11,10 @@ import me.jiangcai.dating.page.WithdrawResultPage;
 import me.jiangcai.dating.service.AgentService;
 import me.jiangcai.dating.service.StatisticService;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.ComparisonFailure;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,11 +26,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 提现测试
+ * 既然没有了合伙人,自然也没有了提现功能
  *
  * @author CJ
  */
+@Ignore
 public class WithdrawControllerTest extends LoginWebTest {
 
+    private static final Log log = LogFactory.getLog(WithdrawControllerTest.class);
     @Autowired
     private AgentService agentService;
     @Autowired
