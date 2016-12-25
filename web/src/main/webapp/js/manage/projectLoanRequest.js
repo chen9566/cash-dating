@@ -127,6 +127,11 @@ $(function () {
             align: 'center',
             sortable: true
         }, {
+            title: '身份证',
+            field: 'idCode',
+            align: 'center',
+            sortable: true
+        }, {
             title: '手机',
             field: 'mobileNumber',
             align: 'center',
