@@ -4,6 +4,7 @@ import me.jiangcai.dating.entity.LoginToken;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.supplier.Pay123Card;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
+import me.jiangcai.dating.model.InviteUser;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author CJ
@@ -134,4 +136,32 @@ public interface UserService {
      */
     @Transactional
     Pay123Card updatePay123Card(String openId);
+
+    /**
+     * @param openId 用户的openId
+     * @return 有效的邀请数量（此处有效指的是已经激活并且使用过刷卡的）
+     */
+    @Transactional(readOnly = true)
+    long validInvites(String openId);
+
+    /**
+     * @param openId 用户的openId
+     * @return 已经激活并且使用过刷卡的邀请用户
+     */
+    @Transactional(readOnly = true)
+    List<InviteUser> validInviteUsers(String openId);
+
+    /**
+     * @param openId
+     * @return 用户是否为有效（即刷卡过的）
+     */
+    @Transactional(readOnly = true)
+    boolean isValidUser(String openId);
+
+    /**
+     * @param openId 用户的openId
+     * @return 所有的邀请用户
+     */
+    @Transactional(readOnly = true)
+    List<InviteUser> allInviteUsers(String openId);
 }

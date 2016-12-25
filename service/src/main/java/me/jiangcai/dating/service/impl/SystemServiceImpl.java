@@ -3,13 +3,12 @@ package me.jiangcai.dating.service.impl;
 import me.jiangcai.dating.ProfitSplit;
 import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.channel.ChroneService;
-import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.SystemString;
-import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.RateConfig;
 import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.repository.SystemStringRepository;
 import me.jiangcai.dating.service.SystemService;
+import me.jiangcai.dating.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -81,9 +73,8 @@ public class SystemServiceImpl implements SystemService {
 //    private WeixinService weixinService;
     @Autowired
     private Environment environment;
-    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
-    private EntityManager entityManager;
+    private UserService userService;
     @Autowired
     private ApplicationContext applicationContext;
 
@@ -143,29 +134,7 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public boolean hasInviteValidUser(String openId, int number) {
-
-//        TypedQuery<Long> query = entityManager.createQuery("select count(u) from User as u,CashOrder as o where u.guideUser.openId=?1 and o.owner=u and o.completed=true and count(o)>=1", Long.class);
-//        query.setParameter(1, openId);
-        final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-        Root<User> userRoot = criteriaQuery.from(User.class);
-        Root<CashOrder> cashOrderRoot = criteriaQuery.from(CashOrder.class);
-        Predicate fromOpenPredicate = criteriaBuilder.equal(userRoot.get("guideUser").get("openId"), openId);
-        Predicate ourOrder = criteriaBuilder.equal(cashOrderRoot.get("owner"), userRoot);
-        Predicate validOrder = criteriaBuilder.isTrue(cashOrderRoot.get("completed"));
-        Predicate enoughOrders = criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.count(cashOrderRoot), 1L);
-        criteriaQuery.having(enoughOrders);
-        criteriaQuery.where(fromOpenPredicate, ourOrder, validOrder);
-        criteriaQuery.select(criteriaBuilder.count(userRoot));
-
-        //
-        TypedQuery<Long> query = entityManager.createQuery(criteriaQuery);
-
-        try {
-            return query.getSingleResult() > number;
-        } catch (NoResultException ignored) {
-            return false;
-        }
+        return userService.validInvites(openId) >= number;
     }
 
     @Override

@@ -46,6 +46,7 @@ class MVCConfig extends WebMvcConfigurerAdapter {
     private static String[] STATIC_RESOURCE_PATHS = new String[]{
             "dist", "css", "fonts", "holder.js", "images", "js", "_resources", "localisation", "admin/js", "users/js"
             , "user/js", "appfile/css", "appfile/images", "appfile/js", "appfile/list_files", "appfile/login_files"
+            , "friends/styles", "friends/images"
     };
 
     @Autowired

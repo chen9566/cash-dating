@@ -141,7 +141,9 @@ public abstract class ServiceBaseTest extends SpringWebTest {
         WeixinUserDetail detail = WeixinUserMocker.randomWeixinUserDetail();
         String mobile = randomMobile();
         verificationCodeService.sendCode(mobile, VerificationType.register);
-        userService.registerMobile(null, detail.getOpenId(), mobile, "1234", guide == null ? null : guide.getInviteCode());
+        User user = userService.registerMobile(null, detail.getOpenId(), mobile, "1234", guide == null ? null : guide.getInviteCode());
+        user.setNickname(detail.getNickname());
+        userRepository.save(user);
 //        verificationCodeService.sendCode(mobile, Function.identity()); 现在不用发验证码了
         // 16
         String card = randomBankCard();

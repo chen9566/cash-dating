@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="inviteUsers" type="java.util.List<me.jiangcai.dating.model.InviteUser>"*/-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>我邀请的好友</title>
     <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="styles/friends.css">
+    <link rel="stylesheet" href="styles/friends.css" th:href="@{/friends/styles/friends.css}">
 </head>
 <body class="bg">
 <div class="nav">
@@ -15,32 +16,33 @@
     <li class="w3">邀请状态</li>
 </div>
 <div class="navlist">
-    <ul>
+    <ul th:each="user:${inviteUsers}" th:classappend="${user.payed?'':'opactiy'}">
+        <li class="w1"><img src="images/idimg.png" th:src="${user.headImageUrl}"/></li>
+        <li class="w2" th:text="${user.nickname}">小小</li>
+        <li class="w3 green" th:if="${user.payed}">已注册 已消费</li>
+        <li class="w3" th:if="${!user.payed}">已注册 未消费</li>
+    </ul>
+    <ul th:remove="all">
         <li class="w1"><img src="images/idimg.png"/></li>
         <li class="w2">小小</li>
         <li class="w3 green">已注册 已消费</li>
     </ul>
-    <ul>
+    <ul th:remove="all">
         <li class="w1"><img src="images/idimg.png"/></li>
         <li class="w2">小小</li>
         <li class="w3 green">已注册 已消费</li>
     </ul>
-    <ul>
-        <li class="w1"><img src="images/idimg.png"/></li>
-        <li class="w2">小小</li>
-        <li class="w3 green">已注册 已消费</li>
-    </ul>
-    <ul class="opactiy">
+    <ul class="opactiy" th:remove="all">
         <li class="w1"><img src="images/idimg.png"/></li>
         <li class="w2">小小</li>
         <li class="w3">已注册 未消费</li>
     </ul>
-    <ul class="opactiy">
+    <ul class="opactiy" th:remove="all">
         <li class="w1"><img src="images/idimg.png"/></li>
         <li class="w2">小小</li>
         <li class="w3">已注册 未消费</li>
     </ul>
-    <ul class="opactiy">
+    <ul class="opactiy" th:remove="all">
         <li class="w1"><img src="images/idimg.png"/></li>
         <li class="w2">小小</li>
         <li class="w3">已注册 未消费</li>

@@ -50,9 +50,12 @@ public class CodePage extends AbstractPage {
                 .findFirst()
                 .ifPresent(element -> message = element);
 
-        webDriver.findElements(By.tagName("button")).stream()
+        webDriver
+//                .findElements(By.tagName("button")).stream()
+//                .filter(WebElement::isDisplayed)
+//                .filter(element -> element.getText().equals("邀请明细"))
+                .findElements(By.id("toInviteList")).stream()
                 .filter(WebElement::isDisplayed)
-                .filter(element -> element.getText().equals("邀请明细"))
                 .findFirst()
                 .ifPresent(element -> inviteButton = element);
 

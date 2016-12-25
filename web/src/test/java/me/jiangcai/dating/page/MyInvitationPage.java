@@ -5,6 +5,7 @@ import lombok.Data;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.service.StatisticService;
+import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.util.Common;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -37,6 +38,7 @@ public class MyInvitationPage extends AbstractPage {
     private WebElement withdrawButton;
     private WebElement teamButton;
     private List<WebFlow> webFlows;
+    private List<WebFriend> webFriends;
     @FindBy(css = "span[name=numbers]")
     private WebElement numbersText;
 
@@ -50,7 +52,7 @@ public class MyInvitationPage extends AbstractPage {
     public void validatePage() {
 
         assertThat(webDriver.getTitle())
-                .isEqualTo("邀请明细");
+                .isEqualTo("我邀请的好友");
 
         agentElement = webDriver.findElements(By.tagName("a")).stream()
 //                .filter(WebElement::isDisplayed)
@@ -96,16 +98,23 @@ public class MyInvitationPage extends AbstractPage {
 //                .ifPresent(element -> explainButton = element);
 
 
-        assertThat(balanceText)
-                .isNotNull();
-        assertThat(balanceText.isDisplayed())
-                .isTrue();
+//        assertThat(balanceText)
+//                .isNotNull();
+//        assertThat(balanceText.isDisplayed())
+//                .isTrue();
 //        assertThat(withdrawButton)
 //                .isNotNull();
 //        assertThat(codeButton)
 //                .isNotNull();
 //        assertThat(webFlows)
 //                .isNotEmpty();
+    }
+
+    private WebFriend toFriend(WebElement element) {
+        return new WebFriend(
+                element.findElement(By.className("w2")).getText(),
+                element.findElement(By.className("w3")).getAttribute("class").contains("green")
+        );
     }
 
     private WebFlow toFlow(WebElement element) {
@@ -117,6 +126,23 @@ public class MyInvitationPage extends AbstractPage {
                 , null
                 , element
         );
+    }
+
+    public void assertUser(User user, List<User> invited, UserService userService) {
+        printThisPage();
+        webFriends = webDriver.findElement(By.className("navlist")).findElements(By.tagName("ul")).stream()
+                .filter(WebElement::isDisplayed)
+//                .filter(webElement -> !"bg".equals(webElement.getAttribute("class")))
+                .map(this::toFriend)
+                .collect(Collectors.toList());
+
+        assertThat(webFriends)
+                .hasSize(invited.size());
+
+        ArrayList<WebFriend> webFlowArrayList = new ArrayList<>(webFriends);
+        assertThat(webFlowArrayList.stream()
+                .filter(webFlow -> !webFlow.inList(invited, userService))
+                .count()).isEqualTo(0);
     }
 
     /**
@@ -223,6 +249,28 @@ public class MyInvitationPage extends AbstractPage {
                 .findFirst()
                 .ifPresent(webFlow -> webFlow.element.click());
         return initPage(PartnerDataPage.class);
+    }
+
+    @Data
+    @AllArgsConstructor
+    private class WebFriend {
+        private String nickname;
+        private boolean valid;
+
+        boolean inList(List<User> list, UserService userService) {
+            return list.stream()
+                    .filter(user -> this.equalsTo(user, userService))
+                    .findAny()
+                    .isPresent();
+        }
+
+        private boolean equalsTo(User user, UserService userService) {
+            if (!nickname.equals(user.getNickname()))
+                return false;
+            if (userService.isValidUser(user.getOpenId()) != valid)
+                return false;
+            return true;
+        }
     }
 
     /**

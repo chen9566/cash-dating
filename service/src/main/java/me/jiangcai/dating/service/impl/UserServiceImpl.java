@@ -1,6 +1,7 @@
 package me.jiangcai.dating.service.impl;
 
 import me.jiangcai.dating.CashFilter;
+import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.LoginToken;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserPaymentExtend;
@@ -9,8 +10,10 @@ import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.event.Notification;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.CashWeixinUserDetail;
+import me.jiangcai.dating.model.InviteUser;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.notify.NotifyType;
+import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.LoginTokenRepository;
 import me.jiangcai.dating.repository.UserAgentInfoRepository;
 import me.jiangcai.dating.repository.UserRepository;
@@ -35,11 +38,20 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Stream;
@@ -75,6 +87,12 @@ public class UserServiceImpl implements UserService {
     private Pay123CardRepository pay123CardRepository;
     @Autowired
     private TaskScheduler taskScheduler;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private EntityManager entityManager;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private CashOrderRepository cashOrderRepository;
 
     @Override
     public boolean mobileRequired(String openId) {
@@ -287,5 +305,81 @@ public class UserServiceImpl implements UserService {
 
         return user.getUserPaymentExtend().getPay123Card();
     }
+
+    @Override
+    public long validInvites(String openId) {
+        StringBuilder hql = new StringBuilder("select count(targetUser) ");
+        Query query = fromValidInvites(hql, openId);
+//        final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+//        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+//        Root<User> userRoot = criteriaQuery.from(User.class);
+//        validInvite(openId, criteriaBuilder, criteriaQuery, userRoot);
+//        criteriaQuery.select(criteriaBuilder.count(userRoot));
+//
+//        //
+//        TypedQuery<Long> query = entityManager.createQuery(criteriaQuery);
+
+        try {
+            return (long) query.getSingleResult();
+        } catch (NoResultException ignored) {
+            return 0;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<InviteUser> allInviteUsers(String openId) {
+        Query query = entityManager.createQuery("select new me.jiangcai.dating.model.InviteUser(targetUser.nickname,targetUser.headImageUrl,(select count(o) from CashOrder as o where o.owner=targetUser and o.completed = true) ) " + "from User as targetUser where targetUser.guideUser.openId = :openId ");
+        query = query.setParameter("openId", openId);
+        return query.getResultList();
+    }
+
+    private Query fromValidInvites(StringBuilder hql, String openId) {
+        hql.append("from User as targetUser where targetUser.guideUser.openId = :openId " +
+                "and (select count(o) from CashOrder as o where o.owner=targetUser and o.completed = true) >= 1");
+        Query query = entityManager.createQuery(hql.toString());
+        query = query.setParameter("openId", openId);
+        return query;
+    }
+
+    private void validInvite(String openId, CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery
+            , Root<User> userRoot) {
+//        Root<CashOrder> cashOrderRoot = criteriaQuery.from(CashOrder.class);
+        Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
+        Root<CashOrder> cashOrderRoot = subquery.from(CashOrder.class);
+        Predicate fromOpenPredicate = criteriaBuilder.equal(userRoot.get("guideUser").get("openId"), openId);
+        Predicate ourOrder = criteriaBuilder.equal(cashOrderRoot.get("owner"), subquery.correlate(userRoot));
+        Predicate validOrder = criteriaBuilder.isTrue(cashOrderRoot.get("completed"));
+        subquery = subquery.where(ourOrder, validOrder, criteriaBuilder.notEqual(subquery.correlate(userRoot).get("openId"), openId));
+        subquery = subquery.select(criteriaBuilder.count(cashOrderRoot));
+//        Predicate enoughOrders = criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.count(cashOrderRoot), 1L);
+//        criteriaQuery.having(enoughOrders);
+        criteriaQuery.where(fromOpenPredicate, criteriaBuilder.greaterThanOrEqualTo(subquery.getSelection(), 1L));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<InviteUser> validInviteUsers(String openId) {
+        StringBuilder hql = new StringBuilder("select new me.jiangcai.dating.model.InviteUser(targetUser.nickname,targetUser.headImageUrl,true) ");
+        Query query = fromValidInvites(hql, openId);
+
+//        final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+//        CriteriaQuery<InviteUser> criteriaQuery = criteriaBuilder.createQuery(InviteUser.class);
+//        Root<User> userRoot = criteriaQuery.from(User.class);
+//        Path<String> nickname = userRoot.get("nickname");
+//        Path<String> headImageUrl = userRoot.get("headImageUrl");
+//        validInvite(openId, criteriaBuilder, criteriaQuery, userRoot);
+//        criteriaQuery.select(criteriaBuilder.construct(InviteUser.class, nickname, headImageUrl
+//                , criteriaBuilder.literal(true)));
+//        TypedQuery<InviteUser> query = entityManager.createQuery(criteriaQuery);
+        query.setMaxResults(5);
+        return query.getResultList();
+    }
+
+    @Override
+    public boolean isValidUser(String openId) {
+        return cashOrderRepository.countByOwner_OpenIdAndCompletedTrue(openId) >= 1;
+    }
+
 
 }

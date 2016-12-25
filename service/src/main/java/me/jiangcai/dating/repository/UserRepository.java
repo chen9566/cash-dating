@@ -20,4 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     long countByGuideUser_OpenIdAndMobileNumberNotNull(String openId);
 
     List<User> findByEnabledTrueAndManageStatus(ManageStatus manageStatus);
+
+    List<User> findByMobileNumberNotNullAndGuideUser_OpenId(String openId);
 }
