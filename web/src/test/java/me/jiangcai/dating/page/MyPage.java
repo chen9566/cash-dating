@@ -143,7 +143,7 @@ public class MyPage extends AbstractPage {
     }
 
     public CodePage toCodePage() {
-        clickMenu("合伙赚钱");
+        clickMenu("邀请好友");
         return initPage(CodePage.class);
     }
 }

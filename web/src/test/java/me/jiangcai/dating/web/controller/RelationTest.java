@@ -88,8 +88,7 @@ public class RelationTest extends WebTest {
         oldDriver.get("http://localhost/my");
         MyPage page = PageFactory.initElements(oldDriver, MyPage.class);
         page.validatePage();
-        page.clickMenu("合伙赚钱");
-        CodePage codePage = PageFactory.initElements(oldDriver, CodePage.class);
+        CodePage codePage = page.toCodePage();
         codePage.setTestInstance(this);
         codePage.validatePage();
         MyInvitationPage myInvitationPage = codePage.toMyInvitationPage();
@@ -106,8 +105,7 @@ public class RelationTest extends WebTest {
     private void noTeamPage() {
         driver.get("http://localhost/my");
         MyPage page = initPage(MyPage.class);
-        page.clickMenu("合伙赚钱");
-        CodePage codePage = initPage(CodePage.class);
+        CodePage codePage = page.toCodePage();
         MyInvitationPage invitationPage = codePage.toMyInvitationPage();
         invitationPage.assertNoTeam();
     }

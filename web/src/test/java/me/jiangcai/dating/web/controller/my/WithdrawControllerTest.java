@@ -40,9 +40,7 @@ public class WithdrawControllerTest extends LoginWebTest {
 
         // 去我的
         MyPage myPage = myPage();
-        //
-        myPage.clickMenu("合伙赚钱");
-        CodePage codePage = initPage(CodePage.class);
+        CodePage codePage = myPage.toCodePage();
         // 去我的邀请
         MyInvitationPage myInvitationPage = codePage.toMyInvitationPage();
         myInvitationPage.assertNoTeam();

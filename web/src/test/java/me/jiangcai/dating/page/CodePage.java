@@ -16,7 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 合伙賺钱页面
- * code.html
+ * 2016-12-25更新至「邀请好友」页面
+ * code.html -> friends/inviteFriends.html
  * @author CJ
  */
 public class CodePage extends AbstractPage {
@@ -37,14 +38,14 @@ public class CodePage extends AbstractPage {
     @Override
     public void validatePage() {
         assertThat(webDriver.getTitle())
-                .isEqualTo("邀请合伙人");
+                .isEqualTo("邀请好友");
         webDriver.findElements(By.tagName("img")).stream()
                 .filter(WebElement::isDisplayed)
                 .filter(webElement -> "myShareQRCode".equals(webElement.getAttribute("name")))
                 .findFirst()
                 .ifPresent(element -> qrCode = element);
 
-        webDriver.findElements(By.tagName("h4")).stream()
+        webDriver.findElements(By.id("inviteCodeText")).stream()
                 .filter(WebElement::isDisplayed)
                 .findFirst()
                 .ifPresent(element -> message = element);
@@ -55,7 +56,7 @@ public class CodePage extends AbstractPage {
                 .findFirst()
                 .ifPresent(element -> inviteButton = element);
 
-        explainButton = webDriver.findElement(By.className("pbanner")).findElement(By.tagName("a"));
+//        explainButton = webDriver.findElement(By.className("pbanner")).findElement(By.tagName("a"));
 
 //        webDriver.findElements(By.tagName("button")).stream()
 //                .filter(WebElement::isDisplayed)
@@ -104,6 +105,12 @@ public class CodePage extends AbstractPage {
         return toImage(qrCode);
     }
 
+    /**
+     * 合伙人功能已取消
+     *
+     * @return
+     */
+    @Deprecated
     public AgentRequestPage requestAgent() {
 //        requestButton.click();
 //        throw new RuntimeException("这里没法支持申请合伙人。");

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:wx="http://weixin.jiangcai.me" lang="en">
+<!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>邀请好友</title>
     <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="styles/friends.css">
-    <script src="../dist/js/jquery.js"></script>
+    <link rel="stylesheet" href="styles/friends.css" th:href="@{/friends/styles/friends.css}">
+    <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
 </head>
 <body>
 <div class="rate">
@@ -16,10 +17,12 @@
 </div>
 <div class="code-i">
     <div class="ewmimg">
-        <p class="f16">邀请码: iFCxNb5</p>
-        <p><img src="images/temp2.png"/></p>
+        <p class="f16" id="inviteCodeText" th:text="'邀请码：'+${user.inviteCode}">邀请码：iFCxNb5</p>
+        <p><img src="images/temp2.png" name="myShareQRCode" th:src="@{/inviteQR/{id}(id=${user.id})}"></p>
     </div>
     <p class="f15">成功邀请<span class="red">5位好友</span>注册消费, 可享受<span class="red">0.30%</span><br>的消费利率</p>
+    <p class="f15">您已完成邀请任务<span class="red">当前消费费率调为0.30%</span>，
+        邀请更多的好友，成为款爷的用户</p>
     <p>
         <button type="submit" class="btn btn-danger btn-lg btn-block share">快速分享给好友</button>
     </p>
@@ -30,13 +33,17 @@
         <li class="ntxt">第3人<img src="images/none.png"/></li>
         <li class="ntxt">第4人<img src="images/none.png"/></li>
         <li class="ntxt">第5人<img src="images/none.png"/></li>
-        <span class="fr"><img src="images/right-icon.png"/></span>
+        <span class="fr"><img src="images/right-icon.png" th:src="@{/images/right-icon.png}"/></span>
     </ul>
 
 </div>
 <div class="sharebg">
-    <p><img src="images/sharebgok.png"/></p>
+    <p><img src="images/sharebgok.png" th:src="@{/images/sharebgok.png}"/></p>
 </div>
+<script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js" th:remove="all"></script>
+<script wx:js=""></script>
+<script wx:share="${#share.title(user)}|${#share.desc(user)}|${#share.link(user,#request)}|${#share.imageUrl(user)}"></script>
+<script src="../mock/all.js" th:src="@{/all.js}"></script>
 <script>
     $(document).ready(function ($) {
 

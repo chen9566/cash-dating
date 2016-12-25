@@ -43,8 +43,7 @@ public class AgentControllerTest extends LoginWebTest {
 
         driver.get("http://localhost/my");
         MyPage myPage = initPage(MyPage.class);
-        myPage.clickMenu("合伙赚钱");
-        CodePage codePage = initPage(CodePage.class);
+        CodePage codePage = myPage.toCodePage();
         MyInvitationPage invitePage = codePage.toMyInvitationPage();
         invitePage.assertTeam();
 
