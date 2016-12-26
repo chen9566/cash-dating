@@ -247,7 +247,6 @@ input::-webkit-inner-spin-button {
 }
 
 .form-register button {
-    margin-bottom: 22px;
     margin-bottom: 15px;
     height: 42px;
     line-height: 18px;
@@ -4229,6 +4228,7 @@ ul#navlist .list1 {
 .ks .y2 button {
     height: 42px;
     line-height: 18px;
+    background: #f65150;
 }
 
 .ks .bo-b {
