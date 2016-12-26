@@ -53,6 +53,11 @@ ul, li {
     margin: 0 54px;
 }
 
+.ewmimg p {
+    margin: 0 0 -8px 0;
+    padding: 0;
+}
+
 .ewmimg .f16 {
     font-size: 16px;
     color: #888;
@@ -115,7 +120,9 @@ ul, li {
 .code-i li.ctxt {
     color: #353535
 }
-
+.shareimg{ display: block; height:40px;}
+.shareimg img{ width:47.5%; float: left;}
+.shareimg .mt15{ margin-right: 15px}
 .fr {
     float: right;
 }
