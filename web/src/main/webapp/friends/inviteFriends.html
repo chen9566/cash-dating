@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>收款手续费</title>
+    <title>邀请好友</title>
     <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/friends.css" th:href="@{/friends/styles/friends.css}">
     <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
@@ -24,11 +24,12 @@
         <p class="f16" id="inviteCodeText" th:text="'邀请码：'+${user.inviteCode}">邀请码：iFCxNb5</p>
         <p><img src="images/temp2.png" name="myShareQRCode" th:src="@{/inviteQR/{id}(id=${user.id})}"></p>
     </div>
-    <p class="f15" th:if="${invites<5}">邀请<span class="red">5位好友</span>注册涮卡消费, 可拥有<span class="red">0.30%</span><br>的消费利率
+    <p class="f15" th:if="${invites<5}">成功邀请<span class="red">5位好友</span>注册消费, 可享受<span class="red">0.30%</span><br>的消费利率
     </p>
-    <p class="f15" th:if="${invites>=5}">邀请任务完成,关注后续活动</p>
-    <p class="shareimg">
-        <img src="images/paycard.png" class="mt15" alt="刷卡消费"/><img src="images/sharefriend.png" class="share" alt="分享好友"/>
+    <p class="f15" th:if="${invites>=5}">您已完成邀请任务<span class="red">当前消费费率调为0.30%</span>，
+        邀请更多的好友，成为款爷的用户</p>
+    <p>
+        <button type="submit" class="btn btn-danger btn-lg btn-block share">快速分享给好友</button>
     </p>
     <p class="f14">成功邀请好友：
         <span class="r16" th:text="${invites}">1</span>人</p>
