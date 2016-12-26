@@ -45,6 +45,10 @@ public class ProjectLoanRequest extends LoanRequest {
     //再加入 年化利率
     @Column(scale = 2, precision = 20)
     private BigDecimal yearRate;
+    /**
+     * 手机号码是否已验证
+     */
+    private boolean mobileVerified;
 
     /**
      * @param builder CriteriaBuilder

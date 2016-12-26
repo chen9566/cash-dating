@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.FileNotFoundException;
@@ -130,6 +131,24 @@ public class WealthController {
         loanRequest.getContracts().put(contract, id);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/projectLoanMobileCode")
+    @ResponseBody
+    public void verifyMobile(String requestId, String mobile) throws IOException {
+        tourongjiaService.sendItemLoanCode(requestId, mobile);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/projectLoan")
+    @Transactional
+    public String projectLoanSuccess(@AuthenticationPrincipal User user, long id, Model model, String mobile, String verificationCode) {
+        try {
+            wealthService.verifyProjectLoanCode(id, mobile, verificationCode);
+        } catch (Exception ex) {
+            model.addAttribute("message", ex.getMessage());
+        }
+        return projectLoanSuccess(user, id, model);
+    }
+
+
     /**
      * 项目贷款成功以后的展示页面
      *
@@ -147,6 +166,10 @@ public class WealthController {
         if (!loanRequest.getLoanData().getOwner().equals(user))
             throw new AccessDeniedException("");
         model.addAttribute("request", loanRequest);
+        ProjectLoanRequest projectLoanRequest = (ProjectLoanRequest) loanRequest;
+        if (!projectLoanRequest.isMobileVerified()) {
+            return "Verify.html";
+        }
         return "loansuccess.html";
     }
 

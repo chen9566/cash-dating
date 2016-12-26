@@ -18,6 +18,7 @@ import me.jiangcai.dating.page.LoanPage;
 import me.jiangcai.dating.page.LoanSubmitPage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.ProjectSuccessPage;
+import me.jiangcai.dating.page.ProjectSuccessVerifyPage;
 import me.jiangcai.dating.repository.LoanRequestRepository;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.PayResourceService;
@@ -191,7 +192,24 @@ public class WealthControllerTest extends LoginWebTest {
 
         // 打开通知所指向的地址
         // 就可以玩一玩签单流程了
-        ProjectSuccessPage projectSuccessPage = toSuccessPage(request.getId());
+        ProjectSuccessPage projectSuccessPage = null;
+        try {
+            projectSuccessPage = toSuccessPage(request.getId());
+        } catch (Exception ex) {
+            // 的确可能会发生此类错误
+            ProjectSuccessVerifyPage verifyPage = initPage(ProjectSuccessVerifyPage.class);
+            verifyPage.clickSendCode();
+//            verifyPage.assertNoAlert();//发送验证码没有错误
+// 输入错误的验证码
+            verifyPage.inputCode("654321");
+            verifyPage = initPage(ProjectSuccessVerifyPage.class);
+//依然是错误的页面
+            verifyPage.assertMessageExisting();
+
+            verifyPage.inputCode("123456");
+
+            projectSuccessPage = initPage(ProjectSuccessPage.class);
+        }
         // 这会儿应该是打不开的………………这个测试无法跑下去
         // 1-9
         String type = WealthService.ContractElements.stream().max(new RandomComparator()).orElse(null);

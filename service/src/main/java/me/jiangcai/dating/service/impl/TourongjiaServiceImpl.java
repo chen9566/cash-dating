@@ -237,6 +237,29 @@ public class TourongjiaServiceImpl implements TourongjiaService {
     }
 
     @Override
+    public void sendItemLoanCode(String requestId, String mobile) throws IOException {
+        try (CloseableHttpClient client = requestClient()) {
+            HttpGet get = new2Get("tenant/yt_sendVerifyCode.jhtml"
+                    , new BasicNameValuePair("applyId", requestId)
+                    , new BasicNameValuePair("mobile", mobile)
+            );
+            client.execute(get, new TRJJsonHandler<>(Void.class));
+        }
+    }
+
+    @Override
+    public void verifyItemLoanCode(String requestId, String mobile, String code) throws IOException {
+        try (CloseableHttpClient client = requestClient()) {
+            HttpGet get = new2Get("tenant//tenant/yt_confirmVerifyCode.jhtml"
+                    , new BasicNameValuePair("applyId", requestId)
+                    , new BasicNameValuePair("mobile", mobile)
+                    , new BasicNameValuePair("verifyCode", code)
+            );
+            client.execute(get, new TRJJsonHandler<>(Void.class));
+        }
+    }
+
+    @Override
     public void testMakeLoanStatus(String requestId, boolean success) throws IOException {
         try (CloseableHttpClient client = requestClient()) {
             HttpGet get = new2Get("tenant/yt_auditTest.jhtml"
