@@ -15,7 +15,6 @@ public class ProjectSuccessVerifyPage extends AbstractPage {
     @FindBy(id = "btn-mask")
     private WebElement buttonToSend;
     private WebElement verificationCode;
-    @FindBy(css = "[input=submit]")
     private WebElement buttonToSubmit;
     private WebElement myAlert;
 

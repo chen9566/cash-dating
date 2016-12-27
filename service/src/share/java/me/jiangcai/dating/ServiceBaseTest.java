@@ -321,6 +321,12 @@ public abstract class ServiceBaseTest extends SpringWebTest {
                 + org.apache.commons.lang.RandomStringUtils.randomNumeric(4);
     }
 
+    @Override
+    protected String randomMobile() {
+        return "186" + org.apache.commons.lang.RandomStringUtils.randomNumeric(8);
+    }
+
+
     public static class RandomComparator implements Comparator<Object> {
         static Random random = new Random();
 
