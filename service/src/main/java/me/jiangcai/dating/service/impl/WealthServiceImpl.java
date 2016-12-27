@@ -397,6 +397,7 @@ public class WealthServiceImpl implements WealthService {
         if (request.isMobileVerified())
             return;
         tourongjiaService.verifyItemLoanCode(request.getSupplierRequestId(), request.getLoanData().getOwner().getMobileNumber(), verificationCode);
+        request.setMobileVerified(true);
     }
 
     private Loan[] reCacheLoan() throws IOException {

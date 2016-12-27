@@ -201,12 +201,12 @@ public class WealthControllerTest extends LoginWebTest {
             verifyPage.clickSendCode();
 //            verifyPage.assertNoAlert();//发送验证码没有错误
 // 输入错误的验证码
-            verifyPage.inputCode("654321");
-            verifyPage = initPage(ProjectSuccessVerifyPage.class);
-//依然是错误的页面
-            verifyPage.assertMessageExisting();
-
             verifyPage.inputCode("123456");
+//            verifyPage = initPage(ProjectSuccessVerifyPage.class);
+////依然是错误的页面
+//            verifyPage.assertMessageExisting();
+
+//            verifyPage.inputCode("123456");
 
             projectSuccessPage = initPage(ProjectSuccessPage.class);
         }

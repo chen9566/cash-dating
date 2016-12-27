@@ -250,7 +250,7 @@ public class TourongjiaServiceImpl implements TourongjiaService {
     @Override
     public void verifyItemLoanCode(String requestId, String mobile, String code) throws IOException {
         try (CloseableHttpClient client = requestClient()) {
-            HttpGet get = new2Get("tenant//tenant/yt_confirmVerifyCode.jhtml"
+            HttpGet get = new2Get("tenant/yt_confirmVerifyCode.jhtml"
                     , new BasicNameValuePair("applyId", requestId)
                     , new BasicNameValuePair("mobile", mobile)
                     , new BasicNameValuePair("verifyCode", code)
