@@ -5089,10 +5089,10 @@ ul#navlist .list1 {
 .helpshow1 img{ width: 100%}
 .helpshow2{ position: absolute; top:0; left:0; display: none }
 .helpshow2 img{ width: 100%}
-.pay-n-two{background: -webkit-linear-gradient(bottom, #f65150, #db3249); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(top, #f65150, #db3249); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(top, #f65150, #db3249); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to top, #f65150, #db3249); padding: 30px 15px 40px 15px; }
+.pay-n-two{background: -webkit-linear-gradient(bottom, #db3249, #f65150); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(top, #db3249, #f65150); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(top, #db3249, #f65150); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to top, #db3249, #f65150); padding: 30px 15px 40px 15px; }
 .pay-n-two img{ width: 100%}
 .pay-n-two .ewm-p{ background: #fff; text-align: center; border-radius: 6px; padding:0 15px 15px 15px}
 .pay-n-two .ewm-p h1{ font-size: 17px; background: #f3f3f3; line-height: 50px;border-radius: 6px 6px 0 0; margin: 0 -15px;}
