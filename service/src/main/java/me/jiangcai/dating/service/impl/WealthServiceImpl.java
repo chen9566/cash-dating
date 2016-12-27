@@ -390,11 +390,11 @@ public class WealthServiceImpl implements WealthService {
     }
 
     private void supplierFailedProjectLoanRequest(ProjectLoanRequest request) {
-
+        log.fatal("Supplier Failed " + request.getId());
     }
 
     private void supplierSuccessProjectLoanRequest(ProjectLoanRequest request) {
-
+        log.fatal("Supplier Success " + request.getId());
     }
 
     @Override
