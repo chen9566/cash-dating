@@ -28,7 +28,11 @@
     </p>
     <p class="f15" th:if="${invites>=5}">邀请任务完成,关注后续活动</p>
     <p class="shareimg">
-        <img src="images/paycard.png" class="mt15" alt="刷卡消费" onclick="window.location.href='../paycode123.html'" /><img src="images/sharefriend.png" class="share" alt="分享好友"/>
+        <img src="images/paycard.png" th:src="@{/friends/images/paycard.png}" class="mt15 clickHref" alt="刷卡消费"
+             href="../paycode123.html" th:href="@{/start}"/>
+        <img src="images/sharefriend.png"
+             th:src="@{/friends/images/sharefriend.png}"
+             class="share" alt="分享好友"/>
     </p>
     <p class="f14">成功邀请好友：
         <span class="r16" th:text="${invites}">1</span>人</p>
