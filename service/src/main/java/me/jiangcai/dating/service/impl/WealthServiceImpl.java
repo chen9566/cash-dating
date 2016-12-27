@@ -39,6 +39,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
@@ -368,16 +369,32 @@ public class WealthServiceImpl implements WealthService {
         {
             LoanStatus loanStatus = tourongjiaService.checkLoanStatus(request.getSupplierRequestId());
             if (loanStatus == LoanStatus.success) {
-                log.info("[TRJ] allow loan:" + request.getId());
                 request.setProcessStatus(LoanRequestStatus.contract);
-                applicationEventPublisher.publishEvent(request.toAcceptNotification());
+                supplierAcceptProjectLoanRequest(request);
             } else if (loanStatus == LoanStatus.failed) {
-                log.info("[TRJ] reject loan:" + request.getId());
                 request.setProcessStatus(LoanRequestStatus.reject);
                 request.setComment("被投融家拒绝");
-                applicationEventPublisher.publishEvent(request.toRejectNotification());
+                supplierRejectProjectLoanRequest(request);
             }
         }
+    }
+
+    private void supplierRejectProjectLoanRequest(ProjectLoanRequest request) {
+        log.info("[TRJ] reject loan:" + request.getId());
+        applicationEventPublisher.publishEvent(request.toRejectNotification());
+    }
+
+    private void supplierAcceptProjectLoanRequest(ProjectLoanRequest request) {
+        log.info("[TRJ] allow loan:" + request.getId());
+        applicationEventPublisher.publishEvent(request.toAcceptNotification());
+    }
+
+    private void supplierFailedProjectLoanRequest(ProjectLoanRequest request) {
+
+    }
+
+    private void supplierSuccessProjectLoanRequest(ProjectLoanRequest request) {
+
     }
 
     @Override
@@ -389,6 +406,40 @@ public class WealthServiceImpl implements WealthService {
 //        if (request.getContracts().size() == ContractElements.size())
 //            throw new IllegalStateException("all contracts has signed");
         applicationEventPublisher.publishEvent(request.toAcceptNotification());
+    }
+
+    private void supplierChangeStatus(String id, String comment, LoanRequestStatus targetStatus
+            , Consumer<ProjectLoanRequest> projectLoanRequestConsumer) {
+        LoanRequest request = loanRequestRepository.findBySupplierRequestId(id);
+
+        if (request.getProcessStatus() == targetStatus)
+            return;
+        if (!StringUtils.isEmpty(comment))
+            request.setComment(comment);
+        request.setProcessStatus(targetStatus);
+        if (request instanceof ProjectLoanRequest) {
+            projectLoanRequestConsumer.accept((ProjectLoanRequest) request);
+        }
+    }
+
+    @Override
+    public void supplierRejectLoan(String id, String comment) {
+        supplierChangeStatus(id, comment, LoanRequestStatus.reject, this::supplierRejectProjectLoanRequest);
+    }
+
+    @Override
+    public void supplierAcceptLoan(String id, String comment) {
+        supplierChangeStatus(id, comment, LoanRequestStatus.contract, this::supplierAcceptProjectLoanRequest);
+    }
+
+    @Override
+    public void supplierFailedLoan(String id, String comment) {
+        supplierChangeStatus(id, comment, LoanRequestStatus.failed, this::supplierFailedProjectLoanRequest);
+    }
+
+    @Override
+    public void supplierSuccessLoan(String id, String comment) {
+        supplierChangeStatus(id, comment, LoanRequestStatus.success, this::supplierSuccessProjectLoanRequest);
     }
 
     private Loan[] reCacheLoan() throws IOException {

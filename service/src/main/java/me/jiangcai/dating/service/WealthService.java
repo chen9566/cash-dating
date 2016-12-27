@@ -188,6 +188,7 @@ public interface WealthService {
      * @param id      id
      * @param comment 备注
      */
+    @Transactional
     void supplierRejectLoan(String id, String comment);
 
     /**
@@ -196,6 +197,7 @@ public interface WealthService {
      * @param id      id
      * @param comment 备注
      */
+    @Transactional
     void supplierAcceptLoan(String id, String comment);
 
     /**
@@ -204,6 +206,7 @@ public interface WealthService {
      * @param id      id
      * @param comment 备注
      */
+    @Transactional
     void supplierFailedLoan(String id, String comment);
 
     /**
@@ -212,6 +215,7 @@ public interface WealthService {
      * @param id      id
      * @param comment 备注
      */
+    @Transactional
     void supplierSuccessLoan(String id, String comment);
 
 //

@@ -1,6 +1,6 @@
 package me.jiangcai.dating.web;
 
-import me.jiangcai.dating.web.controller.TRJNotifyController;
+import me.jiangcai.dating.web.advice.TRJNotifyLocker;
 import me.jiangcai.dating.web.converter.LocalDateFormatter;
 import me.jiangcai.dating.web.converter.ReportHandler;
 import me.jiangcai.dating.web.mvc.ImageResolver;
@@ -60,7 +60,7 @@ class MVCConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private ReportHandler reportHandler;
     @Autowired
-    private TRJNotifyController trjNotifyController;
+    private TRJNotifyLocker trjNotifyLocker;
 
     @Bean
     public CommonsMultipartResolver multipartResolver() {
@@ -70,7 +70,7 @@ class MVCConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         super.addInterceptors(registry);
-        registry.addInterceptor(trjNotifyController).addPathPatterns("/trj/notify/**");
+        registry.addInterceptor(trjNotifyLocker).addPathPatterns("/trj/notify/**");
     }
 
     @Override

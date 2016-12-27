@@ -14,4 +14,6 @@ public interface LoanRequestRepository extends JpaRepository<LoanRequest, Long> 
     List<LoanRequest> findByLoanData_Owner_OpenIdAndCompletedFalseOrderByCreatedTimeDesc(String openId);
 
     long countByProcessStatus(LoanRequestStatus status);
+
+    LoanRequest findBySupplierRequestId(String requestId);
 }

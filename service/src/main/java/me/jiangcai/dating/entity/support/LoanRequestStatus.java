@@ -17,7 +17,15 @@ public enum LoanRequestStatus {
     /**
      * 项目贷款特有,正在办理合同了（已发送通知给用户了,但还是可以重复发）
      */
-    contract;
+    contract,
+    /**
+     * 放款失败
+     */
+    failed,
+    /**
+     * 放款成功
+     */
+    success;
 
     public String toHtml() {
         switch (this) {
