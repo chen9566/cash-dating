@@ -72,7 +72,9 @@ public class TRJNotifyControllerTest extends WebTest {
     private MockHttpServletRequestBuilder putNotify(String url) throws Exception {
         String signed = Hex.encodeHexString(MessageDigest.getInstance("MD5").digest(("http://localhost" + url + "Einstein").getBytes("UTF-8")));
         return put(url).header("Kuanye_Auth", signed)
-                .accept(MediaType.APPLICATION_JSON);
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.TEXT_PLAIN)
+                .content("make fun.");
     }
 
 
