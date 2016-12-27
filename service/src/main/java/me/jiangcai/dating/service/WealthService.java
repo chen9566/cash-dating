@@ -182,6 +182,38 @@ public interface WealthService {
     @Transactional(readOnly = true)
     void sendNotify(long id);
 
+    /**
+     * 供应商拒绝了贷款
+     *
+     * @param id      id
+     * @param comment 备注
+     */
+    void supplierRejectLoan(String id, String comment);
+
+    /**
+     * 供应商接受了贷款
+     *
+     * @param id      id
+     * @param comment 备注
+     */
+    void supplierAcceptLoan(String id, String comment);
+
+    /**
+     * 已接受的贷款放款失败
+     *
+     * @param id      id
+     * @param comment 备注
+     */
+    void supplierFailedLoan(String id, String comment);
+
+    /**
+     * 已接受的贷款放款成功
+     *
+     * @param id      id
+     * @param comment 备注
+     */
+    void supplierSuccessLoan(String id, String comment);
+
 //
 //    /**
 //     * @return 总投资金额
