@@ -192,10 +192,10 @@ public class WealthControllerTest extends LoginWebTest {
 
         // 打开通知所指向的地址
         // 就可以玩一玩签单流程了
-        ProjectSuccessPage projectSuccessPage = null;
+        ProjectSuccessPage projectSuccessPage;
         try {
             projectSuccessPage = toSuccessPage(request.getId());
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             // 的确可能会发生此类错误
             ProjectSuccessVerifyPage verifyPage = initPage(ProjectSuccessVerifyPage.class);
             verifyPage.clickSendCode();

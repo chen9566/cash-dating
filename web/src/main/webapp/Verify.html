@@ -36,7 +36,7 @@
 </div>
 <div class="show-bg" id="myAlert">填写内容不能为空</div>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
-<script th:include="javascript">
+<script th:inline="javascript">
     $.requestId = /*[[${request.supplierRequestId}]]*/ 'what?';
     $.haveMessage = /*[[${message}]]*/null;
 </script>
