@@ -56,6 +56,14 @@ if [[ ! -e $1/jquery.fileupload.js ]]; then
     wget https://blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload.js -O $1/jquery.fileupload.js
 fi
 
+if [[ ! -e $1/jquery.loadingoverlay.min.js ]]; then
+	wget https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay.min.js -O $1/jquery.loadingoverlay.min.js
+fi
+
+if [[ ! -e $1/jquery.loadingoverlay_progress.min.js ]]; then
+	wget https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay_progress.min.js -O $1/jquery.loadingoverlay_progress.min.js
+fi
+
 #if [[ ! -e $1/jquery-ui.css ]]; then
 #    wget http://code.jquery.com/ui/1.12.1/themes/eggplant/jquery-ui.css -O $1/jquery-ui.css
 #fi
