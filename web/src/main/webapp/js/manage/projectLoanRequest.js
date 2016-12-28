@@ -198,6 +198,19 @@ $(function () {
         }
     ], approveButton.add(declineButton).add(messageButton).add(detailButton));
 
+
+    // //onLoadSuccess onLoadError
+    // table.bootstrapTable({
+    //     onLoadSuccess: function () {
+    //         console.log('onLoadError');
+    //     }
+    // });
+    // table.bootstrapTable({
+    //     onLoadError: function () {
+    //         console.log('onLoadError');
+    //     }
+    // });
+
     // if (!$.prototypesMode && !$.auths.agent)
     //     approveButton.add(declineButton).hide();
 

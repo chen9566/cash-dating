@@ -228,6 +228,7 @@ public class ManageProjectLoanController extends AbstractLoanManage {
                     public boolean searchSupport() {
                         return false;
                     }
+
                     @Override
                     protected Expression<?> selectExpression(Root<?> root) {
                         return root.join("loanData", JoinType.LEFT).join("owner", JoinType.LEFT).get("id");
@@ -404,7 +405,7 @@ public class ManageProjectLoanController extends AbstractLoanManage {
         return new Report<>("网商宝报表", typedQuery.getResultList(), Arrays.asList(
                 new SimpleSelection<>("用户申请时间", LocalDateTime.class, ProjectLoanRequest::getCreatedTime)
                 , new SimpleSelection<>("申请人姓名", String.class, request -> request.getLoanData().getName())
-                , new SimpleSelection<>("申请人身份证号码", String.class, request -> request.getLoanData().getNumber())
+                , new SimpleSelection<>("申请人身份证号码", String.class, request -> '\'' + request.getLoanData().getNumber())
                 , new SimpleSelection<>("申请人电话", String.class, request -> request.getLoanData().getOwner().getMobileNumber())
                 , new SimpleSelection<>("借款金额", BigDecimal.class, ProjectLoanRequest::getApplyAmount)
                 , new SimpleSelection<>("产品期限", String.class, request -> request.getApplyTermDays() + "天")
