@@ -30,6 +30,26 @@ $(function () {
         table.bootstrapTable('refresh', {
             url: table.attr('data-url' + target)
         });
+
+        $.LoadingOverlay("show");
+    });
+
+    function stopOverlay() {
+        if ($.prototypesMode) {
+            // Hide it after 3 seconds
+            setTimeout(function () {
+                $.LoadingOverlay("hide");
+            }, 3000);
+        } else {
+            $.LoadingOverlay("hide");
+        }
+    }
+
+    table.on('load-success.bs.table', function () {
+        stopOverlay();
+    });
+    table.on('load-error.bs.table', function () {
+        stopOverlay();
     });
 
     approveDialog.add(declineDialog).add(detailDialog).dialog({
@@ -197,19 +217,6 @@ $(function () {
             sortable: true
         }
     ], approveButton.add(declineButton).add(messageButton).add(detailButton));
-
-
-    // //onLoadSuccess onLoadError
-    // table.bootstrapTable({
-    //     onLoadSuccess: function () {
-    //         console.log('onLoadError');
-    //     }
-    // });
-    // table.bootstrapTable({
-    //     onLoadError: function () {
-    //         console.log('onLoadError');
-    //     }
-    // });
 
     // if (!$.prototypesMode && !$.auths.agent)
     //     approveButton.add(declineButton).hide();
