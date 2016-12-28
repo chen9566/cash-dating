@@ -171,6 +171,8 @@ public interface DataService {
 
         @Override
         public Predicate searchPredicate(CriteriaBuilder criteriaBuilder, Root<?> root, String word) {
+            if (!searchSupport())
+                return null;
             try {
                 return criteriaBuilder.equal(selectExpression(root), NumberUtils.parseNumber(word, numberType));
             } catch (Exception ignored) {
@@ -200,6 +202,8 @@ public interface DataService {
 
         @Override
         public Predicate searchPredicate(CriteriaBuilder criteriaBuilder, Root<?> root, String word) {
+            if (!searchSupport())
+                return null;
             @SuppressWarnings("unchecked") final Path<String> path = (Path<String>) selectExpression(root);
             return DataField.stringLike(criteriaBuilder, word, path);
         }

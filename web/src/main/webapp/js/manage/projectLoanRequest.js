@@ -128,7 +128,7 @@ $(function () {
             sortable: true
         }, {
             title: '身份证',
-            field: 'idCode',
+            field: 'number',
             align: 'center',
             sortable: true
         }, {

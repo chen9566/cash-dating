@@ -215,10 +215,19 @@ public class ManageProjectLoanController extends AbstractLoanManage {
                 new DataService.NumberField("id", Long.class)
                 , new DataService.StringField("headImageUrl") {
                     @Override
+                    public boolean searchSupport() {
+                        return false;
+                    }
+
+                    @Override
                     protected Expression<?> selectExpression(Root<?> root) {
                         return root.join("loanData", JoinType.LEFT).join("owner", JoinType.LEFT).get("headImageUrl");
                     }
                 }, new DataService.StringField("userId") {
+                    @Override
+                    public boolean searchSupport() {
+                        return false;
+                    }
                     @Override
                     protected Expression<?> selectExpression(Root<?> root) {
                         return root.join("loanData", JoinType.LEFT).join("owner", JoinType.LEFT).get("id");
@@ -228,17 +237,22 @@ public class ManageProjectLoanController extends AbstractLoanManage {
                     protected Expression<?> selectExpression(Root<?> root) {
                         return root.join("loanData", JoinType.LEFT).get("name");
                     }
-                }, new DataService.StringField("idCode") {
-                    @Override
-                    protected Expression<?> selectExpression(Root<?> root) {
-                        return root.join("loanData", JoinType.LEFT).get("number");
-                    }
+//                }, new DataService.StringField("idCode") {
+//                    @Override
+//                    protected Expression<?> selectExpression(Root<?> root) {
+//                        return root.join("loanData", JoinType.LEFT).get("number");
+//                    }
                 }, new DataService.StringField("mobileNumber") {
                     @Override
                     protected Expression<?> selectExpression(Root<?> root) {
                         return root.join("loanData", JoinType.LEFT).join("owner", JoinType.LEFT).get("mobileNumber");
                     }
                 }, new DataService.StringField("city") {
+                    @Override
+                    public boolean searchSupport() {
+                        return false;
+                    }
+
                     @Override
                     protected Expression<?> selectExpression(Root<?> root) {
                         return root.join("loanData", JoinType.LEFT).get("address");
