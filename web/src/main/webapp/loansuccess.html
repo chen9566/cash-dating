@@ -36,7 +36,7 @@
 </div>
 <div class="agreelist">
     <p class="f13">请您务必打开以下七份合同仔细阅读，并点击同意！</p>
-    <p ><input type="checkbox" id="CT001" class="chk_1"/><label for="CT001"></label><span
+    <p><input type="checkbox" id="CT001" class="chk_1"/><label for="CT001"></label><span
             class="check-pos">同意<a name="A_CT001" href="agreement5.html">《最高额借款合同》</a></span></p>
     <p class="check"><input type="checkbox" id="CT002" class="chk_1"/><label for="CT002"></label><span
             class="check-pos">同意<a name="A_CT002" href="agreement9.html">《最高额度支用申请单》</a></span></p>
@@ -55,8 +55,13 @@
 <script th:inline="javascript">
     var requestId = /*[[${request.id}]]*/ 100;
     var defaultDatabaseContracts = {
+        CT001: 'simple',
         CT002: 'simple',
-        CT003: 'simple'
+        CT004: 'simple',
+        CT005: 'simple',
+        CT006: 'simple',
+//        CT007: 'simple',
+        CT008: 'simple'
     };
     var databaseContracts = /*[[${request.contracts}]]*/ defaultDatabaseContracts;
     //    打开这个地方的时候,应该判断自身从何处进入的
@@ -65,7 +70,17 @@
 </script>
 <script>
     $(function () {
-        $('.chk_1').attr('disabled', 'disabled');
+        var submitButton = $('#submitButton');
+
+        submitButton.click(function () {
+            submitButton.attr('disabled', 'disabled');
+            submitButton.addClass('black');
+            submitButton.removeClass('redremove');
+            submitButton.val('已提交');
+        });
+
+        var allCheckBoxes = $('.chk_1');
+        allCheckBoxes.attr('disabled', 'disabled');
 
         $.map(databaseContracts, function (data, id) {
             $('#' + id).prop('checked', true);
@@ -86,11 +101,21 @@
                 }
             });
         }
+
+        // 如果所有合同点亮  则开启按钮
+        for (var i = 0; i < allCheckBoxes.size(); i++) {
+            if (!$(allCheckBoxes[i]).prop('checked'))
+                return;
+        }
+        // 开启
+        submitButton.removeAttr('disabled');
+        submitButton.removeClass('black');
+        submitButton.addClass('redremove');
     });
 
 </script>
 <p class="p-15 mb15">
-    <input value="提交" type="submit" class="black"  disabled="disabled"/>
+    <input value="提交" id="submitButton" type="submit" class="black" disabled="disabled"/>
     <!--当所有协议同意后,按钮变亮  -->
     <!--<input value="已提交" type="submit" class="redremove" />-->
 </p>
