@@ -192,6 +192,42 @@ public interface WealthService {
      */
     void verifyProjectLoanCode(long id, String mobile, String verificationCode) throws IOException;
 
+    /**
+     * 供应商拒绝了贷款
+     *
+     * @param id      id
+     * @param comment 备注
+     */
+    @Transactional
+    void supplierRejectLoan(String id, String comment);
+
+    /**
+     * 供应商接受了贷款
+     *
+     * @param id      id
+     * @param comment 备注
+     */
+    @Transactional
+    void supplierAcceptLoan(String id, String comment);
+
+    /**
+     * 已接受的贷款放款失败
+     *
+     * @param id      id
+     * @param comment 备注
+     */
+    @Transactional
+    void supplierFailedLoan(String id, String comment);
+
+    /**
+     * 已接受的贷款放款成功
+     *
+     * @param id      id
+     * @param comment 备注
+     */
+    @Transactional
+    void supplierSuccessLoan(String id, String comment);
+
 //
 //    /**
 //     * @return 总投资金额

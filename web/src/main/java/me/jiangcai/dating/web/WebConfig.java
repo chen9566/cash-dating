@@ -74,6 +74,7 @@ public class WebConfig {
                     .antMatchers("/404.html")
                     .antMatchers("/weixin/")
                     .antMatchers("/notify/**")
+                    .antMatchers("/trj/notify/**")
                     .antMatchers("/login");
         }
 

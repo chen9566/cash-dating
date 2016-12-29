@@ -1,5 +1,6 @@
 package me.jiangcai.dating.web;
 
+import me.jiangcai.dating.web.advice.TRJNotifyLocker;
 import me.jiangcai.dating.web.converter.LocalDateFormatter;
 import me.jiangcai.dating.web.converter.ReportHandler;
 import me.jiangcai.dating.web.mvc.ImageResolver;
@@ -18,6 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
@@ -57,10 +59,18 @@ class MVCConfig extends WebMvcConfigurerAdapter {
     private LocalDateFormatter localDateFormatter;
     @Autowired
     private ReportHandler reportHandler;
+    @Autowired
+    private TRJNotifyLocker trjNotifyLocker;
 
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         return new CommonsMultipartResolver();
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        super.addInterceptors(registry);
+        registry.addInterceptor(trjNotifyLocker).addPathPatterns("/trj/notify/**");
     }
 
     @Override

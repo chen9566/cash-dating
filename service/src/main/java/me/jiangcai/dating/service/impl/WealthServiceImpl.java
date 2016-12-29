@@ -7,6 +7,7 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserLoanData;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.entity.support.LoanRequestStatus;
+import me.jiangcai.dating.exception.NoContentException;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.LoanStatus;
@@ -39,6 +40,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
@@ -368,16 +370,32 @@ public class WealthServiceImpl implements WealthService {
         {
             LoanStatus loanStatus = tourongjiaService.checkLoanStatus(request.getSupplierRequestId());
             if (loanStatus == LoanStatus.success) {
-                log.info("[TRJ] allow loan:" + request.getId());
                 request.setProcessStatus(LoanRequestStatus.contract);
-                applicationEventPublisher.publishEvent(request.toAcceptNotification());
+                supplierAcceptProjectLoanRequest(request);
             } else if (loanStatus == LoanStatus.failed) {
-                log.info("[TRJ] reject loan:" + request.getId());
                 request.setProcessStatus(LoanRequestStatus.reject);
                 request.setComment("被投融家拒绝");
-                applicationEventPublisher.publishEvent(request.toRejectNotification());
+                supplierRejectProjectLoanRequest(request);
             }
         }
+    }
+
+    private void supplierRejectProjectLoanRequest(ProjectLoanRequest request) {
+        log.info("[TRJ] reject loan:" + request.getId());
+        applicationEventPublisher.publishEvent(request.toRejectNotification());
+    }
+
+    private void supplierAcceptProjectLoanRequest(ProjectLoanRequest request) {
+        log.info("[TRJ] allow loan:" + request.getId());
+        applicationEventPublisher.publishEvent(request.toAcceptNotification());
+    }
+
+    private void supplierFailedProjectLoanRequest(ProjectLoanRequest request) {
+        log.fatal("Supplier Failed " + request.getId());
+    }
+
+    private void supplierSuccessProjectLoanRequest(ProjectLoanRequest request) {
+        log.fatal("Supplier Success " + request.getId());
     }
 
     @Override
@@ -398,6 +416,43 @@ public class WealthServiceImpl implements WealthService {
             return;
         tourongjiaService.verifyItemLoanCode(request.getSupplierRequestId(), request.getLoanData().getOwner().getMobileNumber(), verificationCode);
         request.setMobileVerified(true);
+    }
+
+    private void supplierChangeStatus(String id, String comment, LoanRequestStatus targetStatus
+            , Consumer<ProjectLoanRequest> projectLoanRequestConsumer) {
+        LoanRequest request = loanRequestRepository.findBySupplierRequestId(id);
+
+        if (request == null)
+            throw new NoContentException();
+
+        if (request.getProcessStatus() == targetStatus)
+            return;
+        if (!StringUtils.isEmpty(comment))
+            request.setComment(comment);
+        request.setProcessStatus(targetStatus);
+        if (request instanceof ProjectLoanRequest) {
+            projectLoanRequestConsumer.accept((ProjectLoanRequest) request);
+        }
+    }
+
+    @Override
+    public void supplierRejectLoan(String id, String comment) {
+        supplierChangeStatus(id, comment, LoanRequestStatus.reject, this::supplierRejectProjectLoanRequest);
+    }
+
+    @Override
+    public void supplierAcceptLoan(String id, String comment) {
+        supplierChangeStatus(id, comment, LoanRequestStatus.contract, this::supplierAcceptProjectLoanRequest);
+    }
+
+    @Override
+    public void supplierFailedLoan(String id, String comment) {
+        supplierChangeStatus(id, comment, LoanRequestStatus.failed, this::supplierFailedProjectLoanRequest);
+    }
+
+    @Override
+    public void supplierSuccessLoan(String id, String comment) {
+        supplierChangeStatus(id, comment, LoanRequestStatus.success, this::supplierSuccessProjectLoanRequest);
     }
 
     private Loan[] reCacheLoan() throws IOException {
