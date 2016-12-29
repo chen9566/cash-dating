@@ -7,6 +7,7 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserLoanData;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.entity.support.LoanRequestStatus;
+import me.jiangcai.dating.exception.NoContentException;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.LoanStatus;
@@ -420,6 +421,9 @@ public class WealthServiceImpl implements WealthService {
     private void supplierChangeStatus(String id, String comment, LoanRequestStatus targetStatus
             , Consumer<ProjectLoanRequest> projectLoanRequestConsumer) {
         LoanRequest request = loanRequestRepository.findBySupplierRequestId(id);
+
+        if (request == null)
+            throw new NoContentException();
 
         if (request.getProcessStatus() == targetStatus)
             return;

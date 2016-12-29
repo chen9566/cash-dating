@@ -27,6 +27,10 @@ public class TRJNotifyControllerTest extends WebTest {
 
     @Test
     public void test() throws Exception {
+
+        mockMvc.perform(putNotify("/trj/notify/ItemLoan/xoo/reject"))
+                .andExpect(status().isNoContent());
+
         ProjectLoanRequest projectLoanRequest = newProjectLoanRequest(createNewUser().getOpenId());
 
         projectLoanRequest.setSupplierRequestId(randomMobile());
