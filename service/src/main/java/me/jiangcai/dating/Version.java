@@ -41,4 +41,8 @@ public enum Version {
      * 1.8.1 少了一个参数
      */
     v108002,
+    /**
+     * mobileVerified
+     */
+    v109001,
 }

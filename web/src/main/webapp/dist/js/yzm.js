@@ -26,7 +26,7 @@ $(function () {
             // }
 
             validCode = false;
-            code.addClass("msgs1");
+            code.addClass("yzm-n2");
             var t = setInterval(function () {
                 time--;
                 code.html(time + "秒");

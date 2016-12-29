@@ -4,6 +4,7 @@ import me.jiangcai.dating.Version;
 import me.jiangcai.dating.entity.Bank;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.PlatformOrder;
+import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserLoanData;
 import me.jiangcai.dating.entity.UserOrder;
@@ -62,6 +63,9 @@ public class InitService {
             @Override
             public void upgradeToVersion(Version version) throws Exception {
                 switch (version) {
+                    case v109001:
+                        jdbcService.tableAlterAddColumn(ProjectLoanRequest.class, "mobileVerified", "0");
+                        break;
                     case v108002:
                         jdbcService.tableAlterAddColumn(UserLoanData.class, "hasHouse", "0");
                         break;

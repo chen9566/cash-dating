@@ -21,6 +21,7 @@ import javax.persistence.criteria.Root;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -69,7 +70,7 @@ public class DataServiceImpl implements DataService {
             List<Predicate> conditions = dataFields.stream()
                     .filter(DataField::searchSupport)
                     .map(dataField -> dataField.searchPredicate(criteriaBuilder, root, search))
-                    .filter(predicate -> predicate != null)
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
 
             Predicate condition = criteriaBuilder.or(conditions.toArray(new Predicate[conditions.size()]));

@@ -111,4 +111,8 @@ public interface TourongjiaService {
      * @throws IOException
      */
     void testMakeLoanStatus(String requestId, boolean success) throws IOException;
+
+    void sendItemLoanCode(String requestId, String mobile) throws IOException;
+
+    void verifyItemLoanCode(String requestId, String mobile, String code) throws IOException;
 }

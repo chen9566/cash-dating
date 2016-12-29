@@ -30,6 +30,26 @@ $(function () {
         table.bootstrapTable('refresh', {
             url: table.attr('data-url' + target)
         });
+
+        $.LoadingOverlay("show");
+    });
+
+    function stopOverlay() {
+        if ($.prototypesMode) {
+            // Hide it after 3 seconds
+            setTimeout(function () {
+                $.LoadingOverlay("hide");
+            }, 3000);
+        } else {
+            $.LoadingOverlay("hide");
+        }
+    }
+
+    table.on('load-success.bs.table', function () {
+        stopOverlay();
+    });
+    table.on('load-error.bs.table', function () {
+        stopOverlay();
     });
 
     approveDialog.add(declineDialog).add(detailDialog).dialog({
@@ -128,7 +148,7 @@ $(function () {
             sortable: true
         }, {
             title: '身份证',
-            field: 'idCode',
+            field: 'number',
             align: 'center',
             sortable: true
         }, {

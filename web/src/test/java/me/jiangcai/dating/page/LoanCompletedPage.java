@@ -22,7 +22,7 @@ public class LoanCompletedPage extends AbstractPage {
     @Override
     public void validatePage() {
         assertThat(webDriver.getTitle())
-                .isEqualTo("申请完成");
+                .isEqualTo("提交成功");
     }
 
     public MyPage doBack() {

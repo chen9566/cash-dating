@@ -247,7 +247,6 @@ input::-webkit-inner-spin-button {
 }
 
 .form-register button {
-    margin-bottom: 22px;
     margin-bottom: 15px;
     height: 42px;
     line-height: 18px;
@@ -2957,7 +2956,15 @@ ul#navlist .list1 {
     width: 21px;
     margin-top: -3px;
 }
+.mykey .hots {
+    margin: 0 9px 0 0;
+}
 
+.mykey .hots img {
+    width: 23px;
+    margin-top: -16px;
+    margin-left: 2px;
+}
 .mykey .f-l {
     margin-right: 15px;
     color: #888;
@@ -2966,6 +2973,7 @@ ul#navlist .list1 {
 .mykey .f-l img {
     width: 8px;
     margin-left: 8px;
+    margin-top: -2px;
 }
 
 .mykey .bo-b {
@@ -4229,6 +4237,7 @@ ul#navlist .list1 {
 .ks .y2 button {
     height: 42px;
     line-height: 18px;
+    background: #f65150;
 }
 
 .ks .bo-b {
@@ -5089,3 +5098,12 @@ ul#navlist .list1 {
 .helpshow1 img{ width: 100%}
 .helpshow2{ position: absolute; top:0; left:0; display: none }
 .helpshow2 img{ width: 100%}
+.pay-n-two{background: -webkit-linear-gradient(bottom, #db3249, #f65150); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(top, #db3249, #f65150); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(top, #db3249, #f65150); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to top, #db3249, #f65150); padding: 30px 15px 40px 15px; }
+.pay-n-two img{ width: 100%}
+.pay-n-two .ewm-p{ background: #fff; text-align: center; border-radius: 6px; padding:0 15px 15px 15px}
+.pay-n-two .ewm-p h1{ font-size: 17px; background: #f3f3f3; line-height: 50px;border-radius: 6px 6px 0 0; margin: 0 -15px;}
+.pay-n-two .f14{ opacity: 0.8; margin-bottom: 35px; font-size: 14px; color: #fff; text-align: center; padding-top: 10px}
+.pay-n-two .f14 a{ color: #fff; text-decoration: none;}

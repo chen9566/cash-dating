@@ -463,6 +463,14 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
         assertThat(projectLoanRequest.getContracts())
                 .hasSize(WealthService.ContractElements.size());
 
+        // 这里加入的是 对于搜索需求的测试
+        mockMvc.perform(getWeixin("/manage/data/projectLoan/signed").session(session)
+                .param("search", loanRequestRepository.getOne(firstPaddingId).getLoanData().getNumber())
+                .param("offset", "0")
+                .param("limit", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total").value(1));
+
         // 手动通知
         mockMvc.perform(putWeixin("/manage/data/projectLoan/sendNotify/" + firstPaddingId).session(session))
                 .andExpect(status().isOk());

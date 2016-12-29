@@ -183,6 +183,16 @@ public interface WealthService {
     void sendNotify(long id);
 
     /**
+     * 校验项目贷款验证码
+     *
+     * @param id               请求id
+     * @param mobile           页面提交过来的手机号码，应该以请求信息里的为主
+     * @param verificationCode 验证码
+     * @throws IOException
+     */
+    void verifyProjectLoanCode(long id, String mobile, String verificationCode) throws IOException;
+
+    /**
      * 供应商拒绝了贷款
      *
      * @param id      id

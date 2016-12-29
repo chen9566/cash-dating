@@ -408,6 +408,15 @@ public class WealthServiceImpl implements WealthService {
         applicationEventPublisher.publishEvent(request.toAcceptNotification());
     }
 
+    @Override
+    public void verifyProjectLoanCode(long id, String mobile, String verificationCode) throws IOException {
+        ProjectLoanRequest request = (ProjectLoanRequest) loanRequestRepository.getOne(id);
+        if (request.isMobileVerified())
+            return;
+        tourongjiaService.verifyItemLoanCode(request.getSupplierRequestId(), request.getLoanData().getOwner().getMobileNumber(), verificationCode);
+        request.setMobileVerified(true);
+    }
+
     private void supplierChangeStatus(String id, String comment, LoanRequestStatus targetStatus
             , Consumer<ProjectLoanRequest> projectLoanRequestConsumer) {
         LoanRequest request = loanRequestRepository.findBySupplierRequestId(id);
