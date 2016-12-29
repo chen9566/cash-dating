@@ -4,14 +4,17 @@ import me.jiangcai.dating.entity.LoginToken;
 import me.jiangcai.dating.exception.ArbitrageBindRequireException;
 import me.jiangcai.dating.exception.ArbitrageBindingException;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
+import me.jiangcai.dating.exception.NoContentException;
 import me.jiangcai.dating.exception.RequestedException;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.wx.web.exception.NoWeixinClientException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +31,10 @@ public class CommonAdvice {
     private UserService userService;
 
     // ArbitrageBindFailedException
+    @ExceptionHandler(NoContentException.class)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void noContentException() {
+    }
 
     @ExceptionHandler(ArbitrageBindRequireException.class)
     public String arbitrageBindRequireException() {
