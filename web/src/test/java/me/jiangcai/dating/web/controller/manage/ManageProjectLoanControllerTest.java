@@ -8,7 +8,6 @@ import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.model.trj.Loan;
-import me.jiangcai.dating.model.trj.ProjectLoan;
 import me.jiangcai.dating.repository.LoanRequestRepository;
 import me.jiangcai.dating.selection.Report;
 import me.jiangcai.dating.service.CashStrings;
@@ -45,8 +44,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AsManage(ManageStatus.projectLoanSupplier)
 public class ManageProjectLoanControllerTest extends ManageWebTest {
 
-    @Autowired
-    private WealthService wealthService;
     @Autowired
     private CashStrings cashStrings;
     @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -544,26 +541,6 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
 
 
         return ((Number) JsonPath.read(contentAsString, "$.rows[0].id")).longValue();
-    }
-
-    /**
-     * 创建一个项目贷款完整订单
-     *
-     * @param openId
-     * @return
-     */
-    private ProjectLoanRequest newProjectLoanRequest(String openId) throws IOException {
-        Address address = new Address();
-        address.setProvince(PayResourceService.listProvince().stream().max(new RandomComparator()).orElse(null));
-        address.setCity(address.getProvince().getCityList().stream().max(new RandomComparator()).orElse(null));
-
-        ProjectLoan projectLoan = new ProjectLoan();
-        ProjectLoanRequest loanRequest = wealthService.loanRequest(openId, projectLoan, null
-                , new BigDecimal(projectLoan.getMinAmount() + random.nextInt(projectLoan.getAmountInteger() - projectLoan.getMinAmount()))
-                , "随意人", RandomStringUtils.randomNumeric(18), address, UUID.randomUUID().toString()
-                , UUID.randomUUID().toString(), random.nextInt(100), random.nextInt(100), random.nextInt(100), random.nextBoolean());
-        wealthService.updateLoanIDImages(loanRequest.getId(), randomImageResourcePath(), randomImageResourcePath(), randomImageResourcePath());
-        return loanRequest;
     }
 
 }

@@ -2,12 +2,9 @@ package me.jiangcai.dating.web.controller;
 
 import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.ProjectLoanRequest;
-import me.jiangcai.dating.entity.User;
-import me.jiangcai.dating.entity.UserLoanData;
 import me.jiangcai.dating.entity.support.LoanRequestStatus;
 import me.jiangcai.dating.repository.LoanRequestRepository;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,15 +27,10 @@ public class TRJNotifyControllerTest extends WebTest {
 
     @Test
     public void test() throws Exception {
-        User user = userService.byOpenId(createNewUser().getOpenId());
-        UserLoanData loanData = new UserLoanData();
-        loanData.setName(RandomStringUtils.randomAscii(6));
-        loanData.setOwner(user);
-        ProjectLoanRequest projectLoanRequest = new ProjectLoanRequest();
-        projectLoanRequest.setLoanData(loanData);
+        ProjectLoanRequest projectLoanRequest = newProjectLoanRequest(createNewUser().getOpenId());
 
         projectLoanRequest.setSupplierRequestId(randomMobile());
-        projectLoanRequest = loanRequestRepository.saveAndFlush(projectLoanRequest);
+        projectLoanRequest = loanRequestRepository.save(projectLoanRequest);
 
 //        MockMvcResultHandlers.print();
 

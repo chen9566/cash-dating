@@ -7,9 +7,12 @@ import com.google.common.base.Predicate;
 import me.jiangcai.chanpay.test.mock.MockPay;
 import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.entity.Card;
+import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.trj.ProjectLoan;
 import me.jiangcai.dating.page.BindingCardPage;
 import me.jiangcai.dating.page.BindingMobilePage;
 import me.jiangcai.dating.page.CodePage;
@@ -17,8 +20,10 @@ import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.OrderService;
+import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.SystemService;
+import me.jiangcai.dating.service.WealthService;
 import me.jiangcai.dating.web.WebConfig;
 import me.jiangcai.lib.test.page.AbstractPage;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -46,7 +51,9 @@ import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -63,6 +70,8 @@ public abstract class WebTest extends ServiceBaseTest {
     protected final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     protected ApplicationContext applicationContext;
+    @Autowired
+    protected WealthService wealthService;
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserRepository userRepository;
@@ -419,6 +428,26 @@ public abstract class WebTest extends ServiceBaseTest {
         mockMvc.perform(getWeixin("/login").session(session));
         mockMvc.perform(getWeixin("/start").session(session));
         return session;
+    }
+
+    /**
+     * 创建一个项目贷款完整订单
+     *
+     * @param openId
+     * @return
+     */
+    protected ProjectLoanRequest newProjectLoanRequest(String openId) throws IOException {
+        Address address = new Address();
+        address.setProvince(PayResourceService.listProvince().stream().max(new RandomComparator()).orElse(null));
+        address.setCity(address.getProvince().getCityList().stream().max(new RandomComparator()).orElse(null));
+
+        ProjectLoan projectLoan = new ProjectLoan();
+        ProjectLoanRequest loanRequest = wealthService.loanRequest(openId, projectLoan, null
+                , new BigDecimal(projectLoan.getMinAmount() + random.nextInt(projectLoan.getAmountInteger() - projectLoan.getMinAmount()))
+                , "随意人", org.apache.commons.lang.RandomStringUtils.randomNumeric(18), address, UUID.randomUUID().toString()
+                , UUID.randomUUID().toString(), random.nextInt(100), random.nextInt(100), random.nextInt(100), random.nextBoolean());
+        wealthService.updateLoanIDImages(loanRequest.getId(), randomImageResourcePath(), randomImageResourcePath(), randomImageResourcePath());
+        return loanRequest;
     }
 
     @ComponentScan({"me.jiangcai.dating.test"})
