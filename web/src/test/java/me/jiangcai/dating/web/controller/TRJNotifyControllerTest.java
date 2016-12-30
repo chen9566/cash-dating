@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.math.BigDecimal;
 import java.security.MessageDigest;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,9 +45,22 @@ public class TRJNotifyControllerTest extends WebTest {
         assertThat(loanRequestRepository.getOne(projectLoanRequest.getId()).getProcessStatus())
                 .isEqualByComparingTo(LoanRequestStatus.reject);
 
+        // 1.0.4 之后 更改了 accept 接受的content格式
         mockMvc.perform(putNotify("/trj/notify/ItemLoan/" + projectLoanRequest.getSupplierRequestId() + "/accept"))
+                .andExpect(status().isUnsupportedMediaType());
+
+        String chineseComment = "中国" + randomEmailAddress();
+        BigDecimal targetAmount = randomOrderAmount();
+        mockMvc.perform(putNotify("/trj/notify/ItemLoan/" + projectLoanRequest.getSupplierRequestId() + "/accept")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content("{\"comment\":\"" + chineseComment + "\",\"amount\":" + targetAmount.toString() + "}")
+        )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(true));
+        assertThat(loanRequestRepository.getOne(projectLoanRequest.getId()).getComment())
+                .isEqualTo(chineseComment);
+        assertThat(loanRequestRepository.getOne(projectLoanRequest.getId()).getAmount())
+                .isEqualTo(targetAmount);
         assertThat(loanRequestRepository.getOne(projectLoanRequest.getId()).getProcessStatus())
                 .isEqualByComparingTo(LoanRequestStatus.contract);
 

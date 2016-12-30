@@ -2,6 +2,7 @@ package me.jiangcai.dating.web.controller;
 
 import me.jiangcai.dating.service.WealthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  * @author CJ
@@ -28,11 +32,12 @@ public class TRJNotifyController {
         return true;
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/ItemLoan/{id}/accept")
+    @RequestMapping(method = RequestMethod.PUT, value = "/ItemLoan/{id}/accept", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     @Transactional
-    public boolean accept(@PathVariable("id") String id, @RequestBody(required = false) String comment) {
-        wealthService.supplierAcceptLoan(id, comment);
+    public boolean accept(@PathVariable("id") String id, @RequestBody Map<String, Object> data) {
+        wealthService.supplierAcceptLoan(id, (String) data.get("comment")
+                , new BigDecimal(((Number) data.get("amount")).doubleValue()));
         return true;
     }
 

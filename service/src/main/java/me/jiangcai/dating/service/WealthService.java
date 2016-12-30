@@ -206,9 +206,10 @@ public interface WealthService {
      *
      * @param id      id
      * @param comment 备注
+     * @param amount  批准金额；如果为空则不变
      */
     @Transactional
-    void supplierAcceptLoan(String id, String comment);
+    void supplierAcceptLoan(String id, String comment, BigDecimal amount);
 
     /**
      * 已接受的贷款放款失败

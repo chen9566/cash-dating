@@ -441,8 +441,14 @@ public class WealthServiceImpl implements WealthService {
     }
 
     @Override
-    public void supplierAcceptLoan(String id, String comment) {
-        supplierChangeStatus(id, comment, LoanRequestStatus.contract, this::supplierAcceptProjectLoanRequest);
+    public void supplierAcceptLoan(String id, String comment, BigDecimal amount) {
+        supplierChangeStatus(id, comment, LoanRequestStatus.contract,
+                request -> {
+                    if (amount != null)
+                        request.setAmount(amount);
+                    supplierAcceptProjectLoanRequest(request);
+                }
+        );
     }
 
     @Override
