@@ -1902,7 +1902,7 @@ ul#navlist .list1 {
 }
 
 .form-zc .yamput input {
-    width: 50%
+    width: 45%
 }
 
 .from-zc li.noline {
@@ -1917,7 +1917,8 @@ ul#navlist .list1 {
     height: 44px;
     background: #F65150;
     padding: 0 13px;
-    width: 73px
+    width: 103px;
+    text-align: center;
 }
 
 .yzm-n2 {
@@ -1928,7 +1929,7 @@ ul#navlist .list1 {
     height: 46px;
     background: #cacaca;
     padding: 0 13px;
-    width: 73px;
+    width: 103px;
     text-align: center;
 }
 
