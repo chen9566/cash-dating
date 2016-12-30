@@ -14,8 +14,7 @@
     <script src="//cdn.kuanyes.com/jquery-validation-1.15.0/jquery.validate.min.js"></script>
     <script src="//cdn.kuanyes.com/jquery-validation-1.15.0/localization/messages_zh.js"></script>
 <body>
-<div class="ks m-t">
-    <form class="from-zc" id="requestForm" role="form" method="post" th:action="@{/projectLoan(id=${request.id})}">
+    <form class="from-zc m-t" id="requestForm" role="form" method="post" th:action="@{/projectLoan(id=${request.id})}">
         <ul>
             <li>
                 <label class="icon"><img src="images/iphoneicon-n.png"></label>
@@ -33,7 +32,7 @@
             <button type="submit" id="buttonToSubmit" class="btn btn-danger btn-lg btn-block">确定</button>
         </p>
     </form>
-</div>
+
 <div class="show-bg" id="myAlert">填写内容不能为空</div>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
 <script th:inline="javascript">
