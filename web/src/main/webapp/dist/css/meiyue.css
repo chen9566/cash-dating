@@ -1835,6 +1835,7 @@ ul#navlist .list1 {
 
 .from-zc {
 }
+.from-zc li:last-child{ border: none; }
 
 .from-zc ul {
     border-top: 1px solid #dfdfdf;
@@ -1927,7 +1928,8 @@ ul#navlist .list1 {
     height: 46px;
     background: #cacaca;
     padding: 0 13px;
-    width: 103px
+    width: 103px;
+    text-align: center;
 }
 
 .chk_1 {
@@ -3449,7 +3451,7 @@ ul#navlist .list1 {
     text-align: right;
     padding-right: 15px;
 }
-
+.f-per input{ width: 60%}
 .infor {
     color: #888;
     overflow: hidden;
@@ -4201,7 +4203,6 @@ ul#navlist .list1 {
 
 .ks .k-b {
 }
-
 .ks .k-b img {
     width: 100%;
 }
@@ -4230,11 +4231,11 @@ ul#navlist .list1 {
     border: 1px solid #dfdfdf
 }
 
-.ks .y2 {
+.y2 {
     margin: 20px 15px 0 15px
 }
 
-.ks .y2 button {
+.y2 button {
     height: 42px;
     line-height: 18px;
     background: #f65150;

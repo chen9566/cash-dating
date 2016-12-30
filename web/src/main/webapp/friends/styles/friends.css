@@ -62,8 +62,9 @@ ul, li {
 .code-i .f15 {
     font-size: 15px;
     color: #000;
+    margin-top: -10px;
 }
-
+.code-i p{ margin: 0}
 .code-i .f14 {
     text-align: left;
     font-size: 14px;
@@ -81,7 +82,8 @@ ul, li {
 }
 
 .ewmimg img {
-    width: 100%
+    width: 100%;
+    margin-top: -10px;
 }
 
 .code-i button {
