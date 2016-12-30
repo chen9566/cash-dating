@@ -1902,7 +1902,7 @@ ul#navlist .list1 {
 }
 
 .form-zc .yamput input {
-    width: 40%
+    width: 12% !important;
 }
 
 .from-zc li.noline {
@@ -1917,7 +1917,7 @@ ul#navlist .list1 {
     height: 44px;
     background: #F65150;
     padding: 0 13px;
-    width: 98px;
+    width: 88px;
     text-align: center;
 }
 
@@ -1929,7 +1929,7 @@ ul#navlist .list1 {
     height: 46px;
     background: #cacaca;
     padding: 0 13px;
-    width: 98px;
+    width: 88px;
     text-align: center;
 }
 
@@ -2309,7 +2309,7 @@ ul#navlist .list1 {
 }
 
 .form-reg-n .yamput input {
-    width: 50%
+    width: 120px !important;
 }
 
 .form-reg-n .y1 {
