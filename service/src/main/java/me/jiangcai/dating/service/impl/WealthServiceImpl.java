@@ -380,7 +380,7 @@ public class WealthServiceImpl implements WealthService {
                 supplierAcceptProjectLoanRequest(amount, request);
             } else if (loanStatus.toLoanStatus() == LoanStatus.failed) {
                 request.setProcessStatus(LoanRequestStatus.reject);
-                if (loanStatus.getOpinion() != null)
+                if (!StringUtils.isEmpty(loanStatus.getOpinion()))
                     request.setComment(loanStatus.getOpinion());
                 else
                     request.setComment("被投融家拒绝");
