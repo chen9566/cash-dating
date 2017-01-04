@@ -11,6 +11,7 @@ import me.jiangcai.dating.exception.NoContentException;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.LoanStatus;
+import me.jiangcai.dating.model.trj.LoanStatusResult;
 import me.jiangcai.dating.model.trj.ProjectLoan;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 import me.jiangcai.dating.repository.CardRepository;
@@ -368,13 +369,21 @@ public class WealthServiceImpl implements WealthService {
         if (request.getProcessStatus() != LoanRequestStatus.accept && StringUtils.isEmpty(request.getSupplierRequestId()))
             return;
         {
-            LoanStatus loanStatus = tourongjiaService.checkLoanStatus(request.getSupplierRequestId());
-            if (loanStatus == LoanStatus.success) {
+            LoanStatusResult loanStatus = tourongjiaService.checkLoanStatus(request.getSupplierRequestId());
+            if (loanStatus.toLoanStatus() == LoanStatus.success) {
                 request.setProcessStatus(LoanRequestStatus.contract);
-                supplierAcceptProjectLoanRequest(request);
-            } else if (loanStatus == LoanStatus.failed) {
+                BigDecimal amount;
+                if (loanStatus.getAmount() != null) {
+                    amount = new BigDecimal(loanStatus.getAmount());
+                } else
+                    amount = null;
+                supplierAcceptProjectLoanRequest(amount, request);
+            } else if (loanStatus.toLoanStatus() == LoanStatus.failed) {
                 request.setProcessStatus(LoanRequestStatus.reject);
-                request.setComment("被投融家拒绝");
+                if (loanStatus.getOpinion() != null)
+                    request.setComment(loanStatus.getOpinion());
+                else
+                    request.setComment("被投融家拒绝");
                 supplierRejectProjectLoanRequest(request);
             }
         }
@@ -443,12 +452,16 @@ public class WealthServiceImpl implements WealthService {
     @Override
     public void supplierAcceptLoan(String id, String comment, BigDecimal amount) {
         supplierChangeStatus(id, comment, LoanRequestStatus.contract,
-                request -> {
-                    if (amount != null)
-                        request.setAmount(amount);
-                    supplierAcceptProjectLoanRequest(request);
-                }
+                request -> supplierAcceptProjectLoanRequest(amount, request)
         );
+    }
+
+    private void supplierAcceptProjectLoanRequest(BigDecimal amount, ProjectLoanRequest request) {
+        if (amount != null) {
+            log.info("[TRJ] change " + request.getId() + "'s amount from " + request.getAmount() + " to " + amount);
+            request.setAmount(amount);
+        }
+        supplierAcceptProjectLoanRequest(request);
     }
 
     @Override

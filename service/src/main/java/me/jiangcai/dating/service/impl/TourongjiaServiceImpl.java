@@ -6,7 +6,6 @@ import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.FinancingId;
 import me.jiangcai.dating.model.trj.Loan;
 import me.jiangcai.dating.model.trj.LoanContract;
-import me.jiangcai.dating.model.trj.LoanStatus;
 import me.jiangcai.dating.model.trj.LoanStatusResult;
 import me.jiangcai.dating.model.trj.MobileToken;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
@@ -291,20 +290,12 @@ public class TourongjiaServiceImpl implements TourongjiaService {
     }
 
     @Override
-    public LoanStatus checkLoanStatus(String id) throws IOException {
+    public LoanStatusResult checkLoanStatus(String id) throws IOException {
         try (CloseableHttpClient client = requestClient()) {
             HttpGet get = new2Get("tenant/yt_applyStatus.jhtml"
                     , new BasicNameValuePair("applyId", id)
             );
-            String code = client.execute(get, new TRJJsonHandler<>(LoanStatusResult.class)).getStatus();
-            switch (code) {
-                case "2":
-                    return LoanStatus.failed;
-                case "3":
-                    return LoanStatus.success;
-                default:
-                    return LoanStatus.auditing;
-            }
+            return client.execute(get, new TRJJsonHandler<>(LoanStatusResult.class));
         }
     }
 

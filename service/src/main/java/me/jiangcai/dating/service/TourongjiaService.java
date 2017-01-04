@@ -3,7 +3,7 @@ package me.jiangcai.dating.service;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.trj.Financing;
 import me.jiangcai.dating.model.trj.Loan;
-import me.jiangcai.dating.model.trj.LoanStatus;
+import me.jiangcai.dating.model.trj.LoanStatusResult;
 import me.jiangcai.dating.model.trj.MobileToken;
 import me.jiangcai.dating.model.trj.VerifyCodeSentException;
 
@@ -56,7 +56,7 @@ public interface TourongjiaService {
      * @return
      * @throws IOException
      */
-    LoanStatus checkLoanStatus(String id) throws IOException;
+    LoanStatusResult checkLoanStatus(String id) throws IOException;
 
     MobileToken token(String mobile) throws IOException;
 
