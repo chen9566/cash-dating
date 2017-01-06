@@ -27,7 +27,7 @@
     <ul class="bg1 clickHref" th:each="loan:${loanList}" href="itemloan.html"
         th:href="@{/loanStart(id=${loan.productId})}" th:class="${loan.listClass}">
         <li class="b70">
-            <p class="f19"  th:text="${loan.productName}">网商宝</p>
+            <p class="f19"  th:text="${loan.productName}">e商贷</p>
             <p class="f12" th:text="${loan.introduce}">个人网店经营性借款</p>
             <p><a href="#">立即借款</a> </p>
         </li>
