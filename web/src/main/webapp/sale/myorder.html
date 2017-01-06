@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/sale.css">
+    <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
+    <script src="//cdn.kuanyes.com/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <title>我的订单</title>
+</head>
+<body>
+<div class="nav">
+    <ul>
+        <li><a href="#" class="current all">全部</a></li>
+        <li><a href="#" class="topay">待付款</a></li>
+        <li><a href="#" class="toshop">待发货</a></li>
+        <li><a href="#" class="togood">待收货</a></li>
+        <li><a href="#" class="finish">已完成</a></li>
+    </ul>
+</div>
+
+<!--无订单显示空 begin!-->
+<div class="noorder no">
+    <p><img src="images/noorderbg.png"/></p>
+    <h1>您目前没有订单哦</h1>
+</div>
+<!--无订单显示空 end!-->
+<!--全部 begin!-->
+<div class="saleshop a01">
+    <div class="mt15">
+        <p class="time">下单时间: 2016-12-08 13:25:00<span class="state">已关闭</span></p>
+        <dl onclick="window.location.href='cardplayclose.html'">
+            <dt><img src="images/12.png"></dt>
+            <dd><span class="w80">星巴克8折优惠券</span><span class="cny">¥21.6</span></dd>
+            <dd>8折券<span class="number">X2</span></dd>
+        </dl>
+        <p class="and">合计:<span class="redcny">¥43.2</span></p>
+    </div>
+    <div class="mt15">
+        <p class="time">下单时间: 2016-12-08 13:25:00<span class="state">已关闭</span></p>
+        <dl onclick="window.location.href='playclose.html'">
+            <dt><img src="images/2.png"></dt>
+            <dd><span class="w80">艳庄彩妆系列智能调色曜白CC霜35ml</span><span class="cny">¥21.6</span></dd>
+            <dd>规格35ml<span class="number">X2</span></dd>
+        </dl>
+        <p class="and">合计:<span class="redcny">¥43.2</span></p>
+    </div>
+    <div class="mt15">
+        <p class="time">下单时间: 2016-12-08 13:25:00<span class="state2">待付款</span></p>
+        <dl onclick="window.location.href='cardplayto.html'">
+            <dt><img src="images/12.png"></dt>
+            <dd><span class="w80">星巴克8折优惠券</span><span class="cny">¥21.6</span></dd>
+            <dd>8折券<span class="number">X2</span></dd>
+        </dl>
+        <p class="and">合计:<span class="redcny">¥43.2</span><a href="#" class="andbtn">付款</a></p>
+    </div>
+    <div class="mt15">
+        <p class="time">下单时间: 2016-12-08 13:25:00<span class="state2">待付款</span></p>
+        <dl onclick="window.location.href='cardplayto.html'">
+            <dt><img src="images/2.png"></dt>
+            <dd><span class="w80">澳洲直邮Elevit爱乐维叶酸营养片复合维生素100片备孕孕期</span><span class="cny">¥21.6</span></dd>
+            <dd>规格35ml<span class="number">X2</span></dd>
+        </dl>
+        <p class="and">合计:<span class="redcny">¥43.2</span><a href="#" class="andbtn">付款</a></p>
+    </div>
+    <div class="mt15">
+        <p class="time">下单时间: 2016-12-08 13:25:00<span class="state2">待发货</span></p>
+        <dl onclick="window.location.href='playshop.html'">
+            <dt><img src="images/2.png"></dt>
+            <dd><span class="w80">澳洲直邮Elevit爱乐维叶酸营养片复合维生素100片备孕孕期</span><span class="cny">¥21.6</span></dd>
+            <dd>规格35ml<span class="number">X2</span></dd>
+        </dl>
+        <p class="and">合计:<span class="redcny">¥43.2</span><a href="#" class="Harvest" title="400-8588528">客服电话</a>
+        </p>
+    </div>
+    <div class="mt15">
+        <p class="time">下单时间: 2016-12-08 13:25:00<span class="state2">待收货</span></p>
+        <dl onclick="window.location.href='playgood.html'">
+            <dt><img src="images/2.png"></dt>
+            <dd><span class="w80">澳洲直邮Elevit爱乐维叶酸营养片复合维生素100片备孕孕期</span><span class="cny">¥21.6</span></dd>
+            <dd>规格35ml<span class="number">X2</span></dd>
+        </dl>
+        <p class="and">合计:<span class="redcny">¥43.2</span><a href="#" class="logistic" onclick="second()">确认收货</a><a
+                href="#"
+                class="Harvest mr-10"
+                title="400-8588528">客服电话</a>
+        </p>
+    </div>
+    <div class="mt15">
+        <p class="time">下单时间: 2016-12-08 13:25:00<span class="state">已完成</span></p>
+        <dl onclick="window.location.href='playfinish.html'">
+            <dt><img src="images/12.png"></dt>
+            <dd><span class="w80">澳洲直邮Elevit爱乐维叶酸营养片复合维生素100片备孕孕期</span><span class="cny">¥21.6</span></dd>
+            <dd>规格35ml<span class="number">X2</span></dd>
+        </dl>
+        <p class="and">合计:<span class="redcny">¥43.2</span></p>
+    </div>
+    <div class="mt15">
+        <p class="time">下单时间: 2016-12-08 13:25:00<span class="state">已完成</span></p>
+        <dl onclick="window.location.href='cardplayfinish.html'">
+            <dt><img src="images/12.png"></dt>
+            <dd><span class="w80">星巴克8折优惠券</span><span class="cny">¥21.6</span></dd>
+            <dd>8折券<span class="number">X2</span></dd>
+        </dl>
+        <p class="and">合计:<span class="redcny">¥43.2</span></p>
+    </div>
+</div>
+<!--全部 end!-->
+<!--待付款 begin!-->
+<div class="saleshop a02">
+    <div class="mt15">
+        <p class="time">下单时间: 2016-12-08 13:25:00<span class="state2">待付款</span></p>
+        <dl onclick="window.location.href='cardplayto.html'">
+            <dt><img src="images/12.png"></dt>
+            <dd><span class="w80">星巴克8折优惠券</span><span class="cny">¥21.6</span></dd>
+            <dd>8折券<span class="number">X2</span></dd>
+        </dl>
+        <p class="and">合计:<span class="redcny">¥43.2</span><a href="#" class="andbtn">付款</a></p>
+    </div>
+    <div class="mt15">
+        <p class="time">下单时间: 2016-12-08 13:25:00<span class="state2">待付款</span></p>
+        <dl onclick="window.location.href='playto.html'">
+            <dt><img src="images/2.png"></dt>
+            <dd><span class="w80">澳洲直邮Elevit爱乐维叶酸营养片复合维生素100片备孕孕期</span><span class="cny">¥21.6</span></dd>
+            <dd>规格35ml<span class="number">X2</span></dd>
+        </dl>
+        <p class="and">合计:<span class="redcny">¥43.2</span><a href="#" class="andbtn">付款</a></p>
+    </div>
+</div>
+<!--待付款 end!-->
+<!--待发货 begin!-->
+<div class="saleshop a03">
+    <div class="mt15">
+        <p class="time">下单时间: 2016-12-08 13:25:00<span class="state2">待发货</span></p>
+        <dl onclick="window.location.href='playshop.html'">
+            <dt><img src="images/2.png"></dt>
+            <dd><span class="w80">澳洲直邮Elevit爱乐维叶酸营养片复合维生素100片备孕孕期</span><span class="cny">¥21.6</span></dd>
+            <dd>规格35ml<span class="number">X2</span></dd>
+        </dl>
+        <p class="and">合计:<span class="redcny">¥43.2</span><a href="#" class="Harvest">客服电话</a></p>
+    </div>
+</div>
+<!--待发货 end!-->
+<!--待收货 begin!-->
+<div class="saleshop a04">
+    <div class="mt15">
+        <p class="time">下单时间: 2016-12-08 13:25:00<span class="state2">待收货</span></p>
+        <dl onclick="window.location.href='playgood.html'">
+            <dt><img src="images/2.png"></dt>
+            <dd><span class="w80">澳洲直邮Elevit爱乐维叶酸营养片复合维生素100片备孕孕期</span><span class="cny">¥21.6</span></dd>
+            <dd>规格35ml<span class="number">X2</span></dd>
+        </dl>
+        <p class="and">合计:<span class="redcny">¥43.2</span><a href="#" class="logistic">确认收货</a><a href="#"
+                                                                                                   class="Harvest mr-10">客服电话</a>
+        </p>
+    </div>
+</div>
+<!--待收货 end!-->
+<!--已完成 begin!-->
+<div class="saleshop a05">
+    <div class="mt15">
+        <p class="time">下单时间: 2016-12-08 13:25:00<span class="state">已完成</span></p>
+        <dl onclick="window.location.href='playfinish.html'">
+            <dt><img src="images/2.png"></dt>
+            <dd><span class="w80">澳洲直邮Elevit爱乐维叶酸营养片复合维生素100片备孕孕期</span><span class="cny">¥21.6</span></dd>
+            <dd>规格35ml<span class="number">X2</span></dd>
+        </dl>
+        <p class="and">合计:<span class="redcny">¥43.2</span></p>
+    </div>
+    <div class="mt15">
+        <p class="time">下单时间: 2016-12-08 13:25:00<span class="state">已完成</span></p>
+        <dl onclick="window.location.href='cardplayfinish.html'">
+            <dt><img src="images/12.png"></dt>
+            <dd><span class="w80">星巴克8折优惠券</span><span class="cny">¥21.6</span></dd>
+            <dd>8折券<span class="number">X2</span></dd>
+        </dl>
+        <p class="and">合计:<span class="redcny">¥43.2</span></p>
+    </div>
+</div>
+<!--已完成 end!-->
+
+
+<div class="loading no">
+    <p><img src="images/loading.gif"></p>
+    <h1>收货中</h1>
+</div>
+
+<script>
+    $(".nav li a").click(function () {
+        $(".current").removeClass("current");
+        if ($(this).hasClass("current")) {
+            $(this).removeClass("current");
+        } else {
+            $(this).addClass("current");
+        }
+        return false;
+    });
+    $(".all").click(function (event) {
+        $(".a01").css({"display": "block"});
+        $(".a02").css({"display": "none"});
+        $(".a03").css({"display": "none"});
+        $(".a04").css({"display": "none"});
+        $(".a05").css({"display": "none"});
+    });
+    $(".topay").click(function (event) {
+        $(".a01").css({"display": "none"});
+        $(".a02").css({"display": "block"});
+        $(".a03").css({"display": "none"});
+        $(".a04").css({"display": "none"});
+        $(".a05").css({"display": "none"});
+    });
+    $(".toshop").click(function (event) {
+        $(".a01").css({"display": "none"});
+        $(".a02").css({"display": "none"});
+        $(".a03").css({"display": "block"});
+        $(".a04").css({"display": "none"});
+        $(".a05").css({"display": "none"});
+    });
+    $(".togood").click(function (event) {
+        $(".a01").css({"display": "none"});
+        $(".a02").css({"display": "none"});
+        $(".a03").css({"display": "none"});
+        $(".a04").css({"display": "block"});
+        $(".a05").css({"display": "none"});
+    });
+    $(".finish").click(function (event) {
+        $(".a01").css({"display": "none"});
+        $(".a02").css({"display": "none"});
+        $(".a03").css({"display": "none"});
+        $(".a04").css({"display": "none"});
+        $(".a05").css({"display": "block"});
+    });
+    $(".logistic").click(function (event) {
+        $(".loading").css({"display": "block"});
+    });
+</script>
+<script>
+    function second() {
+        window.setTimeout("window.location='playfinish.html'", 1000);
+    }
+
+</script>
+</body>
+</html>

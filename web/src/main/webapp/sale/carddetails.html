@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>商品详情</title>
+    <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/sale.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/payfor.js"></script>
+</head>
+<body>
+<div class="details-dy"><img src="images/12.png" alt="星巴克大彩图"/></div>
+<div class="details-txt">
+    <h4>星巴克8折优惠券</h4>
+    <p><span class="cny">28</span><s class="f12">原价: 35-41元不等</s><span class="pull-right f12 mt10">有效期至2017-1-13</span>
+    </p>
+</div>
+<div class="details">
+    <h1>购买须知</h1>
+    <p>• 可+3元升级成超大杯 <br>
+        • 不可与店内其他优惠同享<br>
+        • 不可换购其他甜品<br>
+        • 一人可购买多张券<br>
+        • 券的使用期限以券上的截止日期为准<br>
+    • 此优惠券全国通用</p>
+</div>
+<div class="details mt65">
+    <h1>图文详情</h1>
+    <p><img src="images/24.png" alt="星巴克详情图片"/><img src="images/25.png" alt="星巴克详情图片"/> </p>
+</div>
+<div class="footer-btn" onclick="toshow()">
+    <button type="button" class="btn btn-danger btn-lg btn-block">立即购买</button>
+</div>
+<div class="am-show saleshow">
+    <ul>
+        <li class="close-n bm-b"><img src="images/wrongicon.png"/></li>
+        <li class="img-s"><img src="images/12.png"/>
+            <p>星巴克8折优惠券</p>
+            <span class="cny" id="price_item_1">¥27</span>
+        </li>
+        <li><p>规格</p><a href="#" class="curr">大杯</a></li>
+        <li>购买数量<span class="num"><a class="reduce" onClick="setAmount.reduce('#qty_item_1')" href="javascript:void(0)">-</a>
+            <input type="tel" name="qty_item_1" value="1" id="qty_item_1" onKeyUp="setAmount.modify('#qty_item_1')"
+                   class="text"/>
+            <a class="add" onClick="setAmount.add('#qty_item_1')" href="javascript:void(0)">+</a></span></li>
+        <li class="bm-b">合计： <span class="cny" id="total_item_1">21.6</span></li>
+    </ul>
+    <div class="submitorder" onclick="window.location.href='cardplay.html'">
+        <button type="button" class="btn btn-danger btn-lg btn-block">提交订单</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function toshow() {
+        $(".am-show").addClass("am-modal-active");
+        if ($(".showebg").length > 0) {
+            $(".showbg").addClass("showbg-active");
+        } else {
+            $("body").append('<div class="showbg"></div>');
+            $(".showbg").addClass("showbg-active");
+        }
+        $(".close-n").click(function () {
+            $(".am-show").removeClass("am-modal-active");
+            setTimeout(function () {
+                $(".showbg-active").removeClass("showbg-active");
+                $(".showbg").remove();
+            }, 300);
+        });
+        return false;
+    }
+
+</script>
+</body>
+</html>
