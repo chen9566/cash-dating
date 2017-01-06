@@ -22,13 +22,13 @@ $(function () {
 
     button.click(function () {
         var referrer = document.referrer;
-        console.log(referrer);
+        // console.log(referrer);
         // 如果当前有fragment则先行移除
         var index = referrer.indexOf('#');
         if (index > 0) {
             referrer = referrer.substring(0, index);
         }
-        console.log(referrer);
+        // console.log(referrer);
         window.location.href = referrer + '#' + $('body').attr('id');
         return false;
     });

@@ -1,6 +1,8 @@
 package me.jiangcai.dating.web.controller;
 
 import me.jiangcai.dating.service.WealthService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ import java.util.Map;
 @RequestMapping("/trj/notify")
 public class TRJNotifyController {
 
+    private static final Log log = LogFactory.getLog(TRJNotifyController.class);
+
     @Autowired
     private WealthService wealthService;
 
@@ -36,6 +40,10 @@ public class TRJNotifyController {
     @ResponseBody
     @Transactional
     public boolean accept(@PathVariable("id") String id, @RequestBody Map<String, Object> data) {
+        if (log.isDebugEnabled()) {
+            log.debug("[TRJ Listener]comment:" + data.get("comment"));
+            log.debug("[TRJ Listener]amount:" + data.get("amount"));
+        }
         wealthService.supplierAcceptLoan(id, (String) data.get("comment")
                 , new BigDecimal(((Number) data.get("amount")).doubleValue()));
         return true;

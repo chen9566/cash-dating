@@ -35,8 +35,13 @@ public class TRJNotifyLocker implements HandlerInterceptor {
                         .getBytes("UTF-8")));
         final String header = request.getHeader("Kuanye_Auth");
         log.debug("Excepted:" + signed + " Header:" + header);
-        if (signed.equalsIgnoreCase(header))
+        if (signed.equalsIgnoreCase(header)) {
+            if (log.isDebugEnabled()) {
+                // 打印它的正文
+                log.debug("[TRJ Listener]Type:" + request.getContentType());
+            }
             return true;
+        }
         response.sendError(403, "Bad Auth");
         return false;
     }
