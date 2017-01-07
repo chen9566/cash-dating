@@ -11,7 +11,7 @@ public class ProjectLoan extends Loan {
 
     public ProjectLoan() {
         setProductId(ProjectLoanID);
-        setProductName("网商宝");
+        setProductName("e商贷");
         setAmount("20万");
         setCondition("");
         setIntroduce("个人网店经营性借款");
