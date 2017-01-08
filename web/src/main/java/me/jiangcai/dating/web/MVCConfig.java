@@ -5,6 +5,7 @@ import me.jiangcai.dating.web.converter.LocalDateFormatter;
 import me.jiangcai.dating.web.converter.ReportHandler;
 import me.jiangcai.dating.web.mvc.ImageResolver;
 import me.jiangcai.dating.web.thymeleaf.CashDialect;
+import me.jiangcai.lib.resource.thymeleaf.ResourceDialect;
 import me.jiangcai.wx.web.thymeleaf.WeixinDialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
@@ -49,6 +51,7 @@ class MVCConfig extends WebMvcConfigurerAdapter {
             "dist", "css", "fonts", "holder.js", "images", "js", "_resources", "localisation", "admin/js", "users/js"
             , "user/js", "appfile/css", "appfile/images", "appfile/js", "appfile/list_files", "appfile/login_files"
             , "friends/styles", "friends/images"
+            , "sale/images", "sale/js", "sale/styles"
     };
 
     @Autowired
@@ -164,6 +167,8 @@ class MVCConfig extends WebMvcConfigurerAdapter {
             private WeixinDialect weixinDialect;
             @Autowired
             private CashDialect cashDialect;
+            @Autowired
+            private ResourceDialect resourceDialect;
 
             @Bean
             public TemplateEngine templateEngine() {
@@ -172,6 +177,8 @@ class MVCConfig extends WebMvcConfigurerAdapter {
                 engine.setTemplateResolver(templateResolver());
                 engine.addDialect(weixinDialect);
                 engine.addDialect(cashDialect);
+                engine.addDialect(resourceDialect);
+                engine.addDialect(new Java8TimeDialect());
                 engine.addDialect(new SpringSecurityDialect());
                 return engine;
             }

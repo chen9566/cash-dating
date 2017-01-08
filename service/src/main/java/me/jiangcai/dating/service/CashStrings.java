@@ -2,7 +2,9 @@ package me.jiangcai.dating.service;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.NumberUtils;
+import org.thymeleaf.util.NumberPointType;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +23,15 @@ public class CashStrings {
     public String bankCardNumber(String number) {
         String end = number.substring(number.length() - 4);
         return "**** **** **** " + end;
+    }
+
+    /**
+     * @param number 价格
+     * @return 商城价格
+     */
+    public String mallPrice(Number number) {
+        return org.thymeleaf.util.NumberUtils.format(number, 1, NumberPointType.COMMA,
+                2, NumberPointType.POINT, Locale.CHINA);
     }
 
     /**

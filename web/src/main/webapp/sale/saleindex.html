@@ -1,31 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:res="http://resource.jiangcai.me" lang="en">
+<!--/*@thymesVar id="goodsList" type="java.util.List<me.jiangcai.dating.entity.sale.CashGoods>"*/-->
+<!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.service.CashStrings"*/-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/sale.css">
+    <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
+    <script src="../dist/js/share.js"></script>
     <title>特卖</title>
 </head>
 <body>
 <div class="salelist">
     <ul>
-        <li onclick="window.location.href='details.html'"><img src="images/2.png"/>
-            <h1>艳庄彩妆系列智能调色曜白CC霜35ml</h1>
-            <p class="f14">掩盖黑眼圈，细纹等瑕疵。改变肤色，令肤色呈现自然光泽</p>
-            <p class="fiexcny"><span class="f18"><span class="f11">¥</span>21.6</span><s>¥108</s><a href="#">抢购</a></p>
+        <li class="clickHref cashGoods" href="details.html" th:each="goods:${goodsList}"
+            th:href="@{/sale/goodsDetail(id=${goods.id})}">
+            <img src="images/2.png" res:src="${goods.titleGoodsImage.defaultImage.resourcePath}"/>
+            <h1 th:text="${goods.name}">艳庄彩妆系列智能调色曜白CC霜35ml</h1>
+            <p class="f14" th:text="${goods.description}">掩盖黑眼圈，细纹等瑕疵。改变肤色，令肤色呈现自然光泽</p>
+            <p class="fiexcny"><span class="f18">
+                <span class="f11">¥</span><span th:text="${#cashStrings.mallPrice(goods.price)}">21.6</span></span>
+                <s th:text="${goods.subPrice}">¥108</s><a href="#">抢购</a>
+            </p>
         </li>
-        <li onclick="window.location.href='carddetails.html'"><img src="images/12.png"/>
+        <li class="clickHref cashGoods" href="carddetails.html" th:remove="all"><img src="images/12.png"/>
             <h1>星巴克8折优惠券</h1>
             <p class="f14">绝对低价，超值享受</p>
             <p class="fiexcny"><span class="f18"><span class="f11">¥</span>21.6</span><s>¥108</s><a href="#">抢购</a></p>
         </li>
-        <li onclick="window.location.href='phonerecharge.html'"><img src="images/19.png"/>
+        <li class="clickHref cashGoods" href="phonerecharge.html" th:remove="all"><img src="images/19.png"/>
             <h1>全国移动话费充值</h1>
             <p class="f14">9.8折，绝对低价，长期供应</p>
             <p class="fiexcny"><span class="f18">9.8折起</span><a
-                    href="#">抢购</a></p> </li>
+                    href="#">抢购</a></p></li>
     </ul>
 </div>
 <div class="fixe">

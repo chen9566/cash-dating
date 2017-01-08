@@ -18,6 +18,7 @@ import me.jiangcai.dating.page.BindingMobilePage;
 import me.jiangcai.dating.page.CodePage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.StartOrderPage;
+import me.jiangcai.dating.page.sale.SaleIndexPage;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.PayResourceService;
@@ -448,6 +449,15 @@ public abstract class WebTest extends ServiceBaseTest {
                 , UUID.randomUUID().toString(), random.nextInt(100), random.nextInt(100), random.nextInt(100), random.nextBoolean());
         wealthService.updateLoanIDImages(loanRequest.getId(), randomImageResourcePath(), randomImageResourcePath(), randomImageResourcePath());
         return loanRequest;
+    }
+
+    protected SaleIndexPage saleIndexPage(WebDriver driver) {
+        driver.get("http://localhost/sale");
+        return initPage(SaleIndexPage.class, driver);
+    }
+
+    protected SaleIndexPage saleIndexPage() {
+        return saleIndexPage(driver);
     }
 
     @ComponentScan({"me.jiangcai.dating.test"})

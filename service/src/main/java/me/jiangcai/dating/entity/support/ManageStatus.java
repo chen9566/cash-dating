@@ -65,16 +65,16 @@ public enum ManageStatus {
                 list.addAll(Arrays.asList(Role_User_Value, Role_Edit_Value, Role_Agent_Value));
                 break;
             case waiter:
-                list.addAll(Arrays.asList(Role_Order_Value, Role_Project_Loan_Value));
+                list.addAll(Arrays.asList(Role_Order_Value, Role_Project_Loan_Value, Role_Sale_Stock_Value, Role_Sale_Trade_Value));
                 break;
             case financial:
                 list.addAll(Arrays.asList(Role_Finance_Value, Role_Loan_Value, Role_Project_Loan_Value));
                 break;
             case general:
-                list.addAll(Arrays.asList(Role_Finance_Value, Role_Loan_Value, Role_Project_Loan_Value, Role_Order_Value, Role_Edit_Value, Role_Agent_Value));
+                list.addAll(Arrays.asList(Role_Finance_Value, Role_Loan_Value, Role_Project_Loan_Value, Role_Order_Value, Role_Edit_Value, Role_Agent_Value, Role_Sale_Stock_Value, Role_Sale_Trade_Value, Role_Sale_Goods_Value));
                 break;
             case manager:
-                list.addAll(Arrays.asList(Role_Finance_Value, Role_Loan_Value, Role_Project_Loan_Value, Role_Order_Value, Role_Edit_Value, Role_Agent_Value, Role_Grant_Value));
+                list.addAll(Arrays.asList(Role_Finance_Value, Role_Loan_Value, Role_Project_Loan_Value, Role_Order_Value, Role_Edit_Value, Role_Agent_Value, Role_Sale_Stock_Value, Role_Sale_Trade_Value, Role_Sale_Goods_Value, Role_Grant_Value));
                 break;
             case root:
                 list.addAll(Collections.singleton("ROOT"));
