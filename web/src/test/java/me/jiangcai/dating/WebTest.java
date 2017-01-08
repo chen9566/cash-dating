@@ -452,7 +452,7 @@ public abstract class WebTest extends ServiceBaseTest {
     }
 
     protected SaleIndexPage saleIndexPage(WebDriver driver) {
-        driver.get("http://localhost/sale");
+        driver.get("http://localhost/sale/index");
         return initPage(SaleIndexPage.class, driver);
     }
 

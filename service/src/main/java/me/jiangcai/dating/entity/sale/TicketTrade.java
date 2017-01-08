@@ -1,12 +1,13 @@
 package me.jiangcai.dating.entity.sale;
 
-import me.jiangcai.goods.Buyer;
 import me.jiangcai.goods.TradedGoods;
 import me.jiangcai.goods.payment.PaymentMethod;
 import me.jiangcai.goods.trade.PayInfo;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -16,15 +17,20 @@ import java.util.Set;
 @Entity
 public class TicketTrade extends CashTrade {
 
+    @ElementCollection
+    private Set<TicketTradedGoods> tradedSet;
+
     @Override
     @Transient
     public Set<? extends TradedGoods> getGoods() {
-        return null;
+        return tradedSet;
     }
 
     @Override
     public void addTradedGoods(TradedGoods tradedGoods) {
-
+        if (tradedSet == null)
+            tradedSet = new HashSet<>();
+        tradedSet.add((TicketTradedGoods) tradedGoods);
     }
 
     @Override
@@ -44,8 +50,4 @@ public class TicketTrade extends CashTrade {
         return null;
     }
 
-    @Override
-    public void setBuyer(Buyer buyer) {
-
-    }
 }

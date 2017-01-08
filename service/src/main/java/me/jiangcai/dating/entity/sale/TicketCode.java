@@ -3,6 +3,7 @@ package me.jiangcai.dating.entity.sale;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.dating.entity.sale.pk.TicketCodePK;
+import me.jiangcai.goods.stock.StockToken;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @IdClass(TicketCodePK.class)
-public class TicketCode {
+public class TicketCode implements StockToken {
     public static final int CodeLength = 50;
 
     @Id
@@ -31,4 +32,9 @@ public class TicketCode {
     private boolean used;
     @Column(columnDefinition = "datetime")
     private LocalDateTime usedTime;
+
+    @Override
+    public String productSKUCode() {
+        return code;
+    }
 }

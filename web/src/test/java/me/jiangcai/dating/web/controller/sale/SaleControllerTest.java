@@ -5,6 +5,7 @@ import me.jiangcai.dating.entity.sale.CashGoods;
 import me.jiangcai.dating.entity.sale.TicketGoods;
 import me.jiangcai.dating.page.sale.SaleIndexPage;
 import me.jiangcai.dating.page.sale.TicketGoodsDetailPage;
+import me.jiangcai.dating.page.sale.TicketPayPage;
 import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.goods.service.ManageGoodsService;
 import org.junit.Test;
@@ -36,6 +37,8 @@ public class SaleControllerTest extends WebTest {
                 .findAny()
                 .orElse(null));
 
+        TicketPayPage payPage = detailPage.buy(1);
+        payPage.printThisPage();
     }
 
     private void addSimpleTicketGoods() throws IOException {

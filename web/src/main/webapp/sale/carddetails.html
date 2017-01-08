@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/sale.css">
     <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
+    <script src="//cdn.kuanyes.com/jquery.loadingoverlay.min.js"></script>
+    <script src="//cdn.kuanyes.com/jquery.loadingoverlay_progress.min.js"></script>
+    <script src="../dist/js/share.js?v=1"></script>
+    <script src="../mock/all.js" th:src="@{/all.js}"></script>
     <script src="js/payfor.js"></script>
 </head>
 <body>
@@ -39,7 +43,7 @@
         <img src="images/25.png" alt="星巴克详情图片"/>
     </p>
 </div>
-<div class="footer-btn" onclick="toshow()">
+<div class="footer-btn" id="readyToBuy" onclick="toshow()">
     <button type="button" class="btn btn-danger btn-lg btn-block">立即购买</button>
 </div>
 <div class="am-show saleshow">
@@ -58,12 +62,45 @@
             <a class="add" onClick="setAmount.add('#qty_item_1')" href="javascript:void(0)">+</a></span></li>
         <li class="bm-b">合计： <span class="cny" id="total_item_1">21.6</span></li>
     </ul>
-    <div class="submitorder" onclick="window.location.href='cardplay.html'">
+    <!--onclick="window.location.href='cardplay.html'"-->
+    <div class="submitorder" id="orderCreator" th:href="@{/sale/showOrder}" href="cardplay.html?id=1"
+         data-id="999" th:attr="data-id=${goods.id}">
         <button type="button" class="btn btn-danger btn-lg btn-block">提交订单</button>
     </div>
 </div>
 
 <script type="text/javascript">
+    $(function () {
+        const orderCreator = $('#orderCreator');
+        orderCreator.click(function () {
+//            window.location.href = orderCreator.attr('href') + '&count=' + $('#qty_item_1').val();
+// 分开2个步骤 建立订单，然后是打开订单
+//            console.log('kill me');
+            $.LoadingOverlay("show");
+            $.ajax($.uriPrefix + '/sale/createOrder', {
+                method: 'post',
+                contentType: 'application/json;charset=UTF-8',
+                dataType: 'json',
+                data: JSON.stringify({
+                    count: $('#qty_item_1').val(),
+                    id: orderCreator.attr('data-id')
+                }),
+                error: function (rep) {
+                    $.StopLoadingOverlay(function () {
+                        alert(rep.responseText);
+// 如果是原型模式，继续展开页面
+                        if ($.prototypesMode)
+                            window.location.href = orderCreator.attr('href');
+                    });
+                },
+                success: function (tradeId) {
+                    $.StopLoadingOverlay(function () {
+                        window.location.href = orderCreator.attr('href') + '?id=' + tradeId;
+                    });
+                }
+            });
+        });
+    });
     function toshow() {
         $(".am-show").addClass("am-modal-active");
         if ($(".showebg").length > 0) {

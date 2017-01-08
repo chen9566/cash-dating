@@ -1,14 +1,20 @@
 package me.jiangcai.dating.service.sale.impl;
 
+import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashGoods;
+import me.jiangcai.dating.entity.sale.CashTrade;
 import me.jiangcai.dating.entity.sale.TicketBatch;
 import me.jiangcai.dating.entity.sale.TicketCode;
 import me.jiangcai.dating.entity.sale.TicketGoods;
+import me.jiangcai.dating.entity.sale.TicketTrade;
+import me.jiangcai.dating.entity.sale.TicketTradedGoods;
 import me.jiangcai.dating.model.TicketInfo;
 import me.jiangcai.dating.repository.sale.CashGoodsRepository;
+import me.jiangcai.dating.repository.sale.CashTradeRepository;
 import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.goods.Goods;
 import me.jiangcai.goods.service.ManageGoodsService;
+import me.jiangcai.goods.service.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +31,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -36,6 +43,10 @@ public class MallGoodsServiceImpl implements MallGoodsService {
 
     @Autowired
     private CashGoodsRepository cashGoodsRepository;
+    @Autowired
+    private CashTradeRepository cashTradeRepository;
+    @Autowired
+    private TradeService tradeService;
     @Autowired
     private ManageGoodsService manageGoodsService;
     @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -98,5 +109,24 @@ public class MallGoodsServiceImpl implements MallGoodsService {
         ticketGoods.setNotes(notes);
         ticketGoods.setRichDetail(detail);
         return ticketGoods;
+    }
+
+    @Override
+    public CashTrade createOrder(User user, CashGoods goods, int count) {
+        return (CashTrade) tradeService.createTrade(() -> {
+                    if (goods.isTicketGoods()) return new TicketTrade();
+                    throw new IllegalStateException("暂时不支持" + goods);
+                }, trade -> cashTradeRepository.saveAndFlush((CashTrade) trade)
+                , trade -> cashTradeRepository.getOne(((CashTrade) trade).getId())
+                , (goods1, token) -> {
+                    if (goods1 instanceof TicketGoods) {
+                        TicketTradedGoods tradedGoods = new TicketTradedGoods();
+                        tradedGoods.setTicketCode((TicketCode) token);
+                        return tradedGoods;
+                    }
+                    throw new IllegalStateException("暂时不支持" + goods1);
+                }
+                , goods, count, user, Duration.ofMinutes(10)
+        );
     }
 }

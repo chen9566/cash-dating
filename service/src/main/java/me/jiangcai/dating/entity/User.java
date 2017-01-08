@@ -9,6 +9,7 @@ import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.model.CashWeixinUserDetail;
 import me.jiangcai.dating.service.SystemService;
+import me.jiangcai.goods.Buyer;
 import me.jiangcai.wx.model.Gender;
 import me.jiangcai.wx.model.WeixinUser;
 import me.jiangcai.wx.model.WeixinUserDetail;
@@ -51,7 +52,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"mobileNumber", "openId", "inviteCode"})})
-public class User implements WeixinUser, ProfitSplit, UserDetails, Locker {
+public class User implements WeixinUser, ProfitSplit, UserDetails, Locker, Buyer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

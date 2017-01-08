@@ -1,6 +1,8 @@
 package me.jiangcai.dating.service.sale;
 
+import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashGoods;
+import me.jiangcai.dating.entity.sale.CashTrade;
 import me.jiangcai.dating.entity.sale.TicketGoods;
 import me.jiangcai.dating.model.TicketInfo;
 import me.jiangcai.goods.Goods;
@@ -56,5 +58,14 @@ public interface MallGoodsService {
     TicketGoods addTicketGoods(String stockStyle, String name, BigDecimal price, String subPrice, String description
             , String notes, String detail, String... imagePaths) throws IOException;
 
-
+    /**
+     * 建立订单咯
+     *
+     * @param user  用户
+     * @param goods 商品
+     * @param count 数量
+     * @return 订单
+     */
+    @Transactional
+    CashTrade createOrder(User user, CashGoods goods, int count);
 }

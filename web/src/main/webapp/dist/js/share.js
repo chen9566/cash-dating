@@ -42,4 +42,21 @@ $(function () {
             $('#weixinShareModal').modal();
         });
     }
+
+    /**
+     * 停止LoadingOverlay，如果是在原型模式则会自动延时调用
+     * @param callback 在停止以后将执行的代码
+     */
+    $.StopLoadingOverlay = function (callback) {
+        if ($.prototypesMode) {
+            // Hide it after 3 seconds
+            setTimeout(function () {
+                $.LoadingOverlay("hide");
+                callback();
+            }, 1000);
+        } else {
+            $.LoadingOverlay("hide");
+            callback();
+        }
+    }
 });
