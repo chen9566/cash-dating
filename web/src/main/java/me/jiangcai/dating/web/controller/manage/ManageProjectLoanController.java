@@ -403,7 +403,13 @@ public class ManageProjectLoanController extends AbstractLoanManage {
         // 用户申请时间 申请人姓名 申请人身份证号码 申请人电话 借款金额 产品期限 款爷审核时间 投融家审核时间 审核人 审核状态 备注
 
         return new Report<>("网商宝报表", typedQuery.getResultList(), Arrays.asList(
-                new SimpleSelection<>("用户申请时间", LocalDateTime.class, ProjectLoanRequest::getCreatedTime)
+                new SimpleSelection<>("地区", String.class, request -> {
+                    String city = request.getLoanData().getOwner().getCity();
+                    if (StringUtils.isEmpty(city))
+                        return "无";
+                    return city;
+                })
+                , new SimpleSelection<>("用户申请时间", LocalDateTime.class, ProjectLoanRequest::getCreatedTime)
                 , new SimpleSelection<>("申请人姓名", String.class, request -> request.getLoanData().getName())
                 , new SimpleSelection<>("申请人身份证号码", String.class, request -> '\'' + request.getLoanData().getNumber())
                 , new SimpleSelection<>("申请人电话", String.class, request -> request.getLoanData().getOwner().getMobileNumber())
