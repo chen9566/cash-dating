@@ -1,6 +1,7 @@
 package me.jiangcai.dating.web.controller.sale;
 
 import me.jiangcai.dating.WebTest;
+import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashGoods;
 import me.jiangcai.dating.entity.sale.TicketGoods;
 import me.jiangcai.dating.page.sale.SaleIndexPage;
@@ -12,6 +13,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.UUID;
 
 /**
  * @author CJ
@@ -27,15 +30,25 @@ public class SaleControllerTest extends WebTest {
 
         addSimpleTicketGoods();
 
-        helloNewUser(null, true);
+        User user = helloNewUser(null, true);
 
         SaleIndexPage page = saleIndexPage();
 //        page.printThisPage();
 
-        TicketGoodsDetailPage detailPage = page.clickTicketGoods(mallGoodsService.saleGoods().stream()
+        final CashGoods ticketGoods = mallGoodsService.saleGoods().stream()
                 .filter(CashGoods::isTicketGoods)
                 .findAny()
-                .orElse(null));
+                .orElse(null);
+        TicketGoodsDetailPage detailPage = page.clickTicketGoods(ticketGoods);
+
+        try {
+            detailPage.buy(1);
+            throw new AssertionError("还没有库存呢");
+        } catch (Throwable ignored) {
+
+        }
+
+        mallGoodsService.addTicketBatch(user, ticketGoods, LocalDate.now().plusMonths(1), UUID.randomUUID().toString());
 
         TicketPayPage payPage = detailPage.buy(1);
         payPage.printThisPage();
