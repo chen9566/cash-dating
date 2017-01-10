@@ -18,6 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class LoanPage extends AbstractPage {
 
+    private WebElement loanList;
+
     public LoanPage(WebDriver webDriver) {
         super(webDriver);
     }
@@ -29,7 +31,7 @@ public class LoanPage extends AbstractPage {
     }
 
     public void assertList(Loan[] loanList) {
-        List<WebElement> products = webDriver.findElements(By.tagName("ul"));
+        List<WebElement> products = this.loanList.findElements(By.tagName("ul"));
         assertThat(products)
                 .hasSize(loanList.length);
 

@@ -12,40 +12,41 @@ ul, li {
     background: #EFEFF4;
 }
 
+.ratebg {
+    background: #ffddaa;
+}
+
 .rate {
-    text-align: center;
-    background: -webkit-linear-gradient(bottom, #FD5959, #EB3842); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(top, #EB3842, #FD5959); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(top, #EB3842, #FD5959); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to top, #EB3842, #FD5959);
-    padding: 15px 0;
-    height: 120px;
+
+}
+
+.rate img {
+    width: 100%;
 }
 
 .rate h1 {
     padding: 0;
-    margin: -9px 0 0 0;
-    font-size: 48px;
-    font-weight: 300;
-    color: #fff
+    font-weight: 400;
+    text-align: center;
+    color: #996536;
+    font-size: 15px;
 }
 
-.rate .f14 {
-    color: #fff;
-    opacity: 0.7;
-    font-size: 16px;
+.rate .but {
+    margin: 10px 40px 0 40px
 }
 
 .code-i {
-    z-index: 9;
-    position: absolute;
-    top: 98px;
     overflow: hidden;
     width: 100%;
     text-align: center;
     padding: 0 15px;
+    margin-top: 15px;
 }
 
+.code-i .opactiy {
+    opacity: 0.7
+}
 .ewmimg {
     background: #fff;
     border-radius: 6px;
@@ -64,17 +65,21 @@ ul, li {
     color: #000;
     margin-top: -10px;
 }
-.code-i p{ margin: 0}
+
+.code-i p {
+    margin: 0
+}
+
 .code-i .f14 {
     text-align: left;
-    font-size: 14px;
-    color: #353535;
-    margin-top: 30px
+    font-size: 15px;
+    color: #875d30;
+    line-height: 40px;
 }
 
 .code-i .r16 {
-    font-size: 16px;
-    color: #f56150;
+    font-size: 19px;
+    color: #ce2020;
 }
 
 .code-i .red {
@@ -83,7 +88,6 @@ ul, li {
 
 .ewmimg img {
     width: 100%;
-
 }
 
 .code-i button {
@@ -96,11 +100,11 @@ ul, li {
 
 .code-i li {
     text-align: center;
-    font-size: 12px;
+    font-size: 14px;
     float: left;
     width: 14.8%;
     margin-right: 15px;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 
 .code-i li img {
@@ -111,7 +115,8 @@ ul, li {
 }
 
 .code-i li.ntxt {
-    color: #a3a3a3
+    color: #996536;
+    padding-top: 3px;
 }
 
 .code-i li.ctxt {
@@ -125,8 +130,8 @@ ul, li {
 .fr img {
     position: absolute;
     right: 15px;
-    width: 8px;
-    margin-top: 36px
+    width: 9px;
+    margin-top: 44px
 }
 
 .nav {
@@ -222,6 +227,18 @@ ul, li {
 .sharebg img {
     width: 90%
 }
-.shareimg{ display: block; height:40px; }
-.shareimg img{ width:45%; float: left;margin-top: 10px;}
-.shareimg .mt15{ margin-right: 15px}
+
+.shareimg {
+    display: block;
+    height: 40px;
+}
+
+.shareimg img {
+    width: 45%;
+    float: left;
+    margin-top: 10px;
+}
+
+.shareimg .mt15 {
+    margin-right: 15px
+}

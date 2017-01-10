@@ -60,6 +60,9 @@ public class MyPage extends AbstractPage {
         webDriver.findElement(By.className("mylist")).findElements(By.tagName("li")).stream()
                 .filter(WebElement::isDisplayed)
                 .forEach(element -> menus.put(element.getText(), element));
+        webDriver.findElement(By.className("k-fixe")).findElements(By.tagName("li")).stream()
+                .filter(WebElement::isDisplayed)
+                .forEach(element -> menus.put(element.getText(), element));
 
         assertThat(headImage)
                 .isNotNull();
@@ -143,7 +146,7 @@ public class MyPage extends AbstractPage {
     }
 
     public CodePage toCodePage() {
-        clickMenu("我的费率");
+        clickMenu("邀请好友");
         return initPage(CodePage.class);
     }
 }

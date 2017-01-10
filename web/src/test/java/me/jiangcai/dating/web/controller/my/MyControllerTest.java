@@ -24,18 +24,23 @@ public class MyControllerTest extends WebTest {
 
     @Test
     public void checkLinks() throws IOException {
+        systemService.updateEnablePay123(false);
         helloNewUser(null, true);
         MyPage myPage = myPage();
         // 检查各个功能完整性
         // 这个版本开始 从my 可以进入start
-        myPage.clickMenu("收银台");
+        myPage.clickMenu("款爷收款");
         initPage(StartOrderPage.class);
         myPage = myPage();
         myPage.clickMenu("款爷办卡");
         // 此时它的地址应该是跟系统属性中的办卡地址一致的
-        System.out.println(driver.getTitle());  // 融360
+//        System.out.println(driver.getTitle());  // 融360
         assertThat(driver.getCurrentUrl())
                 .isEqualTo(systemService.getApplyCardUrl());
+        // 这个时候
+        systemService.updateEnablePay123(true);
+        myPage = myPage();
+        myPage.clickMenu("款爷收款");
     }
 
     @Test

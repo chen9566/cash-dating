@@ -23,7 +23,7 @@
     <!--</ul>-->
     <!--</div>-->
 </div>
-<div class="loan-v2">
+<div class="loan-v2 mt65" id="loanList">
     <ul class="bg1 clickHref" th:each="loan:${loanList}" href="itemloan.html"
         th:href="@{/loanStart(id=${loan.productId})}" th:class="${loan.listClass}">
         <li class="b70">
@@ -68,6 +68,13 @@
             <p class="f46">20<span class="f13">万</span></p>
             <p class="f12">最高可贷</p>
         </li>
+    </ul>
+</div>
+<div class="k-fixe">
+    <ul>
+        <li><a href="paycode123.html" th:href="@{/start}"><img src="images/fixed_01.png"/>款爷收款</a></li>
+        <li><img src="images/fixed_04.png"/>款爷借款</li>
+        <li><a href="my.html" th:href="@{/my}"><img src="images/fixed_05.png"/>款爷中心</a></li>
     </ul>
 </div>
 </body>
