@@ -13,14 +13,14 @@
     <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
     <script src="../dist/js/share.js" th:src="@{/dist/js/share.js}"></script>
 </head>
-<body class="ratebg">
+<body class="ratebg" th:name="${user.id}">
 <div class="rate">
-    <p><img src="images/banner-tg.png"/></p>
+    <p><img src="images/banner-tg.png" th:src="@{/friends/images/banner-tg.png}"/></p>
     <h1>当前消费费率<span
             th:text="${#numbers.formatDecimal(@systemService.systemBookRate(user).movePointRight(2),1,'COMMA',2,'POINT')}">
     0.60</span>%</h1>
     <p class="but"><img src="images/ratebutton.png"
-                        th:src="@{/friends/images/sharefriend.png}"
+                        th:src="@{/friends/images/ratebutton.png}"
                         class="share" alt="邀请好友降费率"/></p>
 </div>
 <div class="code-i">

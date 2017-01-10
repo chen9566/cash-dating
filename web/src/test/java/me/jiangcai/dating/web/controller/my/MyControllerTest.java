@@ -28,7 +28,7 @@ public class MyControllerTest extends WebTest {
         MyPage myPage = myPage();
         // 检查各个功能完整性
         // 这个版本开始 从my 可以进入start
-        myPage.clickMenu("收银台");
+        myPage.clickMenu("款爷收款");
         initPage(StartOrderPage.class);
         myPage = myPage();
         myPage.clickMenu("款爷办卡");

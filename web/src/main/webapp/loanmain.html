@@ -23,7 +23,7 @@
     <!--</ul>-->
     <!--</div>-->
 </div>
-<div class="loan-v2 mt65">
+<div class="loan-v2 mt65" id="loanList">
     <ul class="bg1 clickHref" th:each="loan:${loanList}" href="itemloan.html"
         th:href="@{/loanStart(id=${loan.productId})}" th:class="${loan.listClass}">
         <li class="b70">

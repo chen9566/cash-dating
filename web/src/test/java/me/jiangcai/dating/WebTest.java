@@ -48,7 +48,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -363,28 +362,25 @@ public abstract class WebTest extends ServiceBaseTest {
         CodePage codePage = initPage(CodePage.class);
 
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(new Predicate<WebDriver>() {
-            @Override
-            public boolean apply(@Nullable WebDriver input) {
-                try {
-                    codePage.reloadPageInfo();
-                    codePage.getQRCodeImage();
-                    return true;
-                } catch (IOException e) {
-                    throw new InternalError(e);
-                } catch (IllegalArgumentException ex) {
-                    //
-                }
-                return false;
+        wait.until((Predicate<WebDriver>) input -> {
+            try {
+                codePage.reloadPageInfo();
+//                    codePage.getQRCodeImage();
+                return true;
+            } catch (IllegalArgumentException ex) {
+                //
             }
+            return false;
         });
 
-        try {
-            return qrCodeService.scanImage(codePage.getQRCodeImage());
-        } catch (IllegalArgumentException exception) {
-            codePage.printThisPage();
-            throw exception;
-        }
+
+        return "http://localhost/my?" + CashFilter.guideUserFromId(Long.valueOf(codePage.getUserId()));
+//        try {
+//            return qrCodeService.scanImage(codePage.getQRCodeImage());
+//        } catch (IllegalArgumentException exception) {
+//            codePage.printThisPage();
+//            throw exception;
+//        }
     }
 
     public SystemService getSystemService() {

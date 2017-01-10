@@ -1,6 +1,5 @@
 package me.jiangcai.dating.page;
 
-import me.jiangcai.dating.CashFilter;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.service.QRCodeService;
 import org.apache.commons.logging.Log;
@@ -9,7 +8,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,7 +22,7 @@ public class CodePage extends AbstractPage {
 
     private static final Log log = LogFactory.getLog(CodePage.class);
 
-    private WebElement qrCode;
+    //    private WebElement qrCode;
     private WebElement message;
     private WebElement inviteButton;
     private WebElement explainButton;
@@ -39,11 +37,11 @@ public class CodePage extends AbstractPage {
     public void validatePage() {
         assertThat(webDriver.getTitle())
                 .isEqualTo("邀请好友");
-        webDriver.findElements(By.tagName("img")).stream()
-                .filter(WebElement::isDisplayed)
-                .filter(webElement -> "myShareQRCode".equals(webElement.getAttribute("name")))
-                .findFirst()
-                .ifPresent(element -> qrCode = element);
+//        webDriver.findElements(By.tagName("img")).stream()
+//                .filter(WebElement::isDisplayed)
+//                .filter(webElement -> "myShareQRCode".equals(webElement.getAttribute("name")))
+//                .findFirst()
+//                .ifPresent(element -> qrCode = element);
 
         webDriver.findElements(By.id("inviteCodeText")).stream()
                 .filter(WebElement::isDisplayed)
@@ -67,10 +65,10 @@ public class CodePage extends AbstractPage {
 //                .findFirst()
 //                .ifPresent(element -> requestButton = element);
 
-        assertThat(qrCode)
-                .isNotNull();
-        assertThat(qrCode.isDisplayed())
-                .isTrue();
+//        assertThat(qrCode)
+//                .isNotNull();
+//        assertThat(qrCode.isDisplayed())
+//                .isTrue();
         assertThat(message)
                 .isNotNull();
         assertThat(inviteButton)
@@ -89,12 +87,14 @@ public class CodePage extends AbstractPage {
      * @param qrCodeService
      */
     public void assertUser(User user, QRCodeService qrCodeService) throws IOException {
-        BufferedImage image = getQRCodeImage();
-        String url = qrCodeService.scanImage(image);
-        log.info("邀请url:" + url);
-        Long userId = CashFilter.guideUserFromURL(url, null);
-        assertThat(userId)
-                .isEqualTo(user.getId());
+        assertThat(getUserId())
+                .isEqualToIgnoringCase(String.valueOf(user.getId()));
+//        BufferedImage image = getQRCodeImage();
+//        String url = qrCodeService.scanImage(image);
+//        log.info("邀请url:" + url);
+//        Long userId = CashFilter.guideUserFromURL(url, null);
+//        assertThat(userId)
+//                .isEqualTo(user.getId());
 
         assertThat(message.getText())
                 .endsWith(user.getInviteCode());
@@ -104,9 +104,13 @@ public class CodePage extends AbstractPage {
 //                    .isNotNull();
     }
 
-    public BufferedImage getQRCodeImage() throws IOException {
-        return toImage(qrCode);
+    public String getUserId() {
+        return webDriver.findElement(By.tagName("body")).getAttribute("name");
     }
+
+//    public BufferedImage getQRCodeImage() throws IOException {
+//        return toImage(qrCode);
+//    }
 
     /**
      * 合伙人功能已取消

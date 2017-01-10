@@ -22,13 +22,15 @@
             (T+0) 6秒到账</p>
     </div>
     <p class="f14">客服电话:400-8588528 &nbsp;|&nbsp;<a href="http://www.kuanyes.com/help/partherhelp-q.html"> 使用帮助</a></p>
-    <p><img src="images/fuyoulogo.png"/></p>
+    <p><img src="images/fuyoulogo.png" th:src="@{/images/fuyoulogo.png}"/></p>
 </div>
 <div class="k-fixe">
     <ul>
-        <li><img src="images/fixed_02.png"/>款爷收款</li>
-        <li><a href="loanmain.html" th:href="@{/loan}"><img src="images/fixed_03.png"/>款爷借款</a></li>
-        <li><a href="my.html" th:href="@{/my}"><img src="images/fixed_05.png"/>款爷中心</a></li>
+        <li><img src="images/fixed_02.png" th:src="@{/images/fixed_02.png}"/>款爷收款</li>
+        <li><a href="loanmain.html" th:href="@{/loan}"><img src="images/fixed_03.png" th:src="@{/images/fixed_03.png}"/>款爷借款</a>
+        </li>
+        <li><a href="my.html" th:href="@{/my}"><img src="images/fixed_05.png" th:src="@{/images/fixed_05.png}"/>款爷中心</a>
+        </li>
     </ul>
 </div>
 <script src="mock/all.js" th:src="@{/all.js}"></script>
