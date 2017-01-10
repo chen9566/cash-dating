@@ -27,7 +27,7 @@
     <p class="f14">成功邀请好友：
         <span class="r16" th:text="${invites}">1</span>人</p>
     <ul class="clickHref" href="myfriends.html" th:href="@{/myInvitation}" id="toInviteList">
-        <li class="ntxt" th:each="u,st:${inviteUsers}" th:classappend="${u.payed?'ctxt':''}">
+        <li class="ntxt" th:each="u,st:${inviteUsers}" th:classappend="${u.payed?'ctxt':'opactiy'}">
             <span th:text="${'第'+st.count+'人'}">第1人</span>
             <img th:if="${u.headImageUrl!=null}" src="images/idimg.png" th:src="${u.headImageUrl}"/>
             <img th:if="${u.headImageUrl==null}" src="images/none.png" th:src="@{/friends/images/none.png}"/>
