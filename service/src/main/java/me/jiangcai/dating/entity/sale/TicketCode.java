@@ -10,7 +10,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
@@ -20,6 +22,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @IdClass(TicketCodePK.class)
+@Table(indexes = {@Index(columnList = "used")})
 public class TicketCode implements StockToken {
     public static final int CodeLength = 50;
 

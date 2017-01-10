@@ -3,6 +3,7 @@ package me.jiangcai.dating.service.sale;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashGoods;
 import me.jiangcai.dating.entity.sale.CashTrade;
+import me.jiangcai.dating.entity.sale.TicketBatch;
 import me.jiangcai.dating.entity.sale.TicketGoods;
 import me.jiangcai.dating.model.TicketInfo;
 import me.jiangcai.goods.Goods;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -68,4 +70,18 @@ public interface MallGoodsService {
      */
     @Transactional
     CashTrade createOrder(User user, CashGoods goods, int count);
+
+    /**
+     * 上传卡券类商品的卡券
+     *
+     * @param user        上传者
+     * @param goods       相关商品
+     * @param expiredDate 过期时间
+     * @param comment     备注
+     * @param codes       所有可用的卡券
+     * @return 批次
+     */
+    @Transactional
+    TicketBatch addTicketBatch(User user, TicketGoods goods, LocalDate expiredDate, String comment
+            , Iterable<String> codes);
 }

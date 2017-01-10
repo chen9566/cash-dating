@@ -10,21 +10,35 @@ import me.jiangcai.goods.TradedGoods;
 import me.jiangcai.goods.stock.StockToken;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author CJ
  */
-@Embeddable
+@Entity
 @Setter
 @Getter
 public class TicketTradedGoods implements TradedGoods {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
     private TicketCode ticketCode;
+    /**
+     * 里面的批次可以不一样，但商品必须是一样的
+     */
+    @OneToMany
+    private Set<TicketCode> codeSet;
 
     @Override
     public int getCount() {
@@ -124,4 +138,5 @@ public class TicketTradedGoods implements TradedGoods {
     public String getStockStyle() {
         return myGoods().getStockStyle();
     }
+
 }

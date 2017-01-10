@@ -11,6 +11,8 @@ import me.jiangcai.dating.entity.sale.TicketTradedGoods;
 import me.jiangcai.dating.model.TicketInfo;
 import me.jiangcai.dating.repository.sale.CashGoodsRepository;
 import me.jiangcai.dating.repository.sale.CashTradeRepository;
+import me.jiangcai.dating.repository.sale.TicketBatchRepository;
+import me.jiangcai.dating.repository.sale.TicketCodeRepository;
 import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.goods.Goods;
 import me.jiangcai.goods.service.ManageGoodsService;
@@ -33,6 +35,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -52,6 +55,10 @@ public class MallGoodsServiceImpl implements MallGoodsService {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private TicketBatchRepository ticketBatchRepository;
+    @Autowired
+    private TicketCodeRepository ticketCodeRepository;
 
     @Override
     public List<CashGoods> saleGoods() {
@@ -119,6 +126,8 @@ public class MallGoodsServiceImpl implements MallGoodsService {
                 }, trade -> cashTradeRepository.saveAndFlush((CashTrade) trade)
                 , trade -> cashTradeRepository.getOne(((CashTrade) trade).getId())
                 , (goods1, token) -> {
+                    // TODO 一个商品 应该可以保存多个数据
+                    //  应该通过调整这个方法 让这个方法允许接受多个Token 当然goods1得是一样的
                     if (goods1 instanceof TicketGoods) {
                         TicketTradedGoods tradedGoods = new TicketTradedGoods();
                         tradedGoods.setTicketCode((TicketCode) token);
@@ -128,5 +137,25 @@ public class MallGoodsServiceImpl implements MallGoodsService {
                 }
                 , goods, count, user, Duration.ofMinutes(10)
         );
+    }
+
+    @Override
+    public TicketBatch addTicketBatch(User user, TicketGoods goods, LocalDate expiredDate, String comment
+            , Iterable<String> codes) {
+        TicketBatch batch = new TicketBatch();
+        batch.setComment(comment);
+        batch.setCreatedTime(LocalDateTime.now());
+        batch.setCreator(user);
+        batch.setExpiredDate(expiredDate);
+        batch.setGoods(goods);
+
+        batch = ticketBatchRepository.save(batch);
+        for (String code : codes) {
+            TicketCode ticketCode = new TicketCode();
+            ticketCode.setBatch(batch);
+            ticketCode.setCode(code);
+            ticketCodeRepository.save(ticketCode);
+        }
+        return batch;
     }
 }

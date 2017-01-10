@@ -4,8 +4,9 @@ import me.jiangcai.goods.TradedGoods;
 import me.jiangcai.goods.payment.PaymentMethod;
 import me.jiangcai.goods.trade.PayInfo;
 
-import javax.persistence.ElementCollection;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.Set;
 @Entity
 public class TicketTrade extends CashTrade {
 
-    @ElementCollection
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<TicketTradedGoods> tradedSet;
 
     @Override

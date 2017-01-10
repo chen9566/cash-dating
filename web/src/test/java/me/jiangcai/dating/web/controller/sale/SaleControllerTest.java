@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -48,7 +49,8 @@ public class SaleControllerTest extends WebTest {
 
         }
 
-        mallGoodsService.addTicketBatch(user, ticketGoods, LocalDate.now().plusMonths(1), UUID.randomUUID().toString());
+        mallGoodsService.addTicketBatch(user, (TicketGoods) ticketGoods, LocalDate.now().plusMonths(1)
+                , UUID.randomUUID().toString(), Arrays.asList(randomMobile(), randomMobile()));
 
         TicketPayPage payPage = detailPage.buy(1);
         payPage.printThisPage();

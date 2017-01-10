@@ -3,6 +3,7 @@ package me.jiangcai.dating.web.controller.sale;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashGoods;
 import me.jiangcai.dating.entity.sale.CashTrade;
+import me.jiangcai.dating.entity.sale.TicketTrade;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.dating.service.sale.MallTradeService;
@@ -66,7 +67,10 @@ public class SaleController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/showOrder")
     public String showOrder(long id, Model model) {
-        model.addAttribute("trade", mallTradeService.trade(id));
-        return "sale/cardplay.html";
+        final CashTrade trade = mallTradeService.trade(id);
+        model.addAttribute("trade", trade);
+        if (trade instanceof TicketTrade)
+            return "sale/cardplay.html";
+        throw new IllegalArgumentException("not support " + trade + " yet");
     }
 }
