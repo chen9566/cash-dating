@@ -80,7 +80,7 @@ public class ManagePay123ControllerTest extends ManageWebTest {
                 startOrderPage();
             } catch (Throwable ignored) {
             }
-            System.out.println(driver.getPageSource());
+//            System.out.println(driver.getPageSource());
             BufferedImage image = AbstractPage.toImage(driver.findElement(By.id("qrCode")));
             // 解析出来的结果应该是仓库里的一个值
             String url = qrCodeService.scanImage(image);
