@@ -13,27 +13,17 @@
     <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
     <script src="../dist/js/share.js" th:src="@{/dist/js/share.js}"></script>
 </head>
-<body>
+<body class="ratebg">
 <div class="rate">
-    <p class="f14">当前消费费率(%)</p>
-    <h1 th:text="${#numbers.formatDecimal(@systemService.systemBookRate(user).movePointRight(2),1,'COMMA',2,'POINT')}">
-        0.60</h1>
+    <p><img src="images/banner-tg.png"/></p>
+    <h1>当前消费费率<span
+            th:text="${#numbers.formatDecimal(@systemService.systemBookRate(user).movePointRight(2),1,'COMMA',2,'POINT')}">
+    0.60</span>%</h1>
+    <p class="but"><img src="images/ratebutton.png"
+                        th:src="@{/friends/images/sharefriend.png}"
+                        class="share" alt="邀请好友降费率"/></p>
 </div>
 <div class="code-i">
-    <div class="ewmimg">
-        <p class="f16" id="inviteCodeText" th:text="'邀请码：'+${user.inviteCode}">邀请码：iFCxNb5</p>
-        <p><img src="images/temp2.png" name="myShareQRCode" th:src="@{/inviteQR/{id}(id=${user.id})}"></p>
-    </div>
-    <p class="f15" th:if="${invites<5}">邀请<span class="red">5位好友</span>注册涮卡消费, 可拥有<span class="red">0.30%</span><br>的消费利率
-    </p>
-    <p class="f15" th:if="${invites>=5}">邀请任务完成,关注后续活动</p>
-    <p class="shareimg">
-        <img src="images/paycard.png" th:src="@{/friends/images/paycard.png}" class="mt15 clickHref" alt="刷卡消费"
-             href="../paycode123.html" th:href="@{/start}"/>
-        <img src="images/sharefriend.png"
-             th:src="@{/friends/images/sharefriend.png}"
-             class="share" alt="分享好友"/>
-    </p>
     <p class="f14">成功邀请好友：
         <span class="r16" th:text="${invites}">1</span>人</p>
     <ul class="clickHref" href="myfriends.html" th:href="@{/myInvitation}" id="toInviteList">
@@ -43,13 +33,12 @@
             <img th:if="${u.headImageUrl==null}" src="images/none.png" th:src="@{/friends/images/none.png}"/>
             <span th:text="${u.nickname}">昵称</span>
         </li>
-        <li class="ntxt" th:remove="all">第2人<img src="images/none.png"/></li>
-        <li class="ntxt" th:remove="all">第3人<img src="images/none.png"/></li>
-        <li class="ntxt" th:remove="all">第4人<img src="images/none.png"/></li>
-        <li class="ntxt" th:remove="all">第5人<img src="images/none.png"/></li>
+        <li class="ntxt opactiy" th:remove="all">第2人<img src="images/none.png"/></li>
+        <li class="ntxt opactiy" th:remove="all">第3人<img src="images/none.png"/></li>
+        <li class="ntxt opactiy" th:remove="all">第4人<img src="images/none.png"/></li>
+        <li class="ntxt opactiy" th:remove="all">第5人<img src="images/none.png"/></li>
         <span class="fr"><img src="images/right-icon.png" th:src="@{/friends/images/right-icon.png}"/></span>
     </ul>
-
 </div>
 <div class="sharebg">
     <p><img src="images/sharebgok.png" th:src="@{/images/sharebgok.png}"/></p>

@@ -291,8 +291,6 @@ input::-webkit-inner-spin-button {
     border-right: 0;
 }
 
-
-
 /* grade */
 .grade-eject, .Category-eject, .Sort-eject {
     position: fixed;
@@ -499,7 +497,6 @@ input::-webkit-inner-spin-button {
     margin: 15px 0 60px 0;
     padding: 0 15px 15px 15px;
     color: #353535;
-    background: #fff;
     background: #fff;
     border-bottom: 1px #dfdfdf solid;
     border-top: 1px #dfdfdf solid
@@ -1037,7 +1034,6 @@ ul#navlist li span {
 ul#navlist li {
     float: left;
     height: 20px;
-    border: 0px solid #dfdfdf;
     width: 100%;
 }
 
@@ -1166,8 +1162,8 @@ ul#navlist .list1 {
 }
 
 .my li {
-    verflow: hidden;
-    float: left
+    overflow: hidden;
+    float: left;
 }
 
 .my li img {
@@ -1680,10 +1676,17 @@ ul#navlist .list1 {
     display: none;
 }
 
-.pay-new .t6 { display: none;
+.pay-new .t6 {
+    display: none;
 
 }
-.pay-new .t6 img{width: 15px; margin-left: 8px; margin-top: -2px}
+
+.pay-new .t6 img {
+    width: 15px;
+    margin-left: 8px;
+    margin-top: -2px
+}
+
 .pay-new .t6 button {
     background: #fcfcfc;
     height: 42px;
@@ -1835,7 +1838,10 @@ ul#navlist .list1 {
 
 .from-zc {
 }
-.from-zc li:last-child{ border: none; }
+
+.from-zc li:last-child {
+    border: none;
+}
 
 .from-zc ul {
     border-top: 1px solid #dfdfdf;
@@ -1859,6 +1865,7 @@ ul#navlist .list1 {
     line-height: 30px;
     margin: 5px 0;
     border: 0;
+    width: 52% !important;
 }
 
 .from-zc li select {
@@ -1902,7 +1909,7 @@ ul#navlist .list1 {
 }
 
 .form-zc .yamput input {
-    width: 12% !important;
+
 }
 
 .from-zc li.noline {
@@ -2046,8 +2053,6 @@ ul#navlist .list1 {
     height: 42px;
     line-height: 18px;
 }
-
-.from-bank .b2
 .order {
     margin: 0 0 15px 0;
     background: #fff;
@@ -2789,10 +2794,10 @@ ul#navlist .list1 {
 }
 
 .my-n {
-    background: -webkit-linear-gradient(bottom, #FD5959, #EB3842); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(top, #EB3842, #FD5959); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(top, #EB3842, #FD5959); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to top, #EB3842, #FD5959);
+    background: -webkit-linear-gradient(bottom, #f65150, #db3249); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(top, #db3249, #f65150); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(top, #db3249, #f65150); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to top, #db3249, #f65150);
     min-height: 101px;
     padding: 0 15px;
 }
@@ -2825,7 +2830,7 @@ ul#navlist .list1 {
 .my-n h1 {
     font-size: 17px;
     font-weight: 300;
-    margin-top: 8px;
+    margin-top: 18px;
     line-height: 14px;
 }
 
@@ -2935,6 +2940,13 @@ ul#navlist .list1 {
     display: block
 }
 
+.mylist .hot-b {
+    width: 34px;
+    height: 13px;
+    position: absolute;
+    padding-left: 10px
+}
+
 .mykey {
     background: #fff;
     border-bottom: 1px solid #dfdfdf;
@@ -2959,6 +2971,7 @@ ul#navlist .list1 {
     width: 21px;
     margin-top: -3px;
 }
+
 .mykey .hots {
     margin: 0 9px 0 0;
 }
@@ -2968,11 +2981,17 @@ ul#navlist .list1 {
     margin-top: -16px;
     margin-left: 2px;
 }
+
 .mykey .f-l {
     margin-right: 15px;
     color: #888;
 }
-.mykey .f-l b{ color: #f65150; font-weight: 400}
+
+.mykey .f-l b {
+    color: #f65150;
+    font-weight: 400
+}
+
 .mykey .f-l img {
     width: 8px;
     margin-left: 8px;
@@ -3357,12 +3376,14 @@ ul#navlist .list1 {
     margin: 5px 0;
     border: 0;
 }
+
 .from-personal input[type="number"] {
     -moz-appearance: textfield;
     border: 0;
     background: none;
     width: 70%;
 }
+
 .from-personal .icon {
     width: 25px
 }
@@ -3452,7 +3473,11 @@ ul#navlist .list1 {
     text-align: right;
     padding-right: 15px;
 }
-.f-per input{ width: 60%}
+
+.f-per input {
+    width: 60%
+}
+
 .infor {
     color: #888;
     overflow: hidden;
@@ -3846,10 +3871,12 @@ ul#navlist .list1 {
     margin-bottom: 70px;
     overflow: hidden
 }
+
 .mb110 {
     margin-bottom: 110px;
     overflow: hidden
 }
+
 .products {
     margin-top: 15px;
     background: #fff;
@@ -4098,9 +4125,9 @@ ul#navlist .list1 {
     height: 42px;
     color: #F65150;
     font-size: 18px;
-    -moz-box-shadow: 0px 0px 6px #d9d9d9;
-    -webkit-box-shadow: 0px 0px 6px #d9d9d9;
-    box-shadow: 0px 0px 6px #d9d9d9;
+    -moz-box-shadow: 0 0 6px #d9d9d9;
+    -webkit-box-shadow: 0 0 6px #d9d9d9;
+    box-shadow: 0 0 6px #d9d9d9;
 }
 
 .huanbei-banner {
@@ -4194,7 +4221,12 @@ ul#navlist .list1 {
     text-align: left;
     line-height: 20px;
 }
-.check-pos a{ color: #007AFF; text-decoration: none}
+
+.check-pos a {
+    color: #007AFF;
+    text-decoration: none
+}
+
 .ks {
 }
 
@@ -4204,6 +4236,7 @@ ul#navlist .list1 {
 
 .ks .k-b {
 }
+
 .ks .k-b img {
     width: 100%;
 }
@@ -4306,9 +4339,9 @@ ul#navlist .list1 {
     height: 44px;
     color: #000;
     font-size: 21px;
-    -moz-box-shadow: 0px 0px 6px #d9d9d9;
-    -webkit-box-shadow: 0px 0px 6px #d9d9d9;
-    box-shadow: 0px 0px 6px #d9d9d9;
+    -moz-box-shadow: 0 0 6px #d9d9d9;
+    -webkit-box-shadow: 0 0 6px #d9d9d9;
+    box-shadow: 0 0 6px #d9d9d9;
     display: none;
 }
 
@@ -4486,7 +4519,6 @@ ul#navlist li .b {
 ul#navlist li {
     float: left;
     height: 40px;
-    border: 0px solid #dfdfdf;
     width: 100%;
 }
 
@@ -4521,20 +4553,23 @@ ul#navlist .list1 {
     text-decoration: none;
     border-radius: 0 !important;
 }
+
 .up-btn input {
     font-size: 18px;
     display: block;
     text-decoration: none;
     border-radius: 0 !important;
-    border:0;
+    border: 0;
 }
+
 .up-btn button {
     font-size: 18px;
     display: block;
     text-decoration: none;
     border-radius: 0 !important;
-    border:0!important;
+    border: 0 !important;
 }
+
 .car {
 }
 
@@ -4706,6 +4741,7 @@ ul#navlist .list1 {
     font-size: 19px;
     line-height: 34px;
 }
+
 .loan-v2 .f12 {
     color: #666;
     font-size: 13px;
@@ -4887,7 +4923,12 @@ ul#navlist .list1 {
 .topay .bo-b {
     border-bottom: 1px solid #dfdfdf;
 }
-.topay a{ color: #353535; text-decoration: none}
+
+.topay a {
+    color: #353535;
+    text-decoration: none
+}
+
 .back-c {
     background: #fff;
     padding-bottom: 20px
@@ -5020,10 +5061,15 @@ ul#navlist .list1 {
     left: 15px;
     padding-top: 6px;
 }
-.loan-v2 .f19 span{ text-align: center;}
+
+.loan-v2 .f19 span {
+    text-align: center;
+}
+
 .hot .f22 {
     font-size: 20px;
 }
+
 .hot .f12 {
     font-size: 12px;
     color: #888;
@@ -5078,34 +5124,157 @@ ul#navlist .list1 {
 .picc img {
     width: 100%
 }
-.mb120{ margin-bottom: 120px}
+
+.mb120 {
+    margin-bottom: 120px
+}
+
+.mt65 {
+    margin-bottom: 65px
+}
 .success {
     background: url("succenbg.png") no-repeat;
     background-size: 100%;
     text-align: center;
     padding: 15px 0;
-    color:#888;
+    color: #888;
     margin-bottom: 15px;
 }
 
 .success img {
-    width: 27px; margin-top: -4px; margin-right: 10px;
+    width: 27px;
+    margin-top: -4px;
+    margin-right: 10px;
 }
-.success .f17{color:#02BB00; font-size: 17px;}
-.agreelist{ padding: 15px;}
-.agreelist .f13{ font-size: 13px; color: #888; margin-bottom:15px}
-.agreefix{ padding: 15px 0; width: 100%; position: fixed; z-index: 99; bottom: 0; background: #f3f3f3; border-top: 1px solid #dfdfdf}
 
-.helpshow1{ position: absolute; top:0; left:0; display: none }
-.helpshow1 img{ width: 100%}
-.helpshow2{ position: absolute; top:0; left:0; display: none }
-.helpshow2 img{ width: 100%}
-.pay-n-two{background: -webkit-linear-gradient(bottom, #db3249, #f65150); /* Safari 5.1 - 6.0 */
+.success .f17 {
+    color: #02BB00;
+    font-size: 17px;
+}
+
+.agreelist {
+    padding: 15px;
+}
+
+.agreelist .f13 {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 15px
+}
+
+.agreefix {
+    padding: 15px 0;
+    width: 100%;
+    position: fixed;
+    z-index: 99;
+    bottom: 0;
+    background: #f3f3f3;
+    border-top: 1px solid #dfdfdf
+}
+
+.helpshow1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none
+}
+
+.helpshow1 img {
+    width: 100%
+}
+
+.helpshow2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none
+}
+
+.helpshow2 img {
+    width: 100%
+}
+
+.pay-n-two {
+    background: -webkit-linear-gradient(bottom, #db3249, #f65150); /* Safari 5.1 - 6.0 */
     background: -o-linear-gradient(top, #db3249, #f65150); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(top, #db3249, #f65150); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to top, #db3249, #f65150); padding: 30px 15px 40px 15px; }
-.pay-n-two img{ width: 100%}
-.pay-n-two .ewm-p{ background: #fff; text-align: center; border-radius: 6px; padding:0 15px 15px 15px}
-.pay-n-two .ewm-p h1{ font-size: 17px; background: #f3f3f3; line-height: 50px;border-radius: 6px 6px 0 0; margin: 0 -15px;}
-.pay-n-two .f14{ opacity: 0.8; margin-bottom: 35px; font-size: 14px; color: #fff; text-align: center; padding-top: 10px}
-.pay-n-two .f14 a{ color: #fff; text-decoration: none;}
+    background: linear-gradient(to top, #db3249, #f65150);
+    padding: 30px 20px 60px 20px;
+    text-align: center;
+}
+
+.pay-n-two img {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.pay-n-two .ewm-p {
+    background: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 0 15px 15px 15px
+}
+
+.pay-n-two .ewm-p h1 {
+    font-size: 17px;
+    background: #f3f3f3;
+    line-height: 50px;
+    border-radius: 6px 6px 0 0;
+    margin: 0 -15px;
+}
+
+.pay-n-two .f14 {
+    opacity: 0.8;
+    margin-bottom: 35px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    padding-top: 10px
+}
+
+.pay-n-two .f14 a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.pay-n-two .t4 {
+    font-size: 14px;
+    color: #888 !important;
+}
+
+.k-fixe {
+    background: #f8f8f8;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    height: 49px;
+    border-top: 1px solid #979797;
+}
+
+.k-fixe ul {
+}
+
+.k-fixe li {
+    width: 33.3%;
+    float: left;
+    text-align: center;
+    font-size: 10px;
+    color: #F65150;
+    padding: 6px 0 0 0;
+}
+
+.k-fixe img {
+    display: block;
+    margin: 0 auto;
+    width: 20%;
+}
+
+.k-fixe a {
+    display: block;
+    text-decoration: none;
+    color: #7a7a7a
+}
+
+.k-fixe .b3 {
+    color: #b3b3b3
+}
