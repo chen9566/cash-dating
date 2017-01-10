@@ -5206,7 +5206,10 @@ ul#navlist .list1 {
     width: 100%;
     margin: 0 auto;
 }
-.fuyoulogo{ width:70% !important;}
+
+.fuyoulogo {
+    width: 70% !important;
+}
 .pay-n-two .ewm-p {
     background: #fff;
     text-align: center;
