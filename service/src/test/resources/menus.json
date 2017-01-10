@@ -7,11 +7,11 @@
   {
     "name": "推广",
     "type": "view",
-    "data": "http://app.kuanyes.com/cash/myInviteCode"
+    "data": "http://app.kuanyes.com/win/myInviteCode"
   },
   {
-    "name": "个人中心",
+    "name": "款爷",
     "type": "view",
-    "data": "http://app.kuanyes.com/cash/my"
+    "data": "http://app.kuanyes.com/win/my"
   }
 ]
