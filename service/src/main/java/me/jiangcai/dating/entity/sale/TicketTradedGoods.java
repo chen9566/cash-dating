@@ -9,12 +9,10 @@ import me.jiangcai.goods.TradeEntity;
 import me.jiangcai.goods.TradedGoods;
 import me.jiangcai.goods.stock.StockToken;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.util.List;
@@ -32,8 +30,13 @@ public class TicketTradedGoods implements TradedGoods {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
-    private TicketCode ticketCode;
+    /**
+     * 一个预留字段
+     */
+    private int status;
+
+//    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
+//    private TicketCode ticketCode;
     /**
      * 里面的批次可以不一样，但商品必须是一样的
      */
@@ -42,16 +45,17 @@ public class TicketTradedGoods implements TradedGoods {
 
     @Override
     public int getCount() {
-        return 1;
+        return codeSet.size();
     }
 
     @Override
-    public StockToken toStockToken() {
-        return ticketCode;
+    public StockToken[] toStockToken() {
+        return codeSet.toArray(new StockToken[codeSet.size()]);
     }
 
     private Goods myGoods() {
-        return ticketCode.getBatch().getGoods();
+        return codeSet.stream().findAny().orElseThrow(() -> new IllegalStateException("至少得有一个商品的"))
+                .getBatch().getGoods();
     }
 
     @Override

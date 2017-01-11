@@ -36,7 +36,9 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author CJ
@@ -130,7 +132,8 @@ public class MallGoodsServiceImpl implements MallGoodsService {
                     //  应该通过调整这个方法 让这个方法允许接受多个Token 当然goods1得是一样的
                     if (goods1 instanceof TicketGoods) {
                         TicketTradedGoods tradedGoods = new TicketTradedGoods();
-                        tradedGoods.setTicketCode((TicketCode) token);
+                        tradedGoods.setCodeSet(new HashSet<>());
+                        Stream.of(token).forEach(t -> tradedGoods.getCodeSet().add((TicketCode) t));
                         return tradedGoods;
                     }
                     throw new IllegalStateException("暂时不支持" + goods1);

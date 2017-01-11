@@ -1,5 +1,7 @@
 package me.jiangcai.dating.entity.sale;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.jiangcai.goods.TradedGoods;
 import me.jiangcai.goods.payment.PaymentMethod;
 import me.jiangcai.goods.trade.PayInfo;
@@ -16,6 +18,8 @@ import java.util.Set;
  * @author CJ
  */
 @Entity
+@Setter
+@Getter
 public class TicketTrade extends CashTrade {
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)

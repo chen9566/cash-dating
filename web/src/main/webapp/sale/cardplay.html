@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:res="http://resource.jiangcai.me" lang="en">
 <!--/*@thymesVar id="trade" type="me.jiangcai.dating.entity.sale.TicketTrade"*/-->
+<!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.service.CashStrings"*/-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -8,22 +9,31 @@
     <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/sale.css">
     <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
-    <script src="js/payfor.js"></script>
     <title>确认订单</title>
 </head>
 <body>
 
-<div class="salecard">
+<div class="salecard" th:each="goods:${trade.tradedSet}">
     <dl>
         <dt>
-            <img src="images/12.png" th:src="${trade.goods}"></dt>
+            <img src="images/12.png" res:src="${goods.titleGoodsImage.defaultImage.resourcePath}"></dt>
+        <dd><span class="w86" th:text="${goods.name}">星巴克大杯优惠券星巴克大杯星巴克大杯优惠券星巴克大杯</span>
+            <span class="cny" th:text="${'¥'+#cashStrings.mallPrice(goods.price)}">¥21.6</span></dd>
+        <dd class="f14">规格大杯<span class="number" th:text="${'x'+goods.count}">x4</span></dd>
+    </dl>
+</div>
+<div class="salecard" th:remove="all">
+    <dl>
+        <dt>
+            <img src="images/12.png"></dt>
         <dd><span class="w86">星巴克大杯优惠券星巴克大杯星巴克大杯优惠券星巴克大杯</span><span class="cny">¥21.6</span></dd>
         <dd class="f14">规格大杯<span class="number">x4</span></dd>
     </dl>
 </div>
 <div class="message">
     <ul>
-        <li>合计 <span class="pull-right cny" id="total_item_1">21.6</span></li>
+        <li>合计 <span class="pull-right cny" id="total_item_1"
+                     th:text="${#cashStrings.mallPrice(trade.totalPrice)}">21.6</span></li>
     </ul>
 </div>
 <div class="paybtn" onclick="window.location.href='pay-ts2.html'">

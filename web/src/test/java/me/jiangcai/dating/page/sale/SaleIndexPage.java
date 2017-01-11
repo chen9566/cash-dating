@@ -24,6 +24,11 @@ public class SaleIndexPage extends AbstractPage {
     public void validatePage() {
         assertThat(webDriver.getTitle())
                 .isEqualToIgnoringCase("特卖");
+
+        try {
+            Thread.sleep(1500L);
+        } catch (InterruptedException ignored) {
+        }
     }
 
     /**
