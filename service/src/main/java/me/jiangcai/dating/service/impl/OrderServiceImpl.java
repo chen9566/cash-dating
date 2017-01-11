@@ -4,12 +4,14 @@ import me.jiangcai.dating.ThreadSafe;
 import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
+import me.jiangcai.dating.entity.PayOrder;
 import me.jiangcai.dating.entity.PayToUserOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.entity.WithdrawOrder;
+import me.jiangcai.dating.entity.sale.CashTrade;
 import me.jiangcai.dating.entity.support.WithdrawOrderStatus;
 import me.jiangcai.dating.model.OrderFlow;
 import me.jiangcai.dating.model.OrderFlows;
@@ -96,6 +98,16 @@ public class OrderServiceImpl implements OrderService {
     private void forNewCashOrder(User user, BigDecimal amount, String comment, Long cardId, CashOrder order) {
         forNewUserOrder(user, amount, comment, cardId, order);
         order.setThatRateConfig(systemService.currentRateConfig(user));
+    }
+
+
+    @Override
+    public PayOrder createPayOrder(CashTrade trade, String payMethod) {
+        PayOrder order = new PayOrder();
+        forNewUserOrder(trade.getUser(), trade.getTotalPrice(), null, null, order);
+        order.setSaleTrade(trade);
+        trade.getPayOrderSet().add(order);
+        return cashOrderRepository.save(order);
     }
 
     private void forNewUserOrder(User user, BigDecimal amount, String comment, Long cardId, UserOrder order) {

@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/sale.css">
     <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
+    <script src="//cdn.kuanyes.com/jquery.loadingoverlay.min.js"></script>
+    <script src="//cdn.kuanyes.com/jquery.loadingoverlay_progress.min.js"></script>
+    <script src="../dist/js/share.js?v=1"></script>
+    <script src="../mock/all.js" th:src="@{/all.js}"></script>
     <title>确认订单</title>
 </head>
 <body>
@@ -36,8 +40,37 @@
                      th:text="${#cashStrings.mallPrice(trade.totalPrice)}">21.6</span></li>
     </ul>
 </div>
-<div class="paybtn" onclick="window.location.href='pay-ts2.html'">
+<div class="paybtn" id="payButton" data-id="23" th:attr="data-id=${trade.id}" href="../paycode.html"
+     th:href="@{/order/}">
     <button type="button" class="btn btn-danger btn-lg btn-block">支付</button>
 </div>
 </body>
+<script>
+    $(function () {
+        const payButton = $('#payButton');
+        payButton.click(function () {
+//            window.location.href = payButton.attr('href') + '&count=' + $('#qty_item_1').val();
+// 分开2个步骤 建立订单，然后是打开订单
+//            console.log('kill me !!!!');
+            $.LoadingOverlay("show");
+            $.ajax($.uriPrefix + '/sale/createPay/' + payButton.attr('data-id') + "/all", {
+                method: 'post',
+                dataType: 'text',
+                error: function (rep) {
+                    $.StopLoadingOverlay(function () {
+                        alert(rep.responseText);
+// 如果是原型模式，继续展开页面
+                        if ($.prototypesMode)
+                            window.location.href = payButton.attr('href');
+                    });
+                },
+                success: function (tradeId) {
+                    $.StopLoadingOverlay(function () {
+                        window.location.href = payButton.attr('href') + tradeId;
+                    });
+                }
+            });
+        });
+    });
+</script>
 </html>

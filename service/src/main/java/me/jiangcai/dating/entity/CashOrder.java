@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Set;
@@ -114,5 +115,13 @@ public class CashOrder extends UserOrder {
     @Override
     public boolean isArbitrage() {
         return true;
+    }
+
+    /**
+     * @return 成功跳转的URI, null 系统就不管了
+     */
+    @Transient
+    public String getSuccessURI() {
+        return null;
     }
 }

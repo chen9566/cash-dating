@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -139,6 +140,9 @@ public class PayController {
             , SignatureException {
         CashOrder order = orderService.getOne(id);
         if (orderService.isComplete(id)) {
+            final String successURI = order.getSuccessURI();
+            if (!StringUtils.isEmpty(successURI))
+                return "redirect:" + successURI;
             // 看是不是我
             boolean isMe = order.getOwner().getOpenId().equals(openId);
 

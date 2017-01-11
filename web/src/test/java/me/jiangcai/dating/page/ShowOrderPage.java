@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -93,6 +94,13 @@ public class ShowOrderPage extends AbstractPage {
     public void assertAmount(double amount) {
         assertThat(amountSpan.getText())
                 .isEqualTo(Common.CurrencyFormat(amount));
+    }
+
+    /**
+     * 随机支付
+     */
+    public void pay() throws Exception {
+        pay(PayChannel.values()[new Random().nextInt(PayChannel.values().length)]);
     }
 
     /**

@@ -3,11 +3,13 @@ package me.jiangcai.dating.web.controller.sale;
 import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashGoods;
+import me.jiangcai.dating.entity.sale.CashTrade;
 import me.jiangcai.dating.entity.sale.TicketGoods;
 import me.jiangcai.dating.page.sale.SaleIndexPage;
 import me.jiangcai.dating.page.sale.TicketGoodsDetailPage;
 import me.jiangcai.dating.page.sale.TicketPayPage;
 import me.jiangcai.dating.service.sale.MallGoodsService;
+import me.jiangcai.dating.service.sale.MallTradeService;
 import me.jiangcai.goods.service.ManageGoodsService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class SaleControllerTest extends WebTest {
     private MallGoodsService mallGoodsService;
     @Autowired
     private ManageGoodsService manageGoodsService;
+    @Autowired
+    private MallTradeService mallTradeService;
 
     @Test
     public void index() throws Exception {
@@ -53,7 +57,12 @@ public class SaleControllerTest extends WebTest {
                 , UUID.randomUUID().toString(), Arrays.asList(randomMobile(), randomMobile()));
 
         TicketPayPage payPage = detailPage.buy(1);
-        payPage.printThisPage();
+
+        payPage.toPay(null);
+
+        //当前用户的唯一的订单
+        CashTrade trade = mallTradeService.byOpenId(user.getOpenId()).get(0);
+        System.out.println(trade);
     }
 
     private void addSimpleTicketGoods() throws IOException {

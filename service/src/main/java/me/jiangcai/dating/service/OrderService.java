@@ -3,11 +3,13 @@ package me.jiangcai.dating.service;
 import me.jiangcai.dating.ThreadSafe;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
+import me.jiangcai.dating.entity.PayOrder;
 import me.jiangcai.dating.entity.PayToUserOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.entity.WithdrawOrder;
+import me.jiangcai.dating.entity.sale.CashTrade;
 import me.jiangcai.dating.model.OrderFlow;
 import me.jiangcai.dating.model.OrderFlows;
 import me.jiangcai.dating.model.PayChannel;
@@ -145,4 +147,7 @@ public interface OrderService {
     WithdrawOrder newWithdrawOrder(User user, BigDecimal amount, Long cardId) throws IOException, SignatureException;
 
     List<UserOrder> queryUserOrders(String search);
+
+    @Transactional
+    PayOrder createPayOrder(CashTrade trade, String payMethod);
 }
