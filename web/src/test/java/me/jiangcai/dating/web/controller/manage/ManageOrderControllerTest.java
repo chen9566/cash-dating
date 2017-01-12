@@ -9,7 +9,7 @@ import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.WithdrawOrder;
 import me.jiangcai.dating.entity.support.ManageStatus;
-import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.page.ManageOrderPage;
 import me.jiangcai.dating.page.ManageOrderResultPage;
 import me.jiangcai.dating.repository.UserRepository;
@@ -94,7 +94,7 @@ public class ManageOrderControllerTest extends ManageWebTest {
 //        System.out.println(driver.getPageSource());
 
         CashOrder needTradeOrder = orderService.newOrder(user, randomOrderAmount(), UUID.randomUUID().toString(), user.getCards().get(0).getId());
-        orderService.preparePay(needTradeOrder.getId(), PayChannel.weixin);
+        orderService.preparePay(needTradeOrder.getId(), PayMethod.weixin, null);
         assertThat(needTradeOrder.isCompleted())
                 .isFalse();
         CashOrder needWithOrder = orderService.newOrder(user, randomOrderAmount(), UUID.randomUUID().toString(), user.getCards().get(0).getId());
@@ -120,7 +120,7 @@ public class ManageOrderControllerTest extends ManageWebTest {
                 .isTrue();
         //并且等待支付了
         // 有且只有允许分开订单的情况
-        if (!getSystemService().arbitrageChannel(PayChannel.weixin).useOneOrderForPayAndArbitrage()) {
+        if (!getSystemService().arbitrageChannel(PayMethod.weixin).useOneOrderForPayAndArbitrage()) {
             assertThat(needTradeOrder.getPlatformWithdrawalOrderSet())
                     .isNotEmpty();
             needWithOrder = orderService.getOne(needWithOrder.getId());
@@ -130,7 +130,7 @@ public class ManageOrderControllerTest extends ManageWebTest {
 
         // 再执行一个单独的订单
         needTradeOrder = orderService.newOrder(user, randomOrderAmount(), UUID.randomUUID().toString(), user.getCards().get(0).getId());
-        orderService.preparePay(needTradeOrder.getId(), PayChannel.weixin);
+        orderService.preparePay(needTradeOrder.getId(), PayMethod.weixin, null);
         assertThat(needTradeOrder.isCompleted())
                 .isFalse();
         resultPage = resultPage.searchAgain(needTradeOrder.getFriendlyId());

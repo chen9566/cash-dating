@@ -16,7 +16,7 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.entity.WithdrawOrder;
 import me.jiangcai.dating.entity.channel.ChroneOrder;
-import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.SubBranchBankRepository;
@@ -170,7 +170,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
      */
     public void tradeSuccess(CashOrder order) throws IOException, SignatureException {
         order = cashOrderRepository.getOne(order.getId());
-        PlatformOrder platformOrder = orderService.preparePay(order.getId(), PayChannel.weixin);
+        PlatformOrder platformOrder = orderService.preparePay(order.getId(), PayMethod.weixin, null);
 
         if (platformOrder instanceof ChanpayOrder) {
             TradeEvent tradeEvent = new TradeEvent(TradeStatus.TRADE_SUCCESS);
@@ -230,7 +230,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
                     .findFirst()
                     .orElseThrow(() -> new IllegalStateException("没有找到成功的付款单,无法模拟支付结果。"));
 
-            final ArbitrageChannel bean = applicationContext.getBean(platformOrder.channelClass());
+            final ArbitrageChannel bean = applicationContext.getBean(platformOrder.arbitrageChannelClass());
             bean.mockArbitrageResult(cashOrder, success, reason);
         }
 //        System.out.println("1");

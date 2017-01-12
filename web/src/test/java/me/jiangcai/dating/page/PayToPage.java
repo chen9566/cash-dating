@@ -1,6 +1,6 @@
 package me.jiangcai.dating.page;
 
-import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.PayMethod;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -34,7 +34,7 @@ public class PayToPage extends AbstractPage {
      * @param pay    是否完成支付
      * @param channel
      */
-    public void pay(String amount, boolean pay, PayChannel channel) throws Exception {
+    public void pay(String amount, boolean pay, PayMethod channel) throws Exception {
         this.amount.sendKeys(amount);
         button.click();
 

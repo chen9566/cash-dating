@@ -4,7 +4,7 @@ import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
-import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.page.BindingCardPage;
 import me.jiangcai.dating.page.MyBankPage;
 import me.jiangcai.dating.page.MyPage;
@@ -38,7 +38,7 @@ public class CardControllerTest extends WebTest {
     @Test
     public void flowNewUser() throws IOException {
         // 这个流程只有是单独体系才有的
-        if (getSystemService().arbitrageChannel(PayChannel.weixin).useOneOrderForPayAndArbitrage()) {
+        if (getSystemService().arbitrageChannel(PayMethod.weixin).useOneOrderForPayAndArbitrage()) {
             log.info("无需这个测试流程");
             return;
         }

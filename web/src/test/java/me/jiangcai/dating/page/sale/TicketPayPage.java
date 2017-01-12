@@ -3,6 +3,7 @@ package me.jiangcai.dating.page.sale;
 import com.google.common.base.Predicate;
 import me.jiangcai.dating.page.AbstractPage;
 import me.jiangcai.dating.page.ShowOrderPage;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -36,8 +37,19 @@ public class TicketPayPage extends AbstractPage {
      */
     public void toPay(Object obj) throws Exception {
         payButton.click();
-        new WebDriverWait(webDriver, 5).until((Predicate<WebDriver>)
-                input -> input != null && input.getTitle().equalsIgnoreCase("收款二维码"));
+        try {
+            new WebDriverWait(webDriver, 5).until((Predicate<WebDriver>)
+                    input -> input != null && input.getTitle().equalsIgnoreCase("收款二维码"));
+        } catch (TimeoutException exception) {
+            payButton.click();
+            try {
+                new WebDriverWait(webDriver, 5).until((Predicate<WebDriver>)
+                        input -> input != null && input.getTitle().equalsIgnoreCase("收款二维码"));
+            } catch (TimeoutException e) {
+                printThisPage();
+                throw e;
+            }
+        }
 
         initPage(ShowOrderPage.class).pay();
     }

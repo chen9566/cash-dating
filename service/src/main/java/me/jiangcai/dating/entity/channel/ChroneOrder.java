@@ -5,6 +5,7 @@ import lombok.Setter;
 import me.jiangcai.chrone.model.PayStatus;
 import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.channel.ChroneService;
+import me.jiangcai.dating.channel.PayChannel;
 import me.jiangcai.dating.entity.PlatformOrder;
 
 import javax.persistence.Column;
@@ -29,7 +30,12 @@ public class ChroneOrder extends PlatformOrder {
     }
 
     @Override
-    public Class<? extends ArbitrageChannel> channelClass() {
+    public Class<? extends ArbitrageChannel> arbitrageChannelClass() {
         return ChroneService.class;
+    }
+
+    @Override
+    public Class<? extends PayChannel> payChannelClass() {
+        throw new NoSuchMethodError("Chrone Not Support Pay");
     }
 }

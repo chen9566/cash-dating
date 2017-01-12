@@ -11,7 +11,7 @@ import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.support.Address;
-import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.model.trj.ProjectLoan;
 import me.jiangcai.dating.page.BindingCardPage;
 import me.jiangcai.dating.page.BindingMobilePage;
@@ -253,7 +253,7 @@ public abstract class WebTest extends ServiceBaseTest {
         final String owner = RandomStringUtils.randomAlphanumeric(3);
         final String number = randomBankCard();
 
-        ArbitrageChannel channel = systemService.arbitrageChannel(PayChannel.weixin);
+        ArbitrageChannel channel = systemService.arbitrageChannel(PayMethod.weixin);
         if (withBindingCard && !channel.useOneOrderForPayAndArbitrage()) {
             startOrderPage = bindCardOnOrderPage(mobile, startOrderPage, subBranchBank, owner, number);
         }

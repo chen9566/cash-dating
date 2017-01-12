@@ -1,7 +1,7 @@
 package me.jiangcai.dating.page;
 
 import com.google.common.base.Predicate;
-import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.util.Common;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -71,7 +71,7 @@ public class ShowOrderPage extends AbstractPage {
     }
 
 
-    private BufferedImage scanCode(PayChannel channel) throws IOException {
+    private BufferedImage scanCode(PayMethod channel) throws IOException {
         WebElement ele = webDriver.findElements(By.className("payChannel")).stream()
                 .filter(webElement -> webElement.getAttribute("data-id").equals(channel.name()))
                 .findFirst()
@@ -100,7 +100,7 @@ public class ShowOrderPage extends AbstractPage {
      * 随机支付
      */
     public void pay() throws Exception {
-        pay(PayChannel.values()[new Random().nextInt(PayChannel.values().length)]);
+        pay(PayMethod.values()[new Random().nextInt(PayMethod.values().length)]);
     }
 
     /**
@@ -108,7 +108,7 @@ public class ShowOrderPage extends AbstractPage {
      *
      * @param channel
      */
-    public void pay(PayChannel channel) throws Exception {
+    public void pay(PayMethod channel) throws Exception {
         mockWeixinPay(orderId(), scanCode(channel));
     }
 

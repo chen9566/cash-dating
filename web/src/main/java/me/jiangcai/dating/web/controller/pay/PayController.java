@@ -2,11 +2,13 @@ package me.jiangcai.dating.web.controller.pay;
 
 import com.google.zxing.WriterException;
 import me.jiangcai.dating.channel.ArbitrageChannel;
+import me.jiangcai.dating.channel.PayChannel;
 import me.jiangcai.dating.entity.CashOrder;
+import me.jiangcai.dating.entity.PayOrder;
 import me.jiangcai.dating.entity.PayToUserOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.User;
-import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.UserService;
@@ -120,10 +122,15 @@ public class PayController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/orderQRURL")
-    public ResponseEntity<String> orderQRURL(String id, PayChannel channel) throws IOException, SignatureException {
+    public ResponseEntity<String> orderQRURL(String id, PayMethod channel) throws IOException, SignatureException {
         CashOrder order = orderService.getOne(id);
+        String platformId;
+        if (order instanceof PayOrder)
+            platformId = createPayPlatformOrder(order, channel);
+        else
+            platformId = createArbitragePlatformOrder(order, channel);
         return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN)
-                .body(createPlatformOrder(order, channel));
+                .body(platformId);
     }
 
     /**
@@ -184,17 +191,26 @@ public class PayController {
         return "paycode.html";
     }
 
-    private String createPlatformOrder(CashOrder order, PayChannel channel) throws IOException, SignatureException {
+    private String createPayPlatformOrder(CashOrder order, PayMethod channel) throws IOException, SignatureException {
         if (channel == null)
-            channel = PayChannel.weixin;
-        PlatformOrder platformOrder = orderService.preparePay(order.getId(), channel);
+            channel = PayMethod.weixin;
+        PlatformOrder platformOrder = orderService.preparePay(order.getId(), null, channel);
 
-        final ArbitrageChannel arbitrageChannel = applicationContext.getBean(platformOrder.channelClass());
+        final PayChannel payChannel = applicationContext.getBean(platformOrder.payChannelClass());
+        return payChannel.QRCodeImageFromOrder(platformOrder);
+    }
+
+    private String createArbitragePlatformOrder(CashOrder order, PayMethod channel) throws IOException, SignatureException {
+        if (channel == null)
+            channel = PayMethod.weixin;
+        PlatformOrder platformOrder = orderService.preparePay(order.getId(), channel, null);
+
+        final ArbitrageChannel arbitrageChannel = applicationContext.getBean(platformOrder.arbitrageChannelClass());
         return arbitrageChannel.QRCodeImageFromOrder(platformOrder);
     }
 
     private String showPayCode(Model model, CashOrder order) throws IOException, SignatureException {
-        model.addAttribute("qrUrl", createPlatformOrder(order, PayChannel.weixin));
+        model.addAttribute("qrUrl", createArbitragePlatformOrder(order, PayMethod.weixin));
         model.addAttribute("order", order);
         return "paycode.html";
     }

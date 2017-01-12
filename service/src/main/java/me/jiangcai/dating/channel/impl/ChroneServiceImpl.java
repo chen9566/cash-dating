@@ -18,7 +18,7 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.channel.ChroneOrder;
 import me.jiangcai.dating.event.Notification;
 import me.jiangcai.dating.exception.ArbitrageBindFailedException;
-import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.notify.NotifyType;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.PlatformOrderRepository;
@@ -211,10 +211,10 @@ public class ChroneServiceImpl implements ChroneService {
     }
 
     @Override
-    public PlatformOrder newOrder(CashOrder order, PayChannel channel) throws IOException, SignatureException {
+    public PlatformOrder newOrder(CashOrder order, PayMethod channel) throws IOException, SignatureException {
         try {
             OrderInfo orderInfo = chroneGateway.createScanOrder(
-                    channel != null && channel == PayChannel.alipay ? PaySource.alipay : PaySource.weixin
+                    channel != null && channel == PayMethod.alipay ? PaySource.alipay : PaySource.weixin
                     , order.getOwner().getMobileNumber()
                     , order.getAmount()
                     , order.getWithdrawalAmount(), TransactionType.T0, null, null, null);

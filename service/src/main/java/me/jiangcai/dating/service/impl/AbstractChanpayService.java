@@ -36,6 +36,7 @@ import me.jiangcai.dating.event.MyTradeEvent;
 import me.jiangcai.dating.event.MyWithdrawalEvent;
 import me.jiangcai.dating.event.Notification;
 import me.jiangcai.dating.exception.ArbitrageBindFailedException;
+import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.notify.NotifyType;
 import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.ChanpayOrderRepository;
@@ -208,7 +209,9 @@ public abstract class AbstractChanpayService implements ChanpayService {
                         , order.getFinishTime()));
                 cashOrderRepository.save(order.getCashOrder());
                 // 此时应该开启 套现
-                applicationContext.getBean(ChanpayService.class).withdrawalOrder(order.getCashOrder());
+                // 只有是套现订单时才开启该业务
+                if (order.getCashOrder().isArbitrage())
+                    applicationContext.getBean(ChanpayService.class).withdrawalOrder(order.getCashOrder());
             }
         } else
             log.warn("we received tradeEvent " + event + " no in our system.");
@@ -385,7 +388,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
     }
 
     @Override
-    public PlatformOrder newOrder(CashOrder order, me.jiangcai.dating.model.PayChannel channel) throws IOException, SignatureException {
+    public PlatformOrder newOrder(CashOrder order, PayMethod channel) throws IOException, SignatureException {
         //        Card card = order.getOwner().getCards().get(0);
         CreateInstantTrade request = new CreateInstantTrade();
         request.setAmount(order.getAmount());

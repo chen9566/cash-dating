@@ -3,7 +3,7 @@ package me.jiangcai.dating.model;
 /**
  * @author CJ
  */
-public enum PayChannel {
+public enum PayMethod {
     /**
      * 目前仅支持,支持方:畅捷支付
      */

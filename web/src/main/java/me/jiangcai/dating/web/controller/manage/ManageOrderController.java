@@ -69,7 +69,7 @@ public class ManageOrderController {
                 for (PlatformOrder platformOrder : ((CashOrder) order).getPlatformOrderSet()) {
                     if (platformOrder.isFinish())
                         continue;
-                    ArbitrageChannel channel = applicationContext.getBean(platformOrder.channelClass());
+                    ArbitrageChannel channel = applicationContext.getBean(platformOrder.arbitrageChannelClass());
                     if (channel.checkPayResult(platformOrder))
                         break;
                 }

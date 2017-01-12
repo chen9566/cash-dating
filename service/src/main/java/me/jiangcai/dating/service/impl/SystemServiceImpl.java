@@ -3,10 +3,12 @@ package me.jiangcai.dating.service.impl;
 import me.jiangcai.dating.ProfitSplit;
 import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.channel.ChroneService;
+import me.jiangcai.dating.channel.PayChannel;
 import me.jiangcai.dating.entity.SystemString;
 import me.jiangcai.dating.entity.support.RateConfig;
-import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.repository.SystemStringRepository;
+import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.UserService;
 import org.apache.commons.logging.Log;
@@ -63,7 +65,8 @@ public class SystemServiceImpl implements SystemService {
     private static final Log log = LogFactory.getLog(SystemServiceImpl.class);
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS"
             , Locale.CHINA);
-    private final Map<PayChannel, ArbitrageChannel> arbitrageChannelMap = new HashMap<>();
+    private final Map<PayMethod, ArbitrageChannel> arbitrageChannelMap = new HashMap<>();
+    private final Map<PayMethod, PayChannel> payChannelMap = new HashMap<>();
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private SystemStringRepository systemStringRepository;
@@ -138,12 +141,25 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public ArbitrageChannel arbitrageChannel(PayChannel channel) {
+    public ArbitrageChannel arbitrageChannel(PayMethod channel) {
         ArbitrageChannel arbitrageChannel = arbitrageChannelMap.get(channel);
         if (arbitrageChannel == null) {
             arbitrageChannelMap.put(channel, checkoutArbitrageChannel(channel));
         }
         return arbitrageChannelMap.get(channel);
+    }
+
+    @Override
+    public PayChannel payChannel(PayMethod method) {
+        PayChannel arbitrageChannel = payChannelMap.get(method);
+        if (arbitrageChannel == null) {
+            payChannelMap.put(method, checkoutPatChannel(method));
+        }
+        return payChannelMap.get(method);
+    }
+
+    private PayChannel checkoutPatChannel(PayMethod method) {
+        return applicationContext.getBean(ChanpayService.class);
     }
 
     /**
@@ -152,7 +168,7 @@ public class SystemServiceImpl implements SystemService {
      * @param channel
      * @return
      */
-    private ArbitrageChannel checkoutArbitrageChannel(PayChannel channel) {
+    private ArbitrageChannel checkoutArbitrageChannel(PayMethod channel) {
         return applicationContext.getBean(ChroneService.class);
     }
 

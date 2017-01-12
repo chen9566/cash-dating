@@ -3,7 +3,7 @@ package me.jiangcai.dating.service;
 import me.jiangcai.dating.ServiceBaseTest;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.User;
-import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.repository.SubBranchBankRepository;
 import me.jiangcai.wx.model.WeixinUserDetail;
@@ -60,7 +60,7 @@ public class ChanpayServiceTest extends ServiceBaseTest {
 
 
         CashOrder cashOrder = orderService.newOrder(user, new BigDecimal("0.1"), UUID.randomUUID().toString(), null);
-        chanpayService.newOrder(cashOrder, PayChannel.weixin);
+        chanpayService.newOrder(cashOrder, PayMethod.weixin);
         chanpayService.withdrawalOrder(cashOrder);
     }
 

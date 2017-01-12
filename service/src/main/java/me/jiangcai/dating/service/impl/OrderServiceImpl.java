@@ -15,7 +15,7 @@ import me.jiangcai.dating.entity.sale.CashTrade;
 import me.jiangcai.dating.entity.support.WithdrawOrderStatus;
 import me.jiangcai.dating.model.OrderFlow;
 import me.jiangcai.dating.model.OrderFlows;
-import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.model.support.OrderFlowStatus;
 import me.jiangcai.dating.repository.CardRepository;
 import me.jiangcai.dating.repository.CashOrderRepository;
@@ -150,7 +150,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PlatformOrder preparePay(String id, PayChannel channel) throws IOException, SignatureException {
+    public PlatformOrder preparePay(String id, PayMethod channel, PayMethod payChannel) throws IOException, SignatureException {
         // 就一个支付平台啦
         CashOrder order = getOne(id);
         if (order.getPlatformOrderSet() == null) {
@@ -160,7 +160,11 @@ public class OrderServiceImpl implements OrderService {
         if (!order.getPlatformOrderSet().isEmpty())
             return order.getPlatformOrderSet().iterator().next();
 
-        PlatformOrder order1 = systemService.arbitrageChannel(channel).newOrder(order, channel);
+        PlatformOrder order1;
+        if (channel != null)
+            order1 = systemService.arbitrageChannel(channel).newOrder(order, channel);
+        else
+            order1 = systemService.payChannel(payChannel).newOrder(order, payChannel);
 //        ChanpayOrder chanpayOrder = chanpayService.createOrder(order);
         order.getPlatformOrderSet().add(order1);
         cashOrderRepository.save(order);
@@ -219,7 +223,7 @@ public class OrderServiceImpl implements OrderService {
                     .filter(PlatformOrder::isFinish)
                     .findFirst()
                     .ifPresent(platformOrder -> {
-                        ArbitrageChannel channel = applicationContext.getBean(platformOrder.channelClass());
+                        ArbitrageChannel channel = applicationContext.getBean(platformOrder.arbitrageChannelClass());
                         if (channel.arbitrageResultManually()) {
                             try {
                                 channel.checkArbitrageResult(platformOrder);
@@ -236,7 +240,7 @@ public class OrderServiceImpl implements OrderService {
 //                获取支付订单
         PlatformOrder platformOrder = flow.getOrder().getPlatformOrderSet().stream()
                 .filter(PlatformOrder::isFinish).findFirst().orElseThrow(IllegalStateException::new);
-        ArbitrageChannel channel = applicationContext.getBean(platformOrder.channelClass());
+        ArbitrageChannel channel = applicationContext.getBean(platformOrder.arbitrageChannelClass());
         if (channel.useOneOrderForPayAndArbitrage()) {
             if (flow.getOrder().isWithdrawalCompleted()) {
                 flow.setStatus(OrderFlowStatus.success);

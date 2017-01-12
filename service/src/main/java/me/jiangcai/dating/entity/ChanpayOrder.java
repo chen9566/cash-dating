@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.chanpay.model.TradeStatus;
 import me.jiangcai.dating.channel.ArbitrageChannel;
+import me.jiangcai.dating.channel.PayChannel;
 import me.jiangcai.dating.service.ChanpayService;
 
 import javax.persistence.Entity;
@@ -31,7 +32,12 @@ public class ChanpayOrder extends PlatformOrder {
     }
 
     @Override
-    public Class<? extends ArbitrageChannel> channelClass() {
+    public Class<? extends ArbitrageChannel> arbitrageChannelClass() {
+        return ChanpayService.class;
+    }
+
+    @Override
+    public Class<? extends PayChannel> payChannelClass() {
         return ChanpayService.class;
     }
 }

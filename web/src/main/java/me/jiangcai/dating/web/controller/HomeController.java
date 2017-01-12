@@ -6,7 +6,7 @@ import me.jiangcai.dating.entity.supplier.Pay123Card;
 import me.jiangcai.dating.exception.ArbitrageBindFailedException;
 import me.jiangcai.dating.exception.ArbitrageBindRequireException;
 import me.jiangcai.dating.exception.ArbitrageBindingException;
-import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.service.CardService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.UserService;
@@ -54,7 +54,7 @@ public class HomeController {
         }
 
         // 虽然我们无法预测用户必然使用微信,但是也就差不多吧
-        final ArbitrageChannel channel = systemService.arbitrageChannel(PayChannel.weixin);
+        final ArbitrageChannel channel = systemService.arbitrageChannel(PayMethod.weixin);
         if (channel.useOneOrderForPayAndArbitrage()) {
             // 绑定的状态 尚未进行 则提示是否确认绑定
             if (cardId != null)

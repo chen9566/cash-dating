@@ -4,6 +4,7 @@ import me.jiangcai.chanpay.event.TradeEvent;
 import me.jiangcai.chanpay.event.WithdrawalEvent;
 import me.jiangcai.dating.ThreadSafe;
 import me.jiangcai.dating.channel.ArbitrageChannel;
+import me.jiangcai.dating.channel.PayChannel;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
 import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.event.MyTradeEvent;
@@ -22,7 +23,7 @@ import java.security.SignatureException;
  *
  * @author CJ
  */
-public interface ChanpayService extends ArbitrageChannel {
+public interface ChanpayService extends ArbitrageChannel, PayChannel {
 
 //    /**
 //     * 建立支付订单

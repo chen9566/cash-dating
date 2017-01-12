@@ -4,7 +4,7 @@ import me.jiangcai.chrone.model.AccountStatus;
 import me.jiangcai.chrone.test.bean.ChroneTestHelper;
 import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.channel.ChroneService;
-import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.PayMethod;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,7 +26,7 @@ public class ArbitrageChannelTest extends WebTest {
     @Test
     public void chrone() throws IOException {
 
-        if (getSystemService().arbitrageChannel(PayChannel.weixin) == applicationContext.getBean(ChroneService.class)) {
+        if (getSystemService().arbitrageChannel(PayMethod.weixin) == applicationContext.getBean(ChroneService.class)) {
             //继续
             String mobile = helloMobile(null, null);
             chroneTestHelper.getAccountStatusMap().put(mobile, AccountStatus.registered);

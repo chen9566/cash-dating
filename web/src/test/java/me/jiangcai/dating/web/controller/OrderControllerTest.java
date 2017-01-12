@@ -178,7 +178,7 @@ public class OrderControllerTest extends LoginWebTest {
                 .filter(PlatformOrder::isFinish)
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("找不到付款订单"));
-        ArbitrageChannel channel = applicationContext.getBean(withdrawalFailedOrderOrder.channelClass());
+        ArbitrageChannel channel = applicationContext.getBean(withdrawalFailedOrderOrder.arbitrageChannelClass());
 
         withdrawalResult(withdrawalFailedOrder, false, "怀孕了?");
         orderPage.refresh();

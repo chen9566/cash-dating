@@ -12,7 +12,7 @@ import me.jiangcai.dating.entity.WithdrawOrder;
 import me.jiangcai.dating.entity.sale.CashTrade;
 import me.jiangcai.dating.model.OrderFlow;
 import me.jiangcai.dating.model.OrderFlows;
-import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.PayMethod;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,12 +53,13 @@ public interface OrderService {
     /**
      * 准备支付,这个过程也就是建立支付平台订单,为了向下兼容我加入了渠道信息
      *
-     * @param id      主订单号
-     * @param channel 渠道,默认微信
+     * @param id         主订单号
+     * @param channel    套现渠道,默认微信
+     * @param payChannel 支付渠道
      * @return
      */
     @Transactional
-    PlatformOrder preparePay(String id, PayChannel channel) throws IOException, SignatureException;
+    PlatformOrder preparePay(String id, PayMethod channel, PayMethod payChannel) throws IOException, SignatureException;
 
     /**
      * 应该是按照时间降序
@@ -97,6 +98,7 @@ public interface OrderService {
 
     /**
      * 近期的订单流水
+     *
      * @param openId 用户
      * @return 按月分组的订单流水
      */

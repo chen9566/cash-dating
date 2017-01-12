@@ -57,7 +57,7 @@ public class OrderController {
                 .filter(PlatformOrder::isFinish).findFirst().orElseThrow(IllegalStateException::new);
         model.addAttribute("platformOrder", platformOrder);
 
-        ArbitrageChannel channel = applicationContext.getBean(platformOrder.channelClass());
+        ArbitrageChannel channel = applicationContext.getBean(platformOrder.arbitrageChannelClass());
         //noinspection SimplifiableConditionalExpression
         model.addAttribute("workable", channel.useOneOrderForPayAndArbitrage()
                 ? false

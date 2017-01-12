@@ -4,7 +4,7 @@ import com.google.common.base.Predicate;
 import me.jiangcai.chanpay.test.mock.MockPay;
 import me.jiangcai.dating.LoginWebTest;
 import me.jiangcai.dating.entity.CashOrder;
-import me.jiangcai.dating.model.PayChannel;
+import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.page.MyBankPage;
 import me.jiangcai.dating.page.MyDataPage;
 import me.jiangcai.dating.page.MyPage;
@@ -94,7 +94,7 @@ public class HomeControllerTest extends LoginWebTest {
         // 这个时候应该是到了二维码界面,在这个界面 我们可以分享它
         codePage.assertAmount(amount);
 
-        PayChannel channel = PayChannel.values()[random.nextInt(PayChannel.values().length)];
+        PayMethod channel = PayMethod.values()[random.nextInt(PayMethod.values().length)];
         codePage.pay(channel);
 
         List<CashOrder> orderList = currentOrders();
