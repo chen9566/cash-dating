@@ -28,6 +28,7 @@ import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
 import me.jiangcai.dating.entity.ChanpayWithdrawalOrder;
+import me.jiangcai.dating.entity.PayOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.User;
@@ -212,6 +213,10 @@ public abstract class AbstractChanpayService implements ChanpayService {
                 // 只有是套现订单时才开启该业务
                 if (order.getCashOrder().isArbitrage())
                     applicationContext.getBean(ChanpayService.class).withdrawalOrder(order.getCashOrder());
+                if (order.getCashOrder() instanceof PayOrder) {
+                    PayOrder payOrder = (PayOrder) order.getCashOrder();
+
+                }
             }
         } else
             log.warn("we received tradeEvent " + event + " no in our system.");

@@ -35,7 +35,7 @@ public class TicketPayPage extends AbstractPage {
      *
      * @param obj
      */
-    public void toPay(Object obj) throws Exception {
+    public TicketPaySuccessPage toPay(Object obj) throws Exception {
         payButton.click();
         try {
             new WebDriverWait(webDriver, 5).until((Predicate<WebDriver>)
@@ -52,5 +52,6 @@ public class TicketPayPage extends AbstractPage {
         }
 
         initPage(ShowOrderPage.class).pay();
+        return initPage(TicketPaySuccessPage.class);
     }
 }

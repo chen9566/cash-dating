@@ -27,7 +27,7 @@ public class PayOrder extends CashOrder {
     @Override
     public String getSuccessURI() {
         if (saleTrade != null)
-            return "sale/paySuccess?id=" + saleTrade.getId();
+            return "/sale/paySuccess?id=" + saleTrade.getId();
         return null;
     }
 

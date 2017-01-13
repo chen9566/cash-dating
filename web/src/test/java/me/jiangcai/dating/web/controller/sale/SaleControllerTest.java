@@ -8,6 +8,7 @@ import me.jiangcai.dating.entity.sale.TicketGoods;
 import me.jiangcai.dating.page.sale.SaleIndexPage;
 import me.jiangcai.dating.page.sale.TicketGoodsDetailPage;
 import me.jiangcai.dating.page.sale.TicketPayPage;
+import me.jiangcai.dating.page.sale.TicketPaySuccessPage;
 import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.dating.service.sale.MallTradeService;
 import me.jiangcai.goods.service.ManageGoodsService;
@@ -18,6 +19,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author CJ
@@ -58,11 +61,14 @@ public class SaleControllerTest extends WebTest {
 
         TicketPayPage payPage = detailPage.buy(1);
 
-        payPage.toPay(null);
+        TicketPaySuccessPage successPage = payPage.toPay(null);
 
         //当前用户的唯一的订单
         CashTrade trade = mallTradeService.byOpenId(user.getOpenId()).get(0);
+        assertThat(trade.getPayOrderSet())
+                .isNotEmpty();
         System.out.println(trade);
+        successPage.printThisPage();
     }
 
     private void addSimpleTicketGoods() throws IOException {
