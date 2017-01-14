@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="id" type="java.lang.Number"*/-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -14,6 +15,8 @@
     <p class="o2">订单支付成功</p>
     <p class="o3">您的订单已支付成功，卖家将在72小时内发货</p>
 </div>
-<p class="see"><a href="cardplayfinish.html">查看我的订单</a> </p>
+<p class="see">
+    <a href="cardplayfinish.html" name="detailLink" th:href="@{/sale/myOrder(id=${id})}">查看我的订单</a>
+</p>
 </body>
 </html>

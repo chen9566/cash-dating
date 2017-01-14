@@ -79,7 +79,8 @@ public class SaleController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/paySuccess")
-    public String paySuccess(long id) {
+    public String paySuccess(Model model, long id) {
+        model.addAttribute("id", id);
         return "sale/pay-ts2.html";
     }
 

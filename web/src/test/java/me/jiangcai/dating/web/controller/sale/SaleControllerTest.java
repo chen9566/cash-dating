@@ -9,6 +9,7 @@ import me.jiangcai.dating.page.sale.SaleIndexPage;
 import me.jiangcai.dating.page.sale.TicketGoodsDetailPage;
 import me.jiangcai.dating.page.sale.TicketPayPage;
 import me.jiangcai.dating.page.sale.TicketPaySuccessPage;
+import me.jiangcai.dating.page.sale.TicketTradeSuccessPage;
 import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.dating.service.sale.MallTradeService;
 import me.jiangcai.goods.service.ManageGoodsService;
@@ -73,6 +74,10 @@ public class SaleControllerTest extends WebTest {
         // 订单应该已经发货
         assertThat(trade.getStatus())
                 .isEqualByComparingTo(TradeStatus.sent);
+        // 打开详情看看
+
+        TicketTradeSuccessPage tradeSuccessPage = successPage.detail();
+        tradeSuccessPage.printThisPage();
     }
 
     private void addSimpleTicketGoods() throws IOException {
