@@ -80,7 +80,7 @@ ul, li, dl, dd {
     font-size: 18px;
     color: #F65150;
     background-size: 7px;
-    padding-left: 12px;
+    padding-left: 3px;
 }
 
 .fixe {
@@ -1566,9 +1566,9 @@ ul, li, dl, dd {
     -webkit-filter: grayscale(100%);
     opacity: 0.8;
 }
-.call-in{ padding:5px 15px 15px 15px; background: #fff; margin-bottom: 15px; font-size: 12px; color: #353535}
-.call-in input{ font-size: 26px;  display: block; border: 0; height:50px; }
-.calllist{ background: #fff; padding:20px 15px; height:500px}
+.call-in{ border-bottom: 1px solid #dfdfdf; border-top: 1px solid #dfdfdf; margin-top: 15px; padding:5px 15px 15px 15px; background: #fff; margin-bottom: 15px; font-size: 12px; color: #353535}
+.call-in input{ font-size: 26px;  display: block; border: 0; height:50px; padding-left: 0 }
+.calllist{ border-top: 1px solid #dfdfdf;  background: #fff; padding:20px 15px; height:500px}
 .calllist ul{
 }
 .calllist li{ margin-bottom: 10px; font-weight: 400 }
