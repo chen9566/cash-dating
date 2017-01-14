@@ -7,6 +7,7 @@ import me.jiangcai.dating.entity.SystemString;
 import me.jiangcai.dating.entity.support.RateConfig;
 import me.jiangcai.dating.model.PayChannel;
 import me.jiangcai.dating.repository.SystemStringRepository;
+import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.UserService;
 import org.apache.commons.logging.Log;
@@ -63,6 +64,7 @@ public class SystemServiceImpl implements SystemService {
     private static final Log log = LogFactory.getLog(SystemServiceImpl.class);
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS"
             , Locale.CHINA);
+    public static boolean UserChanPayForWeixinAB = false;
     private final Map<PayChannel, ArbitrageChannel> arbitrageChannelMap = new HashMap<>();
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
@@ -139,6 +141,8 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public ArbitrageChannel arbitrageChannel(PayChannel channel) {
+        if (channel == PayChannel.weixin && UserChanPayForWeixinAB)
+            return applicationContext.getBean(ChanpayService.class);
         ArbitrageChannel arbitrageChannel = arbitrageChannelMap.get(channel);
         if (arbitrageChannel == null) {
             arbitrageChannelMap.put(channel, checkoutArbitrageChannel(channel));

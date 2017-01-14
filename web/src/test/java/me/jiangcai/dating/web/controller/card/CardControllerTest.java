@@ -11,6 +11,7 @@ import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.ShowOrderPage;
 import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.repository.CashOrderRepository;
+import me.jiangcai.dating.service.impl.SystemServiceImpl;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,29 +39,35 @@ public class CardControllerTest extends WebTest {
     @Test
     public void flowNewUser() throws IOException {
         // 这个流程只有是单独体系才有的
-        if (getSystemService().arbitrageChannel(PayChannel.weixin).useOneOrderForPayAndArbitrage()) {
-            log.info("无需这个测试流程");
-            return;
-        }
+        // 强行更换流程
+        SystemServiceImpl.UserChanPayForWeixinAB = true;
+        try {
+            if (getSystemService().arbitrageChannel(PayChannel.weixin).useOneOrderForPayAndArbitrage()) {
+                log.info("无需这个测试流程");
+                return;
+            }
 
-        User user = helloNewUser(null, false);
-        driver.get("http://localhost/start");
+            User user = helloNewUser(null, false);
+            driver.get("http://localhost/start");
 
-        StartOrderPage orderPage = initPage(StartOrderPage.class);
-        orderPage.assertNoCard();
+            StartOrderPage orderPage = initPage(StartOrderPage.class);
+            orderPage.assertNoCard();
 
-        // 建立一个卡
+            // 建立一个卡
 //        orderPage.toCreateNewOneCard();
 
-        SubBranchBank subBranchBank = randomSubBranchBank();
+            SubBranchBank subBranchBank = randomSubBranchBank();
 
-        final String owner = RandomStringUtils.randomAlphanumeric(3);
-        final String number = randomBankCard();
-        orderPage = bindCardOnOrderPage(user.getMobileNumber(), orderPage, subBranchBank, owner, number);
+            final String owner = RandomStringUtils.randomAlphanumeric(3);
+            final String number = randomBankCard();
+            orderPage = bindCardOnOrderPage(user.getMobileNumber(), orderPage, subBranchBank, owner, number);
 
-        // 这里
-        orderPage.assertHaveCard();
-        // 这里可以选择去添加卡 继续添加银行卡
+            // 这里
+            orderPage.assertHaveCard();
+            // 这里可以选择去添加卡 继续添加银行卡
+        } finally {
+            SystemServiceImpl.UserChanPayForWeixinAB = false;
+        }
     }
 
     @Test
