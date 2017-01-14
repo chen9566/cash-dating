@@ -67,6 +67,8 @@ public class SystemServiceImpl implements SystemService {
             , Locale.CHINA);
     private final Map<PayMethod, ArbitrageChannel> arbitrageChannelMap = new HashMap<>();
     private final Map<PayMethod, PayChannel> payChannelMap = new HashMap<>();
+    public static boolean UserChanPayForWeixinAB = false;
+    private final Map<PayChannel, ArbitrageChannel> arbitrageChannelMap = new HashMap<>();
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private SystemStringRepository systemStringRepository;
@@ -141,6 +143,9 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
+    public ArbitrageChannel arbitrageChannel(PayChannel channel) {
+        if (channel == PayChannel.weixin && UserChanPayForWeixinAB)
+            return applicationContext.getBean(ChanpayService.class);
     public ArbitrageChannel arbitrageChannel(PayMethod channel) {
         ArbitrageChannel arbitrageChannel = arbitrageChannelMap.get(channel);
         if (arbitrageChannel == null) {
