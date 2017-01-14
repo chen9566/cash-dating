@@ -5317,7 +5317,6 @@ ul#navlist .list1 {
     font-size: 16px;
     font-weight: 400;
     line-height: 26px;
-
 }
 
 .Credit .f15 {
@@ -5342,7 +5341,7 @@ ul#navlist .list1 {
 .Credit a {
     display: block;
     text-decoration: none;
-    right: 25px;
+    right: 15px;
     top: 22px;
     position: absolute
 }
