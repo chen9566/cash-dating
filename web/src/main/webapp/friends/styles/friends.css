@@ -16,7 +16,7 @@ ul, li {
     background: #ffddaa;
 }
 
-.rate {
+.rate { position: relative;
 
 }
 
@@ -242,3 +242,5 @@ ul, li {
 .shareimg .mt15 {
     margin-right: 15px
 }
+.yqm{ width: 106px; text-align:center !important;margin: 0 auto}
+.yqm_sub{ color: #ffda8f; position: absolute; top:55%  }
