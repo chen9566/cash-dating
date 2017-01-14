@@ -67,9 +67,7 @@ ul, li {
 }
 
 .form-login .nopass {
-
     border-left: 1px solid #dfdfdf;
-
     text-align: center;
     font-size: 15px;
     float: right
@@ -2053,6 +2051,7 @@ ul#navlist .list1 {
     height: 42px;
     line-height: 18px;
 }
+
 .order {
     margin: 0 0 15px 0;
     background: #fff;
@@ -4347,13 +4346,13 @@ ul#navlist .list1 {
 
 .notes {
     color: #5F7593;
-    position: fixed;
-    width: 100%;
+    margin-top: 40px;
+
     text-align: center;
-    bottom: 15px;
+
     height: 30px;
     display: block;
-    z-index: 999;
+
 }
 
 .notes a {
@@ -5132,6 +5131,7 @@ ul#navlist .list1 {
 .mt65 {
     margin-bottom: 65px
 }
+
 .success {
     background: url("succenbg.png") no-repeat;
     background-size: 100%;
@@ -5193,6 +5193,7 @@ ul#navlist .list1 {
 .helpshow2 img {
     width: 100%
 }
+
 .pay-n-two {
     background: -webkit-linear-gradient(bottom, #db3249, #f65150); /* Safari 5.1 - 6.0 */
     background: -o-linear-gradient(top, #db3249, #f65150); /* Opera 11.1 - 12.0 */
@@ -5210,6 +5211,7 @@ ul#navlist .list1 {
 .fuyoulogo {
     width: 70% !important;
 }
+
 .pay-n-two .ewm-p {
     background: #fff;
     text-align: center;
@@ -5279,4 +5281,92 @@ ul#navlist .list1 {
 
 .k-fixe .b3 {
     color: #b3b3b3
+}
+
+.Credit {
+    background: #fff;
+
+}
+
+.Credit ul {
+    overflow: hidden;
+    zoom: 1;
+}
+
+.Credit li {
+    height: 82px;
+    background: #fff;
+    padding: 15px 15px 8px 15px;
+    border-bottom: 1px solid #dfdfdf;
+    position: relative
+}
+
+.Credit .bnanklogo {
+    float: left;
+    width: 45px;
+    height: 45px;
+    border-radius: 45px;
+    margin-right: 10px;
+    margin-top: 2px;
+}
+
+.Credit h1 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px;
+}
+
+.Credit .f15 {
+    color: #FF7900;
+    font-size: 15px;
+}
+
+.Credit .f14 {
+    line-height: 26px;
+    color: #666;
+    font-size: 14px;
+
+}
+
+.Credit .upto {
+    color: #F65150;
+    border: 1px solid #F65150;
+    border-radius: 3px;
+    padding: 5px 8px
+}
+
+.Credit a {
+    display: block;
+    text-decoration: none;
+    right: 15px;
+    top: 22px;
+    position: absolute
+}
+
+.Credit .f11 {
+    font-size: 10px;
+    color: #888;
+    margin-left: 5px;
+    border: 1px solid #888;
+    position: absolute;
+    left: 140px;
+    line-height: 15px;
+    padding: 0 6px;
+    margin-top: 5px;
+}
+
+.Credit .hot {
+    position: absolute;
+    top: -12px;
+    left: -15px;
+    width: 58px;
+    background: none;
+    border: 0;
+}
+
+.c_f13 {
+    color: #888;
+    text-align: center;
+    padding-top: 8px
 }

@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -37,13 +38,14 @@ public class AgentControllerTest extends LoginWebTest {
     private UserRepository userRepository;
 
     @Test
-    public void index() {
+    public void index() throws IOException {
         User currentUser = currentUser();
         agentService.makeAgent(currentUser);
 
         driver.get("http://localhost/my");
         MyPage myPage = initPage(MyPage.class);
         CodePage codePage = myPage.toCodePage();
+        codePage.assertUser(currentUser, null);
         MyInvitationPage invitePage = codePage.toMyInvitationPage();
         invitePage.assertTeam();
 

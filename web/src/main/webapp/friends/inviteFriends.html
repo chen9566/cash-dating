@@ -15,7 +15,10 @@
 </head>
 <body class="ratebg" th:name="${user.id}">
 <div class="rate">
-    <p><img src="images/banner-tg.png" th:src="@{/friends/images/banner-tg.png}"/></p>
+    <div class="yqm">
+        <div class="yqm_sub" th:text="${'邀请码:'+user.inviteCode}" id="userInviteCode">邀请码:33333r3</div>
+    </div>
+    <p><img src="images/banner-tg.png" th:src="@{/friends/images/banner-tg.png(v=1422)}"/></p>
     <h1>当前消费费率<span
             th:text="${#numbers.formatDecimal(@systemService.systemBookRate(user).movePointRight(2),1,'COMMA',2,'POINT')}">
     0.60</span>%</h1>
