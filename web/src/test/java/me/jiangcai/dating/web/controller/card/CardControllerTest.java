@@ -42,14 +42,10 @@ public class CardControllerTest extends WebTest {
         // 强行更换流程
         SystemServiceImpl.UserChanPayForWeixinAB = true;
         try {
-            if (getSystemService().arbitrageChannel(PayChannel.weixin).useOneOrderForPayAndArbitrage()) {
+            if (getSystemService().arbitrageChannel(PayMethod.weixin).useOneOrderForPayAndArbitrage()) {
                 log.info("无需这个测试流程");
                 return;
             }
-        if (getSystemService().arbitrageChannel(PayMethod.weixin).useOneOrderForPayAndArbitrage()) {
-            log.info("无需这个测试流程");
-            return;
-        }
 
             User user = helloNewUser(null, false);
             driver.get("http://localhost/start");

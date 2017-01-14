@@ -65,10 +65,9 @@ public class SystemServiceImpl implements SystemService {
     private static final Log log = LogFactory.getLog(SystemServiceImpl.class);
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS"
             , Locale.CHINA);
-    private final Map<PayMethod, ArbitrageChannel> arbitrageChannelMap = new HashMap<>();
-    private final Map<PayMethod, PayChannel> payChannelMap = new HashMap<>();
     public static boolean UserChanPayForWeixinAB = false;
-    private final Map<PayChannel, ArbitrageChannel> arbitrageChannelMap = new HashMap<>();
+    private final Map<PayMethod, PayChannel> payChannelMap = new HashMap<>();
+    private final Map<PayMethod, ArbitrageChannel> arbitrageChannelMap = new HashMap<>();
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private SystemStringRepository systemStringRepository;
@@ -142,11 +141,10 @@ public class SystemServiceImpl implements SystemService {
         return userService.validInvites(openId) >= number;
     }
 
-    @Override
-    public ArbitrageChannel arbitrageChannel(PayChannel channel) {
-        if (channel == PayChannel.weixin && UserChanPayForWeixinAB)
-            return applicationContext.getBean(ChanpayService.class);
+
     public ArbitrageChannel arbitrageChannel(PayMethod channel) {
+        if (channel == PayMethod.weixin && UserChanPayForWeixinAB)
+            return applicationContext.getBean(ChanpayService.class);
         ArbitrageChannel arbitrageChannel = arbitrageChannelMap.get(channel);
         if (arbitrageChannel == null) {
             arbitrageChannelMap.put(channel, checkoutArbitrageChannel(channel));
