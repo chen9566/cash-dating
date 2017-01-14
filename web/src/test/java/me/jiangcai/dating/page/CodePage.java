@@ -23,7 +23,7 @@ public class CodePage extends AbstractPage {
     private static final Log log = LogFactory.getLog(CodePage.class);
 
     //    private WebElement qrCode;
-    private WebElement message;
+    private WebElement userInviteCode;
     private WebElement inviteButton;
     private WebElement explainButton;
 //    private WebElement requestButton;
@@ -42,11 +42,6 @@ public class CodePage extends AbstractPage {
 //                .filter(webElement -> "myShareQRCode".equals(webElement.getAttribute("name")))
 //                .findFirst()
 //                .ifPresent(element -> qrCode = element);
-
-        webDriver.findElements(By.id("inviteCodeText")).stream()
-                .filter(WebElement::isDisplayed)
-                .findFirst()
-                .ifPresent(element -> message = element);
 
         webDriver
 //                .findElements(By.tagName("button")).stream()
@@ -69,7 +64,7 @@ public class CodePage extends AbstractPage {
 //                .isNotNull();
 //        assertThat(qrCode.isDisplayed())
 //                .isTrue();
-        assertThat(message)
+        assertThat(userInviteCode)
                 .isNotNull();
         assertThat(inviteButton)
                 .isNotNull();
@@ -96,7 +91,7 @@ public class CodePage extends AbstractPage {
 //        assertThat(userId)
 //                .isEqualTo(user.getId());
 
-        assertThat(message.getText())
+        assertThat(userInviteCode.getText())
                 .endsWith(user.getInviteCode());
 
 //        if (user.getAgentInfo() == null)

@@ -5307,7 +5307,7 @@ ul#navlist .list1 {
     height: 45px;
     border-radius: 45px;
     margin-right: 10px;
-    margin-top:2px;
+    margin-top: 2px;
 }
 
 .Credit h1 {
@@ -5332,7 +5332,7 @@ ul#navlist .list1 {
 .Credit .upto {
     color: #F65150;
     border: 1px solid #F65150;
-    border-radius:3px;
+    border-radius: 3px;
     padding: 5px 8px
 }
 
@@ -5353,7 +5353,7 @@ ul#navlist .list1 {
     left: 140px;
     line-height: 15px;
     padding: 0 6px;
-    margin-top:5px;
+    margin-top: 5px;
 }
 
 .Credit .hot {
@@ -5364,4 +5364,9 @@ ul#navlist .list1 {
     background: none;
     border: 0;
 }
-.c_f13{ color: #888; text-align: center; padding-top:8px }
+
+.c_f13 {
+    color: #888;
+    text-align: center;
+    padding-top: 8px
+}

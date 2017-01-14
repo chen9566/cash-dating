@@ -32,11 +32,13 @@ public class MyControllerTest extends WebTest {
         myPage.clickMenu("款爷收款");
         initPage(StartOrderPage.class);
         myPage = myPage();
-        myPage.clickMenu("款爷办卡");
+        myPage.clickMenu("办信用卡");
         // 此时它的地址应该是跟系统属性中的办卡地址一致的
 //        System.out.println(driver.getTitle());  // 融360
-        assertThat(driver.getCurrentUrl())
-                .isEqualTo(systemService.getApplyCardUrl());
+//        assertThat(driver.getCurrentUrl())
+//                .isEqualTo(systemService.getApplyCardUrl());
+        assertThat(driver.getTitle())
+                .isEqualToIgnoringCase("信用卡办理");
         // 这个时候
         systemService.updateEnablePay123(true);
         myPage = myPage();

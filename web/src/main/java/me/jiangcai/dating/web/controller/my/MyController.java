@@ -30,7 +30,7 @@ public class MyController {
         model.addAttribute("user", userService.by(user.getId()));
         model.addAttribute("total", statisticService.totalExpense(user.getOpenId()));
 //        model.addAttribute("orders", statisticService.countCashOrder(user.getOpenId()));
-        model.addAttribute("applyCardUrl", systemService.getApplyCardUrl());
+//        model.addAttribute("applyCardUrl", systemService.getApplyCardUrl());
         return "my.html";
     }
 
