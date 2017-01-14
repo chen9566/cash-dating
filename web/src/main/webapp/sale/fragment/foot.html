@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Foot Fragment</title>
+</head>
+<body>
+<!--
+active 表示当前展示的内容
+提供2个选项 sale my
+-->
+<div class="fixe" th:fragment="foot(active)">
+    <ul>
+        <li th:if="${active=='sale'}"><img src="../images/sale-icon2.png" th:src="@{/sale/images/sale-icon2.png}"/>特卖
+        </li>
+        <li th:if="${active!='sale'}">
+            <a href="../saleindex.html" th:href="@{/sale/index}">
+                <img src="../images/sale-icon.png" th:src="@{/sale/images/sale-icon.png}"/>特卖
+            </a>
+        </li>
+        <li>
+            <a href="http://www.kuanyes.com/wholesale/wholesale.html"><img src="../images/whosle-icon.png"
+                                                                           th:src="@{/sale/images/whosle-icon.png}"/>批发</a>
+        </li>
+        <li class="b3"><img src="../images/huan-icon.png" th:src="@{/sale/images/huan-icon.png}"/>二手</li>
+        <li th:if="${active=='my'}"><img src="../images/my-icon2.png" th:src="@{/sale/images/my-icon2.png}"/>我的
+        </li>
+        <li th:if="${active!='my'}">
+            <a href="../my.html" th:href="@{/sale/my}">
+                <img src="../images/my-icon.png" th:src="@{/sale/images/my-icon.png}"/>我的
+            </a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

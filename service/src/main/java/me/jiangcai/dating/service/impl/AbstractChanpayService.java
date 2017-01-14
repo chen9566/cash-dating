@@ -33,6 +33,7 @@ import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserOrder;
+import me.jiangcai.dating.entity.sale.CashTrade;
 import me.jiangcai.dating.event.MyTradeEvent;
 import me.jiangcai.dating.event.MyWithdrawalEvent;
 import me.jiangcai.dating.event.Notification;
@@ -46,6 +47,7 @@ import me.jiangcai.dating.repository.UserOrderRepository;
 import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.CardService;
 import me.jiangcai.dating.service.ChanpayService;
+import me.jiangcai.goods.event.TradePayEvent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -215,7 +217,9 @@ public abstract class AbstractChanpayService implements ChanpayService {
                     applicationContext.getBean(ChanpayService.class).withdrawalOrder(order.getCashOrder());
                 if (order.getCashOrder() instanceof PayOrder) {
                     PayOrder payOrder = (PayOrder) order.getCashOrder();
-
+                    CashTrade trade = payOrder.getSaleTrade();
+                    if (!trade.isPaidSuccess())
+                        applicationEventPublisher.publishEvent(new TradePayEvent(trade, event.getPlatformOrderNo()));
                 }
             }
         } else

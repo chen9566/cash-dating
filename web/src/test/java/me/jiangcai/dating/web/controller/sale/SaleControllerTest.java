@@ -12,6 +12,7 @@ import me.jiangcai.dating.page.sale.TicketPaySuccessPage;
 import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.dating.service.sale.MallTradeService;
 import me.jiangcai.goods.service.ManageGoodsService;
+import me.jiangcai.goods.trade.TradeStatus;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -69,6 +70,9 @@ public class SaleControllerTest extends WebTest {
                 .isNotEmpty();
         System.out.println(trade);
         successPage.printThisPage();
+        // 订单应该已经发货
+        assertThat(trade.getStatus())
+                .isEqualByComparingTo(TradeStatus.sent);
     }
 
     private void addSimpleTicketGoods() throws IOException {

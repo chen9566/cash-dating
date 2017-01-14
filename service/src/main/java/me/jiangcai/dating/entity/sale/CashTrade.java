@@ -33,6 +33,11 @@ public abstract class CashTrade extends Trade {
     @OneToMany(mappedBy = "saleTrade")
     private Set<PayOrder> payOrderSet;
 
+    /**
+     * 是否已支付的冗余字段
+     */
+    private boolean paidSuccess;
+
     @Id
     @Override
     public Long getId() {

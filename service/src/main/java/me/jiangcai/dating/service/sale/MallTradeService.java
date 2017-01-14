@@ -2,7 +2,9 @@ package me.jiangcai.dating.service.sale;
 
 import me.jiangcai.dating.entity.PayOrder;
 import me.jiangcai.dating.entity.sale.CashTrade;
+import me.jiangcai.goods.event.TradeDispatchRemindEvent;
 import me.jiangcai.goods.lock.GoodsThreadSafe;
+import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -34,4 +36,8 @@ public interface MallTradeService {
      */
     @Transactional(readOnly = true)
     List<CashTrade> byOpenId(String openId);
+
+    @EventListener(TradeDispatchRemindEvent.class)
+    @Transactional
+    void tradeDispatch(TradeDispatchRemindEvent event);
 }
