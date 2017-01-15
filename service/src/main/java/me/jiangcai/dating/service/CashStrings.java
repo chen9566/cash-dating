@@ -1,5 +1,6 @@
 package me.jiangcai.dating.service;
 
+import me.jiangcai.dating.LongString;
 import org.springframework.stereotype.Component;
 import org.springframework.util.NumberUtils;
 import org.thymeleaf.util.NumberPointType;
@@ -23,6 +24,16 @@ public class CashStrings {
     public String bankCardNumber(String number) {
         String end = number.substring(number.length() - 4);
         return "**** **** **** " + end;
+    }
+
+    /**
+     * 用32位字符串描述一个long
+     *
+     * @param v
+     * @return 32字符串
+     */
+    public String strLong(long v) {
+        return LongString.toString(v);
     }
 
     /**

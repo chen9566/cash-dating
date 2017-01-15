@@ -14,6 +14,7 @@ import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * @author CJ
@@ -23,7 +24,7 @@ import java.time.LocalDateTime;
 @Getter
 @IdClass(TicketCodePK.class)
 @Table(indexes = {@Index(columnList = "used")})
-public class TicketCode implements StockToken {
+public class TicketCode implements StockToken, Comparable<TicketCode> {
     public static final int CodeLength = 50;
 
     @Id
@@ -32,12 +33,38 @@ public class TicketCode implements StockToken {
     @Id
     @Column(length = CodeLength)
     private String code;
+    /**
+     * 是否已被用户占去
+     */
     private boolean used;
+    /**
+     * 所有者自己打的标记
+     */
+    private boolean userFlag;
     @Column(columnDefinition = "datetime")
     private LocalDateTime usedTime;
 
     @Override
     public String productSKUCode() {
         return code;
+    }
+
+    @Override
+    public int compareTo(TicketCode o) {
+        return code.compareTo(o.code);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TicketCode)) return false;
+        TicketCode that = (TicketCode) o;
+        return Objects.equals(batch, that.batch) &&
+                Objects.equals(code, that.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(batch, code);
     }
 }

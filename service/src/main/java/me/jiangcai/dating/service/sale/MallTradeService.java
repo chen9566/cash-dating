@@ -1,7 +1,9 @@
 package me.jiangcai.dating.service.sale;
 
 import me.jiangcai.dating.entity.PayOrder;
+import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashTrade;
+import me.jiangcai.dating.entity.sale.TicketCode;
 import me.jiangcai.goods.event.TradeDispatchRemindEvent;
 import me.jiangcai.goods.lock.GoodsThreadSafe;
 import org.springframework.context.event.EventListener;
@@ -40,4 +42,12 @@ public interface MallTradeService {
     @EventListener(TradeDispatchRemindEvent.class)
     @Transactional
     void tradeDispatch(TradeDispatchRemindEvent event);
+
+    /**
+     * @param code 可用码
+     * @param user 校验用户，如果所有者并不是这个人，则抛出错误
+     * @return code
+     */
+    @Transactional(readOnly = true)
+    TicketCode ticketCode(String code, User user);
 }

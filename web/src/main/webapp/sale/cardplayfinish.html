@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:res="http://resource.jiangcai.me" lang="en">
+<!--/*@thymesVar id="trade" type="me.jiangcai.dating.entity.sale.TicketTrade"*/-->
+<!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.service.CashStrings"*/-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -8,6 +10,7 @@
     <link rel="stylesheet" href="styles/sale.css">
     <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
     <script src="//cdn.kuanyes.com/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="../mock/all.js" th:src="@{/all.js}"></script>
     <title>订单详情</title>
 </head>
 <body>
@@ -17,7 +20,19 @@
         <li><h1>交易完成</h1></li>
     </ul>
 </div>
-<div class="salecard">
+<div class="salecard" th:each="goods:${trade.tradedSet}">
+    <dl>
+        <dt><img src="images/12.png" res:src="${goods.titleGoodsImage.defaultImage.resourcePath}"></dt>
+        <dd><span class="w86" th:text="${goods.name}">星巴克大杯优惠券</span>
+            <span class="cny" th:text="${'¥'+#cashStrings.mallPrice(goods.price)}">¥21.6</span>
+        </dd>
+        <dd class="f14">规格大杯
+            <span class="number" th:text="${'x'+goods.count}">x4</span>
+        </dd>
+        <dd class="add">合计<span class="f16" th:text="${'¥'+#cashStrings.mallPrice(goods.subtotal)}">¥112</span></dd>
+    </dl>
+</div>
+<div class="salecard" th:remove="all">
     <dl>
         <dt><img src="images/12.png"></dt>
         <dd><span class="w86">星巴克大杯优惠券</span><span class="cny">¥21.6</span></dd>
@@ -26,24 +41,61 @@
     </dl>
 </div>
 
-<div class="usercard">
-    <h1>星巴克大杯优惠券<span class="pull-right f14">(共4张)</span></h1>
-    <ul>
-        <li class="setup">大杯优惠券01<a href="#" data-toggle="modal" data-target=".Use" class="usered">使用</a></li>
-        <li class="ewmshow no">
-            <p class="f13">大杯优惠券01: MT21984579847523759073</p>
+<div class="modal fade ticketCode" tabindex="-1" role="dialog" aria-hidden="true" th:each="code:${trade.orderedCodes}"
+     id="MT21984579847523759073" th:id="${code.code}">
+    <div class="modal-dialog modal-lg ewmshow">
+        <div class="modal-content">
+            <p th:text="${'优惠券:'+code.code}">大杯优惠券01: MT21984579847523759073</p>
+            <p><img name="qrCode" src="images/temp2.png" th:src="@{/sale/ticket/{code}(code=${code.code})}"
+                    alt="付款二维码"/></p>
+            <p class="f16">向商家出示以上券码即可消费</p>
+        </div>
+    </div>
+</div>
+<div th:remove="all" class="modal fade ticketCode" tabindex="-1" role="dialog" aria-hidden="true"
+     id="MT21984579847523759074">
+    <div class="modal-dialog modal-lg ewmshow">
+        <div class="modal-content">
+            <p>大杯优惠券01: MT21984579847523759074</p>
             <p><img src="images/temp2.png" alt="付款二维码"/></p>
             <p class="f16">向商家出示以上券码即可消费</p>
+        </div>
+    </div>
+</div>
+<div th:remove="all" class="modal fade ticketCode" tabindex="-1" role="dialog" aria-hidden="true"
+     id="MT21984579847523759075">
+    <div class="modal-dialog modal-lg ewmshow">
+        <div class="modal-content">
+            <p>大杯优惠券01: MT21984579847523759075</p>
+            <p><img src="images/temp2.png" alt="付款二维码"/></p>
+            <p class="f16">向商家出示以上券码即可消费</p>
+        </div>
+    </div>
+</div>
+
+<div class="usercard" th:each="goodsEntry:${trade.mappedCodes}">
+    <h1><span th:text="${goodsEntry.key.name}">星巴克大杯优惠券</span>
+        <span class="pull-right f14" th:text="${'(共'+goodsEntry.value.size()+'张)'}">(共4张)</span>
+    </h1>
+    <ul>
+        <li th:each="code,codeStatus:${goodsEntry.value}">
+            <span th:text="${goodsEntry.key.name+codeStatus.count}">大杯优惠券01</span>
+            <a href="#" data-id="MT21984579847523759073" th:attr="data-id=${code.code}"
+               data-toggle="modal" data-target=".Use"
+               class="usered" th:classappend="${code.userFlag?'useclose':''}">使用</a>
         </li>
-        <li>大杯优惠券02<a href="#" class="useclose">已使用</a></li>
-        <li>大杯优惠券03<a href="#" class="usered">使用</a></li>
-        <li>大杯优惠券04<a href="#" class="usered">使用</a></li>
+        <li th:remove="all">大杯优惠券02<a href="#" class="usered useclose">已使用</a></li>
+        <li th:remove="all">大杯优惠券03<a href="#" data-id="MT21984579847523759074" data-toggle="modal" data-target=".Use"
+                                      class="usered">使用</a></li>
+        <li th:remove="all">大杯优惠券04<a href="#" data-id="MT21984579847523759075" data-toggle="modal" data-target=".Use"
+                                      class="usered">使用</a></li>
     </ul>
 </div>
 <div class="order-m mb15">
     <ul>
-        <li>订单编号<span class="pull-right">32454534534245544567</span></li>
-        <li >下单时间 <span class="pull-right">2016-12-08 13:25:00</span></li>
+        <li>订单编号<span class="pull-right"
+                      th:text="${#cashStrings.strLong(trade.id)}">c2974e08b433ae631ccb57241ec89df1</span></li>
+        <li>下单时间 <span class="pull-right" th:text="${{trade.createdTime}}">2016-12-08 13:25:00</span></li>
     </ul>
 </div>
 <!--使用 show-->
@@ -55,20 +107,25 @@
                 点击确认，将显示卡券的使用二维码，将二维码出示给商家扫描，即完成使用！点击确认即默认您使用了此卡券！</h1>
             <div class="footer">
                 <button type="button" class="line-r" data-dismiss="modal">取消</button>
-                <button type="button" class="confirm">确定</button>
+                <button type="button" class="confirm" data-dismiss="modal">确定</button>
             </div>
         </div>
     </div>
 </div>
 <!--使用show end-->
 <script>
-    $(document).ready(function ($) {
+    $(function () {
+        var confirmDiv = $(".confirm");
 
-        $(".confirm").click(function (event) {
-            $(".ewmshow").css({"display": "block"});
-            $(".setup").css({"display": "none"});
-            $(".modal").css({"display": "none"});
-            $(".fade").css({"display": "none"});
+        $('.usered').click(function () {
+            confirmDiv.attr('data-id', $(this).attr('data-id'));
+        });
+
+        confirmDiv.click(function () {
+            $('#' + confirmDiv.attr('data-id')).modal();
+            $.ajax($.uriPrefix + '/sale/ticket/' + confirmDiv.attr('data-id'), {
+                method: 'put'
+            });
         });
     });
 </script>

@@ -4,12 +4,14 @@ import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashGoods;
 import me.jiangcai.dating.entity.sale.CashTrade;
+import me.jiangcai.dating.entity.sale.TicketCode;
 import me.jiangcai.dating.entity.sale.TicketGoods;
 import me.jiangcai.dating.page.sale.SaleIndexPage;
 import me.jiangcai.dating.page.sale.TicketGoodsDetailPage;
 import me.jiangcai.dating.page.sale.TicketPayPage;
 import me.jiangcai.dating.page.sale.TicketPaySuccessPage;
 import me.jiangcai.dating.page.sale.TicketTradeSuccessPage;
+import me.jiangcai.dating.repository.sale.TicketCodeRepository;
 import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.dating.service.sale.MallTradeService;
 import me.jiangcai.goods.service.ManageGoodsService;
@@ -34,6 +36,8 @@ public class SaleControllerTest extends WebTest {
     private ManageGoodsService manageGoodsService;
     @Autowired
     private MallTradeService mallTradeService;
+    @Autowired
+    private TicketCodeRepository ticketCodeRepository;
 
     @Test
     public void index() throws Exception {
@@ -70,14 +74,22 @@ public class SaleControllerTest extends WebTest {
         assertThat(trade.getPayOrderSet())
                 .isNotEmpty();
         System.out.println(trade);
-        successPage.printThisPage();
+//        successPage.printThisPage();
         // 订单应该已经发货
         assertThat(trade.getStatus())
                 .isEqualByComparingTo(TradeStatus.sent);
         // 打开详情看看
 
         TicketTradeSuccessPage tradeSuccessPage = successPage.detail();
-        tradeSuccessPage.printThisPage();
+// 随便打开一个 应该是可以看到一个有效的二维码
+        String qrCode = tradeSuccessPage.useRandomOne();
+
+        TicketCode code = ticketCodeRepository.findByCode(qrCode);
+        assertThat(code.isUserFlag())
+                .isTrue();
+// 刷新页面
+        tradeSuccessPage.refresh();
+        tradeSuccessPage.assertUsed(qrCode);
     }
 
     private void addSimpleTicketGoods() throws IOException {

@@ -23,6 +23,7 @@ import java.util.Set;
 @Getter
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class CashTrade extends Trade {
+    // 设计一个编号风格吧
 
     /**
      * 购买者

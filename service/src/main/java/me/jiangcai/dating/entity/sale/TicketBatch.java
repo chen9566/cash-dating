@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * 卡券批次
@@ -42,4 +43,19 @@ public class TicketBatch {
     private User creator;
     @Column(length = 50)
     private String comment;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TicketBatch)) return false;
+        TicketBatch batch = (TicketBatch) o;
+        return Objects.equals(goods, batch.goods) &&
+                Objects.equals(expiredDate, batch.expiredDate) &&
+                Objects.equals(createdTime, batch.createdTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(goods, expiredDate, createdTime);
+    }
 }

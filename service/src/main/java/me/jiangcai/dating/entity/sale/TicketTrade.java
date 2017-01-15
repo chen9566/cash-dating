@@ -10,9 +10,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author CJ
@@ -24,6 +28,22 @@ public class TicketTrade extends CashTrade {
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<TicketTradedGoods> tradedSet;
+
+    /**
+     * @return 已排序的code
+     */
+    public List<TicketCode> getOrderedCodes() {
+        List<TicketCode> list = tradedSet.stream().map(TicketTradedGoods::getCodeSet)
+                .collect(ArrayList::new, List::addAll, List::addAll);
+        Collections.sort(list);
+        return list;
+    }
+
+    public Map<TicketGoods, List<TicketCode>> getMappedCodes() {
+        List<TicketCode> list = getOrderedCodes();
+        // http://www.importnew.com/17313.html
+        return list.stream().collect(Collectors.groupingBy(code -> code.getBatch().getGoods()));
+    }
 
     @Override
     @Transient
