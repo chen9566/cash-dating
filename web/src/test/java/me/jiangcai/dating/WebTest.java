@@ -18,6 +18,7 @@ import me.jiangcai.dating.page.BindingMobilePage;
 import me.jiangcai.dating.page.CodePage;
 import me.jiangcai.dating.page.MyPage;
 import me.jiangcai.dating.page.StartOrderPage;
+import me.jiangcai.dating.page.sale.MySalePage;
 import me.jiangcai.dating.page.sale.SaleIndexPage;
 import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.OrderService;
@@ -454,6 +455,11 @@ public abstract class WebTest extends ServiceBaseTest {
 
     protected SaleIndexPage saleIndexPage() {
         return saleIndexPage(driver);
+    }
+
+    protected MySalePage mySalePage() {
+        driver.get("http://localhost/sale/my");
+        return initPage(MySalePage.class);
     }
 
     @ComponentScan({"me.jiangcai.dating.test"})

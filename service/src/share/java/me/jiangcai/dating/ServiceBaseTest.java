@@ -9,6 +9,7 @@ import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.core.CoreConfig;
 import me.jiangcai.dating.entity.CashOrder;
 import me.jiangcai.dating.entity.ChanpayOrder;
+import me.jiangcai.dating.entity.PayOrder;
 import me.jiangcai.dating.entity.PlatformOrder;
 import me.jiangcai.dating.entity.PlatformWithdrawalOrder;
 import me.jiangcai.dating.entity.SubBranchBank;
@@ -16,6 +17,9 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserOrder;
 import me.jiangcai.dating.entity.WithdrawOrder;
 import me.jiangcai.dating.entity.channel.ChroneOrder;
+import me.jiangcai.dating.entity.sale.CashGoods;
+import me.jiangcai.dating.entity.sale.CashTrade;
+import me.jiangcai.dating.entity.sale.TicketGoods;
 import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.repository.CashOrderRepository;
@@ -27,6 +31,9 @@ import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.service.VerificationCodeService;
+import me.jiangcai.dating.service.sale.MallGoodsService;
+import me.jiangcai.dating.service.sale.MallTradeService;
+import me.jiangcai.goods.service.ManageGoodsService;
 import me.jiangcai.lib.resource.service.ResourceService;
 import me.jiangcai.lib.test.SpringWebTest;
 import me.jiangcai.wx.model.WeixinUserDetail;
@@ -43,9 +50,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.SignatureException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -82,11 +93,17 @@ public abstract class ServiceBaseTest extends SpringWebTest {
     protected ResourceService resourceService;
     @Autowired
     protected ApplicationContext applicationContext;
+    @Autowired
+    protected MallGoodsService mallGoodsService;
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
+    @Autowired
+    private ManageGoodsService manageGoodsService;
+    @Autowired
+    private MallTradeService mallTradeService;
 
     public SubBranchBank randomSubBranchBank() {
         return subBranchBankRepository.findAll().stream()
@@ -172,6 +189,12 @@ public abstract class ServiceBaseTest extends SpringWebTest {
         order = cashOrderRepository.getOne(order.getId());
         PlatformOrder platformOrder = orderService.preparePay(order.getId(), PayMethod.weixin, null);
 
+        tradeSuccess(order, platformOrder);
+//        chanpayService.tradeUpdate(tradeEvent);
+//        System.out.println("1");
+    }
+
+    private void tradeSuccess(CashOrder order, PlatformOrder platformOrder) {
         if (platformOrder instanceof ChanpayOrder) {
             TradeEvent tradeEvent = new TradeEvent(TradeStatus.TRADE_SUCCESS);
             mockEventInfo(tradeEvent);
@@ -188,8 +211,6 @@ public abstract class ServiceBaseTest extends SpringWebTest {
             }
         } else
             throw new NoSuchMethodError("no support for " + platformOrder);
-//        chanpayService.tradeUpdate(tradeEvent);
-//        System.out.println("1");
     }
 
     private void mockEventInfo(AbstractTradeEvent tradeEvent) {
@@ -324,6 +345,78 @@ public abstract class ServiceBaseTest extends SpringWebTest {
     @Override
     protected String randomMobile() {
         return "186" + org.apache.commons.lang.RandomStringUtils.randomNumeric(8);
+    }
+
+    /**
+     * @param count 数量
+     * @see #addSimpleTicketGoods()
+     * 然后再增加批次
+     */
+    protected void addSimpleTicketGoodsWithBatch(int count) throws IOException {
+        addSimpleTicketGoods();
+        final CashGoods ticketGoods = mallGoodsService.saleGoods().stream()
+                .filter(CashGoods::isTicketGoods)
+                .findAny()
+                .orElse(null);
+
+        String[] codes = new String[count];
+        for (int i = 0; i < count; i++) {
+            codes[i] = randomMobile();
+        }
+
+        mallGoodsService.addTicketBatch(userService.byOpenId(createNewUser().getOpenId())
+                , (TicketGoods) ticketGoods, LocalDate.now().plusMonths(1)
+                , UUID.randomUUID().toString(), Arrays.asList(codes));
+    }
+
+    /**
+     * 添加一个简单的卡券类商品
+     *
+     * @throws IOException
+     */
+    protected void addSimpleTicketGoods() throws IOException {
+        if (mallGoodsService.saleGoods().stream().noneMatch(CashGoods::isTicketGoods)) {
+            int imagesCount = 1 + random.nextInt(3);
+            String[] images = new String[imagesCount];
+            for (int i = 0; i < images.length; i++) {
+                images[i] = randomImageResourcePath();
+            }
+
+            TicketGoods goods = mallGoodsService.addTicketGoods("T1", "星巴克8折优惠券", randomOrderAmount()
+                    , "¥108", "绝对低价，超值享受", "", ""
+                    , images);
+
+            manageGoodsService.enableGoods(goods, mallGoodsService::saveGoods);
+        }
+    }
+
+    protected void makeTicketTrade(User user, int ordered, int paid, int sures) throws IOException, SignatureException {
+        addSimpleTicketGoodsWithBatch(ordered + paid + sures + 10);
+
+        final CashGoods ticketGoods = mallGoodsService.saleGoods().stream()
+                .filter(CashGoods::isTicketGoods)
+                .findAny()
+                .orElse(null);
+
+        List<CashTrade> allTrades = new ArrayList<>();
+
+        for (int i = 0; i < ordered + paid + sures; i++) {
+            CashTrade trade = mallGoodsService.createOrder(userService.by(user.getId()), ticketGoods, 1);
+            allTrades.add(trade);
+        }
+        // 付款
+        for (int i = 0; i < paid + sures; i++) {
+            CashTrade trade = allTrades.get(i);
+            payCashTrade(trade);
+        }
+        // 其他暂时不用了
+
+    }
+
+    private void payCashTrade(CashTrade trade) throws IOException, SignatureException {
+        PayOrder order = mallTradeService.createPayOrder(trade.getId(), null);
+        PlatformOrder platformOrder = orderService.preparePay(order.getId(), null, PayMethod.weixin);
+        tradeSuccess(order, platformOrder);
     }
 
 

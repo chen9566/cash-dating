@@ -50,4 +50,11 @@ public interface MallTradeService {
      */
     @Transactional(readOnly = true)
     TicketCode ticketCode(String code, User user);
+
+    /**
+     * @param user 用户
+     * @return 所有可用ticket
+     */
+    @Transactional(readOnly = true)
+    List<TicketCode> ticketCodes(User user);
 }

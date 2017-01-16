@@ -12,14 +12,11 @@ import me.jiangcai.dating.page.sale.TicketPayPage;
 import me.jiangcai.dating.page.sale.TicketPaySuccessPage;
 import me.jiangcai.dating.page.sale.TicketTradeSuccessPage;
 import me.jiangcai.dating.repository.sale.TicketCodeRepository;
-import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.dating.service.sale.MallTradeService;
-import me.jiangcai.goods.service.ManageGoodsService;
 import me.jiangcai.goods.trade.TradeStatus;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.UUID;
@@ -30,10 +27,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author CJ
  */
 public class SaleControllerTest extends WebTest {
-    @Autowired
-    private MallGoodsService mallGoodsService;
-    @Autowired
-    private ManageGoodsService manageGoodsService;
     @Autowired
     private MallTradeService mallTradeService;
     @Autowired
@@ -90,22 +83,6 @@ public class SaleControllerTest extends WebTest {
 // 刷新页面
         tradeSuccessPage.refresh();
         tradeSuccessPage.assertUsed(qrCode);
-    }
-
-    private void addSimpleTicketGoods() throws IOException {
-        if (mallGoodsService.saleGoods().stream().noneMatch(CashGoods::isTicketGoods)) {
-            int imagesCount = 1 + random.nextInt(3);
-            String[] images = new String[imagesCount];
-            for (int i = 0; i < images.length; i++) {
-                images[i] = randomImageResourcePath();
-            }
-
-            TicketGoods goods = mallGoodsService.addTicketGoods("T1", "星巴克8折优惠券", randomOrderAmount()
-                    , "¥108", "绝对低价，超值享受", "", ""
-                    , images);
-
-            manageGoodsService.enableGoods(goods, mallGoodsService::saveGoods);
-        }
     }
 
 }

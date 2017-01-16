@@ -1,7 +1,18 @@
 package me.jiangcai.dating.web.controller.sale;
 
+import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.sale.TicketCode;
+import me.jiangcai.dating.service.sale.MallTradeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 跟「我的」相关的
@@ -15,5 +26,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/sale")
 public class MySaleController {
 
+    @Autowired
+    private MallTradeService mallTradeService;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/my")
+    public String index(@AuthenticationPrincipal User user, Model model) {
+        List<TicketCode> ticketCodeList = mallTradeService.ticketCodes(user);
+
+        Map<Boolean, List<TicketCode>> groupedCodes =
+                ticketCodeList.stream().collect(Collectors.partitioningBy(TicketCode::isUserFlag));
+
+        model.addAttribute("usedCodes", groupedCodes.get(true));
+        model.addAttribute("usableCodes", groupedCodes.get(false));
+
+        return "sale/my.html";
+    }
 
 }

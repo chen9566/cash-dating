@@ -17,9 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.HashSet;
 import java.util.List;
@@ -70,6 +72,12 @@ public class MallTradeServiceImpl implements MallTradeService {
 
     @Override
     public TicketCode ticketCode(String code, User user) {
+        final TypedQuery<TicketCode> query = userTicketQuery(code, user);
+        // NoResultException
+        return query.getSingleResult();
+    }
+
+    private TypedQuery<TicketCode> userTicketQuery(String code, User user) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<TicketCode> ticketCodeCriteriaQuery = criteriaBuilder.createQuery(TicketCode.class);
 
@@ -78,17 +86,23 @@ public class MallTradeServiceImpl implements MallTradeService {
         Join<TicketTradedGoods, TicketCode> ticketCodeTicketTradedGoodsJoin = tradedGoodsTicketTradeJoin.joinSet("codeSet");
 
         //查询条件
-        ticketCodeCriteriaQuery = ticketCodeCriteriaQuery.where(
-                criteriaBuilder.equal(ticketCodeTicketTradedGoodsJoin.get("code"), code)
-                , criteriaBuilder.equal(tradeRoot.get("user"), user)
+        Predicate predicate = criteriaBuilder.and(criteriaBuilder.equal(tradeRoot.get("user"), user)
                 , tradeRoot.get("status").in(TradeStatus.confirmed, TradeStatus.sent)
-                , criteriaBuilder.isTrue(tradeRoot.get("paidSuccess"))
-        );
+                , criteriaBuilder.isTrue(tradeRoot.get("paidSuccess")));
+        if (code == null)
+            ticketCodeCriteriaQuery = ticketCodeCriteriaQuery.where(predicate);
+        else
+            ticketCodeCriteriaQuery = ticketCodeCriteriaQuery
+                    .where(criteriaBuilder.equal(ticketCodeTicketTradedGoodsJoin.get("code"), code), predicate);
 
         ticketCodeCriteriaQuery = ticketCodeCriteriaQuery.distinct(true);
         ticketCodeCriteriaQuery = ticketCodeCriteriaQuery.select(ticketCodeTicketTradedGoodsJoin);
 
-        // NoResultException
-        return entityManager.createQuery(ticketCodeCriteriaQuery).getSingleResult();
+        return entityManager.createQuery(ticketCodeCriteriaQuery);
+    }
+
+    @Override
+    public List<TicketCode> ticketCodes(User user) {
+        return userTicketQuery(null, user).getResultList();
     }
 }
