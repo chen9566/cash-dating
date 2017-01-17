@@ -107,12 +107,13 @@ public class MallGoodsServiceImpl implements MallGoodsService {
     }
 
     @Override
-    public TicketGoods addTicketGoods(String stockStyle, String name, BigDecimal price, String subPrice
+    public TicketGoods addTicketGoods(String brand, String stockStyle, String name, BigDecimal price, String subPrice
             , String description, String notes, String detail, String... imagePaths) throws IOException {
         TicketGoods ticketGoods = (TicketGoods) manageGoodsService.addGoods(TicketGoods::new
                 , goods -> cashGoodsRepository.save((CashGoods) goods), null, null
                 , name, price, imagePaths);
 
+        ticketGoods.setBrand(brand);
         ticketGoods.setSubPrice(subPrice);
         ticketGoods.setDescription(description);
         ticketGoods.setNotes(notes);

@@ -30,7 +30,7 @@ public class MySaleControllerTest extends WebTest {
         myPage.refresh();
         myPage.assertUsableTicket(paid + sures - 1);
         myPage.assertUsedTicket(1);
-        myPage.printThisPage();
+//        myPage.printThisPage();
         myPage.clickUsedOneAndBack();
 
     }

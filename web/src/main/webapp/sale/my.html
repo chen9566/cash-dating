@@ -50,7 +50,7 @@
             th:href="@{/sale/myTicket(code=${code.ticketCodePK.getURIFormat()})}">
             <li>
                 <img src="images/2.png" res:src="${code.batch.goods.titleGoodsImage.defaultImage.resourcePath}"/>
-                <p>&nbsp;</p>
+                <p th:text="${code.batch.goods.brand}">星巴克</p>
                 <h1 th:text="${code.batch.goods.name}">星巴克大杯优惠券</h1>
             </li>
             <li class="time">有效期至<span th:text="${{code.batch.expiredDate}}">2016-01-05</span></li>
@@ -67,7 +67,7 @@
             th:href="@{/sale/myTicket(code=${code.ticketCodePK.getURIFormat()})}">
             <li><img src="images/8.png" res:src="${code.batch.goods.titleGoodsImage.defaultImage.resourcePath}"
                      class="gray"/>
-                <p>&nbsp;</p>
+                <p th:text="${code.batch.goods.brand}">星巴克</p>
                 <h1 th:text="${code.batch.goods.name}">星巴克大杯优惠券</h1>
             </li>
             <li class="time">有效期至<span th:text="${{code.batch.expiredDate}}">2016-01-05</span></li>

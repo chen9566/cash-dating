@@ -45,6 +45,7 @@ public interface MallGoodsService {
     /**
      * 添加卡券类商品
      *
+     * @param brand       品牌
      * @param stockStyle  库存风格
      * @param name        名字
      * @param price       售价
@@ -57,7 +58,7 @@ public interface MallGoodsService {
      */
     @Transactional
 //    @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "')")
-    TicketGoods addTicketGoods(String stockStyle, String name, BigDecimal price, String subPrice, String description
+    TicketGoods addTicketGoods(String brand, String stockStyle, String name, BigDecimal price, String subPrice, String description
             , String notes, String detail, String... imagePaths) throws IOException;
 
     /**

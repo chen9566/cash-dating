@@ -382,7 +382,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
                 images[i] = randomImageResourcePath();
             }
 
-            TicketGoods goods = mallGoodsService.addTicketGoods("T1", "星巴克8折优惠券", randomOrderAmount()
+            TicketGoods goods = mallGoodsService.addTicketGoods("星巴克", "T1", "星巴克8折优惠券", randomOrderAmount()
                     , "¥108", "绝对低价，超值享受", "", ""
                     , images);
 
