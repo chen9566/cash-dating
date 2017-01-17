@@ -71,6 +71,9 @@ public class MySaleControllerTest extends WebTest {
 
         //走一下各种流程
         //我们得想办法弄到一个关闭的订单
+        allOrdersPage = myPage.allOrders();
+        // 所有订单状态都查看一次详情
+        allOrdersPage.openAllStatus();
 
 
     }

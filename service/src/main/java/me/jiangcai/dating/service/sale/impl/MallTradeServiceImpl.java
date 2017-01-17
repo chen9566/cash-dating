@@ -121,7 +121,8 @@ public class MallTradeServiceImpl implements MallTradeService {
             if (type != null)
                 return cb.and(belong, cb.equal(root.get("status"), type));
             // 只受理这么几个状态
-            return root.get("status").in(TradeStatus.ordered, TradeStatus.paid, TradeStatus.sent, TradeStatus.confirmed);
+            return root.get("status").in(TradeStatus.closed, TradeStatus.ordered, TradeStatus.paid, TradeStatus.sent
+                    , TradeStatus.confirmed);
         };
     }
 

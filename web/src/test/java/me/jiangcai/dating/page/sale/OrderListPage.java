@@ -9,7 +9,10 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -70,5 +73,41 @@ public class OrderListPage extends AbstractPage {
     public void assertLinkIsCurrent(String id) {
         assertThat(webDriver.findElement(By.id(id)).getAttribute("class"))
                 .contains("current");
+    }
+
+    public void openAllStatus() {
+        ArrayList<String> used = new ArrayList<>();
+
+        while (true) {
+            int size = used.size();
+            count();
+            Map<String, List<WebElement>> tradeByStatus = webDriver.findElements(By.className("cashTrade")).stream()
+                    .collect(Collectors.groupingBy(this::status));
+
+            tradeByStatus.keySet().stream()
+                    .filter(s -> !used.contains(s))
+                    .findAny()
+                    .ifPresent(status -> {
+                        used.add(status);
+                        tradeByStatus.get(status).get(0).findElements(By.tagName("dl")).get(0).click();
+                        System.out.println(status);
+                        System.out.println(webDriver.getPageSource());
+                        webDriver.navigate().back();
+                        refresh();
+                    });
+
+            if (used.size() == size)
+                return;
+        }
+
+
+    }
+
+    public String status(WebElement element) {
+        return element.findElements(By.tagName("span")).stream()
+                .filter(WebElement::isDisplayed)
+                .filter(element1 -> element1.getAttribute("class") != null && element1.getAttribute("class").startsWith("state"))
+                .findAny()
+                .orElseThrow(() -> new IllegalStateException("找不到状态")).getText();
     }
 }
