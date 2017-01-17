@@ -6,6 +6,7 @@ import me.jiangcai.dating.entity.sale.CashTrade;
 import me.jiangcai.dating.entity.sale.TicketCode;
 import me.jiangcai.dating.entity.sale.TicketTrade;
 import me.jiangcai.dating.entity.sale.TicketTradedGoods;
+import me.jiangcai.dating.entity.sale.pk.TicketCodePK;
 import me.jiangcai.dating.repository.sale.CashTradeRepository;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.sale.MallTradeService;
@@ -71,13 +72,13 @@ public class MallTradeServiceImpl implements MallTradeService {
     }
 
     @Override
-    public TicketCode ticketCode(String code, User user) {
+    public TicketCode ticketCode(TicketCodePK code, User user) {
         final TypedQuery<TicketCode> query = userTicketQuery(code, user);
         // NoResultException
         return query.getSingleResult();
     }
 
-    private TypedQuery<TicketCode> userTicketQuery(String code, User user) {
+    private TypedQuery<TicketCode> userTicketQuery(TicketCodePK code, User user) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<TicketCode> ticketCodeCriteriaQuery = criteriaBuilder.createQuery(TicketCode.class);
 
@@ -93,7 +94,10 @@ public class MallTradeServiceImpl implements MallTradeService {
             ticketCodeCriteriaQuery = ticketCodeCriteriaQuery.where(predicate);
         else
             ticketCodeCriteriaQuery = ticketCodeCriteriaQuery
-                    .where(criteriaBuilder.equal(ticketCodeTicketTradedGoodsJoin.get("code"), code), predicate);
+                    .where(
+                            criteriaBuilder.equal(ticketCodeTicketTradedGoodsJoin.get("code"), code.getCode())
+                            , criteriaBuilder.equal(ticketCodeTicketTradedGoodsJoin.get("batch").get("id"), code.getBatch())
+                            , predicate);
 
         ticketCodeCriteriaQuery = ticketCodeCriteriaQuery.distinct(true);
         ticketCodeCriteriaQuery = ticketCodeCriteriaQuery.select(ticketCodeTicketTradedGoodsJoin);

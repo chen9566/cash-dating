@@ -1,5 +1,6 @@
 package me.jiangcai.dating.web;
 
+import me.jiangcai.dating.entity.sale.pk.TicketCodePK;
 import me.jiangcai.dating.web.advice.TRJNotifyLocker;
 import me.jiangcai.dating.web.converter.LocalDateFormatter;
 import me.jiangcai.dating.web.converter.ReportHandler;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.Formatter;
@@ -94,6 +96,18 @@ class MVCConfig extends WebMvcConfigurerAdapter {
             }
         });
         registry.addFormatterForFieldType(LocalDate.class, localDateFormatter);
+        registry.addConverter(new Converter<String, TicketCodePK>() {
+            @Override
+            public TicketCodePK convert(String source) {
+                if (source == null)
+                    return null;
+                try {
+                    return TicketCodePK.valueOf(source);
+                } catch (Exception ex) {
+                    throw new IllegalArgumentException(ex);
+                }
+            }
+        });
     }
 
     @Override

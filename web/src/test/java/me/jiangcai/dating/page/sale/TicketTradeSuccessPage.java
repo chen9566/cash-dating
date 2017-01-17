@@ -2,6 +2,7 @@ package me.jiangcai.dating.page.sale;
 
 import com.google.common.base.Predicate;
 import me.jiangcai.dating.ServiceBaseTest;
+import me.jiangcai.dating.entity.sale.TicketCode;
 import me.jiangcai.dating.page.AbstractPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -66,10 +67,10 @@ public class TicketTradeSuccessPage extends AbstractPage {
     /**
      * @param code 这个电子券应该已经 已用
      */
-    public void assertUsed(String code) {
+    public void assertUsed(TicketCode code) {
         WebElement link = webDriver.findElements(By.className("usered")).stream()
                 .filter(WebElement::isDisplayed)
-                .filter(webElement -> webElement.getAttribute("data-id").equals(code))
+                .filter(webElement -> webElement.getAttribute("data-id").equals(code.getTicketCodePK().getURIFormat()))
                 .findAny().orElseThrow(() -> new IllegalStateException("找不到" + code));
 
         assertThat(link.getAttribute("class").contains("useclose"));

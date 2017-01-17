@@ -5,6 +5,7 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashTrade;
 import me.jiangcai.dating.entity.sale.TicketCode;
 import me.jiangcai.dating.entity.sale.TicketTrade;
+import me.jiangcai.dating.entity.sale.pk.TicketCodePK;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.sale.MallTradeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class SaleOrderController {
 
     // 允许查看一个 二维码
     @RequestMapping(method = RequestMethod.GET, produces = "image/*", value = "/ticket/{code}")
-    public BufferedImage ticketCode(@AuthenticationPrincipal User user, @PathVariable("code") String code)
+    public BufferedImage ticketCode(@AuthenticationPrincipal User user, @PathVariable("code") TicketCodePK code)
             throws IOException, WriterException {
         TicketCode ticketCode = mallTradeService.ticketCode(code, user);
         return qrCodeService.generateQRCode(ticketCode.getCode());
@@ -67,7 +68,7 @@ public class SaleOrderController {
     @RequestMapping(method = RequestMethod.PUT, value = "/ticket/{code}")
     @Transactional
     @ResponseBody
-    public void setUserFlag(@AuthenticationPrincipal User user, @PathVariable("code") String code) {
+    public void setUserFlag(@AuthenticationPrincipal User user, @PathVariable("code") TicketCodePK code) {
         TicketCode ticketCode = mallTradeService.ticketCode(code, user);
         if (!ticketCode.isUserFlag())
             ticketCode.setUserFlag(true);

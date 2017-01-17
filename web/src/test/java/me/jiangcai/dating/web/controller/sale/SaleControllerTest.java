@@ -82,7 +82,7 @@ public class SaleControllerTest extends WebTest {
                 .isTrue();
 // 刷新页面
         tradeSuccessPage.refresh();
-        tradeSuccessPage.assertUsed(qrCode);
+        tradeSuccessPage.assertUsed(code);
     }
 
 }

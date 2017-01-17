@@ -26,7 +26,6 @@ import java.util.Objects;
 @Table(indexes = {@Index(columnList = "used")})
 public class TicketCode implements StockToken, Comparable<TicketCode> {
     public static final int CodeLength = 50;
-
     @Id
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
     private TicketBatch batch;
@@ -43,6 +42,10 @@ public class TicketCode implements StockToken, Comparable<TicketCode> {
     private boolean userFlag;
     @Column(columnDefinition = "datetime")
     private LocalDateTime usedTime;
+
+    public TicketCodePK getTicketCodePK() {
+        return new TicketCodePK(batch, code);
+    }
 
     @Override
     public String productSKUCode() {

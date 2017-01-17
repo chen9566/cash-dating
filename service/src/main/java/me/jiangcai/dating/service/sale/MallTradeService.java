@@ -4,6 +4,7 @@ import me.jiangcai.dating.entity.PayOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashTrade;
 import me.jiangcai.dating.entity.sale.TicketCode;
+import me.jiangcai.dating.entity.sale.pk.TicketCodePK;
 import me.jiangcai.goods.event.TradeDispatchRemindEvent;
 import me.jiangcai.goods.lock.GoodsThreadSafe;
 import org.springframework.context.event.EventListener;
@@ -49,7 +50,7 @@ public interface MallTradeService {
      * @return code
      */
     @Transactional(readOnly = true)
-    TicketCode ticketCode(String code, User user);
+    TicketCode ticketCode(TicketCodePK code, User user);
 
     /**
      * @param user 用户
