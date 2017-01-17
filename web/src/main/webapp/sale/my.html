@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/sale.css">
     <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
+    <script src="../dist/js/share.js"></script>
     <title>我的</title>
 </head>
 <body>
@@ -19,7 +20,7 @@
             <img src="images/blackright-r.png"/></span></h1>
     <ul>
         <li>
-            <a href="#" >
+            <a href="#">
                 <img src="images/payicon.png"/>待付款
             </a>
             <a href="#">
@@ -39,43 +40,45 @@
             <a href="#" class="current u">未使用</a>
             <a href="#" class="n">已使用</a>
         </li>
-        <li class="ts" >注: 点击【立即使用】, 优惠券将被放入【已使用】中<img src="images/wrongicon2.png" class="close-x"/></li>
+        <li class="ts">注: 点击【立即使用】, 优惠券将被放入【已使用】中<img src="images/wrongicon2.png" class="close-x"/></li>
         <li class="ts2">注: 如未真实消费，优惠券依然有效<img src="images/wrongicon2.png" class="close-x"/></li>
     </ul>
 </div>
 <div class="mt65">
-<div class="navlist nouse">
-    <ul onclick="window.location.href='mycoupons.html'" th:each="code:${usableCodes}">
-        <li>
-            <img src="images/2.png" res:src="${code.batch.goods.titleGoodsImage.defaultImage.resourcePath}"/>
-            <p>&nbsp;</p>
-            <h1 th:text="${code.batch.goods.name}">星巴克大杯优惠券</h1>
-        </li>
-        <li class="time">有效期至<span th:text="${{code.batch.expiredDate}}">2016-01-05</span></li>
-    </ul>
-    <ul th:remove="all">
-        <li><img src="images/8.png"/>
-            <p>星巴克星巴克星巴克星巴克星巴克星巴克星巴克星巴克星巴克星巴克</p>
-            <h1>星巴克大杯优惠券星巴克大杯优惠券星巴克大杯优惠券星巴克大杯优惠券</h1></li>
-        <li class="time">有效期2016-12-10至2016-01-05</li>
-    </ul>
-</div>
-<div class="navlist douse no">
-    <ul onclick="window.location.href='mycouponsclose.html'" th:each="code:${usedCodes}">
-        <li><img src="images/8.png" res:src="${code.batch.goods.titleGoodsImage.defaultImage.resourcePath}"
-                 class="gray"/>
-            <p>&nbsp;</p>
-            <h1 th:text="${code.batch.goods.name}">星巴克大杯优惠券</h1>
-        </li>
-        <li class="time">有效期至<span th:text="${{code.batch.expiredDate}}">2016-01-05</span></li>
-    </ul>
-    <ul th:remove="all">
-        <li><img src="images/8.png" class="gray"/>
-            <p>星巴克星巴克星巴克星巴克星巴克星巴克星巴克星巴克星巴克星巴克</p>
-            <h1>星巴克大杯优惠券星巴克大杯优惠券星巴克大杯优惠券星巴克大杯优惠券</h1></li>
-        <li class="time">有效期2016-12-10至2016-01-05</li>
-    </ul>
-</div>
+    <div class="navlist nouse">
+        <ul class="clickHref" href="mycoupons.html" th:each="code:${usableCodes}"
+            th:href="@{/sale/myTicket(code=${code.ticketCodePK.getURIFormat()})}">
+            <li>
+                <img src="images/2.png" res:src="${code.batch.goods.titleGoodsImage.defaultImage.resourcePath}"/>
+                <p>&nbsp;</p>
+                <h1 th:text="${code.batch.goods.name}">星巴克大杯优惠券</h1>
+            </li>
+            <li class="time">有效期至<span th:text="${{code.batch.expiredDate}}">2016-01-05</span></li>
+        </ul>
+        <ul th:remove="all">
+            <li><img src="images/8.png"/>
+                <p>星巴克星巴克星巴克星巴克星巴克星巴克星巴克星巴克星巴克星巴克</p>
+                <h1>星巴克大杯优惠券星巴克大杯优惠券星巴克大杯优惠券星巴克大杯优惠券</h1></li>
+            <li class="time">有效期2016-12-10至2016-01-05</li>
+        </ul>
+    </div>
+    <div class="navlist douse no">
+        <ul class="clickHref" href="mycouponsclose.html" th:each="code:${usedCodes}"
+            th:href="@{/sale/myTicket(code=${code.ticketCodePK.getURIFormat()})}">
+            <li><img src="images/8.png" res:src="${code.batch.goods.titleGoodsImage.defaultImage.resourcePath}"
+                     class="gray"/>
+                <p>&nbsp;</p>
+                <h1 th:text="${code.batch.goods.name}">星巴克大杯优惠券</h1>
+            </li>
+            <li class="time">有效期至<span th:text="${{code.batch.expiredDate}}">2016-01-05</span></li>
+        </ul>
+        <ul th:remove="all">
+            <li><img src="images/8.png" class="gray"/>
+                <p>星巴克星巴克星巴克星巴克星巴克星巴克星巴克星巴克星巴克星巴克</p>
+                <h1>星巴克大杯优惠券星巴克大杯优惠券星巴克大杯优惠券星巴克大杯优惠券</h1></li>
+            <li class="time">有效期2016-12-10至2016-01-05</li>
+        </ul>
+    </div>
 </div>
 <div class="fixe" th:replace="sale/fragment/foot.html :: foot (active='my')">
     <ul>
@@ -107,9 +110,9 @@
         $(".ts2").css({"display": "block"});
         $(".ts").css({"display": "none"});
     });
-    $(".close-x").click(function(event){
-        $(".ts").css({"display":"none"});
-        $(".ts2").css({"display":"none"});
+    $(".close-x").click(function (event) {
+        $(".ts").css({"display": "none"});
+        $(".ts2").css({"display": "none"});
     });
 </script>
 </body>

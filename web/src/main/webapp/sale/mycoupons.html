@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:res="http://resource.jiangcai.me" lang="en">
+<!--/*@thymesVar id="code" type="me.jiangcai.dating.entity.sale.TicketCode"*/-->
+<!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.service.CashStrings"*/-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -8,27 +10,25 @@
     <link rel="stylesheet" href="styles/sale.css">
     <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
     <script src="//cdn.kuanyes.com/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="../mock/all.js" th:src="@{/all.js}"></script>
     <title>我的优惠券</title>
 </head>
 <body class="bg-black">
 <div class="coupon">
-    <p><img src="images/8.png" class="cpimg"/>星巴克<span class="pull-right mt7"><img src="images/couponicon2.png"
-                                                                                  class="loadimg"/>全国通用 </span></p>
+    <p>
+        <img src="images/8.png" class="cpimg" res:src="${code.batch.goods.titleGoodsImage.defaultImage.resourcePath}"/>
+        <span th:text="${code.batch.goods.brand}">星巴克</span>
+        <span class="pull-right mt7"><img src="images/couponicon2.png" class="loadimg"/>全国通用</span></p>
     <div class="card-s">
-    <p class="f13">可兑换星巴克大杯咖啡一杯</p>
-    <h1><span class="f35">28元</span>优惠券</h1>
-    <p class="paybtn"  data-toggle="modal" data-target=".Use" class="usered">
-        <button type="button" class="btn btn-danger btn-lg btn-block">立即使用</button>
-    </p>
-    </div>
-    <div class="ewmshow no">
-        <p class="f13">大杯优惠券01: MT21984579847523759073</p>
-        <p><img src="images/temp2.png" alt="付款二维码"/></p>
-        <p class="f16">向商家出示以上券码即可消费</p>
+        <p class="f13" th:text="${code.batch.goods.name}">可兑换星巴克大杯咖啡一杯</p>
+        <h1><span class="f35" th:text="${#cashStrings.mallPrice(code.batch.goods.price)+'元'}">28元</span>优惠券</h1>
+        <p data-toggle="modal" data-target=".Use" class="usered paybtn">
+            <button type="button" class="btn btn-danger btn-lg btn-block">立即使用</button>
+        </p>
     </div>
     <div class="details bg-none">
-        <p><span class="f14">使用须知</span><br>
-            • 可+3元升级成超大杯 <br>
+        <span class="f14">使用须知</span>
+        <p th:utext="${code.batch.goods.notes}">• 可+3元升级成超大杯 <br>
             • 不可与店内其他优惠同享<br>
             • 不可换购其他甜品<br>
             • 一人可购买多张券<br>
@@ -37,6 +37,19 @@
     </div>
 </div>
 <!--使用 show-->
+<div class="modal fade ticketCode" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg ewmshow">
+        <div class="modal-content">
+            <p th:text="${'优惠券:'+code.code}">大杯优惠券01: MT21984579847523759073</p>
+            <p><img name="qrCode" src="images/temp2.png"
+                    th:src="@{/sale/ticket/{code}(code=${code.ticketCodePK.getURIFormat()})}"
+                    alt="付款二维码"/>
+            </p>
+            <p class="f16">向商家出示以上券码即可消费</p>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade Use" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -45,21 +58,24 @@
                 如未消费，可在【已使用】中找回</h1>
             <div class="footer">
                 <button type="button" class="line-r" data-dismiss="modal">取消</button>
-                <button type="button" class="confirm">确定</button>
+                <button type="button" class="confirm" data-dismiss="modal">确定</button>
             </div>
         </div>
     </div>
 </div>
 <!--使用show end-->
+<script th:inline="javascript">
+    $.TicketCodePK = /*[[${code.ticketCodePK.getURIFormat()}]]*/ 'abc';
+</script>
 <script>
-    $(document).ready(function ($) {
+    $(function () {
+        var confirmDiv = $(".confirm");
 
-        $(".confirm").click(function (event) {
-            $(".ewmshow").css({"display": "block"});
-            $(".details").css({"display": "none"});
-            $(".paybtn").css({"display": "none"});
-            $(".modal").css({"display": "none"});
-            $(".fade").css({"display": "none"});
+        confirmDiv.click(function () {
+            $('.ticketCode').modal();
+            $.ajax($.uriPrefix + '/sale/ticket/' + $.TicketCodePK, {
+                method: 'put'
+            });
         });
     });
 </script>

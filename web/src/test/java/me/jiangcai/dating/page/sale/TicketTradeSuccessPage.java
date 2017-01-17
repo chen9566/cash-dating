@@ -23,6 +23,28 @@ public class TicketTradeSuccessPage extends AbstractPage {
         super(webDriver);
     }
 
+    public static void clickConfirm(WebDriver webDriver) {
+        new WebDriverWait(webDriver, 5)
+                .until((Predicate<WebDriver>) input -> input != null
+                        && input.findElement(By.className("Use")).isDisplayed());
+
+        webDriver.findElement(By.className("confirm")).click();
+    }
+
+    public static WebElement findTicketCode(WebDriver webDriver) {
+        new WebDriverWait(webDriver, 5)
+                .until((Predicate<WebDriver>) input -> input != null
+                        && anyTicketCode(input) != null);
+
+        return anyTicketCode(webDriver);
+    }
+
+    private static WebElement anyTicketCode(WebDriver driver) {
+        return driver.findElements(By.className("ticketCode")).stream()
+                .filter(WebElement::isDisplayed)
+                .findFirst().orElse(null);
+    }
+
     @Override
     public void validatePage() {
         assertThat(webDriver.getTitle())
@@ -41,27 +63,13 @@ public class TicketTradeSuccessPage extends AbstractPage {
                 .max(new ServiceBaseTest.RandomComparator()).orElse(null);
         link.click();
 
-        new WebDriverWait(webDriver, 5)
-                .until((Predicate<WebDriver>) input -> input != null
-                        && input.findElement(By.className("Use")).isDisplayed());
-
-        webDriver.findElement(By.className("confirm")).click();
+        clickConfirm(webDriver);
 
         // 肯定会有一个ticketCode展示出来的
-        new WebDriverWait(webDriver, 5)
-                .until((Predicate<WebDriver>) input -> input != null
-                        && anyTicketCode(input) != null);
-
-        WebElement code = anyTicketCode(webDriver);
+        WebElement code = findTicketCode(webDriver);
 
         WebElement image = code.findElement(By.name("qrCode"));
         return getQRCodeService().scanImage(toImage(image));
-    }
-
-    private WebElement anyTicketCode(WebDriver driver) {
-        return driver.findElements(By.className("ticketCode")).stream()
-                .filter(WebElement::isDisplayed)
-                .findFirst().orElse(null);
     }
 
     /**

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:res="http://resource.jiangcai.me" lang="en">
+<!--/*@thymesVar id="code" type="me.jiangcai.dating.entity.sale.TicketCode"*/-->
+<!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.service.CashStrings"*/-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -12,17 +14,20 @@
 </head>
 <body class="bg-black">
 <div class="coupon">
-    <p><img src="images/8.png" class="cpimg gray"/>星巴克<span class="pull-right mt7"><img src="images/couponicon2.png"
-                                                                                        class="loadimg"/>全国通用 </span>
-    </p>
+    <p>
+        <img src="images/8.png" class="cpimg" res:src="${code.batch.goods.titleGoodsImage.defaultImage.resourcePath}"/>
+        <span th:text="${code.batch.goods.brand}">星巴克</span>
+        <span class="pull-right mt7"><img src="images/couponicon2.png" class="loadimg"/>全国通用</span></p>
     <div class="card-s">
-        <p class="f13">可兑换星巴克大杯咖啡一杯</p>
-        <h1><span class="f35">28元</span>优惠券</h1>
-
+        <p class="f13" th:text="${code.batch.goods.name}">可兑换星巴克大杯咖啡一杯</p>
+        <h1><span class="f35" th:text="${#cashStrings.mallPrice(code.batch.goods.price)+'元'}">28元</span>优惠券</h1>
     </div>
     <div class="ewmshow">
-        <p class="f13">大杯优惠券01: MT21984579847523759073</p>
-        <p><img src="images/temp2.png" alt="付款二维码"/></p>
+        <p th:text="${'优惠券:'+code.code}">大杯优惠券01: MT21984579847523759073</p>
+        <p><img name="qrCode" src="images/temp2.png"
+                th:src="@{/sale/ticket/{code}(code=${code.ticketCodePK.getURIFormat()})}"
+                alt="付款二维码"/>
+        </p>
         <p class="f16">向商家出示以上券码即可消费</p>
     </div>
 
