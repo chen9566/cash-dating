@@ -15,18 +15,18 @@
 </head>
 <body>
 <div class="my-c">
-    <h1 onclick="window.location.href='myorder.html'">我的订单
+    <h1 class="clickHref" id="allOrdersLink" href="myorder.html" th:href="@{/sale/myOrders}">我的订单
         <span class="pull-right f14">查看全部订单
             <img src="images/blackright-r.png"/></span></h1>
     <ul>
         <li>
-            <a href="#">
+            <a href="myorder.html" id="waitingPayOrdersLink" th:href="@{/sale/myOrders(type=ordered)}">
                 <img src="images/payicon.png"/>待付款
             </a>
-            <a href="#">
+            <a href="myorder.html" id="waitingSendOrdersLink" th:href="@{/sale/myOrders(type=paid)}">
                 <img src="images/payicon2.png"/>待发货
             </a>
-            <a href="#">
+            <a href="myorder.html" id="waitingReceiveOrdersLink" th:href="@{/sale/myOrders(type=sent)}">
                 <img src="images/payicon3.png"/>待收货
             </a>
         </li>

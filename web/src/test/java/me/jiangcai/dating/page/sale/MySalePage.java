@@ -1,10 +1,12 @@
 package me.jiangcai.dating.page.sale;
 
+import com.google.common.base.Predicate;
 import me.jiangcai.dating.ServiceBaseTest;
 import me.jiangcai.dating.page.AbstractPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,6 +14,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author CJ
  */
 public class MySalePage extends AbstractPage {
+    private WebElement allOrdersLink;
+    private WebElement waitingPayOrdersLink;
+    private WebElement waitingSendOrdersLink;
+    private WebElement waitingReceiveOrdersLink;
+
     public MySalePage(WebDriver webDriver) {
         super(webDriver);
     }
@@ -78,4 +85,38 @@ public class MySalePage extends AbstractPage {
 
         webDriver.navigate().back();
     }
+
+    public OrderListPage allOrders() {
+        return toOrderListPage(allOrdersLink, "allOrdersLink");
+    }
+
+    public OrderListPage waitingPayOrders() {
+        return toOrderListPage(waitingPayOrdersLink, "waitingPayOrdersLink");
+    }
+
+    public OrderListPage waitingSendOrders() {
+        return toOrderListPage(waitingSendOrdersLink, "waitingSendOrdersLink");
+    }
+
+    public OrderListPage waitingReceiveOrders() {
+        return toOrderListPage(waitingReceiveOrdersLink, "waitingReceiveOrdersLink");
+    }
+
+    private OrderListPage toOrderListPage(WebElement linkElement, String id) {
+        linkElement.click();
+        new WebDriverWait(webDriver, 5).until((Predicate<WebDriver>) input -> {
+            if (input == null)
+                return false;
+            if (input.getTitle().equalsIgnoreCase("我的")) {
+                linkElement.click();
+                return false;
+            }
+            return !input.getTitle().equalsIgnoreCase("我的");
+        });
+        OrderListPage page = initPage(OrderListPage.class);
+
+        page.assertLinkIsCurrent(id);
+        return page;
+    }
+
 }

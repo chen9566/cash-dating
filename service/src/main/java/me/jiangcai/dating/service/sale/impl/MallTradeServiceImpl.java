@@ -15,6 +15,8 @@ import me.jiangcai.goods.lock.GoodsThreadSafe;
 import me.jiangcai.goods.trade.Trade;
 import me.jiangcai.goods.trade.TradeStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -87,7 +89,7 @@ public class MallTradeServiceImpl implements MallTradeService {
         Join<TicketTradedGoods, TicketCode> ticketCodeTicketTradedGoodsJoin = tradedGoodsTicketTradeJoin.joinSet("codeSet");
 
         //查询条件
-        Predicate predicate = criteriaBuilder.and(criteriaBuilder.equal(tradeRoot.get("user"), user)
+        Predicate predicate = criteriaBuilder.and(CashTrade.belongUser(user, criteriaBuilder, tradeRoot)
                 , tradeRoot.get("status").in(TradeStatus.confirmed, TradeStatus.sent)
                 , criteriaBuilder.isTrue(tradeRoot.get("paidSuccess")));
         if (code == null)
@@ -105,8 +107,31 @@ public class MallTradeServiceImpl implements MallTradeService {
         return entityManager.createQuery(ticketCodeCriteriaQuery);
     }
 
+
     @Override
     public List<TicketCode> ticketCodes(User user) {
         return userTicketQuery(null, user).getResultList();
+    }
+
+    @Override
+    public Specification<CashTrade> tradeSpecification(User user, TradeStatus type) {
+        // 只处理这么几个状态
+        return (root, query, cb) -> {
+            Predicate belong = CashTrade.belongUser(user, cb, root);
+            if (type != null)
+                return cb.and(belong, cb.equal(root.get("status"), type));
+            // 只受理这么几个状态
+            return root.get("status").in(TradeStatus.ordered, TradeStatus.paid, TradeStatus.sent, TradeStatus.confirmed);
+        };
+    }
+
+    @Override
+    public void confirmTrade(User user, long id) {
+        CashTrade trade = cashTradeRepository.getOne(id);
+        if (!trade.getUser().equals(user))
+            throw new AccessDeniedException("");
+        if (trade.getStatus() != TradeStatus.sent)
+            throw new IllegalStateException();
+        trade.setStatus(TradeStatus.confirmed);
     }
 }

@@ -302,7 +302,8 @@ ul, li, dl, dd {
 
 .mt15 {
     overflow: hidden;
-    height: 215px;
+    /*每一个订单里面可能包含多个商品 所有片面的定义它的高度是不符合现实的*/
+    /*height: 215px;*/
 }
 
 .mt7 {

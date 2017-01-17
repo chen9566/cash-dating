@@ -7,7 +7,9 @@ import me.jiangcai.dating.entity.sale.TicketCode;
 import me.jiangcai.dating.entity.sale.pk.TicketCodePK;
 import me.jiangcai.goods.event.TradeDispatchRemindEvent;
 import me.jiangcai.goods.lock.GoodsThreadSafe;
+import me.jiangcai.goods.trade.TradeStatus;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -58,4 +60,22 @@ public interface MallTradeService {
      */
     @Transactional(readOnly = true)
     List<TicketCode> ticketCodes(User user);
+
+    /**
+     * 指定用户指定类型订单的规格
+     *
+     * @param user 用户
+     * @param type type
+     * @return 查询规格
+     */
+    Specification<CashTrade> tradeSpecification(User user, TradeStatus type);
+
+    /**
+     * 这个订单已收货！
+     *
+     * @param user 用户
+     * @param id   订单id
+     */
+    @Transactional
+    void confirmTrade(User user, long id);
 }

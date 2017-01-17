@@ -1,0 +1,107 @@
+<div xmlns:th="http://www.thymeleaf.org" xmlns:res="http://resource.jiangcai.me" class="mt15 cashTrade"
+     th:each="trade:${list}" data-id="456" th:attr="data-id=${trade.id}">
+    <!--/*@thymesVar id="list" type="java.util.List<me.jiangcai.dating.entity.sale.CashTrade>"*/-->
+    <!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.service.CashStrings"*/-->
+    <p class="time">下单时间: <span th:text="${{trade.createdTime}}">2016-12-08 13:25:00</span>
+        <th:block th:switch="${trade.status}">
+            <span class="state" th:case="${T(me.jiangcai.goods.trade.TradeStatus).closed}">已关闭</span>
+            <span class="state2" th:case="${T(me.jiangcai.goods.trade.TradeStatus).ordered}">待付款</span>
+            <span class="state2" th:case="${T(me.jiangcai.goods.trade.TradeStatus).paid}">待发货</span>
+            <span class="state2" th:case="${T(me.jiangcai.goods.trade.TradeStatus).sent}">待收货</span>
+            <span class="state" th:case="${T(me.jiangcai.goods.trade.TradeStatus).confirmed}">已完成</span>
+            <span class="state2" th:case="*">其他</span>
+        </th:block>
+    </p>
+    <dl class="clickHref" href="cardplayclose.html" th:href="@{/sale/myOrder(id=${trade.id})}"
+        th:each="goods:${trade.cashTradedGoods}">
+        <dt><img src="images/12.png" res:src="${goods.titleGoodsImage.defaultImage.resourcePath}"></dt>
+        <dd><span class="w80" th:text="${goods.name}">星巴克8折优惠券</span>
+            <span class="cny" th:text="${'¥'+#cashStrings.mallPrice(goods.price)}">¥21.6</span></dd>
+        <dd><span th:text="${goods.brand}">星巴克</span>
+            <span class="number" th:text="${'X'+goods.count}">X2</span></dd>
+    </dl>
+    <dl th:remove="all" class="clickHref" href="cardplayclose.html">
+        <dt><img src="images/12.png"></dt>
+        <dd><span class="w80">星巴克8折优惠券</span><span class="cny">¥21.6</span></dd>
+        <dd>8折券<span class="number">X2</span></dd>
+    </dl>
+    <p class="and">合计:<span class="redcny" th:text="${'¥'+#cashStrings.mallPrice(trade.totalPrice)}">¥43.2</span>
+        <a th:if="${trade.status==T(me.jiangcai.goods.trade.TradeStatus).ordered}" href="#"
+           th:href="@{/sale/showOrder(id=${trade.id})}" class="andbtn">付款</a>
+        <a th:if="${trade.status==T(me.jiangcai.goods.trade.TradeStatus).sent}" href="#" class="confirmButton logistic">确认收货</a>
+    </p>
+</div>
+<div xmlns:th="http://www.thymeleaf.org" th:remove="all" class="mt15">
+    <p class="time">下单时间: 2016-12-08 13:25:00<span class="state">已关闭</span></p>
+    <dl onclick="window.location.href='playclose.html'">
+        <dt><img src="images/2.png"></dt>
+        <dd><span class="w80">艳庄彩妆系列智能调色曜白CC霜35ml</span><span class="cny">¥21.6</span></dd>
+        <dd>规格35ml<span class="number">X2</span></dd>
+    </dl>
+    <p class="and">合计:<span class="redcny">¥43.2</span></p>
+</div>
+<div xmlns:th="http://www.thymeleaf.org" th:remove="all" class="mt15">
+    <p class="time">下单时间: 2016-12-08 13:25:00<span class="state2">待付款</span></p>
+    <dl onclick="window.location.href='cardplayto.html'">
+        <dt><img src="images/12.png"></dt>
+        <dd><span class="w80">星巴克8折优惠券</span><span class="cny">¥21.6</span></dd>
+        <dd>8折券<span class="number">X2</span></dd>
+    </dl>
+    <p class="and">合计:<span class="redcny">¥43.2</span><a href="#" class="andbtn">付款</a></p>
+</div>
+<div xmlns:th="http://www.thymeleaf.org" th:remove="all" class="mt15">
+    <p class="time">下单时间: 2016-12-08 13:25:00<span class="state2">待付款</span></p>
+    <dl onclick="window.location.href='cardplayto.html'">
+        <dt><img src="images/2.png"></dt>
+        <dd><span class="w80">澳洲直邮Elevit爱乐维叶酸营养片复合维生素100片备孕孕期</span><span class="cny">¥21.6</span></dd>
+        <dd>规格35ml<span class="number">X2</span></dd>
+    </dl>
+    <p class="and">合计:<span class="redcny">¥43.2</span><a href="#" class="andbtn">付款</a></p>
+</div>
+<div xmlns:th="http://www.thymeleaf.org" th:remove="all" class="mt15">
+    <p class="time">下单时间: 2016-12-08 13:25:00<span class="state2">待发货</span></p>
+    <dl onclick="window.location.href='playshop.html'">
+        <dt><img src="images/2.png"></dt>
+        <dd><span class="w80">澳洲直邮Elevit爱乐维叶酸营养片复合维生素100片备孕孕期</span><span class="cny">¥21.6</span></dd>
+        <dd>规格35ml<span class="number">X2</span></dd>
+    </dl>
+    <p class="and">合计:<span class="redcny">¥43.2</span><a href="#" class="Harvest" title="400-8588528">客服电话</a>
+    </p>
+</div>
+<div xmlns:th="http://www.thymeleaf.org" th:remove="all" class="mt15">
+    <p class="time">下单时间: 2016-12-08 13:25:00<span class="state2">待收货</span></p>
+    <dl onclick="window.location.href='playgood.html'">
+        <dt><img src="images/2.png"></dt>
+        <dd><span class="w80">澳洲直邮Elevit爱乐维叶酸营养片复合维生素100片备孕孕期</span><span class="cny">¥21.6</span></dd>
+        <dd>规格35ml<span class="number">X2</span></dd>
+    </dl>
+    <p class="and">合计:<span class="redcny">¥43.2</span><a href="#" class="logistic" onclick="second()">确认收货</a><a
+            href="#"
+            class="Harvest mr-10"
+            title="400-8588528">客服电话</a>
+    </p>
+</div>
+<div xmlns:th="http://www.thymeleaf.org" th:remove="all" class="mt15">
+    <p class="time">下单时间: 2016-12-08 13:25:00<span class="state">已完成</span></p>
+    <dl onclick="window.location.href='playfinish.html'">
+        <dt><img src="images/12.png"></dt>
+        <dd><span class="w80">澳洲直邮Elevit爱乐维叶酸营养片复合维生素100片备孕孕期</span><span class="cny">¥21.6</span></dd>
+        <dd>规格35ml<span class="number">X2</span></dd>
+    </dl>
+    <p class="and">合计:<span class="redcny">¥43.2</span></p>
+</div>
+<div xmlns:th="http://www.thymeleaf.org" th:remove="all" class="mt15">
+    <p class="time">下单时间: 2016-12-08 13:25:00<span class="state">已完成</span></p>
+    <dl onclick="window.location.href='cardplayfinish.html'">
+        <dt><img src="images/12.png"></dt>
+        <dd><span class="w80">星巴克8折优惠券</span><span class="cny">¥21.6</span></dd>
+        <dd>8折券<span class="number">X2</span></dd>
+    </dl>
+    <p class="and">合计:<span class="redcny">¥43.2</span></p>
+</div>
+<a xmlns:th="http://www.thymeleaf.org" class="next" th:if="${!list.isEmpty()}" href="myorder_data.html"
+   th:href="@{/sale/myOrdersData(offset=${offset+list.size()},type=${type})}">
+    <!--/*@thymesVar id="type" type="me.jiangcai.goods.trade.TradeStatus"*/-->
+    <!--/*@thymesVar id="offset" type="java.lang.Long"*/-->
+    <!--/*@thymesVar id="list" type="java.util.List<me.jiangcai.dating.entity.sale.CashTrade>"*/-->
+    &nbsp;</a>

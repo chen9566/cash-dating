@@ -410,6 +410,10 @@ public abstract class ServiceBaseTest extends SpringWebTest {
             payCashTrade(trade);
         }
         // 其他暂时不用了
+        for (int i = 0; i < sures; i++) {
+            CashTrade trade = allTrades.get(i);
+            mallTradeService.confirmTrade(trade.getUser(), trade.getId());
+        }
 
     }
 

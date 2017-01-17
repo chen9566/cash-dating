@@ -84,6 +84,11 @@ public class TicketTradedGoods implements TradedGoods {
     }
 
     @Override
+    public String getBrand() {
+        return myGoods().getBrand();
+    }
+
+    @Override
     public Number getPrice() {
         return myGoods().getPrice();
     }
