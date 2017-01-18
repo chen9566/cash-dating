@@ -50,6 +50,11 @@ public class GoodsStyle implements Goods {
     }
 
     @Override
+    public String getBrand() {
+        return goods.getBrand();
+    }
+
+    @Override
     public Number getOriginalPrice() {
         return null;
     }

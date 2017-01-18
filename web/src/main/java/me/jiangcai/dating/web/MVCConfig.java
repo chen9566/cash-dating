@@ -6,6 +6,7 @@ import me.jiangcai.dating.web.converter.LocalDateFormatter;
 import me.jiangcai.dating.web.converter.ReportHandler;
 import me.jiangcai.dating.web.mvc.ImageResolver;
 import me.jiangcai.dating.web.thymeleaf.CashDialect;
+import me.jiangcai.dating.web.thymeleaf.baidu.BaiduSpringResourceTemplateResolver;
 import me.jiangcai.lib.resource.thymeleaf.ResourceDialect;
 import me.jiangcai.wx.web.thymeleaf.WeixinDialect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -36,6 +38,7 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
@@ -175,6 +178,7 @@ class MVCConfig extends WebMvcConfigurerAdapter {
 
         @ComponentScan("me.jiangcai.dating.web.thymeleaf")
         static class ThymeleafTemplateConfig {
+            private final String baiduStatistics;
             @Autowired
             private WebApplicationContext webApplicationContext;
             @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -185,8 +189,13 @@ class MVCConfig extends WebMvcConfigurerAdapter {
             @Autowired
             private ResourceDialect resourceDialect;
 
+            @Autowired
+            public ThymeleafTemplateConfig(Environment environment) {
+                baiduStatistics = environment.getProperty("baidu.statistics.code");
+            }
+
             @Bean
-            public TemplateEngine templateEngine() {
+            public TemplateEngine templateEngine() throws IOException {
                 SpringTemplateEngine engine = new SpringTemplateEngine();
                 engine.setEnableSpringELCompiler(true);
                 engine.setTemplateResolver(templateResolver());
@@ -198,8 +207,13 @@ class MVCConfig extends WebMvcConfigurerAdapter {
                 return engine;
             }
 
-            private ITemplateResolver templateResolver() {
-                SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+            private ITemplateResolver templateResolver() throws IOException {
+                SpringResourceTemplateResolver resolver;
+                if (StringUtils.isEmpty(baiduStatistics)) {
+                    resolver = new SpringResourceTemplateResolver();
+                } else {
+                    resolver = new BaiduSpringResourceTemplateResolver(baiduStatistics);
+                }
                 resolver.setApplicationContext(webApplicationContext);
                 resolver.setCharacterEncoding("UTF-8");
                 resolver.setPrefix("/");
