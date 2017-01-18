@@ -21,9 +21,11 @@
       role="form">
     <input type="hidden" name="workModel" th:if="${workModel!=null}" th:value="${workModel}"/>
     <div class="showcard" id="cardShower">3333333333</div>
-    <p class="b1" th:if="${workModel==null}">请绑定持卡人的银行卡(<b>借记卡</b>)</p>
-    <p class="b1" th:if="${'loan'==(workModel)}">请绑定您的借还款(<b>结算卡</b>)</p>
-    <p class="b1" th:if="${'bind'==(workModel)}">请确定持卡人的借记卡(<b>不可修改</b>)</p>
+    <th:block th:switch="${workModel}">
+        <p class="b1" th:case="'loan'">请绑定您的借还款(<b>结算卡</b>)</p>
+        <p class="b1" th:case="'bind'">请确定持卡人的借记卡(<b>不可修改</b>)</p>
+        <p class="b1" th:case="*">请绑定持卡人的银行卡(<b>借记卡</b>)</p>
+    </th:block>
     <ul>
         <li>
             <label>持卡人姓名</label>
@@ -52,9 +54,9 @@
 				</span></span></li>
         <li>
             <label class="pull-left">开户地址</label>
-        <span class="sleBG s1"
-              style="background:url(images/Path.png) no-repeat 80px 19px;background-size:10px 6px;"> <span
-                class="sleHid">
+            <span class="sleBG s1"
+                  style="background:url(images/Path.png) no-repeat 80px 19px;background-size:10px 6px;"> <span
+                    class="sleHid">
         <select class="select2 province-selector" name="province" required>
         <option value="1">北京</option>
         </select>
@@ -76,7 +78,7 @@
 
     </ul>
     <p class="b4">此银行卡号开户名必须与上方开户名一致，否则提现会失败！</p>
-    <p class="b4" style="color:red" th:if="${'bind'==(workModel)}">务必谨慎填写,提交之后将无法修改</p>
+    <p class="b4" style="color:red" th:if="${'bind'==workModel}">务必谨慎填写,提交之后将无法修改</p>
     <div class="p-15 mar30">
         <input value="提交" type="submit" class="black" name="btn1" disabled="disabled"/>
     </div>
