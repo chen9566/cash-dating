@@ -5,6 +5,7 @@ import lombok.Setter;
 import me.jiangcai.dating.entity.support.RateConfig;
 import me.jiangcai.dating.event.Notification;
 import me.jiangcai.dating.notify.NotifyType;
+import me.jiangcai.dating.service.impl.SystemServiceImpl;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -130,6 +131,8 @@ public class CashOrder extends UserOrder {
     }
 
     public boolean isSupportAliPay() {
+        if (SystemServiceImpl.UserChanPayForWeixinAB)
+            return false;
         return true;
     }
 }
