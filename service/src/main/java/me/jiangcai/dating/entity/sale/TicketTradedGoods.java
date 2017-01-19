@@ -60,7 +60,11 @@ public class TicketTradedGoods implements TradedGoods {
 
     @Override
     public Goods getReferenceGoods() {
-        return myGoods().getReferenceGoods();
+        final Goods myGoods = myGoods();
+        Goods goods = myGoods.getReferenceGoods();
+        if (goods != null)
+            return goods;
+        return myGoods;
     }
 
     @Override

@@ -78,4 +78,12 @@ public interface MallTradeService {
      */
     @Transactional
     void confirmTrade(User user, long id);
+
+    /**
+     * 关闭这个订单
+     *
+     * @param id 订单id
+     */
+    @Transactional
+    void closeTrade(long id);
 }

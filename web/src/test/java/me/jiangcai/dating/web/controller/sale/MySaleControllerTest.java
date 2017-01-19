@@ -4,7 +4,11 @@ import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.page.sale.MySalePage;
 import me.jiangcai.dating.page.sale.OrderListPage;
+import me.jiangcai.dating.repository.sale.CashTradeRepository;
+import me.jiangcai.dating.service.sale.MallTradeService;
+import me.jiangcai.goods.trade.TradeStatus;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,6 +16,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author CJ
  */
 public class MySaleControllerTest extends WebTest {
+
+    @Autowired
+    private MallTradeService mallTradeService;
+    @Autowired
+    private CashTradeRepository cashTradeRepository;
 
     @Test
     public void index() throws Exception {
@@ -71,10 +80,16 @@ public class MySaleControllerTest extends WebTest {
 
         //走一下各种流程
         //我们得想办法弄到一个关闭的订单
+        cashTradeRepository.findAll(mallTradeService.tradeSpecification(user, TradeStatus.ordered)).stream()
+                .findAny().ifPresent(trade -> {
+            mallTradeService.closeTrade(trade.getId());
+        });
+
+        myPage.refresh();
+
         allOrdersPage = myPage.allOrders();
         // 所有订单状态都查看一次详情
         allOrdersPage.openAllStatus();
-
 
     }
 

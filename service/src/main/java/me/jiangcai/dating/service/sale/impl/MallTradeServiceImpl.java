@@ -12,6 +12,7 @@ import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.sale.MallTradeService;
 import me.jiangcai.goods.event.TradeDispatchRemindEvent;
 import me.jiangcai.goods.lock.GoodsThreadSafe;
+import me.jiangcai.goods.service.TradeService;
 import me.jiangcai.goods.trade.Trade;
 import me.jiangcai.goods.trade.TradeStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * @author CJ
@@ -42,6 +45,8 @@ public class MallTradeServiceImpl implements MallTradeService {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private TradeService tradeService;
 
     @Override
     public CashTrade trade(long id) {
@@ -107,7 +112,6 @@ public class MallTradeServiceImpl implements MallTradeService {
         return entityManager.createQuery(ticketCodeCriteriaQuery);
     }
 
-
     @Override
     public List<TicketCode> ticketCodes(User user) {
         return userTicketQuery(null, user).getResultList();
@@ -134,5 +138,12 @@ public class MallTradeServiceImpl implements MallTradeService {
         if (trade.getStatus() != TradeStatus.sent)
             throw new IllegalStateException();
         trade.setStatus(TradeStatus.confirmed);
+    }
+
+    @Override
+    public void closeTrade(long id) {
+        CashTrade trade = trade(id);
+        trade.setCloseTime(LocalDateTime.now().minusMonths(1));
+        tradeService.checkTrade(trade, Function.identity());
     }
 }

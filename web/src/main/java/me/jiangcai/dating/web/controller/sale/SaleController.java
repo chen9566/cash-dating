@@ -8,6 +8,7 @@ import me.jiangcai.dating.entity.sale.TicketTrade;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.dating.service.sale.MallTradeService;
+import me.jiangcai.goods.trade.TradeStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -69,12 +70,16 @@ public class SaleController {
         return trade.getId();
     }
 
+    // 至于尚未支付才会来这里
     @RequestMapping(method = RequestMethod.GET, value = "/showOrder")
     public String showOrder(long id, Model model) {
         final CashTrade trade = mallTradeService.trade(id);
         model.addAttribute("trade", trade);
-        if (trade instanceof TicketTrade)
+        if (trade instanceof TicketTrade) {
+            if (trade.getStatus() == TradeStatus.closed)
+                return "sale/cardplayclose.html";
             return "sale/cardplay.html";
+        }
         throw new IllegalArgumentException("not support " + trade + " yet");
     }
 
