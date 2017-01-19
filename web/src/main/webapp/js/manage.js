@@ -16,7 +16,10 @@ $.Manage.headImageRenderer = function (url, row, index) {
 };
 
 $.Manage.enableRenderer = function (data, row, index) {
-    return data ? '√' : '×';
+    if (data)
+        return '<input type="checkbox" disabled checked/>';
+    return '<input type="checkbox" disabled/>';
+    // return data ? '√' : '×';
 };
 
 
@@ -127,6 +130,7 @@ $(function () {
         menus = menus + '<li><a href="' + hrefLoanRequest + '">审批借款</a></li>';
 
     menus = updateMenus(menus, '项目贷款', 'projectLoanRequest.html', '/manage/projectLoanRequest', 'projectLoan');
+    menus = updateMenus(menus, '商品', 'sale/goods.html', '/manage/goods', 'saleGoodsRead');
 
     var hrefAgentRequest = 'agentRequest.html';
     if (!$.prototypesMode)

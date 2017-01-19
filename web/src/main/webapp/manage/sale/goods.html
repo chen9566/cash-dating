@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品管理</title>
+    <link rel="stylesheet" href="../../css/manage.css" th:href="@{/css/manage.css}">
+    <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdn.kuanyes.com/bootstrap-3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-table-1.11.0/bootstrap-table.min.css">
+    <script src="//cdn.kuanyes.com/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
+    <script src="//cdn.kuanyes.com/bootstrap-table-1.11.0/bootstrap-table-locale-all.min.js"></script>
+    <script src="//cdn.kuanyes.com/bootstrap-table-1.11.0/extensions/editable/bootstrap-table-editable.min.js"></script>
+    <script src="//cdn.kuanyes.com/bootstrap-table-1.11.0/extensions/export/bootstrap-table-export.min.js"></script>
+
+    <link rel="stylesheet" href="//cdn.kuanyes.com/jquery-ui-1.12.1/jquery-ui.min.css">
+    <script src="//cdn.kuanyes.com/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+    <script src="//cdn.kuanyes.com/jquery-validation-1.15.0/jquery.validate.min.js"></script>
+    <script src="//cdn.kuanyes.com/jquery-validation-1.15.0/localization/messages_zh.js"></script>
+
+    <script src="../../dist/js/share.js" th:src="@{/dist/js/share.js}"></script>
+    <script src="../../mock/all.js" th:src="@{/all.js}"></script>
+    <script th:replace="fragment/auth.html::code"></script>
+    <script src="../../js/manage.js" th:src="@{/js/manage.js}"></script>
+</head>
+<body>
+<div class="header"></div>
+<div id="toolbar">
+    <button id="stockAddButton" class="btn btn-danger" disabled>
+        <i class="glyphicon glyphicon-plus"></i> 添加库存批次
+    </button>
+</div>
+<table id="table"
+       data-url="../../mock/goods.json"
+       th:attr="data-url=@{/manage/goods/data}"
+       data-page-list="[10, 25, 50]"
+       data-toolbar="#toolbar"
+></table>
+
+
+<h3>当前剩余可用台卡数量<!--/*@thymesVar id="gap" type="java.lang.Number"*/-->
+    <span th:text="${gap}">100</span>个</h3>
+
+<div>
+    <pre>
+    <h4>操作指南</h4>
+    访问<a href="http://123.206.99.141:8083/selfweb">第三方后台</a> | 用户管理 | 台卡管理 | 下载
+    机构号选择美约,批次号选择最新生成的批次,点击【链接下载】。
+    在本窗口上传下载好的文件。
+    </pre>
+</div>
+
+<p th:if="${@systemService.enablePay123}">
+    <span style="background-color: #02BB00">正在使用该支付方式</span>
+    <a href="pay123.html" th:href="@{/manage/pay123/toggle}">停用</a>
+</p>
+<p th:if="${!@systemService.enablePay123}">
+    <span style="background-color:#66afe9">已经停用该支付方式</span>
+    <a href="pay123.html" th:href="@{/manage/pay123/toggle}">启用</a>
+</p>
+
+<form action="pay123.html" method="get" enctype="multipart/form-data" th:method="post" th:action="@{/manage/pay123}">
+    <input type="file" name="file" accept="application/zip" required/>
+    <input type="submit"/>
+</form>
+<script>
+    $(function () {
+        $('form').validate();
+    });
+</script>
+<script>
+    $(function () {
+        var table = $('#table');
+        var stockAddButton = $('#stockAddButton');
+
+        var idSupplier = $.initTable(table, 'id', function () {
+            return $(window).height() - $('.header').outerHeight(true);
+        }, [
+            {
+                field: 'state',
+                checkbox: true,
+                align: 'center'
+            }, {
+                title: '类型',
+                field: 'type',
+                align: 'center'
+            }, {
+                title: '&nbsp;',
+                field: 'imageUrl',
+                align: 'center',
+                formatter: $.Manage.headImageRenderer
+            }, {
+                title: '已上架',
+                field: 'enable',
+                formatter: $.Manage.enableRenderer,
+                align: 'center'
+            }, {
+                title: '品牌',
+                field: 'brand',
+                align: 'center',
+                sortable: true
+            }, {
+                title: '名称',
+                field: 'name',
+                align: 'center',
+                sortable: true
+            }, {
+                title: '描述',
+                field: 'description',
+                align: 'center',
+                sortable: true
+            }, {
+                title: '售价',
+                field: 'price',
+                align: 'right',
+                sortable: true
+            }, {
+                title: '原价',
+                field: 'subPrice',
+                sortable: true
+            }, {
+                title: '库存',
+                field: 'stock',
+                sortable: true
+            }, {
+                title: '操作',
+                formatter: function (data, row, index) {
+                    if (row.isTicket) {
+                        return '添加';
+                    }
+                    return '&nbsp;';
+                }
+            }
+        ], stockAddButton);
+    });
+</script>
+</body>
+</html>

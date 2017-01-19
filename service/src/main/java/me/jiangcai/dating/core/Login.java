@@ -13,6 +13,11 @@ public class Login {
     public static final String Role_Project_Loan_Value = "PROJECT_LOAN";
     public static final String Role_Grant_Value = "GRANT";
     public static final String Role_Manage_Value = "MANAGE";
+
+    /**
+     * 可读取商品
+     */
+    public static final String Role_Sale_Goods_Read_Value = "SALE_GOODS_READ";
     /**
      * 可管理商品
      */
