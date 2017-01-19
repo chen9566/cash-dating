@@ -78,7 +78,7 @@
 
     </ul>
     <p class="b4">此银行卡号开户名必须与上方开户名一致，否则提现会失败！</p>
-    <p class="b4" style="color:red" th:if="${'bind'==workModel}">务必谨慎填写,提交之后将无法修改</p>
+    <p class="b4" style="color:red" th:if="${#strings.equals('bind',workModel)}">务必谨慎填写,提交之后将无法修改</p>
     <div class="p-15 mar30">
         <input value="提交" type="submit" class="black" name="btn1" disabled="disabled"/>
     </div>
