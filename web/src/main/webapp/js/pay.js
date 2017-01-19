@@ -4,6 +4,8 @@
  */
 $(function () {
 
+    var loadingFlag = $('#loadingFlag');
+
     var uri;
     if ($.prototypesMode || !$.targetOrderId)
         uri = 'mock/false.json';
@@ -37,8 +39,8 @@ $(function () {
         return $(".showbg");
     }
 
-    $('.payChannel').click(function () {
-        var name = $(this).attr('data-id');
+    function choosePayMethod(element) {
+        var name = element.attr('data-id');
         if (name == 'alipay') {
             document.title = '支付宝支付';
         } else {
@@ -68,8 +70,14 @@ $(function () {
                 $(".am-show").removeClass('am-modal-active');
                 currentBackground().remove();
                 $('.' + name).show();
+                loadingFlag.attr('loaded', 1);
             }
         })
+    }
+
+    var allPayChannels = $('.payChannel');
+    allPayChannels.click(function () {
+        choosePayMethod($(this));
     });
 
     $(".am-show").addClass("am-modal-active");
@@ -95,4 +103,10 @@ $(function () {
     $(".helpshow2").click(function (event) {
         $(".helpshow2").css({"display": "none"});
     });
+
+    if (allPayChannels.size() == 1) {
+        choosePayMethod(allPayChannels);
+    } else {
+        loadingFlag.attr('loaded', 1);
+    }
 });

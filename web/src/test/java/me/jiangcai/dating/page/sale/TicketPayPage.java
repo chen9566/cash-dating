@@ -8,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -39,12 +41,12 @@ public class TicketPayPage extends AbstractPage {
         payButton.click();
         try {
             new WebDriverWait(webDriver, 5).until((Predicate<WebDriver>)
-                    input -> input != null && input.getTitle().equalsIgnoreCase("收款二维码"));
+                    input -> input != null && Arrays.asList("收款二维码", "支付宝支付", "微信支付").contains(input.getTitle()));
         } catch (TimeoutException exception) {
             payButton.click();
             try {
                 new WebDriverWait(webDriver, 5).until((Predicate<WebDriver>)
-                        input -> input != null && input.getTitle().equalsIgnoreCase("收款二维码"));
+                        input -> input != null && Arrays.asList("收款二维码", "支付宝支付", "微信支付").contains(input.getTitle()));
             } catch (TimeoutException e) {
                 printThisPage();
                 throw e;

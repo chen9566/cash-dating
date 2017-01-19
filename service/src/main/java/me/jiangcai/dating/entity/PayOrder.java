@@ -40,4 +40,9 @@ public class PayOrder extends CashOrder {
     public boolean isArbitrage() {
         return false;
     }
+
+    @Override
+    public boolean isSupportAliPay() {
+        return false;
+    }
 }

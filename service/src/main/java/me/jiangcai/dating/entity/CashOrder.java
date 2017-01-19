@@ -124,4 +124,12 @@ public class CashOrder extends UserOrder {
     public String getSuccessURI() {
         return null;
     }
+
+    public boolean isSupportWeixinPay() {
+        return true;
+    }
+
+    public boolean isSupportAliPay() {
+        return true;
+    }
 }

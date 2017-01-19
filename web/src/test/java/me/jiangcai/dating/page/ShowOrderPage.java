@@ -28,6 +28,7 @@ public class ShowOrderPage extends AbstractPage {
     private WebElement amountSpan;
     private WebElement image;
     private WebElement shareButton;
+    private WebElement loadingFlag;
 
     public ShowOrderPage(WebDriver webDriver) {
         super(webDriver);
@@ -72,6 +73,18 @@ public class ShowOrderPage extends AbstractPage {
 
 
     private BufferedImage scanCode(PayMethod channel) throws IOException {
+        // 如果当时已经展示出来了   那就直接扫码!
+//        new WebDriverWait(webDriver, 5).until(new Predicate<WebDriver>() {
+//            @Override
+//            public boolean apply(@Nullable WebDriver input) {
+//                return input != null && input.findElement(By.id("loadingFlag")).getAttribute("loaded") != null;
+//            }
+//        });
+//        printThisPage();
+        if (getQRImage(webDriver).isPresent()) {
+            return toImage(getQRImage(webDriver).orElse(null));
+        }
+
         WebElement ele = webDriver.findElements(By.className("payChannel")).stream()
                 .filter(webElement -> webElement.getAttribute("data-id").equals(channel.name()))
                 .findFirst()
