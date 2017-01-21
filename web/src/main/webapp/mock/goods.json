@@ -15,7 +15,7 @@
     {
       "id": 2,
       "type": "普通类",
-      "enable": true,
+      "enable": false,
       "brand": "宝马",
       "name": "i7",
       "description": "长江七号",

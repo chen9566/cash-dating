@@ -9,19 +9,25 @@ import me.jiangcai.dating.repository.sale.CashGoodsRepository;
 import me.jiangcai.dating.service.DataService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.sale.MallGoodsService;
+import me.jiangcai.goods.service.ManageGoodsService;
 import me.jiangcai.lib.resource.service.ResourceService;
+import org.apache.commons.lang.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -45,6 +51,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -66,6 +73,8 @@ public class ManageSaleController {
     private QRCodeService qrCodeService;
     @Autowired
     private MallGoodsService mallGoodsService;
+    @Autowired
+    private ManageGoodsService manageGoodsService;
 
     @RequestMapping(method = RequestMethod.GET, value = {"", "/"})
     @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "','" + Login.Role_Sale_Goods_Read_Value + "')")
@@ -82,7 +91,24 @@ public class ManageSaleController {
         return data.data(user, search, sort, order, offset, limit, CashGoods.class, fieldList(), null);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/{goodsId}/enable")
+    @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "')")
+    @Transactional
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void enable(@RequestBody String to, @PathVariable("goodsId") long goodsId) {
+        CashGoods goods = cashGoodsRepository.getOne(goodsId);
+        boolean enable = BooleanUtils.toBoolean(to);
+        if (enable == goods.isEnable())
+            return;
+        if (enable)
+            manageGoodsService.enableGoods(goods, Function.identity());
+        else {
+            goods.setEnable(false);
+        }
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/batch")
+    @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "','" + Login.Role_Sale_Stock_Value + "')")
     @Transactional
     public String batch(@AuthenticationPrincipal User user, RedirectAttributes redirectAttributes, long goodsId
             , @RequestParam LocalDate expiredDate, String comment, MultipartFile file) throws IOException {

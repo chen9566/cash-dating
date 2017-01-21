@@ -12,21 +12,22 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.util.StreamUtils;
 
 import java.time.LocalDate;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author CJ
  */
-@AsManage(ManageStatus.waiter)
+@AsManage(ManageStatus.general)
 public class ManageSaleControllerTest extends ManageWebTest {
     @Autowired
     private CashGoodsRepository cashGoodsRepository;
@@ -75,6 +76,26 @@ public class ManageSaleControllerTest extends ManageWebTest {
                 .andDo(MockMvcResultHandlers.print());// 包括成功的结果 以及失败的文件下载地址!
 
         assertDataResult(count + 1, cashGoods, session);
+
+        mockMvc.perform(put("/manage/goods/" + cashGoods.getId() + "/enable")
+                .session(session)
+                .contentType(MediaType.TEXT_PLAIN)
+                .content("false")
+        )
+                .andExpect(status().isNoContent());
+
+        assertThat(cashGoodsRepository.getOne(cashGoods.getId()).isEnable())
+                .isFalse();
+
+        mockMvc.perform(put("/manage/goods/" + cashGoods.getId() + "/enable")
+                .session(session)
+                .contentType(MediaType.TEXT_PLAIN)
+                .content("true")
+        )
+                .andExpect(status().isNoContent());
+
+        assertThat(cashGoodsRepository.getOne(cashGoods.getId()).isEnable())
+                .isTrue();
     }
 
     private void assertDataResult(final int count, CashGoods cashGoods, MockHttpSession session) throws Exception {

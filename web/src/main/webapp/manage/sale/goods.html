@@ -58,6 +58,14 @@
     <button id="stockAddButton" sec:authorize="hasAnyRole('SALE_STOCK','ROOT') " class="btn btn-danger" disabled>
         <i class="glyphicon glyphicon-plus"></i> 添加库存批次
     </button>
+    <button id="enableButton" sec:authorize="hasAnyRole('SALE_GOODS','ROOT') " class="btn btn-danger enableChange"
+            data-value="true" disabled>
+        <i class="glyphicon glyphicon-ok-sign"></i> 上架
+    </button>
+    <button id="disableButton" sec:authorize="hasAnyRole('SALE_GOODS','ROOT') " class="btn btn-danger enableChange"
+            data-value="false" disabled>
+        <i class="glyphicon glyphicon-remove-sign"></i> 下架
+    </button>
 </div>
 
 <div class="modal fade" id="stockAddRegion" tabindex="-1" role="dialog" aria-labelledby="stockAddRegionLabel"
@@ -110,6 +118,8 @@
     $(function () {
         var table = $('#table');
         var stockAddButton = $('#stockAddButton');
+        var enableButton = $('#enableButton');
+        var disableButton = $('#disableButton');
         var stockAddRegion = $('#stockAddRegion');
         var goodsId = $('[name=goodsId]', stockAddRegion);
         var expiredDate = $('[name=expiredDate]', stockAddRegion);
@@ -167,8 +177,10 @@
                 field: 'stock',
                 sortable: true
             }
-        ], stockAddButton, function (buttons, currentSelections) {
+        ], stockAddButton.add(enableButton).add(disableButton), function (buttons, currentSelections) {
             stockAddButton.prop('disabled', currentSelections[0].type != '卡券类');
+            enableButton.prop('disabled', currentSelections[0].enable);
+            disableButton.prop('disabled', !currentSelections[0].enable);
         });
 
         stockAddButton.click(function () {
@@ -176,6 +188,20 @@
             goodsId.val(data.id);
             $('#stockAddRegionTitle').text(data.name);
             stockAddRegion.modal();
+        });
+
+        $('.enableChange').click(function () {
+            // 设置enable状态
+            $.ajax($.uriPrefix + '/manage/goods/' + idSupplier() + '/enable', {
+                method: 'put',
+                contentType: 'text/plain',
+                data: $(this).attr('data-value'),
+                success: function () {
+                    table.bootstrapTable('refresh');
+                }, error: function () {
+                    table.bootstrapTable('refresh');
+                }
+            });
         });
 
     });
