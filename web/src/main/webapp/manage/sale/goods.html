@@ -37,6 +37,23 @@
 </head>
 <body>
 <div class="header"></div>
+
+<!--/*@thymesVar id="batchedGoods" type="me.jiangcai.dating.entity.sale.CashGoods"*/-->
+<fieldset th:if="${batchedGoods!=null}">
+    <legend><span th:text="${batchedGoods.brand}">某品牌</span><span th:text="${batchedGoods.name}">某商品</span>的新库存批次
+    </legend>
+    <ul>
+        <li>增加有效数量:<!--/*@thymesVar id="count" type="java.lang.Integer"*/-->
+            <span th:text="${count}">count</span></li>
+        <li th:if="${failedUrl!=null}"><!--/*@thymesVar id="failedUrl" type="java.lang.String"*/-->
+            <a href="../../images/a-img1.png" th:href="${failedUrl}">下载本次上传无效的卡券包</a></li>
+    </ul>
+</fieldset>
+<p>
+
+
+</p>
+
 <div id="toolbar">
     <button id="stockAddButton" sec:authorize="hasAnyRole('SALE_STOCK','ROOT') " class="btn btn-danger" disabled>
         <i class="glyphicon glyphicon-plus"></i> 添加库存批次
@@ -59,6 +76,11 @@
                     <label>
                         过期时间:
                         <input type="text" name="expiredDate" size="10" required/>
+                    </label>
+                    <br/>
+                    <label>
+                        备注:
+                        <input type="text" name="comment"/>
                     </label>
                     <br/>
                     <label>

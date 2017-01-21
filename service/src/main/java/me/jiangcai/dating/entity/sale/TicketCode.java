@@ -25,7 +25,7 @@ import java.util.Objects;
 @IdClass(TicketCodePK.class)
 @Table(indexes = {@Index(columnList = "used")})
 public class TicketCode implements StockToken, Comparable<TicketCode> {
-    public static final int CodeLength = 50;
+    public static final int CodeLength = 200;
     @Id
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
     private TicketBatch batch;

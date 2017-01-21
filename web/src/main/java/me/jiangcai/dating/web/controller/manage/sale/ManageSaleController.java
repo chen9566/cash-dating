@@ -5,7 +5,10 @@ import me.jiangcai.dating.core.Login;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashGoods;
 import me.jiangcai.dating.entity.sale.TicketGoods;
+import me.jiangcai.dating.repository.sale.CashGoodsRepository;
 import me.jiangcai.dating.service.DataService;
+import me.jiangcai.dating.service.QRCodeService;
+import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -14,18 +17,37 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.imageio.ImageIO;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 /**
  * @author CJ
@@ -38,6 +60,12 @@ public class ManageSaleController {
     private DataService data;
     @Autowired
     private ResourceService resourceService;
+    @Autowired
+    private CashGoodsRepository cashGoodsRepository;
+    @Autowired
+    private QRCodeService qrCodeService;
+    @Autowired
+    private MallGoodsService mallGoodsService;
 
     @RequestMapping(method = RequestMethod.GET, value = {"", "/"})
     @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "','" + Login.Role_Sale_Goods_Read_Value + "')")
@@ -52,6 +80,61 @@ public class ManageSaleController {
     public Object data(@AuthenticationPrincipal User user, String search, String sort, Sort.Direction order
             , int offset, int limit) {
         return data.data(user, search, sort, order, offset, limit, CashGoods.class, fieldList(), null);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/batch")
+    @Transactional
+    public String batch(@AuthenticationPrincipal User user, RedirectAttributes redirectAttributes, long goodsId
+            , @RequestParam LocalDate expiredDate, String comment, MultipartFile file) throws IOException {
+        //首先解析文件
+        File tmpFile = File.createTempFile("cashGoods", ".zip");
+        try {
+            ArrayList<String> codes = new ArrayList<>();
+            try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(tmpFile))) {
+                try (ZipInputStream zipInputStream = new ZipInputStream(file.getInputStream())) {
+                    while (true) {
+                        ZipEntry entry = zipInputStream.getNextEntry();
+                        if (entry == null)
+                            break;
+                        //内存中操作
+                        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                        StreamUtils.copy(zipInputStream, buffer);
+                        zipInputStream.closeEntry();
+                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(buffer.toByteArray()));
+                        if (image == null)
+                            continue;
+                        try {
+                            String code = qrCodeService.scanImage(image);
+                            codes.add(code);
+                        } catch (IllegalArgumentException ex) {
+                            zipOutputStream.putNextEntry(entry);
+                            StreamUtils.copy(new ByteArrayInputStream(buffer.toByteArray()), zipOutputStream);
+                            zipOutputStream.closeEntry();
+                            zipOutputStream.flush();
+                        }
+                    }
+                }
+            }
+
+            TicketGoods goods = (TicketGoods) cashGoodsRepository.getOne(goodsId);
+            mallGoodsService.addTicketBatch(user, goods, expiredDate, comment, codes);
+
+            redirectAttributes.addFlashAttribute("batchedGoods", goods);
+            redirectAttributes.addFlashAttribute("count", codes.size());
+            if (tmpFile.length() > 0) {
+                LocalDateTime now = LocalDateTime.now();
+                String path = "batchFailed/" + now.format(DateTimeFormatter.ofPattern("y-M-d-H-m-s")) + ".zip";
+                try (FileInputStream fileInputStream = new FileInputStream(tmpFile)) {
+                    redirectAttributes.addFlashAttribute("failedUrl", resourceService.uploadResource(path, fileInputStream).httpUrl());
+                }
+            }
+
+            return "redirect:/manage/goods";
+        } finally {
+            //noinspection ResultOfMethodCallIgnored
+            tmpFile.delete();
+        }
+
     }
 
     private List<DataField> fieldList() {
