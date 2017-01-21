@@ -110,7 +110,7 @@ public class DataServiceImpl implements DataService {
         countQuery = where(user, search, criteriaBuilder, countQuery, countRoot, dataFields, filter);
 
         // sort order
-        Order defaultOrder = filter.defaultOrder(criteriaBuilder, root);
+        Order defaultOrder = filter == null ? null : filter.defaultOrder(criteriaBuilder, root);
         if (!StringUtils.isEmpty(sort)) {
             final Order order1 = dataFields.stream()
                     .filter(dataField -> dataField.name().equals(sort))

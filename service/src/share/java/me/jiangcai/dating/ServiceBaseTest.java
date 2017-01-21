@@ -352,7 +352,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
      * @see #addSimpleTicketGoods()
      * 然后再增加批次
      */
-    protected void addSimpleTicketGoodsWithBatch(int count) throws IOException {
+    protected CashGoods addSimpleTicketGoodsWithBatch(int count) throws IOException {
         addSimpleTicketGoods();
         final CashGoods ticketGoods = mallGoodsService.saleGoods().stream()
                 .filter(CashGoods::isTicketGoods)
@@ -367,6 +367,7 @@ public abstract class ServiceBaseTest extends SpringWebTest {
         mallGoodsService.addTicketBatch(userService.byOpenId(createNewUser().getOpenId())
                 , (TicketGoods) ticketGoods, LocalDate.now().plusMonths(1)
                 , UUID.randomUUID().toString(), Arrays.asList(codes));
+        return ticketGoods;
     }
 
     /**

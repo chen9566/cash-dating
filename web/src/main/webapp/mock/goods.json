@@ -3,12 +3,21 @@
   "rows": [
     {
       "id": 1,
-      "imageUrl": "http://wx.qlogo.cn/mmopen/PiajxSqBRaEJfuxMjibOevO1BcNSEic9fy2XmYKvFP88eA8wMotB1JstiaATZODEcY3ibzOPTlpmibtoUiaFbvYsSbICQ/0",
       "type": "卡券类",
-      "isTicket": true,
       "enable": true,
       "brand": "铁牌",
       "name": "风油精",
+      "description": "长江七号",
+      "price": 101.11,
+      "subPrice": "200.0",
+      "stock": 200
+    },
+    {
+      "id": 2,
+      "type": "普通类",
+      "enable": true,
+      "brand": "宝马",
+      "name": "i7",
       "description": "长江七号",
       "price": 101.11,
       "subPrice": "200.0",

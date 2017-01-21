@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      lang="en">
 <head>
     <meta charset="UTF-8">
     <title>商品管理</title>
@@ -37,52 +38,62 @@
 <body>
 <div class="header"></div>
 <div id="toolbar">
-    <button id="stockAddButton" class="btn btn-danger" disabled>
+    <button id="stockAddButton" sec:authorize="hasAnyRole('SALE_STOCK','ROOT') " class="btn btn-danger" disabled>
         <i class="glyphicon glyphicon-plus"></i> 添加库存批次
     </button>
 </div>
+
+<div class="modal fade" id="stockAddRegion" tabindex="-1" role="dialog" aria-labelledby="stockAddRegionLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="goods.html" method="get" th:action="@{/manage/goods/batch}" th:method="post"
+                  enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="stockAddRegionLabel">添加<span id="stockAddRegionTitle">商品</span>库存</h4>
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" name="goodsId" value="123"/>
+                    <label>
+                        过期时间:
+                        <input type="text" name="expiredDate" size="10" required/>
+                    </label>
+                    <br/>
+                    <label>
+                        上传卡券压缩包:
+                        <input type="file" name="file" accept="application/zip" required/>
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">提交更改</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
 <table id="table"
        data-url="../../mock/goods.json"
        th:attr="data-url=@{/manage/goods/data}"
        data-page-list="[10, 25, 50]"
        data-toolbar="#toolbar"
+       data-single-select="true"
 ></table>
 
-
-<h3>当前剩余可用台卡数量<!--/*@thymesVar id="gap" type="java.lang.Number"*/-->
-    <span th:text="${gap}">100</span>个</h3>
-
-<div>
-    <pre>
-    <h4>操作指南</h4>
-    访问<a href="http://123.206.99.141:8083/selfweb">第三方后台</a> | 用户管理 | 台卡管理 | 下载
-    机构号选择美约,批次号选择最新生成的批次,点击【链接下载】。
-    在本窗口上传下载好的文件。
-    </pre>
-</div>
-
-<p th:if="${@systemService.enablePay123}">
-    <span style="background-color: #02BB00">正在使用该支付方式</span>
-    <a href="pay123.html" th:href="@{/manage/pay123/toggle}">停用</a>
-</p>
-<p th:if="${!@systemService.enablePay123}">
-    <span style="background-color:#66afe9">已经停用该支付方式</span>
-    <a href="pay123.html" th:href="@{/manage/pay123/toggle}">启用</a>
-</p>
-
-<form action="pay123.html" method="get" enctype="multipart/form-data" th:method="post" th:action="@{/manage/pay123}">
-    <input type="file" name="file" accept="application/zip" required/>
-    <input type="submit"/>
-</form>
-<script>
-    $(function () {
-        $('form').validate();
-    });
-</script>
 <script>
     $(function () {
         var table = $('#table');
         var stockAddButton = $('#stockAddButton');
+        var stockAddRegion = $('#stockAddRegion');
+        var goodsId = $('[name=goodsId]', stockAddRegion);
+        var expiredDate = $('[name=expiredDate]', stockAddRegion);
+
+        expiredDate.datepicker();
+        expiredDate.datepicker("option", "dateFormat", 'yy-m-d');
 
         var idSupplier = $.initTable(table, 'id', function () {
             return $(window).height() - $('.header').outerHeight(true);
@@ -95,11 +106,11 @@
                 title: '类型',
                 field: 'type',
                 align: 'center'
-            }, {
-                title: '&nbsp;',
-                field: 'imageUrl',
-                align: 'center',
-                formatter: $.Manage.headImageRenderer
+//            }, {
+//                title: '&nbsp;',
+//                field: 'imageUrl',
+//                align: 'center',
+//                formatter: $.Manage.headImageRenderer
             }, {
                 title: '已上架',
                 field: 'enable',
@@ -133,16 +144,18 @@
                 title: '库存',
                 field: 'stock',
                 sortable: true
-            }, {
-                title: '操作',
-                formatter: function (data, row, index) {
-                    if (row.isTicket) {
-                        return '添加';
-                    }
-                    return '&nbsp;';
-                }
             }
-        ], stockAddButton);
+        ], stockAddButton, function (buttons, currentSelections) {
+            stockAddButton.prop('disabled', currentSelections[0].type != '卡券类');
+        });
+
+        stockAddButton.click(function () {
+            var data = table.bootstrapTable('getRowByUniqueId', idSupplier());
+            goodsId.val(data.id);
+            $('#stockAddRegionTitle').text(data.name);
+            stockAddRegion.modal();
+        });
+
     });
 </script>
 </body>

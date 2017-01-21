@@ -32,7 +32,7 @@ $.Manage.enableRenderer = function (data, row, index) {
  * @param buttons 操作按钮
  * @returns {getIdSelections} 可以获取选择状态的fun
  */
-$.initTable = function (ele, idField, heightSupplier, columns, buttons) {
+$.initTable = function (ele, idField, heightSupplier, columns, buttons, buttonDisableLogic) {
     $.selections = [];
 
     function getIdSelections() {
@@ -65,8 +65,13 @@ $.initTable = function (ele, idField, heightSupplier, columns, buttons) {
 
     ele.on('check.bs.table uncheck.bs.table ' +
         'check-all.bs.table uncheck-all.bs.table', function () {
+        var currentSelections = ele.bootstrapTable('getSelections');
         if (buttons)
-            buttons.prop('disabled', !ele.bootstrapTable('getSelections').length);
+            buttons.prop('disabled', !currentSelections.length);
+
+        if (buttonDisableLogic && currentSelections.length > 0) {
+            buttonDisableLogic(buttons, currentSelections);
+        }
         // save your data, here just save the current page
         $.selections = getIdSelections();
         // push or splice the selections if you want to save all data selections

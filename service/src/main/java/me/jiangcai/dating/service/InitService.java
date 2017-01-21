@@ -17,11 +17,14 @@ import me.jiangcai.wx.PublicAccountSupplier;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -35,7 +38,7 @@ public class InitService {
 
     private static final Log log = LogFactory.getLog(InitService.class);
     @Autowired
-    public WeixinService weixinService;
+    private WeixinService weixinService;
     @Autowired
     private Environment environment;
     @Autowired
@@ -44,9 +47,11 @@ public class InitService {
     private UpgradeService upgradeService;
     @Autowired
     private JdbcService jdbcService;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @PostConstruct
-    public void init() throws IOException {
+    public void init() throws IOException, SQLException {
         String json = environment.getProperty("cash.weixin.menus");
         log.debug(json);
         if (json != null)
@@ -170,6 +175,28 @@ public class InitService {
                         break;
                 }
             }
+        });
+
+        // 建立自定义函数
+        jdbcService.runJdbcWork(connection -> {
+            String sql;
+            try {
+                if (connection.profile().isH2()) {
+                    sql = StreamUtils.copyToString(applicationContext.getResource("classpath:/function.h2.sql").getInputStream(), Charset.forName("UTF-8"));
+                } else if (connection.profile().isMySQL()) {
+                    sql = StreamUtils.copyToString(applicationContext.getResource("classpath:/function.mysql.sql").getInputStream(), Charset.forName("UTF-8"));
+                } else {
+                    throw new IllegalStateException("not support " + connection.profile());
+                }
+
+                try (Statement statement = connection.getConnection().createStatement()) {
+                    statement.executeUpdate(sql);
+                }
+
+            } catch (IOException ex) {
+                throw new InternalError(ex);
+            }
+
         });
     }
 
