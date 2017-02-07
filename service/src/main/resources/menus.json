@@ -2,16 +2,16 @@
   {
     "name": "商城",
     "type": "view",
-    "data": "http://www.kuanyes.com/mart/martindex.html"
+    "data": "${URL}/sale"
   },
   {
     "name": "推广",
     "type": "view",
-    "data": "http://app.kuanyes.com/win/myInviteCode"
+    "data": "${URL}/myInviteCode"
   },
   {
     "name": "款爷",
     "type": "view",
-    "data": "http://app.kuanyes.com/win/my"
+    "data": "${URL}/my"
   }
 ]

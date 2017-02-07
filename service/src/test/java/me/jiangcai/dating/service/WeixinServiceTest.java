@@ -5,6 +5,7 @@ import me.jiangcai.dating.ServiceBaseTest;
 import me.jiangcai.wx.PublicAccountSupplier;
 import me.jiangcai.wx.model.MenuType;
 import me.jiangcai.wx.model.PublicAccount;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -17,6 +18,7 @@ import java.nio.charset.Charset;
 /**
  * @author CJ
  */
+@Ignore
 public class WeixinServiceTest extends ServiceBaseTest {
 
     @Autowired

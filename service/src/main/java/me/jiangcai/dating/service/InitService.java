@@ -52,10 +52,10 @@ public class InitService {
 
     @PostConstruct
     public void init() throws IOException, SQLException {
-        String json = environment.getProperty("cash.weixin.menus");
-        log.debug(json);
-        if (json != null)
-            weixinService.menus(json, supplier.findByHost(null));
+//        String json = environment.getProperty("cash.weixin.menus");
+//        log.debug(json);
+//        if (json != null)
+//            weixinService.menus(json, supplier.findByHost(null));
 
         // 这里多了 1 是卡号 如果存在关系 还应该先解除关系
         try {

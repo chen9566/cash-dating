@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.jiangcai.dating.service.WeixinService;
 import me.jiangcai.wx.MessageReply;
+import me.jiangcai.wx.PublicAccountSupplier;
 import me.jiangcai.wx.message.EventMessage;
 import me.jiangcai.wx.message.Message;
 import me.jiangcai.wx.message.NewsMessage;
@@ -14,6 +15,8 @@ import me.jiangcai.wx.model.Menu;
 import me.jiangcai.wx.model.MenuType;
 import me.jiangcai.wx.model.PublicAccount;
 import me.jiangcai.wx.protocol.Protocol;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
@@ -33,7 +36,8 @@ public class WeixinServiceImpl implements WeixinService, MessageReply {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private final NewsArticle[] welcomes;
 
-    public WeixinServiceImpl() throws IOException {
+    @Autowired
+    public WeixinServiceImpl(PublicAccountSupplier supplier, Environment environment) throws IOException {
         try (InputStream inputStream = new ClassPathResource("/welcome.json").getInputStream()) {
             String json = StreamUtils.copyToString(inputStream, Charset.forName("UTF-8"));
             JsonNode messages;
@@ -48,6 +52,14 @@ public class WeixinServiceImpl implements WeixinService, MessageReply {
                 welcomes[i] = new NewsArticle(one.get("title").asText(), one.get("description").asText()
                         , one.get("imageUrl").asText(), one.get("url").asText());
             }
+        }
+
+        try (InputStream inputStream = new ClassPathResource("/menus.json").getInputStream()) {
+            // dating.url without /
+            String json = StreamUtils.copyToString(inputStream, Charset.forName("UTF-8"));
+            json = json.replaceAll("\\$\\{URL}", environment.getProperty("dating.url", "http://localhost"));
+
+            menus(json, supplier.findByHost(null));
         }
     }
 
