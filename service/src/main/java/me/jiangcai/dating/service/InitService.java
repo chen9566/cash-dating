@@ -184,7 +184,8 @@ public class InitService {
                 if (connection.profile().isH2()) {
                     sql = StreamUtils.copyToString(applicationContext.getResource("classpath:/function.h2.sql").getInputStream(), Charset.forName("UTF-8"));
                 } else if (connection.profile().isMySQL()) {
-                    sql = StreamUtils.copyToString(applicationContext.getResource("classpath:/function.mysql.sql").getInputStream(), Charset.forName("UTF-8"));
+//                    sql = StreamUtils.copyToString(applicationContext.getResource("classpath:/function.mysql.sql").getInputStream(), Charset.forName("UTF-8"));
+                    sql = "SELECT 1";
                 } else {
                     throw new IllegalStateException("not support " + connection.profile());
                 }
