@@ -8,11 +8,65 @@ $(function () {
     var enableButton = $('#enableButton');
     var disableButton = $('#disableButton');
     var stockAddRegion = $('#stockAddRegion');
+    var imageButton = $('#imageButton');
+    var goodsImagesRegion = $('#goodsImagesRegion');
     var editButton = $('#editButton');
     var goodsEditRegion = $('#goodsEditRegion');
     // var goodsId = $('[name=goodsId]', stockAddRegion);
     var goodsId = $('input[name=goodsId]');
     var expiredDate = $('[name=expiredDate]', stockAddRegion);
+
+    function initImageRegion() {
+        var manualUploader = new qq.FineUploader({
+            element: document.getElementById('items-uploader'),
+            template: 'qq-template-manual-trigger',
+            request: {
+                // endpoint: $.galleryItemsUrl,
+                // method: top.$.prototypesMode ? 'GET' : 'POST'
+                method: 'POST'
+            },
+            thumbnails: {
+                placeholders: {
+                    waitingPath: 'http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/placeholders/waiting-generic.png',
+                    notAvailablePath: 'http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/placeholders/not_available-generic.png'
+                }
+            },
+            validation: {
+                allowedExtensions: ['jpeg', 'jpg', 'png', 'bmp'],
+                itemLimit: 4,
+                sizeLimit: 3 * 1024 * 1024
+            },
+            session: {
+                // endpoint: $.galleryItemsUrl
+            },
+            deleteFile: {
+                enabled: true,
+                // endpoint: $.galleryItemsUrl
+            },
+            autoUpload: false
+        });
+
+        qq(document.getElementById("trigger-upload")).attach("click", function () {
+            manualUploader.uploadStoredFiles();
+        });
+
+        imageButton.click(function () {
+            // 找到id 自然就找到图片的url
+            var id = idSupplier();
+            var url = $.prototypesMode ? '../../mock/images.json' : imageButton.attr('src') + id;
+            manualUploader.setEndpoint(url);
+            manualUploader.setDeleteFileEndpoint(url);
+            manualUploader.reset();
+            $.ajax(url, {
+                dataType: 'json',
+                success: function (data) {
+                    manualUploader.addInitialFiles(data);
+                    goodsImagesRegion.modal();
+                }
+            });
+
+        });
+    }
 
     expiredDate.datepicker();
     expiredDate.datepicker("option", "dateFormat", 'yy-m-d');
@@ -67,11 +121,13 @@ $(function () {
             field: 'stock',
             sortable: true
         }
-    ], stockAddButton.add(enableButton).add(disableButton).add(editButton), function (buttons, currentSelections) {
+    ], stockAddButton.add(enableButton).add(disableButton).add(editButton).add(imageButton), function (buttons, currentSelections) {
         stockAddButton.prop('disabled', currentSelections[0].type != '卡券类');
         enableButton.prop('disabled', currentSelections[0].enable);
         disableButton.prop('disabled', !currentSelections[0].enable);
     });
+
+    initImageRegion();
 
     stockAddButton.click(function () {
         var data = table.bootstrapTable('getRowByUniqueId', idSupplier());

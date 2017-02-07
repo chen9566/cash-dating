@@ -1,5 +1,6 @@
 package me.jiangcai.dating.web.controller.manage.sale;
 
+import com.jayway.jsonpath.JsonPath;
 import me.jiangcai.dating.AsManage;
 import me.jiangcai.dating.ManageWebTest;
 import me.jiangcai.dating.entity.sale.CashGoods;
@@ -14,8 +15,10 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.util.StreamUtils;
 
@@ -24,8 +27,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * @author CJ
@@ -122,6 +124,43 @@ public class ManageSaleControllerTest extends ManageWebTest {
         assertThat(cashGoods.getDescription()).isEqualToIgnoringCase(goodsData.getDescription());
         assertThat(cashGoods.getRichDetail()).isEqualToIgnoringCase(goodsData.getRichDetail());
         assertThat(cashGoods.getPrice()).isEqualByComparingTo(goodsData.getPrice());
+
+        // 处理图片
+        int oldSize = JsonPath.read(mockMvc.perform(get("/manage/goods/images/" + cashGoods.getId())
+                        .session(session))
+//                .andDo(MockMvcResultHandlers.print())
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)).andReturn().getResponse().getContentAsString()
+                , "$.length()");
+
+        // 上传一张新的
+        mockMvc.perform(fileUpload("/manage/goods/images/" + cashGoods.getId())
+                .file(new MockMultipartFile("qqfile", "thumbnail.png", "image/png", new ClassPathResource("/thumbnail.png").getInputStream()))
+                .param("qqfilename", UUID.randomUUID().toString())
+                .session(session))
+//                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+        String newImageId = JsonPath.read(mockMvc.perform(get("/manage/goods/images/" + cashGoods.getId())
+                .session(session))
+//                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()").value(oldSize + 1))
+                .andReturn().getResponse().getContentAsString(), "$[0].uuid");
+
+        mockMvc.perform(delete("/manage/goods/images/" + cashGoods.getId() + "/" + newImageId)
+                .session(session)
+        )
+//                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(get("/manage/goods/images/" + cashGoods.getId())
+                .session(session))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()").value(oldSize));
     }
 
     private CashGoods randomGoodsData() {
