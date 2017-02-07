@@ -97,7 +97,7 @@ ul, li, dl, dd {
 }
 
 .fixe li {
-    width: 25%;
+    width: 33.3%;
     float: left;
     text-align: center;
     font-size: 10px;
@@ -107,7 +107,7 @@ ul, li, dl, dd {
 .fixe img {
     display: block;
     margin: 0 auto;
-    width: 50%;
+    width: 36%;
 }
 
 .fixe a {
