@@ -1,6 +1,6 @@
 [
   {
-    "name": "商城",
+    "name": "会员",
     "type": "view",
     "data": "${URL}/sale"
   },
