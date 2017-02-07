@@ -122,6 +122,11 @@ public class MallGoodsServiceImpl implements MallGoodsService {
     }
 
     @Override
+    public TicketGoods addTicketGoods(String name, String price, String stockStyle) throws IOException {
+        return addTicketGoods(null, stockStyle, name, new BigDecimal(price), null, null, null, null);
+    }
+
+    @Override
     public CashTrade createOrder(User user, CashGoods goods, int count) {
         return (CashTrade) tradeService.createTrade(() -> {
                     if (goods.isTicketGoods()) return new TicketTrade();

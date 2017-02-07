@@ -1,5 +1,6 @@
 package me.jiangcai.dating.service.sale;
 
+import me.jiangcai.dating.core.Login;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashGoods;
 import me.jiangcai.dating.entity.sale.CashTrade;
@@ -7,6 +8,7 @@ import me.jiangcai.dating.entity.sale.TicketBatch;
 import me.jiangcai.dating.entity.sale.TicketGoods;
 import me.jiangcai.dating.model.TicketInfo;
 import me.jiangcai.goods.Goods;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
@@ -60,6 +62,20 @@ public interface MallGoodsService {
 //    @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "')")
     TicketGoods addTicketGoods(String brand, String stockStyle, String name, BigDecimal price, String subPrice, String description
             , String notes, String detail, String... imagePaths) throws IOException;
+
+    /**
+     * 用最简单的参数创建一个商品
+     * applicationContext.getBean('mallGoodsService').addTicketGoods('星巴克8折优惠券','20','T1')
+     *
+     * @param name       名称
+     * @param price      价格
+     * @param stockStyle 通常是T1
+     * @return
+     * @throws IOException
+     */
+    @Transactional
+    @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "')")
+    TicketGoods addTicketGoods(String name, String price, String stockStyle) throws IOException;
 
     /**
      * 建立订单咯
