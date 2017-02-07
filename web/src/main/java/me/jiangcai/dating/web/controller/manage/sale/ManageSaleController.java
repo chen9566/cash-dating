@@ -76,6 +76,21 @@ public class ManageSaleController {
     @Autowired
     private ManageGoodsService manageGoodsService;
 
+    // 编辑商品
+    @RequestMapping(method = RequestMethod.POST, value = {"", "/"})
+    @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "')")
+    @Transactional
+    public String update(long goodsId, TicketGoods goods) {
+        TicketGoods goods1 = (TicketGoods) mallGoodsService.findGoods(goodsId);
+        goods1.setNotes(goods.getNotes());
+        goods1.setSubPrice(goods.getSubPrice());
+        goods1.setRichDetail(goods.getRichDetail());
+        goods1.setPrice(goods.getPrice());
+        goods1.setBrand(goods.getBrand());
+        goods1.setDescription(goods.getDescription());
+        goods1.setName(goods.getName());
+        return "redirect:/manage/goods";
+    }
     @RequestMapping(method = RequestMethod.GET, value = {"", "/"})
     @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "','" + Login.Role_Sale_Goods_Read_Value + "')")
     public String index() {
@@ -192,6 +207,14 @@ public class ManageSaleController {
                 , new DataService.StringField("description")
                 , new DataService.NumberField("price", BigDecimal.class)
                 , new DataService.StringField("subPrice")
+                , new DataService.StringField("richDetail")
+                , new DataService.StringField("notes") {
+                    @SuppressWarnings("unchecked")
+                    @Override
+                    public Selection<?> select(CriteriaBuilder builder, CriteriaQuery<?> query, Root<?> root) {
+                        return builder.treat((Root) root, TicketGoods.class).get("notes");
+                    }
+                }
                 , new DataService.NumberField("stock", Long.class) {
                     @Override
                     public Selection<?> select(CriteriaBuilder builder, CriteriaQuery<?> query, Root<?> root) {

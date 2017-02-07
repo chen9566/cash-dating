@@ -7,6 +7,8 @@ import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.page.sale.ManageGoodsPage;
 import me.jiangcai.dating.repository.sale.CashGoodsRepository;
 import me.jiangcai.dating.web.converter.LocalDateFormatter;
+import me.jiangcai.goods.Seller;
+import me.jiangcai.goods.TradeEntity;
 import net.minidev.json.JSONArray;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -18,6 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.util.StreamUtils;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -96,6 +99,65 @@ public class ManageSaleControllerTest extends ManageWebTest {
 
         assertThat(cashGoodsRepository.getOne(cashGoods.getId()).isEnable())
                 .isTrue();
+
+        // 修改商品
+        CashGoods goodsData = randomGoodsData();
+        mockMvc.perform(post("/manage/goods")
+                .session(session)
+                .param("goodsId", String.valueOf(cashGoods.getId()))
+                .param("name", goodsData.getName())
+                .param("brand", goodsData.getBrand())
+                .param("description", goodsData.getDescription())
+                .param("subPrice", goodsData.getSubPrice())
+                .param("richDetail", goodsData.getRichDetail())
+                .param("price", goodsData.getPrice().toString())
+        )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isFound());
+
+        cashGoods = mallGoodsService.findGoods(cashGoods.getId());
+        assertThat(cashGoods.getName()).isEqualToIgnoringCase(goodsData.getName());
+        assertThat(cashGoods.getBrand()).isEqualToIgnoringCase(goodsData.getBrand());
+        assertThat(cashGoods.getSubPrice()).isEqualToIgnoringCase(goodsData.getSubPrice());
+        assertThat(cashGoods.getDescription()).isEqualToIgnoringCase(goodsData.getDescription());
+        assertThat(cashGoods.getRichDetail()).isEqualToIgnoringCase(goodsData.getRichDetail());
+        assertThat(cashGoods.getPrice()).isEqualByComparingTo(goodsData.getPrice());
+    }
+
+    private CashGoods randomGoodsData() {
+        CashGoods goods = new CashGoods() {
+            @Override
+            public Seller getSeller() {
+                return null;
+            }
+
+            @Override
+            public void setSeller(Seller seller) {
+
+            }
+
+            @Override
+            public TradeEntity getOwner() {
+                return null;
+            }
+
+            @Override
+            public void setOwner(TradeEntity owner) {
+
+            }
+
+            @Override
+            public boolean isTicketGoods() {
+                return false;
+            }
+        };
+        goods.setName(UUID.randomUUID().toString());
+        goods.setBrand(UUID.randomUUID().toString());
+        goods.setDescription(UUID.randomUUID().toString());
+        goods.setSubPrice(UUID.randomUUID().toString().substring(0, 25));
+        goods.setPrice(randomOrderAmount());
+        goods.setRichDetail(UUID.randomUUID().toString());
+        return goods;
     }
 
     private void assertDataResult(final int count, CashGoods cashGoods, MockHttpSession session) throws Exception {

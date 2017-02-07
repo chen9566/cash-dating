@@ -8,7 +8,10 @@ $(function () {
     var enableButton = $('#enableButton');
     var disableButton = $('#disableButton');
     var stockAddRegion = $('#stockAddRegion');
-    var goodsId = $('[name=goodsId]', stockAddRegion);
+    var editButton = $('#editButton');
+    var goodsEditRegion = $('#goodsEditRegion');
+    // var goodsId = $('[name=goodsId]', stockAddRegion);
+    var goodsId = $('input[name=goodsId]');
     var expiredDate = $('[name=expiredDate]', stockAddRegion);
 
     expiredDate.datepicker();
@@ -46,7 +49,7 @@ $(function () {
             align: 'center',
             sortable: true
         }, {
-            title: '描述',
+            title: '简述',
             field: 'description',
             align: 'center',
             sortable: true
@@ -64,7 +67,7 @@ $(function () {
             field: 'stock',
             sortable: true
         }
-    ], stockAddButton.add(enableButton).add(disableButton), function (buttons, currentSelections) {
+    ], stockAddButton.add(enableButton).add(disableButton).add(editButton), function (buttons, currentSelections) {
         stockAddButton.prop('disabled', currentSelections[0].type != '卡券类');
         enableButton.prop('disabled', currentSelections[0].enable);
         disableButton.prop('disabled', !currentSelections[0].enable);
@@ -75,6 +78,19 @@ $(function () {
         goodsId.val(data.id);
         $('#stockAddRegionTitle').text(data.name);
         stockAddRegion.modal();
+    });
+
+    editButton.click(function () {
+        var data = table.bootstrapTable('getRowByUniqueId', idSupplier());
+        goodsId.val(data.id);
+        $('#goodsEditRegionTitle').text(data.name);
+        // 填好表单
+        // 弄一个属性组 然后自己就可以处理了
+        var properties = ['name', 'brand', 'description', 'price', 'subPrice', 'richDetail', 'notes'];
+        $.each(properties, function (index, value) {
+            $('[name=' + value + ']', goodsEditRegion).val(data[value]);
+        });
+        goodsEditRegion.modal();
     });
 
     $('.enableChange').click(function () {
