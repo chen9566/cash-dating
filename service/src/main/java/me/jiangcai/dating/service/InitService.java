@@ -178,27 +178,32 @@ public class InitService {
         });
 
         // 建立自定义函数
-        jdbcService.runJdbcWork(connection -> {
-            String sql;
-            try {
-                if (connection.profile().isH2()) {
-                    sql = StreamUtils.copyToString(applicationContext.getResource("classpath:/function.h2.sql").getInputStream(), Charset.forName("UTF-8"));
-                } else if (connection.profile().isMySQL()) {
-//                    sql = StreamUtils.copyToString(applicationContext.getResource("classpath:/function.mysql.sql").getInputStream(), Charset.forName("UTF-8"));
-                    sql = "SELECT 1";
-                } else {
-                    throw new IllegalStateException("not support " + connection.profile());
+        try {
+            jdbcService.runJdbcWork(connection -> {
+                String sql;
+                try {
+                    if (connection.profile().isH2()) {
+                        sql = StreamUtils.copyToString(applicationContext.getResource("classpath:/function.h2.sql").getInputStream(), Charset.forName("UTF-8"));
+                    } else if (connection.profile().isMySQL()) {
+                        sql = StreamUtils.copyToString(applicationContext.getResource("classpath:/function.mysql.sql").getInputStream(), Charset.forName("UTF-8"));
+                    } else {
+                        throw new IllegalStateException("not support " + connection.profile());
+                    }
+
+                    try (Statement statement = connection.getConnection().createStatement()) {
+                        statement.executeUpdate(sql);
+                    }
+
+                } catch (IOException ex) {
+                    throw new InternalError(ex);
                 }
 
-                try (Statement statement = connection.getConnection().createStatement()) {
-                    statement.executeUpdate(sql);
-                }
+            });
 
-            } catch (IOException ex) {
-                throw new InternalError(ex);
-            }
+        } catch (Exception ex) {
+            log.warn("create function", ex);
+        }
 
-        });
     }
 
 }
