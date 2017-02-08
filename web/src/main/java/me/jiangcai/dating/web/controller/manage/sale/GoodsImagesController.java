@@ -29,6 +29,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -110,16 +112,19 @@ public class GoodsImagesController {
         final CashGoods goods = mallGoodsService.findGoods(id);
 
         SimpleGoodsImage image = new SimpleGoodsImage();
+        image.setDescription(qqfilename);
         ScaledImage scaledImage = new ScaledImage();
         int dotIndex = qqfile.getOriginalFilename().lastIndexOf('.');
         scaledImage.setFormat(qqfile.getOriginalFilename().substring(dotIndex).toUpperCase(Locale.ENGLISH));
         String newPath = "goods_images/" + UUID.randomUUID().toString() + scaledImage.getFormat();
         try (InputStream inputStream = qqfile.getInputStream()) {
-            BufferedImage image1 = ImageIO.read(inputStream);
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            StreamUtils.copy(inputStream, buffer);
+            BufferedImage image1 = ImageIO.read(new ByteArrayInputStream(buffer.toByteArray()));
             scaledImage.setHeight(image1.getHeight());
             scaledImage.setWidth(image1.getWidth());
             scaledImage.setUsage(ImageUsage.preview);
-            resourceService.uploadResource(newPath, inputStream);
+            resourceService.uploadResource(newPath, new ByteArrayInputStream(buffer.toByteArray()));
             scaledImage.setResourcePath(newPath);
         }
 
@@ -144,8 +149,8 @@ public class GoodsImagesController {
         List<Map<String, Object>> list = goods.getGoodsImages().stream()
                 .map((Function<SimpleGoodsImage, Map<String, Object>>) galleryItem -> {
                     HashMap<String, Object> data = new HashMap<>();
-//                    data.put("serial", galleryItem.getSerial());
-//                    data.put("name", galleryItem.getTitle());
+                    data.put("serial", String.valueOf(galleryItem.getId()));
+                    data.put("name", galleryItem.getDescription());
                     data.put("uuid", String.valueOf(galleryItem.getId()));
                     try {
                         data.put("size", resourceService.getResource(galleryItem.getDefaultImage().getResourcePath()).contentLength());
