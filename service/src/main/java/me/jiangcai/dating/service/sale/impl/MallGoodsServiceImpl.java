@@ -22,15 +22,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Root;
+import javax.persistence.Query;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -70,30 +62,38 @@ public class MallGoodsServiceImpl implements MallGoodsService {
     @Override
     public TicketInfo ticketInfo(CashGoods goods) {
         // 获取所有批次 剩余可用数量 排除可用数量为0
-        final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Tuple> criteriaQuery = criteriaBuilder.createTupleQuery();
-        Root<TicketCode> ticketCodeRoot = criteriaQuery.from(TicketCode.class);
-        Join<TicketBatch, TicketCode> ticketBatchJoin = ticketCodeRoot.join("batch", JoinType.LEFT);
-        Path<TicketGoods> ticketGoods = ticketBatchJoin.get("goods");
-//        Join<TicketGoods, TicketBatch> ticketGoodsJoin = ticketBatchJoin.join("goods", JoinType.LEFT);
-
-        criteriaQuery = criteriaQuery.groupBy(ticketBatchJoin);
-        criteriaQuery = criteriaQuery.orderBy(criteriaBuilder.asc(ticketBatchJoin.get("expiredDate")));
-        Expression<Long> count = criteriaBuilder.count(ticketCodeRoot);
-
-        criteriaQuery = criteriaQuery.multiselect(ticketBatchJoin.get("expiredDate"), count);
-        criteriaQuery = criteriaQuery.where(criteriaBuilder.isFalse(ticketCodeRoot.get("used"))
-                , criteriaBuilder.equal(ticketGoods, goods)
-                , criteriaBuilder.greaterThan(count, 0L)
-        );
-
-        TypedQuery<Tuple> query = entityManager.createQuery(criteriaQuery);
+        Query query = entityManager.createQuery("select batch.expiredDate,count(code) from TicketCode  as code join code.batch as batch where code.used=false and batch.goods=:goods group by batch order by batch.expiredDate asc");
+        query.setParameter("goods", goods);
         try {
-            Tuple tuple = query.setMaxResults(1).getSingleResult();
-            return new TicketInfo(tuple.get(0, LocalDate.class), tuple.get(1, Long.class));
+            Object[] objects = (Object[]) query.setMaxResults(1).getSingleResult();
+            return new TicketInfo((LocalDate) objects[0], ((Number) objects[1]).longValue());
         } catch (NoResultException ex) {
             return new TicketInfo(LocalDate.now(), 0);
         }
+//        final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+//        CriteriaQuery<Tuple> criteriaQuery = criteriaBuilder.createTupleQuery();
+//        Root<TicketCode> ticketCodeRoot = criteriaQuery.from(TicketCode.class);
+//        Join<TicketBatch, TicketCode> ticketBatchJoin = ticketCodeRoot.join("batch", JoinType.LEFT);
+//        Path<TicketGoods> ticketGoods = ticketBatchJoin.get("goods");
+////        Join<TicketGoods, TicketBatch> ticketGoodsJoin = ticketBatchJoin.join("goods", JoinType.LEFT);
+//
+//        criteriaQuery = criteriaQuery.groupBy(ticketBatchJoin);
+//        criteriaQuery = criteriaQuery.orderBy(criteriaBuilder.asc(ticketBatchJoin.get("expiredDate")));
+//        Expression<Long> count = criteriaBuilder.count(ticketCodeRoot);
+//
+//        criteriaQuery = criteriaQuery.multiselect(ticketBatchJoin.get("expiredDate"), count);
+//        criteriaQuery = criteriaQuery.where(criteriaBuilder.isFalse(ticketCodeRoot.get("used"))
+//                , criteriaBuilder.equal(ticketGoods, goods)
+//                , criteriaBuilder.greaterThan(count, 0L)
+//        );
+//
+//        TypedQuery<Tuple> query = entityManager.createQuery(criteriaQuery);
+//        try {
+//            Tuple tuple = query.setMaxResults(1).getSingleResult();
+//            return new TicketInfo(tuple.get(0, LocalDate.class), tuple.get(1, Long.class));
+//        } catch (NoResultException ex) {
+//            return new TicketInfo(LocalDate.now(), 0);
+//        }
     }
 
     @Override
