@@ -46,21 +46,27 @@ $(function () {
             autoUpload: false
         });
 
-        qq(document.getElementById("trigger-upload")).attach("click", function () {
+        $('.btn-primary', goodsImagesRegion).click(function () {
             manualUploader.uploadStoredFiles();
         });
+
+        // qq(document.getElementById("trigger-upload")).attach("click", function () {
+        //     console.log('upload');
+        //     manualUploader.uploadStoredFiles();
+        // });
 
         imageButton.click(function () {
             // 找到id 自然就找到图片的url
             var id = idSupplier();
             var url = $.prototypesMode ? '../../mock/images.json' : imageButton.attr('src') + id;
-            manualUploader.setEndpoint(url);
-            manualUploader.setDeleteFileEndpoint(url);
             manualUploader.reset();
             $.ajax(url, {
                 dataType: 'json',
                 success: function (data) {
                     manualUploader.addInitialFiles(data);
+                    manualUploader.setEndpoint(url);
+                    manualUploader.setDeleteFileEndpoint(url);
+                    // console.log('update to ', url);
                     goodsImagesRegion.modal();
                 }
             });
