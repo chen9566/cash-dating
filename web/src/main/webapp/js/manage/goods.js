@@ -129,8 +129,8 @@ $(function () {
         }
     ], stockAddButton.add(enableButton).add(disableButton).add(editButton).add(imageButton), function (buttons, currentSelections) {
         stockAddButton.prop('disabled', currentSelections[0].type != '卡券类');
-        enableButton.prop('disabled', currentSelections[0].enable);
-        disableButton.prop('disabled', !currentSelections[0].enable);
+        // enableButton.prop('disabled', currentSelections[0].enable);
+        // disableButton.prop('disabled', !currentSelections[0].enable);
     });
 
     initImageRegion();
