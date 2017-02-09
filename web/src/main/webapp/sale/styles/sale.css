@@ -568,11 +568,10 @@ ul, li, dl, dd {
 .salecard .f14{ color: #6f6f6f}
 .salecard .w86{ width: 87%; display: block; font-size: 16px; margin-bottom: 5px; }
 .saleshop {
-
 }
 
 .saleshop .time {
-    margin: 0;
+    margin: 15px 0 0 0;
     padding: 0 15px;
     line-height: 46px;
     color: #888;

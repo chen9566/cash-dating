@@ -1628,10 +1628,11 @@ ul#navlist .list1 {
 
 .pay-new {
     margin: 15px;
-    padding: 15px 15px 40px 15px;
+    padding: 45px 15px 40px 15px;
     text-align: center;
-    background: url(paybg.png) no-repeat;
+    background: #fff;
     background-size: 100%;
+    border-radius:10px;
 }
 
 .pay-new .t1 {
@@ -1658,12 +1659,12 @@ ul#navlist .list1 {
 }
 
 .pay-new .t4 {
-    margin: 35px 0 0 0;
+    margin: 15px 0 ;
 }
 
 .pay-new .t4 img {
-    width: 210px;
-    height: 210px;
+    width: 290px;
+    height: 290px;
 }
 
 .pay-new .t5 {
