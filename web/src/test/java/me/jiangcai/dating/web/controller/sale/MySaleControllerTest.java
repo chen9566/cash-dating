@@ -50,6 +50,7 @@ public class MySaleControllerTest extends WebTest {
         // 把订单数量给弄出来
         assertThat(allOrdersPage.count())
                 .isEqualTo(ordered + paid + sures);
+        // 对于目前出现的一个问题 在此添加一个测试
 
         driver.navigate().back();
         myPage.refresh();
