@@ -43,6 +43,7 @@ public class MySaleController {
     private CashTradeRepository cashTradeRepository;
 
     @RequestMapping(method = RequestMethod.GET, value = "/my")
+    @Transactional(readOnly = true)
     public String index(@AuthenticationPrincipal User user, Model model) {
         List<TicketCode> ticketCodeList = mallTradeService.ticketCodes(user);
 
@@ -51,6 +52,11 @@ public class MySaleController {
 
         model.addAttribute("usedCodes", groupedCodes.get(true));
         model.addAttribute("usableCodes", groupedCodes.get(false));
+        Map<TradeStatus, Number> counts = mallTradeService.tradeCounts(user);
+
+        model.addAttribute("orderedCount", counts.get(TradeStatus.ordered));
+        model.addAttribute("paidCount", counts.get(TradeStatus.paid));
+        model.addAttribute("sentCount", counts.get(TradeStatus.sent));
 
         return "sale/my.html";
     }

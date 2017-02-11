@@ -3,6 +3,9 @@
 <!--/*@thymesVar id="usedCodes" type="java.util.List<me.jiangcai.dating.entity.sale.TicketCode>"*/-->
 <!--/*@thymesVar id="usableCodes" type="java.util.List<me.jiangcai.dating.entity.sale.TicketCode>"*/-->
 <!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.service.CashStrings"*/-->
+<!--/*@thymesVar id="orderedCount" type="java.lang.Number"*/-->
+<!--/*@thymesVar id="paidCount" type="java.lang.Number"*/-->
+<!--/*@thymesVar id="sentCount" type="java.lang.Number"*/-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -21,13 +24,16 @@
     <ul>
         <li>
             <a href="myorder.html" id="waitingPayOrdersLink" th:href="@{/sale/myOrders(type=ordered)}">
-                <img src="images/payicon.png"/>待付款<div class="rednew">1</div>
+                <img src="images/payicon.png"/>待付款
+                <div class="rednew" th:if="${orderedCount!=null&&orderedCount>0}" th:text="${orderedCount}">1</div>
             </a>
             <a href="myorder.html" id="waitingSendOrdersLink" th:href="@{/sale/myOrders(type=paid)}">
-                <img src="images/payicon2.png"/>待发货<div class="rednew">1</div>
+                <img src="images/payicon2.png"/>待发货
+                <div class="rednew" th:if="${paidCount!=null&&paidCount>0}" th:text="${paidCount}">1</div>
             </a>
             <a href="myorder.html" id="waitingReceiveOrdersLink" th:href="@{/sale/myOrders(type=sent)}">
-                <img src="images/payicon3.png"/>待收货<div class="rednew">1</div>
+                <img src="images/payicon3.png"/>待收货
+                <div class="rednew" th:if="${sentCount!=null&&sentCount>0}" th:text="${sentCount}">1</div>
             </a>
         </li>
     </ul>

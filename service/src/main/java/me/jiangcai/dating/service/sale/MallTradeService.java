@@ -13,6 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商城订单系统
@@ -86,4 +87,11 @@ public interface MallTradeService {
      */
     @Transactional
     void closeTrade(long id);
+
+    /**
+     * @param user 指定用户
+     * @return 获取这个用户当前订单数量
+     */
+    @Transactional(readOnly = true)
+    Map<TradeStatus, Number> tradeCounts(User user);
 }

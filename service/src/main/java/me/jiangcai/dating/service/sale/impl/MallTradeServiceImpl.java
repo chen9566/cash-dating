@@ -21,15 +21,19 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -145,5 +149,26 @@ public class MallTradeServiceImpl implements MallTradeService {
         CashTrade trade = trade(id);
         trade.setCloseTime(LocalDateTime.now().minusMonths(1));
         tradeService.checkTrade(trade, Function.identity());
+    }
+
+    @Override
+    public Map<TradeStatus, Number> tradeCounts(User user) {
+        final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
+        Root<CashTrade> root = query.from(CashTrade.class);
+
+        final Path<Object> statusPath = root.get("status");
+        query = query.groupBy(statusPath);
+        query = query.multiselect(statusPath, criteriaBuilder.count(root));
+        query = query.where(criteriaBuilder.equal(root.get("user"), user));
+
+        TypedQuery<Tuple> tupleQuery = entityManager.createQuery(query);
+        Map<TradeStatus, Number> counts = new HashMap<>();
+        tupleQuery.getResultList().forEach(tuple -> {
+            TradeStatus status = tuple.get(0, TradeStatus.class);
+            Number count = (Number) tuple.get(1);
+            counts.put(status, count);
+        });
+        return counts;
     }
 }

@@ -35,6 +35,8 @@ public class MySaleControllerTest extends WebTest {
 
         MySalePage myPage = mySalePage();
 
+//        myPage.printThisPage();
+
         myPage.assertUsableTicket(paid + sures);
         myPage.assertUsedTicket(0);
 
