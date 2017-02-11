@@ -17,7 +17,7 @@ public class MyDataPage extends AbstractPage {
     private WebElement headImage;
     private WebElement nameSpan;
     private WebElement mobileSpan;
-    private WebElement toPayButton;
+    //    private WebElement toPayButton;
     private WebElement bookRateSpan;
 
     public MyDataPage(WebDriver webDriver) {
@@ -35,14 +35,14 @@ public class MyDataPage extends AbstractPage {
         nameSpan = rights.get(1);
         mobileSpan = rights.get(2);
         bookRateSpan = rights.get(3);
-        toPayButton = rights.get(4);// 有疑问
+//        toPayButton = rights.get(4);// 有疑问
 
 
         assertThat(headImage.isDisplayed()).isTrue();
         assertThat(nameSpan.isDisplayed()).isTrue();
         assertThat(mobileSpan.isDisplayed()).isTrue();
         assertThat(bookRateSpan.isDisplayed()).isTrue();
-        assertThat(toPayButton.isDisplayed()).isTrue();
+//        assertThat(toPayButton.isDisplayed()).isTrue();
     }
 
     /**
