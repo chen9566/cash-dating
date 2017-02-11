@@ -40,7 +40,7 @@
 <div class="modal fade ticketCode" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg ewmshow">
         <div class="modal-content">
-            <p th:text="${'优惠券:'+code.code}">大杯优惠券01: MT21984579847523759073</p>
+            <p th:text="${'优惠券:'+code.code}"></p>
             <p><img name="qrCode" src="images/temp2.png"
                     th:src="@{/sale/ticket/{code}(code=${code.ticketCodePK.getURIFormat()})}"
                     alt="付款二维码"/>
@@ -54,8 +54,7 @@
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content editshow">
-            <h1>点击【立即使用】后<br>优惠券将放入【已使用】<br>
-                如未消费，可在【已使用】中找回</h1>
+            <h1>使用时需要向商家出示此二维码</h1>
             <div class="footer">
                 <button type="button" class="line-r" data-dismiss="modal">取消</button>
                 <button type="button" class="confirm" data-dismiss="modal">确定</button>

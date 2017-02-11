@@ -1466,7 +1466,7 @@ ul, li, dl, dd {
 }
 
 .modal {
-    margin: 46% 10% 0 10% !important;
+    margin: 36% 10% 0 10% !important;
 }
 
 .ewmshow {
@@ -1485,8 +1485,8 @@ ul, li, dl, dd {
 }
 
 .ewmshow img {
-    margin: -10px 0 0 0;
-    width: 80%
+    padding:15px 10px 10px 10px;
+    width:90%
 }
 
 .navlist {
