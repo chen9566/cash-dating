@@ -42,7 +42,7 @@
             <!--<span class="pull-right big15"><img-->
             <!--src="images/ok-icon.png"/> </span>-->
             <h1>选择付款方式</h1>
-            <li class="bo-b payChannel" data-id="weixin" th:if="${order.supportWeixinPay}">
+            <li class="payChannel" data-id="weixin" th:if="${order.supportWeixinPay}">
                 <img src="images/weixin-icon.png"
                      th:src="@{/images/weixin-icon.png}"/>微信支付
             </li>
