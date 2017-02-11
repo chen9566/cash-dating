@@ -1272,8 +1272,9 @@ ul, li, dl, dd {
     float: left;
     width: 33.3%;
     text-decoration: none;
+    position: relative;
 }
-
+.rednew{ right:33%; top:10px; font-size:10px; background: #F65150; color: #fff; width:16px; height:16px; border-radius:16px; text-align: center; position: absolute}
 .my-c li img {
     margin: 0 auto 5px auto;
     width: 22%;
