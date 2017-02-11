@@ -40,7 +40,7 @@
 <div class="modal fade ticketCode" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg ewmshow">
         <div class="modal-content">
-            <p th:text="${'优惠券:'+code.code}"></p>
+            <!--<p th:text="${'优惠券:'+code.code}"></p>-->
             <p><img name="qrCode" src="images/temp2.png"
                     th:src="@{/sale/ticket/{code}(code=${code.ticketCodePK.getURIFormat()})}"
                     alt="付款二维码"/>
