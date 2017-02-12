@@ -109,13 +109,14 @@
             $("body").append('<div class="showbg"></div>');
             $(".showbg").addClass("showbg-active");
         }
-        $(".close-n").click(function () {
+        $(".showbg,.close-n").click(function () {
             $(".am-show").removeClass("am-modal-active");
             setTimeout(function () {
                 $(".showbg-active").removeClass("showbg-active");
                 $(".showbg").remove();
             }, 300);
         });
+
         return false;
     }
 
