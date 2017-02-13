@@ -21,7 +21,7 @@
 <div class="details-dy"><img src="images/12.png" res:src="${goods.titleGoodsImage.defaultImage.resourcePath}" alt=""/>
 </div>
 <div class="details-txt">
-    <h4>星巴克8折优惠券</h4>
+    <h4 th:text="${goods.name}">星巴克8折优惠券</h4>
     <p><span class="cny" th:text="${#cashStrings.mallPrice(goods.price)}">28</span>
         <s class="f12" th:text="${goods.subPrice}">原价:35-41元不等</s>
         <span class="pull-right f12 mt10" th:text="${'有效期至'+#temporals.format(info.expiredDate)}">有效期至2017-1-13</span>
