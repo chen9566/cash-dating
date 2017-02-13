@@ -17,7 +17,7 @@
     <script src="../mock/all.js" th:src="@{/all.js}"></script>
     <script src="js/payfor.js"></script>
 </head>
-<body>
+<body >
 <div class="details-dy"><img src="images/12.png" res:src="${goods.titleGoodsImage.defaultImage.resourcePath}" alt=""/>
 </div>
 <div class="details-txt">
@@ -58,7 +58,7 @@
             <span class="num">
                 <a class="reduce" onClick="setAmount.reduce('#qty_item_1')" href="javascript:void(0)">-</a>
             <input type="tel" name="qty_item_1" value="1" id="qty_item_1" onKeyUp="setAmount.modify('#qty_item_1')"
-                   class="text"/>
+                   class="text" readonly="readonly"/>
             <a class="add" onClick="setAmount.add('#qty_item_1')" href="javascript:void(0)">+</a></span></li>
         <li class="bm-b">合计： <span class="cny" id="total_item_1">21.6</span></li>
     </ul>
@@ -103,23 +103,28 @@
     });
     function toshow() {
         $(".am-show").addClass("am-modal-active");
+
         if ($(".showebg").length > 0) {
             $(".showbg").addClass("showbg-active");
         } else {
             $("body").append('<div class="showbg"></div>');
             $(".showbg").addClass("showbg-active");
+
         }
         $(".showbg,.close-n").click(function () {
             $(".am-show").removeClass("am-modal-active");
             setTimeout(function () {
                 $(".showbg-active").removeClass("showbg-active");
                 $(".showbg").remove();
+                $('html,body').removeClass('ovfHiden');
             }, 300);
         });
+        $('html,body').addClass('ovfHiden');
 
         return false;
     }
 
 </script>
+
 </body>
 </html>

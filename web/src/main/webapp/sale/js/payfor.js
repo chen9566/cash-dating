@@ -136,7 +136,7 @@ var setAmount = {
             $(obj).val(x);
             recalc();
         } else {
-            alert("商品数量最少为" + this.min);
+            // alert("商品数量最少为" + this.min);
             $(obj).val(1);
             $(obj).focus();
         }
