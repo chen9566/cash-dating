@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="styles/sale.css">
     <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
     <script src="//cdn.kuanyes.com/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script src="../dist/js/share.js"></script>
+    <script src="../dist/js/share.js?20170213"></script>
     <script src="../mock/all.js" th:src="@{/all.js}"></script>
     <script src="../dist/js/jquery.jscroll.min.js"></script>
     <title>我的订单</title>
@@ -44,23 +44,15 @@
             loadingHtml: '<img src="../images/loading.gif" name="LoadingIMG" alt="Loading" /> 载入中...',
             nextSelector: 'a.next:last',
             callback: function () {
-                // 不重复
-                // 会监听 confirmButton 时间 已经监听会进入永久变量
-                var toListener;
-                if (!$.OrderConfirmButtons) {
-                    toListener = $('.confirmButton');
-                } else {
-                    toListener = $('.confirmButton').not($.OrderConfirmButtons);
-                }
-
-                $.OrderConfirmButtons = $('.confirmButton');
-
-                toListener.click(function () {
-                    var cashTrade = $(this).closest('.cashTrade');
-                    $.ajax($.uriPrefix + '/sale/trade/' + cashTrade.attr('data-id') + '/confirm', {
-                        method: 'put'
-                    });
-                })
+                $.DynamicAdjust('OrderConfirmButtons', '.confirmButton', function (toListener) {
+                    toListener.click(function () {
+                        var cashTrade = $(this).closest('.cashTrade');
+                        $.ajax($.uriPrefix + '/sale/trade/' + cashTrade.attr('data-id') + '/confirm', {
+                            method: 'put'
+                        });
+                    })
+                });
+                $.DynamicAdjustClickHref();
             }
         });
     });

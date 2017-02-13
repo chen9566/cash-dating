@@ -58,5 +58,36 @@ $(function () {
             $.LoadingOverlay("hide");
             callback();
         }
+    };
+
+    $.DynamicAdjustObjects = {};
+    /**
+     * 动态执行调整
+     * @param name 业务名称
+     * @param selector 相关UI的selector
+     * @param adjust 负责执行调整的function,只接受jQuery对象
+     */
+    $.DynamicAdjust = function (name, selector, adjust) {
+        var toListener;
+        if (!$.DynamicAdjustObjects[name]) {
+            toListener = $(selector);
+        } else {
+            toListener = $(selector).not($.DynamicAdjustObjects[name]);
+        }
+
+        $.DynamicAdjustObjects[name] = $(selector);
+
+        adjust(toListener);
+    };
+    $.DynamicAdjustClickHref = function () {
+        $.DynamicAdjust('ClickHref', '.clickHref', function (toListener) {
+            toListener.click(function () {
+                // console.log('click on ', this);
+                var url = $(this).attr('href');
+                if (url) {
+                    window.location.href = url;
+                }
+            });
+        });
     }
 });
