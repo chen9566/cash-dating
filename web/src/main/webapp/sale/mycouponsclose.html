@@ -23,7 +23,7 @@
         <h1><span class="f35" th:text="${#cashStrings.mallPrice(code.batch.goods.price)+'元'}">28元</span>优惠券</h1>
     </div>
     <div class="ewmshow">
-        <p th:text="${'优惠券:'+code.code}">大杯优惠券01: MT21984579847523759073</p>
+        <!--<p th:text="${'优惠券:'+code.code}">大杯优惠券01: MT21984579847523759073</p>-->
         <p><img name="qrCode" src="images/temp2.png"
                 th:src="@{/sale/ticket/{code}(code=${code.ticketCodePK.getURIFormat()})}"
                 alt="付款二维码"/>
