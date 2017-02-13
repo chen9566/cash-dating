@@ -40,14 +40,6 @@ public class MySaleControllerTest extends WebTest {
         myPage.assertUsableTicket(paid + sures);
         myPage.assertUsedTicket(0);
 
-        myPage.clickUsableOneAndUseIt();
-        myPage.refresh();
-        myPage.assertUsableTicket(paid + sures - 1);
-        myPage.assertUsedTicket(1);
-//        myPage.printThisPage();
-        myPage.clickUsedOneAndBack();
-
-
         OrderListPage allOrdersPage = myPage.allOrders();
         // 把订单数量给弄出来
         assertThat(allOrdersPage.count())
@@ -73,13 +65,31 @@ public class MySaleControllerTest extends WebTest {
         driver.navigate().back();
         myPage.refresh();
 
-        //
+        // 检查等待确认收货
         OrderListPage waitingReceiveOrdersPage = myPage.waitingReceiveOrders();
         assertThat(waitingReceiveOrdersPage.count())
                 .isEqualTo(paid);
 
-        driver.navigate().back();
+//        driver.navigate().back();
+//        myPage.refresh();
+
+        myPage = mySalePage();
+
+        // 用了一个
+        myPage.clickUsableOneAndUseIt();
         myPage.refresh();
+        myPage.assertUsableTicket(paid + sures - 1);
+        myPage.assertUsedTicket(1);
+//        myPage.printThisPage();
+        myPage.clickUsedOneAndBack();
+
+        myPage.refresh();
+
+        // 这个时候应该自动确认了一个
+        waitingReceiveOrdersPage = myPage.waitingReceiveOrders();
+        assertThat(waitingReceiveOrdersPage.count())
+                .isGreaterThanOrEqualTo(paid - 1)
+                .isLessThanOrEqualTo(paid);
 
         //走一下各种流程
         //我们得想办法弄到一个关闭的订单
@@ -88,7 +98,7 @@ public class MySaleControllerTest extends WebTest {
             mallTradeService.closeTrade(trade.getId());
         });
 
-        myPage.refresh();
+        myPage = mySalePage();
 
         allOrdersPage = myPage.allOrders();
         // 所有订单状态都查看一次详情

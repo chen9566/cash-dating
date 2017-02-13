@@ -15,12 +15,16 @@ import me.jiangcai.goods.lock.GoodsThreadSafe;
 import me.jiangcai.goods.service.TradeService;
 import me.jiangcai.goods.trade.Trade;
 import me.jiangcai.goods.trade.TradeStatus;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -41,6 +45,8 @@ import java.util.function.Function;
  */
 @Service("mallTradeService")
 public class MallTradeServiceImpl implements MallTradeService {
+
+    private static final Log log = LogFactory.getLog(MallTradeServiceImpl.class);
 
     @Autowired
     private CashTradeRepository cashTradeRepository;
@@ -142,6 +148,25 @@ public class MallTradeServiceImpl implements MallTradeService {
         if (trade.getStatus() != TradeStatus.sent)
             throw new IllegalStateException();
         trade.setStatus(TradeStatus.confirmed);
+    }
+
+    @Override
+    public void confirmTicketTrade(User user, TicketCode code) {
+        try {
+            TicketTrade trade = entityManager.createQuery("select distinct trade from TicketTrade as trade join trade.tradedSet as goods join goods.codeSet as code where code.code=:code and trade.user=:user and trade.status=:sentStatus", TicketTrade.class)
+                    .setParameter("code", code.getCode())
+                    .setParameter("user", user)
+                    .setParameter("sentStatus", TradeStatus.sent)
+                    .getSingleResult();
+            trade.setStatus(TradeStatus.confirmed);
+//            cashTradeRepository.save(trade);
+        } catch (NoResultException ignored) {
+            log.debug("not result for this code:" + code.getCode());
+            // 这个无所谓的
+        } catch (NonUniqueResultException ex) {
+            log.warn("code:" + code.getCode() + " was owner by too many trade");
+        }
+
     }
 
     @Override

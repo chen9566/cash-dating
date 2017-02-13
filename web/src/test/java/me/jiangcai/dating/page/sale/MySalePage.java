@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import me.jiangcai.dating.ServiceBaseTest;
 import me.jiangcai.dating.page.AbstractPage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -50,10 +51,23 @@ public class MySalePage extends AbstractPage {
     }
 
     public void clickUsableOneAndUseIt() {
-        webDriver.findElement(By.className("nouse")).findElements(By.tagName("ul")).stream()
+        final WebElement targetButton = webDriver.findElement(By.className("nouse")).findElements(By.tagName("ul")).stream()
+                .peek(System.out::println)
                 .max(new ServiceBaseTest.RandomComparator())
-                .orElse(null)
+                .orElse(null);
+        targetButton
                 .click();
+
+        try {
+            new WebDriverWait(webDriver, 10)
+                    .until((Predicate<WebDriver>) input
+                            -> input != null && input.getTitle().equals("我的优惠券"));
+        } catch (TimeoutException exception) {
+            targetButton
+                    .click();
+//            printThisPage();
+//            throw exception;
+        }
 
         assertThat(webDriver.getTitle())
                 .isEqualToIgnoringCase("我的优惠券");

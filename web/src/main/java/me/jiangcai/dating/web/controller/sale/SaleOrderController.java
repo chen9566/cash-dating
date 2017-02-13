@@ -70,8 +70,12 @@ public class SaleOrderController {
     @ResponseBody
     public void setUserFlag(@AuthenticationPrincipal User user, @PathVariable("code") TicketCodePK code) {
         TicketCode ticketCode = mallTradeService.ticketCode(code, user);
-        if (!ticketCode.isUserFlag())
+        if (!ticketCode.isUserFlag()) {
             ticketCode.setUserFlag(true);
+            // 与此同时应当让这个订单处于确定收货状态
+            // 首先根据 电子券 确定订单号
+            mallTradeService.confirmTicketTrade(user, ticketCode);
+        }
     }
 
 }

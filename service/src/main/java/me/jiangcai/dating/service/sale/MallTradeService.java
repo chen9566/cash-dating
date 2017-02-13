@@ -81,6 +81,15 @@ public interface MallTradeService {
     void confirmTrade(User user, long id);
 
     /**
+     * 根据电子券确定收货
+     *
+     * @param user 用户
+     * @param code 电子券
+     */
+    @Transactional
+    void confirmTicketTrade(User user, TicketCode code);
+
+    /**
      * 关闭这个订单
      *
      * @param id 订单id
