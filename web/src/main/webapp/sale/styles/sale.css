@@ -1574,3 +1574,4 @@ ul, li, dl, dd {
     border-radius:4px; color: #fff !important;}
 .calllist .f19{ font-size: 19px}
 .calllist .w120{ float: right; width: 120px; margin-top: 1px;font-size: 17px;  }
+.ovfHiden{overflow: hidden;height: 100%;}
