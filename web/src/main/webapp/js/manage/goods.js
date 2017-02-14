@@ -27,8 +27,8 @@ $(function () {
             },
             thumbnails: {
                 placeholders: {
-                    waitingPath: 'http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/placeholders/waiting-generic.png',
-                    notAvailablePath: 'http://resali.huobanplus.com/cdn/jquery-fine-uploader/5.10.0/placeholders/not_available-generic.png'
+                    waitingPath: '//cdn.kuanyes.com/jquery-fine-uploader/5.10.0/placeholders/waiting-generic.png',
+                    notAvailablePath: '//cdn.kuanyes.com/jquery-fine-uploader/5.10.0/placeholders/not_available-generic.png'
                 }
             },
             validation: {
