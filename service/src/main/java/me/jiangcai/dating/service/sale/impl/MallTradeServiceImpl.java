@@ -8,6 +8,7 @@ import me.jiangcai.dating.entity.sale.TicketTrade;
 import me.jiangcai.dating.entity.sale.TicketTradedGoods;
 import me.jiangcai.dating.entity.sale.pk.TicketCodePK;
 import me.jiangcai.dating.repository.sale.CashTradeRepository;
+import me.jiangcai.dating.repository.sale.TicketTradeRepository;
 import me.jiangcai.dating.service.OrderService;
 import me.jiangcai.dating.service.sale.MallTradeService;
 import me.jiangcai.goods.event.TradeDispatchRemindEvent;
@@ -33,6 +34,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.SetJoin;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,6 +59,8 @@ public class MallTradeServiceImpl implements MallTradeService {
     private EntityManager entityManager;
     @Autowired
     private TradeService tradeService;
+    @Autowired
+    private TicketTradeRepository ticketTradeRepository;
 
     @Override
     public CashTrade trade(long id) {
@@ -153,12 +157,29 @@ public class MallTradeServiceImpl implements MallTradeService {
     @Override
     public void confirmTicketTrade(User user, TicketCode code) {
         try {
-            TicketTrade trade = entityManager.createQuery("select distinct trade from TicketTrade as trade join trade.tradedSet as goods join goods.codeSet as code where code=:code and trade.user=:user and trade.status=:sentStatus", TicketTrade.class)
-                    .setParameter("code", code)
-                    .setParameter("user", user)
-                    .setParameter("sentStatus", TradeStatus.sent)
-                    .getSingleResult();
-            trade.setStatus(TradeStatus.confirmed);
+//            CriteriaUpdate<TicketTrade> update = entityManager.getCriteriaBuilder().createCriteriaUpdate(TicketTrade.class);
+//            Root<TicketTrade> root = update.from(TicketTrade.class);
+            TicketTrade trade = ticketTradeRepository.findOne((root, query, cb) -> {
+                query.distinct(true);
+                SetJoin<TicketTradedGoods, TicketTrade> goodsTicketTradeSetJoin = root.joinSet("tradedSet");
+                SetJoin<TicketCode, TicketTradedGoods> codeTicketTradedGoodsSetJoin = goodsTicketTradeSetJoin.joinSet("codeSet");
+
+                return cb.and(
+                        CashTrade.belongUser(user, cb, root)
+                        , cb.equal(codeTicketTradedGoodsSetJoin, code)
+                        , cb.equal(root.get("status"), TradeStatus.sent)
+                );
+            });
+            if (trade != null) {
+                trade.setStatus(TradeStatus.confirmed);
+            }
+
+//            TicketTrade trade = entityManager.createQuery("select distinct trade from TicketTrade as trade join trade.tradedSet as goods join goods.codeSet as code where code=:code and trade.user=:user and trade.status=:sentStatus", TicketTrade.class)
+//                    .setParameter("code", code)
+//                    .setParameter("user", user)
+//                    .setParameter("sentStatus", TradeStatus.sent)
+//                    .getSingleResult();
+//            trade.setStatus(TradeStatus.confirmed);
 //            cashTradeRepository.save(trade);
         } catch (NoResultException ignored) {
             log.debug("not result for this code:" + code.getCode());
