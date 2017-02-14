@@ -153,8 +153,8 @@ public class MallTradeServiceImpl implements MallTradeService {
     @Override
     public void confirmTicketTrade(User user, TicketCode code) {
         try {
-            TicketTrade trade = entityManager.createQuery("select distinct trade from TicketTrade as trade join trade.tradedSet as goods join goods.codeSet as code where code.code=:code and trade.user=:user and trade.status=:sentStatus", TicketTrade.class)
-                    .setParameter("code", code.getCode())
+            TicketTrade trade = entityManager.createQuery("select distinct trade from TicketTrade as trade join trade.tradedSet as goods join goods.codeSet as code where code=:code and trade.user=:user and trade.status=:sentStatus", TicketTrade.class)
+                    .setParameter("code", code)
                     .setParameter("user", user)
                     .setParameter("sentStatus", TradeStatus.sent)
                     .getSingleResult();
