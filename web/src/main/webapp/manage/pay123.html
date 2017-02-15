@@ -42,14 +42,22 @@
     </pre>
 </div>
 
-<p th:if="${@systemService.enablePay123}">
+<div th:if="${@systemService.enablePay123}">
     <span style="background-color: #02BB00">正在使用该支付方式</span>
     <a href="pay123.html" th:href="@{/manage/pay123/toggle}">停用</a>
-</p>
-<p th:if="${!@systemService.enablePay123}">
+</div>
+<div th:if="${!@systemService.enablePay123}">
     <span style="background-color:#66afe9">已经停用该支付方式</span>
     <a href="pay123.html" th:href="@{/manage/pay123/toggle}">启用</a>
-</p>
+    <p th:if="${@systemService.enableChanpay}">
+        <span style="background-color: goldenrod">使用畅捷套现</span>
+        <a href="pay123.html" th:href="@{/manage/chanpay/toggle}">停用</a>
+    </p>
+    <p th:if="${!@systemService.enableChanpay}">
+        <span style="background-color:#ac2925">不使用畅捷套现</span>
+        <a href="pay123.html" th:href="@{/manage/chanpay/toggle}">启用</a>
+    </p>
+</div>
 
 <form action="pay123.html" method="get" enctype="multipart/form-data" th:method="post" th:action="@{/manage/pay123}">
     <input type="file" name="file" accept="application/zip" required/>

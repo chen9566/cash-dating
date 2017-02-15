@@ -5,6 +5,7 @@ import me.jiangcai.dating.channel.ArbitrageChannel;
 import me.jiangcai.dating.channel.PayChannel;
 import me.jiangcai.dating.entity.support.RateConfig;
 import me.jiangcai.dating.model.PayMethod;
+import me.jiangcai.dating.service.impl.SystemServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -226,6 +227,23 @@ public interface SystemService {
      */
     default void updateEnablePay123(boolean enabled) {
         updateSystemString("dating.pay123.enable", enabled ? BigDecimal.ONE : BigDecimal.ZERO);
+    }
+
+    /**
+     * @return 是否使用畅捷支付套现
+     */
+    default boolean isEnableChanpay() {
+        return getSystemString("dating.chanpay.enable", BigDecimal.class, BigDecimal.ZERO).intValue() > 0;
+    }
+
+    /**
+     * 更新是否使用畅捷支付套现
+     *
+     * @param enabled 新状态
+     */
+    default void updateEnableChanpay(boolean enabled) {
+        updateSystemString("dating.chanpay.enable", enabled ? BigDecimal.ONE : BigDecimal.ZERO);
+        SystemServiceImpl.UserChanPayForWeixinAB = enabled;
     }
 
 //    double

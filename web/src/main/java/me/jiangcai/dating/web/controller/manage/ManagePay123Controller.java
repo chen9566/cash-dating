@@ -41,6 +41,13 @@ public class ManagePay123Controller {
         return "manage/pay123.html";
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/manage/chanpay/toggle")
+    @Transactional
+    public String toggleChanpay() {
+        systemService.updateEnableChanpay(!systemService.isEnableChanpay());
+        return "redirect:/manage/pay123";
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/manage/pay123/toggle")
     @Transactional
     public String toggle() {

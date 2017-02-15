@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.security.SignatureException;
 
 /**
+ * 套现渠道
  * @author CJ
  */
 public interface ArbitrageChannel {

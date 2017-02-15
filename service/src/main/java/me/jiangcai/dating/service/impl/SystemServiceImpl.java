@@ -87,7 +87,7 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public void init() throws UnsupportedEncodingException {
         // 无事可做的
-
+        UserChanPayForWeixinAB = isEnableChanpay();
     }
 
     @Override

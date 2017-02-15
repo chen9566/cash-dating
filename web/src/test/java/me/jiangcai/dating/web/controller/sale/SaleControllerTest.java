@@ -48,7 +48,7 @@ public class SaleControllerTest extends WebTest {
                 .orElse(null);
         TicketGoodsDetailPage detailPage = page.clickTicketGoods(ticketGoods);
 
-        detailPage.printThisPage();
+//        detailPage.printThisPage();
 
         try {
             detailPage.buy(1);
