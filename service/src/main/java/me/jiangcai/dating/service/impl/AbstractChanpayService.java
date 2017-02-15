@@ -402,7 +402,7 @@ public abstract class AbstractChanpayService implements ChanpayService {
         CreateInstantTrade request = new CreateInstantTrade();
         request.setAmount(order.getAmount());
 //        request.setPayerName(card.getOwner());
-        request.setProductName(order.getComment());
+        request.setProductName(order.getProductName());
 
         beforeExecute(order, request);
 

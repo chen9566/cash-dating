@@ -90,6 +90,11 @@ public abstract class UserOrder implements Locker {
     }
 
     /**
+     * @return 显示的产品名称，可以为null
+     */
+    public abstract String getProductName();
+
+    /**
      * @return 以提现的立场来说, 它的金额应该是多少
      */
     public abstract BigDecimal getWithdrawalAmount();

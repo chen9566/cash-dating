@@ -48,6 +48,11 @@ public class CashOrder extends UserOrder {
 
 
     @Override
+    public String getProductName() {
+        return getComment();
+    }
+
+    @Override
     public BigDecimal getWithdrawalAmount() {
         // 计算手续费
         BigDecimal fee = getAmount().multiply(thatRateConfig.getBookRate()).setScale(2, RoundingMode.HALF_UP);

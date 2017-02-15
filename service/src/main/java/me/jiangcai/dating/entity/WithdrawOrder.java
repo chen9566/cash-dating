@@ -70,6 +70,11 @@ public class WithdrawOrder extends UserOrder implements BalanceFlow {
     }
 
     @Override
+    public String getProductName() {
+        return null;
+    }
+
+    @Override
     public BigDecimal getWithdrawalAmount() {
         return getAmount();
     }
