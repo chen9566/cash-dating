@@ -48,6 +48,8 @@ public class SaleControllerTest extends WebTest {
                 .orElse(null);
         TicketGoodsDetailPage detailPage = page.clickTicketGoods(ticketGoods);
 
+        detailPage.printThisPage();
+
         try {
             detailPage.buy(1);
             throw new AssertionError("还没有库存呢");

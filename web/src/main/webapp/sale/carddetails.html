@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:res="http://resource.jiangcai.me" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:wx="http://weixin.jiangcai.me" xmlns:res="http://resource.jiangcai.me"
+      lang="en">
 <!--/*@thymesVar id="goods" type="me.jiangcai.dating.entity.sale.TicketGoods"*/-->
 <!--/*@thymesVar id="info" type="me.jiangcai.dating.model.TicketInfo"*/-->
 <!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.service.CashStrings"*/-->
@@ -69,6 +70,8 @@
     </div>
 </div>
 
+<script wx:js=""></script>
+<script wx:share="${goods.name}|${goods.description}|${#share.link(#authentication.getDetails(),goods,#request)}|${#share.imageUrl(goods)}"></script>
 <script type="text/javascript">
     $(function () {
         const orderCreator = $('#orderCreator');

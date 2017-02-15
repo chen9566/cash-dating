@@ -44,15 +44,15 @@ public class ShowOrderPage extends AbstractPage {
         getQRImage(webDriver)
                 .ifPresent(element -> image = element);
 
-        shareButton = webDriver.findElement(By.tagName("button"));
+//        shareButton = webDriver.findElement(By.tagName("button"));
 
         assertThat(amountSpan)
                 .isNotNull();
         assertThat(amountSpan.isDisplayed()).isTrue();
         assertThat(image)
                 .isNotNull();
-        assertThat(shareButton)
-                .isNotNull();
+//        assertThat(shareButton)
+//                .isNotNull();
     }
 
     private Optional<WebElement> getQRImage(WebDriver webDriver) {
