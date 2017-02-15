@@ -202,14 +202,25 @@ public abstract class AbstractChanpayService implements ChanpayService {
                 }
                 order.setFinishTime(event.getTradeTime());
                 order.getCashOrder().paySuccess();
-                applicationEventPublisher.publishEvent(new Notification(order.getCashOrder().getOwner()
-                        , NotifyType.orderPaid
-                        , "/orderDetail/" + order.getCashOrder().getId()
-                        , order.getCashOrder()
-                        , order.getCashOrder().getFriendlyId()
-                        , order.getCashOrder().getComment()
-                        , order.getCashOrder().getAmount()
-                        , order.getFinishTime()));
+                if (order.getCashOrder() instanceof PayOrder) {
+                    PayOrder payOrder = (PayOrder) order.getCashOrder();
+                    applicationEventPublisher.publishEvent(new Notification(order.getCashOrder().getOwner()
+                            , NotifyType.tradePaid
+                            , "/sale/myOrder?id=" + payOrder.getSaleTrade().getId()
+                            , order.getCashOrder()
+                            , payOrder.getSaleTrade().getId()
+                            , order.getCashOrder().getProductName()
+                            , order.getCashOrder().getAmount()
+                            , order.getFinishTime()));
+                } else
+                    applicationEventPublisher.publishEvent(new Notification(order.getCashOrder().getOwner()
+                            , NotifyType.orderPaid
+                            , "/orderDetail/" + order.getCashOrder().getId()
+                            , order.getCashOrder()
+                            , order.getCashOrder().getFriendlyId()
+                            , order.getCashOrder().getComment()
+                            , order.getCashOrder().getAmount()
+                            , order.getFinishTime()));
                 cashOrderRepository.save(order.getCashOrder());
                 // 此时应该开启 套现
                 // 只有是套现订单时才开启该业务

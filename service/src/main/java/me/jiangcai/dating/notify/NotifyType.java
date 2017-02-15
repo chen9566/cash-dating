@@ -53,7 +53,18 @@ public enum NotifyType {
             , new NotifyParameter("业务名称", String.class)
             , new NotifyParameter("申请金额", Number.class)
             , new NotifyParameter("审核状态", String.class)
-    ), notEnoughPay123("OPENTM208008253", "无货提醒", "台卡不足", "台卡不足以供用户使用", 0), pay123CheckRequired("OPENTM401916771", "商品审核提醒", "用户审核提醒", "当用户分配到一个新的台卡,则会提醒客服处理", 0);
+    ),
+    notEnoughPay123("OPENTM208008253", "无货提醒", "台卡不足", "台卡不足以供用户使用", 0),
+    pay123CheckRequired("OPENTM401916771", "商品审核提醒", "用户审核提醒", "当用户分配到一个新的台卡,则会提醒客服处理", 0),
+    /**
+     * 这个是商城使用的交易订单已支付
+     * 应该还有发货巴拉巴拉的
+     */
+    tradePaid("OPENTM201285651", "订单支付成功通知", "商城订单已支付", "指的是商城订单已经确认收款", 0
+            , new NotifyParameter("订单编号", String.class)
+            , new NotifyParameter("商品名称", String.class)
+            , new NotifyParameter("支付金额", Number.class)
+            , new NotifyParameter("支付时间", Date.class));
 
     private final String recommendShortId;
     private final String recommendTemplateTitle;
