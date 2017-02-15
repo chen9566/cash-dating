@@ -157,13 +157,13 @@ ul, li, dl, dd {
 }
 
 /*产品详情*/
-.details-dy {
+.details-dy {position: relative;
 }
 
 .details-dy img {
     width: 100%;
 }
-
+.Soldout{ position: absolute; top:0; font-size:36px; text-align: center; padding-top:120px;color: #999; background: #000; opacity: 0.8;width: 100%; height: 100%; }
 .details-txt {
     padding: 0 15px;
     background: #fff;
@@ -262,12 +262,27 @@ ul, li, dl, dd {
     position: fixed;
     bottom: 0;
 }
-
 .footer-btn button {
     border-radius: 0;
-    background: #f65150
+    background: #f65150;
+    width: 100%;
 }
+.footer-btn-c {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+.footer-btn-c button {
+    border-radius: 0;
+    background: #999;
+    width: 100%;
+    color: #444;
+    opacity: 100;
+    height:45px;
+    border: 0;
+    font-size: 18px;
 
+}
 .submitorder {
     width: 100%;
     bottom: 0;

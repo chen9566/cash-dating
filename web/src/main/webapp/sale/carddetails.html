@@ -19,7 +19,7 @@
     <script src="js/payfor.js"></script>
 </head>
 <body >
-<div class="details-dy"><img src="images/12.png" res:src="${goods.titleGoodsImage.defaultImage.resourcePath}" alt=""/>
+<div class="details-dy"><div class="Soldout">此商品已售完</div><img src="images/12.png" res:src="${goods.titleGoodsImage.defaultImage.resourcePath}" alt=""/>
 </div>
 <div class="details-txt">
     <h4 th:text="${goods.name}">星巴克8折优惠券</h4>
@@ -46,6 +46,10 @@
 </div>
 <div class="footer-btn" id="readyToBuy" onclick="toshow()">
     <button type="button" class="btn btn-danger btn-lg btn-block">立即购买</button>
+</div>
+<!-- 产品售馨按钮不可点击 -->
+<div class="footer-btn-c" >
+    <button type="button" disabled>5000杯已售完</button>
 </div>
 <div class="am-show saleshow">
     <ul>
