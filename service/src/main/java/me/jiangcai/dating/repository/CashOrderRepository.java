@@ -25,12 +25,12 @@ public interface CashOrderRepository extends JpaRepository<CashOrder, String> {
     List<CashOrder> findByOwner_GuideUserAndCompletedTrueAndThatRateConfig_GuideRateGreaterThan(User user, Number x);
 
     @Query("select C,W from CashOrder C left join C.platformWithdrawalOrderSet W" +
-            " where C.owner=?1 and C.completed=true" +
+            " where C.owner=?1 and C.completed=true and type(C) <> PayOrder" +
             " order by C.startTime desc,W.startTime desc")
     List<?> findOrderFlow(User user);
 
     @Query("select C,W from CashOrder C left join C.platformWithdrawalOrderSet W" +
-            " where C.owner=?1 and C.completed=true and C.withdrawalCompleted=true " +
+            " where C.owner=?1 and C.completed=true and type(C) <> PayOrder and C.withdrawalCompleted=true " +
             " order by C.startTime desc,W.startTime desc")
     List<?> findFinishedOrderFlow(User user);
 
