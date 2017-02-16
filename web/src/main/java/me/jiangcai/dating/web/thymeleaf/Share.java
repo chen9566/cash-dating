@@ -43,7 +43,7 @@ public class Share {
 
     public String link(User user, CashGoods goods, HttpServletRequest request) {
         String url = request.getRequestURL().toString();
-        return url + "?" + CashFilter.guideUserFromId(user.getId());
+        return url + "?id=" + goods.getId() + "&" + CashFilter.guideUserFromId(user.getId());
     }
 
     @SneakyThrows(IOException.class)
