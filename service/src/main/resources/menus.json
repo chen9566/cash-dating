@@ -1,16 +1,16 @@
 [
   {
-    "name": "会员",
+    "name": "特卖",
     "type": "view",
     "data": "${URL}/sale"
   },
   {
-    "name": "推广",
+    "name": "收银台",
     "type": "view",
-    "data": "${URL}/myInviteCode"
+    "data": "${URL}/start"
   },
   {
-    "name": "款爷",
+    "name": "款爷中心",
     "type": "view",
     "data": "${URL}/my"
   }
