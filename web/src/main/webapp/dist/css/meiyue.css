@@ -3834,7 +3834,18 @@ ul#navlist .list1 {
     color: #b3b3b3;
     font-weight: 300
 }
-
+.finlist .f12 a {
+    border-radius:3px;
+    background: #F65150;
+    color: #fff;
+    padding: 0 10px;
+    height: 23px;
+    line-height: 23px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-size: 13px;
+}
 .finlist .f13 {
     font-size: 13px;
     color: #888;
