@@ -2450,7 +2450,6 @@ ul#navlist .list1 {
 }
 
 .yjmx a {
-    width: 65px;
     margin-top: -3px;
     text-align: center;
     line-height: 22px;
@@ -2461,7 +2460,9 @@ ul#navlist .list1 {
     border: 1px solid #e0e0e0;
     font-size: 12px;
     border-radius: 4px;
-    display: block
+    display: block;
+    padding:0 10px
+
 }
 
 .yj {
