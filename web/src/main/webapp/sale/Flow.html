@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/sale.css">
+    <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
+    <title>流量充值</title>
+</head>
+<body>
+<div class="o-input">
+    <input id="tel" maxlength="13" placeholder="请输入手机号码" type="tel">
+    (浙江电信)
+</div>
+<div class="mt10 flow">
+    <p class="f12t">充流量</p>
+    <ul>
+        <li>
+            <a href="#" class="curr"><span class="f18">5MB</span><span class="12">售价1元</span></a>
+            <a href="#"><span class="f18">10MB</span><span class="12">售价1元</span></a>
+            <a href="#"><span class="f18">30MB</span><span class="12">售价1元</span></a>
+            <a href="#"><span class="f18">50MB</span><span class="12">售价1元</span></a>
+            <a href="#"><span class="f18">100MB</span><span class="12">售价1元</span></a>
+            <a href="#"><span class="f18">200MB</span><span class="12">售价1元</span></a>
+            <a href="#"><span class="f18">500MB</span><span class="12">售价1元</span></a>
+            <a href="#"><span class="f18">1G</span><span class="12">售价1元</span></a>
+
+        </li>
+    </ul>
+</div>
+<p class="o-f14"><a href="Oilcardlist.html"> 充值记录</a></p>
+
+</body>
+<script>
+    $(function () {
+        $('#tel').bind('input propertychange', function () {
+            $(document).keydown(function (event) {
+                if (event.keyCode == 8) {
+                    return;
+                }
+                if ($('#tel').val().length == 3 || $('#tel').val().length == 8) {
+                    var phone = $('#tel').val() + " ";
+                    $('#tel').val(phone);
+                }
+            })
+        });
+        function emptyAll(str, global) {
+            var telre;
+            telre = str.replace(/(^\s+)|(\s+$)/g, "");
+            if (global.toLowerCase() == "g") {
+                telre = telre.replace(/\s/g, "");
+            }
+            return telre;
+        };
+        emptyAll($('#tel').val(), "g");
+    });
+</script>
+</html>

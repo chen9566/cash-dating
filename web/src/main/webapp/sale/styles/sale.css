@@ -157,13 +157,27 @@ ul, li, dl, dd {
 }
 
 /*产品详情*/
-.details-dy {position: relative;
+.details-dy {
+    position: relative;
 }
 
 .details-dy img {
     width: 100%;
 }
-.Soldout{ position: absolute; top:0; font-size:36px; text-align: center; padding-top:120px;color: #999; background: #000; opacity: 0.8;width: 100%; height: 100%; }
+
+.Soldout {
+    position: absolute;
+    top: 0;
+    font-size: 36px;
+    text-align: center;
+    padding-top: 120px;
+    color: #999;
+    background: #000;
+    opacity: 0.8;
+    width: 100%;
+    height: 100%;
+}
+
 .details-txt {
     padding: 0 15px;
     background: #fff;
@@ -247,7 +261,6 @@ ul, li, dl, dd {
     line-height: 35px;
 }
 
-
 .details img {
     width: 100%;
     margin-bottom: 10px
@@ -262,27 +275,31 @@ ul, li, dl, dd {
     position: fixed;
     bottom: 0;
 }
+
 .footer-btn button {
     border-radius: 0;
     background: #f65150;
     width: 100%;
 }
+
 .footer-btn-c {
     width: 100%;
     position: fixed;
     bottom: 0;
 }
+
 .footer-btn-c button {
     border-radius: 0;
     background: #999;
     width: 100%;
     color: #444;
     opacity: 100;
-    height:45px;
+    height: 45px;
     border: 0;
     font-size: 18px;
 
 }
+
 .submitorder {
     width: 100%;
     bottom: 0;
@@ -552,7 +569,6 @@ ul, li, dl, dd {
     margin-left: 5px
 }
 
-
 .salecard .add {
     bottom: 15px;
     padding-left: 85px;
@@ -572,16 +588,27 @@ ul, li, dl, dd {
     float: right;
     color: #353535;
     position: absolute;
-    top:15px;
+    top: 15px;
     right: 15px;
 }
+
 .salecard .number {
     font-size: 12px;
     float: right;
     color: #6f6f6f;
 }
-.salecard .f14{ color: #6f6f6f}
-.salecard .w86{ width: 87%; display: block; font-size: 16px; margin-bottom: 5px; }
+
+.salecard .f14 {
+    color: #6f6f6f
+}
+
+.salecard .w86 {
+    width: 87%;
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
 .saleshop {
 }
 
@@ -604,11 +631,17 @@ ul, li, dl, dd {
     position: relative;
 
 }
-.saleshop dd{overflow: hidden; display: block}
+
+.saleshop dd {
+    overflow: hidden;
+    display: block
+}
 
 .saleshop img {
     width: 76px;
-    height: 76px; float: left; margin-right: 10px;
+    height: 76px;
+    float: left;
+    margin-right: 10px;
 }
 
 .saleshop .w96 {
@@ -628,8 +661,8 @@ ul, li, dl, dd {
     float: right;
     color: #353535;
     position: absolute;
-    top:15px;
-    right:15px;
+    top: 15px;
+    right: 15px;
 }
 
 .saleshop .number {
@@ -1014,11 +1047,12 @@ ul, li, dl, dd {
     position: absolute;
     width: 50%;
     border-radius: 6px;
-    margin:0 auto;
+    margin: 0 auto;
     background: #000;
     opacity: 0.8;
     padding: 20px 30px;
-    top: 40%; left: 25%;
+    top: 40%;
+    left: 25%;
     text-align: center;
 }
 
@@ -1289,7 +1323,20 @@ ul, li, dl, dd {
     text-decoration: none;
     position: relative;
 }
-.rednew{ right:33%; top:10px; font-size:10px; background: #F65150; color: #fff; width:16px; height:16px; border-radius:16px; text-align: center; position: absolute}
+
+.rednew {
+    right: 33%;
+    top: 10px;
+    font-size: 10px;
+    background: #F65150;
+    color: #fff;
+    width: 16px;
+    height: 16px;
+    border-radius: 16px;
+    text-align: center;
+    position: absolute
+}
+
 .my-c li img {
     margin: 0 auto 5px auto;
     width: 22%;
@@ -1500,8 +1547,8 @@ ul, li, dl, dd {
 }
 
 .ewmshow img {
-    padding:15px 10px 10px 10px;
-    width:90%
+    padding: 15px 10px 10px 10px;
+    width: 90%
 }
 
 .navlist {
@@ -1578,15 +1625,275 @@ ul, li, dl, dd {
     -webkit-filter: grayscale(100%);
     opacity: 0.8;
 }
-.call-in{ border-bottom: 1px solid #dfdfdf; border-top: 1px solid #dfdfdf; margin-top: 15px; padding:5px 15px 15px 15px; background: #fff; margin-bottom: 15px; font-size: 12px; color: #353535}
-.call-in input{ font-size: 26px;  display: block; border: 0; height:50px; padding-left: 0 }
-.calllist{ border-top: 1px solid #dfdfdf;  background: #fff; padding:20px 15px; height:500px}
-.calllist ul{
+
+.call-in {
+    border-bottom: 1px solid #dfdfdf;
+    border-top: 1px solid #dfdfdf;
+    margin-top: 15px;
+    padding: 5px 15px 15px 15px;
+    background: #fff;
+    margin-bottom: 15px;
+    font-size: 12px;
+    color: #353535
 }
-.calllist li{ margin-bottom: 10px; font-weight: 400 }
-.calllist li a{ padding: 14px 0 14px 15px;font-size: 18px;  text-decoration: none; border: 1px solid #50B56A; border-radius:4px; color:#50B56A; display: block}
-.currtab{ background: #02BB00;
-    border-radius:4px; color: #fff !important;}
-.calllist .f19{ font-size: 19px}
-.calllist .w120{ float: right; width: 120px; margin-top: 1px;font-size: 17px;  }
-.ovfHiden{overflow: hidden;height: 100%;}
+
+.call-in input {
+    font-size: 26px;
+    display: block;
+    border: 0;
+    height: 50px;
+    padding-left: 0
+}
+
+.calllist {
+    border-top: 1px solid #dfdfdf;
+    background: #fff;
+    padding: 20px 15px;
+    height: 500px
+}
+
+.calllist ul {
+}
+
+.calllist li {
+    margin-bottom: 10px;
+    font-weight: 400
+}
+
+.calllist li a {
+    padding: 14px 0 14px 15px;
+    font-size: 18px;
+    text-decoration: none;
+    border: 1px solid #50B56A;
+    border-radius: 4px;
+    color: #50B56A;
+    display: block
+}
+
+.currtab {
+    background: #02BB00;
+    border-radius: 4px;
+    color: #fff !important;
+}
+
+.calllist .f19 {
+    font-size: 19px
+}
+
+.calllist .w120 {
+    float: right;
+    width: 120px;
+    margin-top: 1px;
+    font-size: 17px;
+}
+
+.ovfHiden {
+    overflow: hidden;
+    height: 100%;
+}
+
+/*油卡充值*/
+.o-f14 {
+    position: fixed;
+    bottom: 10px;
+    text-align: center;
+    width: 100%;
+
+}
+
+.o-f14 a {
+    color: #b8b8b8;
+    display: block;
+    line-height: 30px;
+    width: 100px;
+    text-align: center;
+    margin: 0 auto;
+    text-decoration: none;
+    background: url("../images/iconfont-bianji.png/") no-repeat 0 5px;
+    background-size: 18px;
+}
+
+.o-f14 a:hover {
+    text-decoration: none
+}
+
+.l-f14 {
+    padding: 9px 15px 3px 15px;
+    margin: 0;
+}
+
+.o-input {
+    background: #fff;
+    padding: 10px 15px 15px 15px;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.o-input input {
+    font-size: 25px;
+    border: 0;
+    height: 50px;
+    line-height: 46px;
+    display: block;
+}
+
+.o-input input[type="number"] {
+    -moz-appearance: textfield;
+    border: 0;
+    background: none
+}
+
+.o-money {
+    background: #fff;
+    height: 460px;
+    padding: 10px 15px 15px 15px;
+    overflow: hidden
+}
+
+.o-money ul {
+    margin-top: 7px;
+    overflow: hidden;
+}
+
+.o-money li {
+    margin-top: 10px;
+
+}
+.o-money a{
+    line-height: 50px;
+    display: block;
+    color: #F65150;
+    border: 1px solid #F65150;
+    background: #fff;
+    border-radius: 10px;
+    padding: 0 15px;
+    text-decoration: none;
+}
+.o-money a:hover {
+    color: #fff;
+    background: #F65150;
+    padding: 0 15px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.o-money .f24 {
+    font-size: 24px;
+}
+
+.o-money .f16 {
+    font-size: 16px;
+    margin-left: 7px;
+}
+
+.o-money .f18 {
+    font-size: 18px;
+    float: right;
+    margin-right:10px;
+}
+
+.o-list {
+}
+
+.o-list ul {
+    overflow: hidden;
+    padding: 11px 15px;
+    overflow: hidden;
+    background: #fff;
+    border-bottom: 1px solid #dfdfdf;
+}
+
+.o-list li {
+    float: left;
+    line-height: 22px
+}
+
+.o-list ul:last-child {
+    border: none;
+}
+
+.o-list .f12 {
+    font-size: 12px;
+    color: #888;
+    display: block;
+}
+
+.o-list .f12t {
+    font-size: 12px;
+    color: #353535;
+    display: block
+}
+
+.o-list .f21 {
+    font-size: 21px;
+    color: #353535;
+    display: block
+}
+
+.o-list .f14 {
+    font-size: 14px;
+    color: #888;
+    display: block
+}
+
+.o-list .img-cir {
+    margin: 5px 30px;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+}
+
+.o-finish {
+    background: #F65150;
+    color: #fff;
+    padding: 10px 15px 10px 15px;
+    margin-bottom: 15px
+}
+
+.o-finish ul {
+    overflow: hidden
+}
+
+.o-finish li {
+    float: left;
+}
+
+.o-finish h1 {
+    font-size: 16px;
+    margin: 0;
+    line-height: 30px;
+}
+
+.o-finish img {
+    width: 24px;
+    margin: 4px 10px 0 0;
+}
+
+.flow {
+    background: #fff;
+    height: 600px;
+}
+
+.flow ul {
+    overflow: hidden
+}
+
+.flow li {
+}
+
+.flow a {
+    margin:13px 0 0 15px;
+    padding: 10px 0 15px 0;
+    border: 1px solid #50B56A;
+    border-radius: 6px;
+    text-align: center;
+    display: block;
+    float: left;
+    width: 28%;
+    color: #50B56A;
+    text-decoration: none;
+}
+.flow a:hover{ background: #50B56A; color: #fff}
+.flow .f18{ font-size: 18px; display: block}
+.flow .f12{font-size: 12px;display: block}
+.flow .f12t{ padding:15px 0 0 15px; margin: 0}
