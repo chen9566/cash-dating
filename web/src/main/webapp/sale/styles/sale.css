@@ -1735,6 +1735,7 @@ ul, li, dl, dd {
     height: 50px;
     line-height: 46px;
     display: block;
+    padding: 0;
 }
 
 .o-input input[type="number"] {
