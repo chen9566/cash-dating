@@ -1709,7 +1709,7 @@ ul, li, dl, dd {
     text-align: center;
     margin: 0 auto;
     text-decoration: none;
-    background: url("../images/iconfont-bianji.png/") no-repeat 0 5px;
+    background: url("../images/iconfont-bianji.png") no-repeat 0 5px;
     background-size: 18px;
 }
 
