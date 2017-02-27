@@ -1053,64 +1053,25 @@ ul#navlist .list1 {
 /*我的邀请码*/
 .code {
     text-align: center;
-}
+    background: url("dbg.png") no-repeat #fff;
+    background-size: 100%;
+    height: 700px;
+    padding-top: 15px;
 
-.code a {
-    text-decoration: none;
-    font-size: 12px;
-    margin-bottom: 30px
 }
-
-.code h4 {
-    line-height: 30px;
-    color: #0079FF;
-    font-size: 16px;
-    font-weight: 200;
-    margin: 0
+.code .bg{background: -webkit-linear-gradient(#E8514F, #CE3547); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#E8514F, #CE3547); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#E8514F, #CE3547); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#E8514F, #CE3547); /* 标准的语法 */
+    margin: 10px 75px 0 75px;
+    border-radius: 0 0 8px 8px;
+    padding:8px; color: #fff !important;
 }
-
-.code .nun {
-    font-size: 36px
-}
-
-.code .agent {
-    border: 1px solid #F65150;
-    color: #F65150
-}
-
-.code .pbanner {
-    margin-bottom: 10px;
-}
-
-.code .pbanner img {
-    width: 100%;
-}
-
-.code .ewmbg {
-    background: #fff;
-    padding: 20px 15px;
-    color: #888;
-    font-size: 15px;
-}
-
-.code .ewmbg img {
-    width: 70%;
-    height: 70%;
-}
-
-.code .ewmbg button {
-    margin-bottom: 15px;
-    margin-top: 15px
-}
-
-.mb-b {
-    margin-bottom: 30px
-}
-
-.code p {
-    margin: 0;
-}
-
+.code img{ width: 100%;border-radius: 0 0 8px 8px;}
+.code p{ padding: 0; margin: 0; overflow: hidden}
+.code .bgb{ width:60px; vertical-align: top}
+.code button{ overflow: hidden; width: 44%; float: left; margin:0 0 0 15px;}
+.code .nt{ margin: 15px;}
 /*我的收款码*/
 .paycode {
     padding: 20px 15px;

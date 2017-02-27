@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone = no"/>
     <title>邀请合伙人</title>
     <link rel="stylesheet" href="dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="dist/css/meiyue.css">
@@ -14,20 +15,18 @@
 </head>
 <body>
 <div class="code">
-    <p class="pbanner"><a href="explain.html" th:href="@{/explain}"><img src="images/pannerbanner.png"></a></p>
-    <div class="ewmbg">
-        <p>扫一扫下方的二维码<br>注册成为合伙人一起赚大钱</p>
-        <p><img src="images/temp2.png" name="myShareQRCode" th:src="@{/inviteQR/{id}(id=${user.id})}"></p>
-        <h4 th:text="'邀请码：'+${user.inviteCode}">邀请码：8387373</h4>
-        <!--<p><a href="#">查看赚钱规则</a></p>!-->
-        <p>
-            <button type="button" class="btn btn-danger btn-lg btn-block weixinShare">立即邀请</button>
-            <button type="button" class="btn btn-default btn-lg btn-block agent clickHref" href="myinvitation.html"
-                    th:href="@{/myInvitation}">邀请明细
-            </button>
-        </p>
-    </div>
-
+    <p>扫一扫下方的二维码<br>注册成为合伙人一起赚大钱</p>
+    <p class="bg"><img src="images/temp2.png" name="myShareQRCode" th:src="@{/inviteQR/{id}(id=${user.id})}">
+        <span th:text="'邀请码：'+${user.inviteCode}">邀请码：8387373</span>
+    </p>
+    <p><img src="images/ewmbg.png" class="bgb"/></p>
+    <p class="nt"><img src="images/codebg.png"/></p>
+    <p>
+        <button type="button" class="btn btn-danger btn-lg weixinShare">立即邀请</button>
+        <button type="button" class="btn btn-default btn-lg agent clickHref" href="myinvitation.html"
+                th:href="@{/myInvitation}">邀请明细
+        </button>
+    </p>
 </div>
 <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js" th:remove="all"></script>
 <script wx:js=""></script>
