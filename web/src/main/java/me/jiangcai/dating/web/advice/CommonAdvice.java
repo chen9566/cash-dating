@@ -8,6 +8,8 @@ import me.jiangcai.dating.exception.NoContentException;
 import me.jiangcai.dating.exception.RequestedException;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.wx.web.exception.NoWeixinClientException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +28,8 @@ import java.io.Writer;
  */
 @ControllerAdvice
 public class CommonAdvice {
+
+    private static final Log log = LogFactory.getLog(CommonAdvice.class);
 
     @Autowired
     private UserService userService;
@@ -92,6 +96,7 @@ public class CommonAdvice {
     }
 
     private boolean notAjax(Throwable ex, HttpServletRequest request, HttpServletResponse response, Integer suggestion) throws IOException {
+        log.debug("unChecked", ex);
         if (!"XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With")))
             return true;
 //        if (!"XMLHttpRequest".equalsIgnoreCase(httpHeaders.getFirst("X-Requested-With")))
