@@ -2450,7 +2450,6 @@ ul#navlist .list1 {
 }
 
 .yjmx a {
-    width: 65px;
     margin-top: -3px;
     text-align: center;
     line-height: 22px;
@@ -2461,7 +2460,9 @@ ul#navlist .list1 {
     border: 1px solid #e0e0e0;
     font-size: 12px;
     border-radius: 4px;
-    display: block
+    display: block;
+    padding:0 10px
+
 }
 
 .yj {
@@ -2518,7 +2519,7 @@ ul#navlist .list1 {
 }
 
 .yjlist li.w3 {
-    width: 33.3%
+    width: 33.3%;
 }
 
 .yjlist li.w4 {
@@ -3731,7 +3732,7 @@ ul#navlist .list1 {
     opacity: 0.8;
     font-size: 13px;
 }
-
+.financial .smt img{ width:18px; margin-left: 10px}
 .financial p {
     margin: 0
 }
@@ -3776,7 +3777,6 @@ ul#navlist .list1 {
     margin-top: 28px;
     font-size: 13px;
 }
-
 .num-y {
     margin: 20px -15px 0 -15px;
     font-size: 14px;
@@ -3834,7 +3834,18 @@ ul#navlist .list1 {
     color: #b3b3b3;
     font-weight: 300
 }
-
+.finlist .f12 a {
+    border-radius:3px;
+    background: #F65150;
+    color: #fff;
+    padding: 0 10px;
+    height: 23px;
+    line-height: 23px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-size: 13px;
+}
 .finlist .f13 {
     font-size: 13px;
     color: #888;
@@ -5376,3 +5387,73 @@ ul#navlist .list1 {
     text-align: center;
     padding-top: 8px
 }
+.comtab {
+    background: #fff;
+    overflow: hidden;
+}
+
+.comtab ul {
+    overflow: hidden
+}
+.comtab li {
+    border-bottom: 1px solid #dfdfdf;
+    background: #fff;
+    overflow: hidden;
+    font-size: 15px;
+}
+
+.comtab a {
+    color: #353535;
+    padding: 12px 0;
+    text-align: center;
+    display: block;
+    float: left;
+    width: 50%;
+    text-decoration: none;
+
+}
+.currtab {
+    border-bottom: 2px solid #f65150;
+    color: #f65150 !important;
+    width: 100%;
+    font-size: 15px;
+    text-align: center;
+    display: block;
+}
+.comlist{ background: #fff; }
+.comlist ul{padding-left: 15px;}
+.comlist li{ padding: 13px 0 13px 0; line-height: 22px;  border-bottom: 1px solid #dfdfdf}
+.comlist li:last-child{border-bottom: none}
+.comlist p{ padding: 0; margin: 0;}
+.comlist .imgcir{ margin:7px 10px 0 0; float: left; width: 32px; height: 32px; border-radius: 32px}
+.comlist .f12{ font-size: 12px;}
+.comlist .f12t{ margin-left: 5px; color: #888; font-size: 12px;}
+.comlist .f14{ color: #888; font-size: 14px;}
+.comlist .f22{font-size:22px; margin-right: 5px;}
+.comlist .y-m{  color: #F65150; float: right; margin:-36px 15px 0 0; top:20px}
+.comlist .y-m img{ width: 8px; margin-left:10px;}
+.comlist .kong {
+    background: #fff;
+    text-align: center;
+    font-size: 14px;
+    padding: 25px 0 40px 0;
+    height: 100%;
+    color: #888;
+    line-height: 50px;
+    border-top: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf
+}
+.comlist .kong img {
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+}
+.note{ background: #DE3C43; }
+.note ul{ overflow: hidden; padding: 15px 0;}
+.note li{ float: left; color: #fff; width: 50%; text-align: center}
+.note p{ margin: 0}
+.note .f26{ font-size: 26px; opacity: 0.8}
+.note .f15{ font-size: 15px;opacity: 0.8}
+.note .b-r{ background:url("border-rightw.png") no-repeat right 10px;  background-size: 1px 40px }
+
+

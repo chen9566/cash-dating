@@ -1,105 +1,107 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
-<!--/*@thymesVar id="balance" type="java.lang.Number"*/-->
-<!--/*@thymesVar id="numbers" type="java.lang.Integer"*/-->
-<!--/*@thymesVar id="flows" type="java.util.List<me.jiangcai.dating.model.BalanceFlow>"*/-->
-<!--/*@thymesVar id="withdrawalFlows" type="java.util.List<me.jiangcai.dating.model.BalanceFlow>"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>邀请明细</title>
     <link rel="stylesheet" href="dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="dist/css/font-awesome.min.css">
     <link rel="stylesheet" href="dist/css/meiyue.css">
     <script src="dist/js/jquery.js"></script>
-    <script src="dist/js/bootstrap.min.js"></script>
     <script src="dist/js/share.js"></script>
 </head>
 <body>
-<div class="financial" th:if="${user.agentInfo==null}">
-    <p class="pull-right"><a href="agent.html" th:href="@{/agent}" class="vip">成为超级合伙人</a></p>
-    <p class="smt">当前手续费利率(%)</p>
-    <p class="money" th:text="${#numbers.formatDecimal(balance,1,'COMMA',2,'POINT')}"
-       th:name="balance">0.60</p>
-    <div class="num-y"><a href="Invitelist.html">成功邀请人数(人)
-        <span class="pull-right f17" th:name="numbers" th:inline="text">[[${#numbers.formatInteger(numbers,1,'COMMA')}]]
-            <img src="images/blackrightw-r.png"></span>
-    </a></div>
-</div>
+
 <div class="financial" th:if="${user.agentInfo!=null}">
     <p class="pull-right"><a href="now.html" class="tx" th:href="@{/withdraw}">提现</a></p>
-    <p class="smt">可提金额(元)</p>
+    <p class="smt">可提金额(元)<a href="note.html"><img src="images/question-icon2.png"/></a></p>
     <p class="money" th:text="${#numbers.formatDecimal(balance,1,'COMMA',2,'POINT')}"
        th:name="balance">1000.00</p>
-    <div class="num-y"><a href="Invitelist.html">成功邀请人数(人)
-        <span class="pull-right f17" th:name="numbers" th:inline="text">[[${#numbers.formatInteger(numbers,1,'COMMA')}]]
-            <img src="images/blackrightw-r.png"></span>
+    <div class="num-y"><a href="note.html">当前利率0.60%
+        <span class="pull-right">分润80%
+        <img src="images/blackrightw-r.png"></span>
     </a></div>
 </div>
-<p class="yjmx">
-    <span class="yj" name="yj">佣金明细</span><span class="pull-right"><a href="#" class="dcbg">导出表格</a></span>
-</p>
-<!--佣金明细!-->
-<div class="yjlist mb60" id="yj">
-    <p class="kong" th:if="${flows.isEmpty()}"><img src="images/kong-pic.png">暂无数据</p>
-    <ul class="bg" th:if="${!flows.isEmpty()}">
-        <li class="w3">昵称</li>
-        <li class="w3">收款金额(元)</li>
-        <li class="w3">佣金(元)</li>
+<div class="comtab">
+    <ul>
+        <li>
+            <a href="#" class="currtab u">佣金明细</a>
+            <a href="#" class="n">提现明细</a>
+        </li>
     </ul>
-    <ul th:each="flow:${flows}" class="clickHref" href="Partnerdata.html">
-        <li class="w3" th:text="${flow.owner.nickname}">欣欣殿下</li>
-        <li class="w3" th:text="${#numbers.formatDecimal(flow.originalAmount,1,'COMMA',2,'POINT')}">2000</li>
-        <li class="w3" th:inline="text">[[${#numbers.formatDecimal(flow.amount,1,'COMMA',2,'POINT')}]]
-            <span class="br-img"><img src="images/blackright-r.png"></span></li>
+</div>
+<!--提现明细!-->
+<div class="comlist">
+    <p class="kong" ><img src="images/kong-pic.png">暂无数据</p>
+    <ul>
+        <li><img src="images/temp2.jpg" class="imgcir"/>
+            <p><span class="f12">欣欣殿下</span><span class="f12t">2017-04-04</span></p>
+            <p class="f14">收款金额4000元</p>
+           <div class="y-m"><span class="f22">10</span><span class="f12">元</span><img src="images/blackright-r.png"/> </div>
+        </li>
+        <li><img src="images/temp2.jpg" class="imgcir"/>
+            <p><span class="f12">欣欣殿下</span><span class="f12t">2017-04-04</span></p>
+            <p class="f14">收款金额4000元</p>
+            <div class="y-m"><span class="f22">10</span><span class="f12">元</span><img src="images/blackright-r.png"/> </div>
+        </li>
+        <li><img src="images/temp2.jpg" class="imgcir"/>
+            <p><span class="f12">欣欣殿下</span><span class="f12t">2017-04-04</span></p>
+            <p class="f14">收款金额4000元</p>
+            <div class="y-m"><span class="f22">8</span><span class="f12">元</span><img src="images/blackright-r.png"/> </div>
+        </li>
+        <li><img src="images/temp2.jpg" class="imgcir"/>
+            <p><span class="f12">欣欣殿下</span><span class="f12t">2017-04-04</span></p>
+            <p class="f14">收款金额4000元</p>
+            <div class="y-m"><span class="f22">10</span><span class="f12">元</span><img src="images/blackright-r.png"/> </div>
+        </li>
+        <li><img src="images/temp2.jpg" class="imgcir"/>
+            <p><span class="f12">欣欣殿下</span><span class="f12t">2017-04-04</span></p>
+            <p class="f14">收款金额4000元</p>
+            <div class="y-m"><span class="f22">10</span><span class="f12">元</span><img src="images/blackright-r.png"/> </div>
+        </li>
+    </ul>
+</div>
+<!--提现明细 end!-->
+<!--佣金明细!-->
+<div class="yjlist" style="display: none">
+    <p class="kong" ><img src="images/kong-pic.png">暂无数据</p>
+    <ul class="bg">
+        <li class="w10">提现时间</li>
+        <li class="w5">金额(元)</li>
+        <li class="w5">状态</li>
     </ul>
     <ul th:remove="all" class="clickHref" href="Partnerdata.html">
-        <li class="w3">欣欣殿下</li>
-        <li class="w3">2000</li>
-        <li class="w3">500.00<span class="br-img"><img src="images/blackright-r.png"></span></li>
+        <li class="w10" >欣欣殿下欣欣殿</li>
+        <li class="w5" >2000</li>
+        <li class="w5" >提现成功<span class="br-img"><img src="images/blackright-r.png"></span></li>
+    </ul>
+    <ul th:remove="all" class="clickHref" href="Partnerdata.html">
+        <li class="w10">欣欣殿下</li>
+        <li class="w5">2000</li>
+        <li class="w5">提现失败<span class="br-img"><img src="images/blackright-r.png"></span></li>
     </ul>
 </div>
 <!--佣金明细 end!-->
-<!--<div class="yjbl" th:if="${user.agentInfo!=null}">-->
-<!--<input name="" type="button" value="调整手续费" class="clickHref" href="myteam.html" th:href="@{/myTeam}">-->
-<!--</div>-->
-<!-- Modal -->
-<div class="modal fade" id="cardsContainer" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body show-c">
-                <p class="sn">
-                    <input name="" type="text" placeholder="请输入需要导出的邮箱地址">
-                </p>
-            </div>
-            <div class="modal-footer">
-                <div class="show-c2"><a href="#" data-dismiss="modal">取消</a></div>
-                <div class="show-c1 cardSubmit" style="cursor: pointer">确定</div>
-            </div>
-        </div>
-    </div>
-</div>
-<script src="mock/all.js" th:src="@{/all.js}"></script>
 <script>
-    //    $(function () {
-    //        var yj = $('#yj');
-    //        var tx = $('#tx');
-    //        tx.hide();
-    //
-    //        $('.yj').click(function () {
-    //            yj.hide();
-    //            tx.hide();
-    //            $('#' + $(this).attr('name')).show();
-    //            $(this).removeClass("c-0");
-    //            $(this).addClass("c-8");
-    //            $(this).siblings().removeClass("c-8");
-    //            $(this).siblings().addClass("c-0");
-    //        })
-    //    });
+    $(".comtab li a").click(function () {
+        $(".currtab").removeClass("currtab");
+        if ($(this).hasClass("currtab")) {
+            $(this).removeClass("currtab");
+        } else {
+            $(this).addClass("currtab");
+        }
+        return false;
+    });
+    $(".u").click(function (event) {
+        $(".comlist").css({"display": "block"});
+        $(".yjlist").css({"display": "none"});
+    });
+    $(".n").click(function (event) {
+        $(".yjlist").css({"display": "block"});
+        $(".comlist").css({"display": "none"});
+
+    });
+
 </script>
 </body>
 </html>
