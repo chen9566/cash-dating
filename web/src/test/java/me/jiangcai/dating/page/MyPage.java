@@ -60,9 +60,10 @@ public class MyPage extends AbstractPage {
         webDriver.findElement(By.className("mylist")).findElements(By.tagName("li")).stream()
                 .filter(WebElement::isDisplayed)
                 .forEach(element -> menus.put(element.getText(), element));
-        webDriver.findElement(By.className("k-fixe")).findElements(By.tagName("li")).stream()
-                .filter(WebElement::isDisplayed)
-                .forEach(element -> menus.put(element.getText(), element));
+        if (!webDriver.findElements(By.className("k-fixe")).isEmpty())
+            webDriver.findElement(By.className("k-fixe")).findElements(By.tagName("li")).stream()
+                    .filter(WebElement::isDisplayed)
+                    .forEach(element -> menus.put(element.getText(), element));
 
         assertThat(headImage)
                 .isNotNull();

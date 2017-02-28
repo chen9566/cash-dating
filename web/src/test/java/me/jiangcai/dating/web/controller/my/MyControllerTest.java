@@ -3,7 +3,6 @@ package me.jiangcai.dating.web.controller.my;
 import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.page.LogoutPage;
 import me.jiangcai.dating.page.MyPage;
-import me.jiangcai.dating.page.StartOrderPage;
 import me.jiangcai.dating.service.SystemService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +27,11 @@ public class MyControllerTest extends WebTest {
         helloNewUser(null, true);
         MyPage myPage = myPage();
         // 检查各个功能完整性
-        // 这个版本开始 从my 可以进入start
-        myPage.clickMenu("款爷收款");
-        initPage(StartOrderPage.class);
-        myPage = myPage();
+        // 这个版本开始 从my 可以进入start 已取消
+//        myPage.clickMenu("款爷收款");
+//        initPage(StartOrderPage.class);
+//        myPage = myPage();
+
         myPage.clickMenu("办信用卡");
         // 此时它的地址应该是跟系统属性中的办卡地址一致的
 //        System.out.println(driver.getTitle());  // 融360
