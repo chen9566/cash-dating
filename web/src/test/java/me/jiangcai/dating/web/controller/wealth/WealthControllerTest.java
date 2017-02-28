@@ -26,6 +26,7 @@ import me.jiangcai.dating.service.TourongjiaService;
 import me.jiangcai.dating.service.WealthService;
 import me.jiangcai.gaa.sdk.repository.DistrictRepository;
 import org.apache.commons.lang.RandomStringUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -310,6 +311,7 @@ public class WealthControllerTest extends LoginWebTest {
     }
 
     @Test
+    @Ignore // 暂时取消
     public void financing() throws Exception {
         MyPage myPage = myPage();
 

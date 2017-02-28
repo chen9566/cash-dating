@@ -33,7 +33,7 @@ public class LoanPage extends AbstractPage {
     public void assertList(Loan[] loanList) {
         List<WebElement> products = this.loanList.findElements(By.tagName("ul"));
         assertThat(products)
-                .hasSize(loanList.length);
+                .hasSize(loanList.length + 1);
 
         //把符合条件的都过滤掉
         for (Loan loan : loanList) {
