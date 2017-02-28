@@ -4705,6 +4705,11 @@ ul#navlist .list1 {
     background-size: 100%;
     margin: 15px 10px 10px 10px;
 }
+.loan-v2 .bg5{
+    background: url("loanbg7.png") no-repeat;
+    background-size: 100%;
+    margin: 15px 10px 10px 10px;
+}
 
 .loan-v2 li {
     float: left;
