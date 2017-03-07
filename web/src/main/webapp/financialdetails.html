@@ -19,59 +19,50 @@
     <p><img src="images/money-kong.png" th:src="@{/images/money-kong.png}"></p>
     <h1>您当前还没有资金明细记录</h1>
 </div>
-<div class="month"><span>2016年9月</span></div>
-<div class="finlist">
-    <ul>
-        <li>
-            <p><span>特卖－星巴克</span>
-                <span class="pull-right f15">-50.00</span>
-            </p>
-            <p class="f12">
-                <span>9月12日 11:45:45</span>
-                <span class="f12 pull-right">支付成功</span>
-            </p>
-        </li>
-        <li>
-            <p><span>特卖－星巴克</span>
-                <span class="pull-right f15">-50.00</span>
-            </p>
-            <p class="f12">
-                <span>9月12日 11:45:45</span>
-                <span class="f12 pull-right">支付失败</span>
-            </p>
-        </li>
-        <li>
-            <p>收银台收款<span class="pull-right f15">+1950.00</span></p>
-            <p class="f13">已扣手续费<span class="pull-right f15">-50.00</span></p>
-            <p class="f12">9月12日 11:45:45<span class="f12 pull-right">收款成功</span></p>
-        </li>
-        <li href="orderdetails.html" class="clickHref" th:each="order:${orders}" th:switch="${order.status.name()}"
-            th:href="@{/orderDetail/{id}(id=${order.order.id})}">
-            <p>收银台收款<span class="pull-right f15">+1950.00</span></p>
-            <p class="f13">已扣手续费<span class="pull-right f15">-50.00</span></p>
-            <p class="f12">9月12日 11:45:45<span class="f12 pull-right"><a href="#"> 未到账,重试</a></span></p>
-        </li>
-        <li>
-            <p>特卖－油卡充值<span class="pull-right f15">-1950.00</span></p>
-            <p class="f13">石化卡号：784748848784784</p>
-            <p class="f12">9月12日 11:45:45<span class="f12 pull-right">支付成功</span></p>
-        </li>
-        <li>
-            <p>特卖－油卡充值<span class="pull-right f15">-1950.00</span></p>
-            <p class="f13">石化卡号：784748848784784</p>
-            <p class="f12">9月12日 11:45:45<span class="f12 pull-right">支付失败</span></p>
-        </li>
-        <li>
-            <p>特卖－流量充值<span class="pull-right f15">-50.00</span></p>
-            <p class="f13">电信号码：13388746473</p>
-            <p class="f12">9月12日 11:45:45<span class="f12 pull-right">支付成功</span></p>
-        </li>
-        <li>
-            <p>特卖－流量充值<span class="pull-right f15">-50.00</span></p>
-            <p class="f13">电信号码：13388746473</p>
-            <p class="f12">9月12日 11:45:45<span class="f12 pull-right">支付失败</span></p>
-        </li>
-    </ul>
+
+<div th:each="flows:${orders}">
+    <div class="month"><span th:text="${flows.flag}">2016年9月</span></div>
+    <div class="finlist">
+        <ul>
+            <li th:each="flow:${flows.flows}">
+                <p><span th:text="${flow.payOrder?flow.payInfo:(flow.cashOrder?'收银台收款':'二维码收款')}">二维码收款</span>
+                    <span class="pull-right f15"
+                          th:text="${'¥'+#numbers.formatDecimal(flow.amount,1,'COMMA',2,'POINT')}">¥1950.00</span>
+                </p>
+                <p class="f13" th:if="${!flow.payOrder}">已扣手续费
+                    <span class="pull-right f15"
+                          th:text="${'¥-'+#numbers.formatDecimal(flow.charge,1,'COMMA',2,'POINT')}">¥-50.00</span>
+                </p>
+                <p class="f12">
+                    <span th:text="${{flow.withdrawalOrder==null?flow.order.startTime:flow.withdrawalOrder.startTime}}">9月12日 11:45:45</span>
+                    <span class="f12 pull-right" th:text="${flow.payOrder?'支付成功':'收款成功'}">收款成功</span>
+                </p>
+            </li>
+            <li th:remove="all">
+                <p><span>特卖－星巴克</span>
+                    <span class="pull-right f15">-50.00</span>
+                </p>
+                <p class="f12">
+                    <span>9月12日 11:45:45</span>
+                    <span class="f12 pull-right">支付成功</span>
+                </p>
+            </li>
+            <li th:remove="all">
+                <p>二维码收款<span class="pull-right f15">¥1950.00</span></p>
+                <p class="f13">已扣手续费<span class="pull-right f15">¥-50.00</span></p>
+                <p class="f12">9月12日 11:45:45<span class="f12 pull-right">收款成功</span></p>
+            </li>
+            <li th:remove="all">
+                <p>二维码收款<span class="pull-right f15">¥1950.00</span></p>
+                <p class="f12">9月12日 11:45:45<span class="f12 pull-right">收款成功</span></p>
+            </li>
+            <li th:remove="all">
+                <p>二维码收款<span class="pull-right f15">¥1950.00</span></p>
+                <p class="f13">已扣手续费<span class="pull-right f15">¥-50.00</span></p>
+                <p class="f12">9月12日 11:45:45<span class="f12 pull-right">收款成功</span></p>
+            </li>
+        </ul>
+    </div>
 </div>
 </body>
 </html>

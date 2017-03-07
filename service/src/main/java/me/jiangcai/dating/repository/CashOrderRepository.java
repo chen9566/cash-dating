@@ -29,8 +29,14 @@ public interface CashOrderRepository extends JpaRepository<CashOrder, String> {
             " order by C.startTime desc,W.startTime desc")
     List<?> findOrderFlow(User user);
 
+    /**
+     * 包含商城订单
+     *
+     * @param user 指定用户
+     * @return 所有成功订单
+     */
     @Query("select C,W from CashOrder C left join C.platformWithdrawalOrderSet W" +
-            " where C.owner=?1 and C.completed=true and type(C) <> PayOrder and C.withdrawalCompleted=true " +
+            " where C.owner=?1 and C.completed=true and (C.withdrawalCompleted=true or type(C)=PayOrder) " +
             " order by C.startTime desc,W.startTime desc")
     List<?> findFinishedOrderFlow(User user);
 

@@ -201,9 +201,11 @@ public class OrderControllerTest extends LoginWebTest {
 
 
         driver.get("http://localhost/my");
+        makeTicketTrade(user, 0, 1, 1);
         myPage = initPage(MyPage.class);
         myPage.clickMenu("资金流水");
         FinancialListPage financialListPage = initPage(FinancialListPage.class);
+
 
     }
 

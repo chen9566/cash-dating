@@ -267,13 +267,15 @@ public class OrderServiceImpl implements OrderService {
     private List<OrderFlows> toMonthly(List<OrderFlow> flows) {
         ArrayList<OrderFlows> result = new ArrayList<>();
         flows.stream()
-                .map(orderFlow -> LocalDate.of(orderFlow.getOrder().getStartTime().getYear(), orderFlow.getOrder().getStartTime().getMonth(), 1))
+                .map(orderFlow
+                        -> LocalDate.of(orderFlow.getOrder().getStartTime().getYear(), orderFlow.getOrder().getStartTime().getMonth(), 1))
                 .distinct()
-                .forEach(localDate -> {
-                    result.add(new OrderFlows(flows.stream()
-                            .filter(orderFlow -> orderFlow.getOrder().getStartTime().getYear() == localDate.getYear() && orderFlow.getOrder().getStartTime().getMonth() == localDate.getMonth())
-                            .collect(Collectors.toList()), formatter.format(localDate)));
-                });
+                .forEach(localDate
+                        -> result.add(new OrderFlows(flows.stream()
+                        .filter(orderFlow
+                                -> orderFlow.getOrder().getStartTime().getYear() == localDate.getYear()
+                                && orderFlow.getOrder().getStartTime().getMonth() == localDate.getMonth())
+                        .collect(Collectors.toList()), formatter.format(localDate))));
         return result;
     }
 
