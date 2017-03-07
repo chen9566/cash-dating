@@ -1,5 +1,6 @@
 package me.jiangcai.dating.service;
 
+import com.google.zxing.WriterException;
 import me.jiangcai.dating.ServiceBaseTest;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -23,6 +25,26 @@ public class QRCodeServiceTest extends ServiceBaseTest {
 
     @Autowired
     private QRCodeService qrCodeService;
+
+    @Test
+    public void qrs() throws IOException, WriterException {
+        String[] codes = new String[]{
+                "7310183770009244671=8C6C3F5806AA6C86",
+                "7310183820009243990=771009CB4E52F330",
+                "7310183830009250664=2489817CAF8891BE",
+                "7310183850009034989=847245D848FE5850",
+                "7310183860009054278=F26EAAA5B30F0A31",
+                "7310183860009250655=5620FD1C1D976A03",
+                "7310183880009243703=082B72125F8CDCDC",
+                "7310183890009252501=DDAEAAE7A0354694",
+                "7310183920009243986=3D362850F5ACF68C"
+        };
+
+        for (int i = 0; i < codes.length; i++) {
+            BufferedImage image = qrCodeService.generateQRCode(codes[i]);
+            ImageIO.write(image, "png", new File("./target/start_" + i + ".png"));
+        }
+    }
 
     @Ignore
     @Test
