@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SignatureException;
 import java.util.ArrayList;
@@ -39,6 +40,16 @@ public class HomeController {
     private SystemService systemService;
     @Autowired
     private CardService cardService;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/start123")
+    public String start123(@AuthenticationPrincipal User user, Model model) throws UnsupportedEncodingException {
+        Pay123Card card = userService.updatePay123Card(user.getOpenId());
+        if (card != null) {
+            model.addAttribute("qrUrl", "/toQR?text=" + URLEncoder.encode(card.getQrUrl(), "UTF-8"));
+            return "paycode123.html";
+        }
+        return "redirect:/start";
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = {"/start"})
     public String index(@AuthenticationPrincipal User user, Model model, @RequestParam(required = false) Long cardId)
