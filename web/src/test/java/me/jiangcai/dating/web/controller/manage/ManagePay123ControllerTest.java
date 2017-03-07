@@ -59,7 +59,7 @@ public class ManagePay123ControllerTest extends ManageWebTest {
         // 走一个流程 一个客户端访问应该是直接产生一个 如果找不到了 应该给予警告
         getSystemService().updateEnablePay123(true);
         try {
-            pay123CardRepository.findAllUnused().stream().forEach(pay123CardRepository::delete);
+            pay123CardRepository.findAllUnused().forEach(pay123CardRepository::delete);
             // 走流程
 //            WebDriver pcDriver = MockMvcHtmlUnitDriverBuilder
 //                    .mockMvcSetup(mockMvc)
@@ -77,7 +77,8 @@ public class ManagePay123ControllerTest extends ManageWebTest {
             long old = pay123CardRepository.countAllUnused();
 
             try {
-                startOrderPage();
+                startOrderPage().printThisPage();
+
             } catch (Throwable ignored) {
             }
 //            System.out.println(driver.getPageSource());

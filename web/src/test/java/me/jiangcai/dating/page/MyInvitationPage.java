@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.model.BalanceFlow;
+import me.jiangcai.dating.model.InviteLevel;
 import me.jiangcai.dating.service.StatisticService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.util.Common;
@@ -23,8 +24,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 邀请明细
- *
+ * <p>
  * myinvitation.html
+ *
  * @author CJ
  */
 public class MyInvitationPage extends AbstractPage {
@@ -41,6 +43,10 @@ public class MyInvitationPage extends AbstractPage {
     private List<WebFriend> webFriends;
     @FindBy(css = "span[name=numbers]")
     private WebElement numbersText;
+    @FindBy(id = "cashRate")
+    private WebElement cashRate;
+    @FindBy(id = "commission")
+    private WebElement commission;
 
 
     public MyInvitationPage(WebDriver webDriver) {
@@ -52,7 +58,8 @@ public class MyInvitationPage extends AbstractPage {
     public void validatePage() {
 
         assertThat(webDriver.getTitle())
-                .isEqualTo("我邀请的好友");
+                .isEqualTo("邀请明细");
+
 
         agentElement = webDriver.findElements(By.tagName("a")).stream()
 //                .filter(WebElement::isDisplayed)
@@ -250,6 +257,19 @@ public class MyInvitationPage extends AbstractPage {
                 .findFirst()
                 .ifPresent(webFlow -> webFlow.element.click());
         return initPage(PartnerDataPage.class);
+    }
+
+    /**
+     * 断言当前奖励
+     *
+     * @param level 目标等级
+     */
+    public void assertInviteLevel(InviteLevel level) {
+//        printThisPage();
+        assertThat(cashRate.getText())
+                .isEqualTo(NumberUtils.format(level.getRate().movePointRight(2), 1, NumberPointType.COMMA, 2, NumberPointType.POINT, Locale.CHINA));
+        assertThat(commission.getText())
+                .isEqualTo(NumberUtils.format(level.getCommission().movePointRight(2), 1, NumberPointType.COMMA, 0, NumberPointType.POINT, Locale.CHINA));
     }
 
     @Data

@@ -356,12 +356,11 @@ public abstract class WebTest extends ServiceBaseTest {
         // http://app.kuanyes.com/cash/login?code=0218IKrs0MS6Wb1ofros0omPrs08IKrK&state=
         // http://app.kuanyes.com/cash/login?code=0218IKrs0MS6Wb1ofros0omPrs08IKrK&state=
         // /myInviteCode
-        driver.get("http://localhost/myInviteCode");
 //        MyPage myPage = initPage(MyPage.class);
 //        myPage.clickMenu("我的邀请");
 //        MyInvitationPage invitePage = initPage(MyInvitationPage.class);
 //        invitePage.requestAgent();
-        CodePage codePage = initPage(CodePage.class);
+        CodePage codePage = myPage().toCodePage();
 
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until((Predicate<WebDriver>) input -> {

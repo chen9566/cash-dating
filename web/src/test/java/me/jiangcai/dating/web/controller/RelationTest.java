@@ -78,7 +78,7 @@ public class RelationTest extends WebTest {
                 .isEqualTo(invite);
 
         // 新用户也可以看
-        noTeamPage();
+//        noTeamPage();
 
 
         CashOrder order = orderService.newOrder(newOne, new BigDecimal(100), UUID.randomUUID().toString(), newOne.getCards().get(0).getId());

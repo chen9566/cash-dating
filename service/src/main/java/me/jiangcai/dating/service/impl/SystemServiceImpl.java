@@ -6,6 +6,7 @@ import me.jiangcai.dating.channel.ChroneService;
 import me.jiangcai.dating.channel.PayChannel;
 import me.jiangcai.dating.entity.SystemString;
 import me.jiangcai.dating.entity.support.RateConfig;
+import me.jiangcai.dating.model.InviteLevel;
 import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.repository.SystemStringRepository;
 import me.jiangcai.dating.service.ChanpayService;
@@ -103,7 +104,7 @@ public class SystemServiceImpl implements SystemService {
         BigDecimal profitRate = bookRate.subtract(channelRate);
         // 剩余利益
         BigDecimal agentRate;
-        BigDecimal guideRate;
+        BigDecimal guideRate = profitSplit.guideRate(userService);
 
         if (profitRate.compareTo(BigDecimal.ZERO) > 0) {
             double agentProfitRate = profitSplit.agentProfileRate(this);
@@ -117,15 +118,17 @@ public class SystemServiceImpl implements SystemService {
             }
 
 
-            if (Double.isNaN(guideProfitRate)) {
-                guideRate = BigDecimal.ZERO;
-            } else {
-                guideRate = profitRate.multiply(BigDecimal.valueOf(guideProfitRate));
-            }
+            if (guideRate == null)
+                if (Double.isNaN(guideProfitRate)) {
+                    guideRate = BigDecimal.ZERO;
+                } else {
+                    guideRate = profitRate.multiply(BigDecimal.valueOf(guideProfitRate));
+                }
         } else {
             log.warn("negative profitRate for " + profitSplit);
             agentRate = BigDecimal.ZERO;
-            guideRate = BigDecimal.ZERO;
+            if (guideRate == null)
+                guideRate = BigDecimal.ZERO;
         }
 
         RateConfig config = new RateConfig();
@@ -190,9 +193,12 @@ public class SystemServiceImpl implements SystemService {
         if (profitSplit.useLowestRate()) {
             return getSystemString(LowestRate, BigDecimal.class, new BigDecimal("0.003"));
         }
-        BigDecimal rate = profitSplit.bookProfileRate(this);
-        if (rate != null)
-            return rate;
+        InviteLevel level = profitSplit.inviteLevel(userService);
+        if (level != null)
+            return level.getRate();
+//        BigDecimal rate = profitSplit.bookProfileRate(this);
+//        if (rate != null)
+//            return rate;
         return systemDefaultRate();
     }
 

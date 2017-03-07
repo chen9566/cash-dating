@@ -4,6 +4,7 @@ import me.jiangcai.dating.page.AbstractPage;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class TicketGoodsDetailPage extends AbstractPage {
 
+    @FindBy(id = "readyToBuy")
     private WebElement readyToBuy;
     private WebElement orderCreator;
 

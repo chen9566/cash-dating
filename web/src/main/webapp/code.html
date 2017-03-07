@@ -13,7 +13,7 @@
     <script src="dist/js/share.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body th:name="${user.id}">
 <div class="code">
     <p>扫一扫下方的二维码<br>注册成为合伙人一起赚大钱</p>
     <p class="bg"><img src="images/temp2.png" name="myShareQRCode" th:src="@{/inviteQR/{id}(id=${user.id})}">

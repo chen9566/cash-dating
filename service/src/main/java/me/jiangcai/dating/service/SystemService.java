@@ -21,6 +21,14 @@ import java.time.LocalDateTime;
 public interface SystemService {
 
     String DefaultPublicAccountName = "默认微信公众号";
+    BigDecimal level1Rate = new BigDecimal("0.6").movePointLeft(2);
+    BigDecimal level2Rate = new BigDecimal("0.45").movePointLeft(2);
+    BigDecimal level3Rate = new BigDecimal("0.38").movePointLeft(2);
+    BigDecimal level4Rate = new BigDecimal("0.30").movePointLeft(2);
+    BigDecimal commission1 = BigDecimal.ZERO;
+    BigDecimal commission2 = new BigDecimal("60").movePointLeft(2);
+    BigDecimal commission3 = new BigDecimal("70").movePointLeft(2);
+    BigDecimal commission4 = new BigDecimal("80").movePointLeft(2);
 
     /**
      * 自动调度

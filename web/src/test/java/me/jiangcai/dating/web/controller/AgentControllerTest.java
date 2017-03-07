@@ -13,6 +13,7 @@ import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.AgentService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -28,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author CJ
  */
+@Ignore
 public class AgentControllerTest extends LoginWebTest {
 
     private static final Log log = LogFactory.getLog(AgentControllerTest.class);

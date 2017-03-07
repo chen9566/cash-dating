@@ -14,7 +14,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.ComparisonFailure;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,11 +25,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 提现测试
- * 既然没有了合伙人,自然也没有了提现功能
+ * 包括了关系的维护以及提现
  *
  * @author CJ
  */
-@Ignore
 public class WithdrawControllerTest extends LoginWebTest {
 
     private static final Log log = LogFactory.getLog(WithdrawControllerTest.class);
@@ -49,11 +47,11 @@ public class WithdrawControllerTest extends LoginWebTest {
         CodePage codePage = myPage.toCodePage();
         // 去我的邀请
         MyInvitationPage myInvitationPage = codePage.toMyInvitationPage();
-        myInvitationPage.assertNoTeam();
+//        myInvitationPage.assertNoTeam();
         // 先让自己成为代理商
         agentService.makeAgent(currentUser());
         myInvitationPage.refresh();
-        myInvitationPage.assertTeam();
+//        myInvitationPage.assertTeam();
 
         WithdrawPage page;
         try {
@@ -79,12 +77,13 @@ public class WithdrawControllerTest extends LoginWebTest {
 
         // 检查下呗
         BigDecimal balance = statisticService.balance(currentUser().getOpenId());
-        System.out.println(balance);
+//        System.out.println(balance);
         assertThat(balance)
                 .isGreaterThan(BigDecimal.ZERO);
 
         // 刷他100
         page.refresh();
+//        page.printThisPage();
         page.assertBalance(balance);
 
         WithdrawResultPage resultPage = page.withdraw(balance);
@@ -97,6 +96,8 @@ public class WithdrawControllerTest extends LoginWebTest {
 
         assertThat(statisticService.balance(currentUser().getOpenId()))
                 .isEqualByComparingTo(BigDecimal.ZERO);
+
+//        myPage().toCodePage().toMyInvitationPage().printThisPage();
     }
 
     private void makeBalance() throws IOException, SignatureException {

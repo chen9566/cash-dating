@@ -10,6 +10,7 @@ import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.event.Notification;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.CashWeixinUserDetail;
+import me.jiangcai.dating.model.InviteLevel;
 import me.jiangcai.dating.model.InviteUser;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.notify.NotifyType;
@@ -324,6 +325,18 @@ public class UserServiceImpl implements UserService {
         } catch (NoResultException ignored) {
             return 0;
         }
+    }
+
+    @Override
+    public InviteLevel inviteLevel(String openId) {
+        long x = validInvites(openId);
+        if (x < 5)
+            return InviteLevel.threshold;
+        if (x < 10)
+            return InviteLevel.senior;
+        if (x < 15)
+            return InviteLevel.expert;
+        return InviteLevel.best;
     }
 
     @SuppressWarnings("unchecked")

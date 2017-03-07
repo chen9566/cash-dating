@@ -8,7 +8,9 @@ import me.jiangcai.dating.ProfitSplit;
 import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.model.BalanceFlow;
 import me.jiangcai.dating.model.CashWeixinUserDetail;
+import me.jiangcai.dating.model.InviteLevel;
 import me.jiangcai.dating.service.SystemService;
+import me.jiangcai.dating.service.UserService;
 import me.jiangcai.goods.Buyer;
 import me.jiangcai.wx.model.Gender;
 import me.jiangcai.wx.model.WeixinUser;
@@ -274,16 +276,29 @@ public class User implements WeixinUser, ProfitSplit, UserDetails, Locker, Buyer
     }
 
     @Override
-    public BigDecimal bookProfileRate(SystemService systemService) {
-        if (systemService.hasInviteValidUser(openId, 5))
-            return systemService.systemPreferentialRate();
-        return null;
+    public BigDecimal guideRate(UserService userService) {
+        if (guideUser == null)
+            return null;
+        return guideUser.inviteLevel(userService).getCommissionRate();
+    }
+
+    @Override
+    public BigDecimal bookProfileRate(SystemService systemService, UserService userService) {
+        return inviteLevel(userService).getRate();
+//        if (systemService.hasInviteValidUser(openId, 5))
+//            return systemService.systemPreferentialRate();
+//        return null;
 //        if (myAgentInfo == null)
 //            return null;
 //        if (myAgentInfo.getBookLevel() == null)
 //            return null;
 //
 //        return myAgentInfo.getBookLevel().toRate();
+    }
+
+    @Override
+    public InviteLevel inviteLevel(UserService userService) {
+        return userService.inviteLevel(getOpenId());
     }
 
     @Override

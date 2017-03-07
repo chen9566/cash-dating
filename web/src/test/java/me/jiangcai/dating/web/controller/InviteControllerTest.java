@@ -1,6 +1,7 @@
 package me.jiangcai.dating.web.controller;
 
 import me.jiangcai.dating.LoginWebTest;
+import me.jiangcai.dating.model.InviteLevel;
 import me.jiangcai.dating.page.CodePage;
 import me.jiangcai.dating.page.MyInvitationPage;
 import me.jiangcai.dating.page.MyPage;
@@ -8,16 +9,18 @@ import me.jiangcai.dating.repository.UserRepository;
 import me.jiangcai.dating.service.AgentService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.StatisticService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.security.SignatureException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * 合伙人已经从现有需求中排除
+ * 推广激励
  *
  * @author CJ
  */
@@ -33,6 +36,55 @@ public class InviteControllerTest extends LoginWebTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Test
+    public void go() throws IOException, SignatureException {
+        // 一个新用户
+        // 然后慢慢邀请用户 并且让用户刷卡 然后它的等级也满满变高
+        String oneNewUserOpenId = currentUser().getOpenId();
+        myPage().toCodePage().toMyInvitationPage().assertInviteLevel(InviteLevel.threshold);
+        createValidUserFor(oneNewUserOpenId);
+        createValidUserFor(oneNewUserOpenId);
+        createValidUserFor(oneNewUserOpenId);
+        createValidUserFor(oneNewUserOpenId);
+        myPage().toCodePage().toMyInvitationPage().assertInviteLevel(InviteLevel.threshold);
+        createValidUserFor(oneNewUserOpenId);
+        myPage().toCodePage().toMyInvitationPage().assertInviteLevel(InviteLevel.senior);
+        // 接下来5个订单 获得 senior 奖励
+        BigDecimal senior = BigDecimal.ZERO;
+        senior = senior.add(createValidUserFor(oneNewUserOpenId));
+        senior = senior.add(createValidUserFor(oneNewUserOpenId));
+        senior = senior.add(createValidUserFor(oneNewUserOpenId));
+        senior = senior.add(createValidUserFor(oneNewUserOpenId));
+        myPage().toCodePage().toMyInvitationPage().assertInviteLevel(InviteLevel.senior);
+        senior = senior.add(createValidUserFor(oneNewUserOpenId));
+        myPage().toCodePage().toMyInvitationPage().assertInviteLevel(InviteLevel.expert);
+
+        // 接下来5个订单获得 expert 奖励
+        BigDecimal expert = BigDecimal.ZERO;
+        expert = expert.add(createValidUserFor(oneNewUserOpenId));
+        expert = expert.add(createValidUserFor(oneNewUserOpenId));
+        expert = expert.add(createValidUserFor(oneNewUserOpenId));
+        expert = expert.add(createValidUserFor(oneNewUserOpenId));
+        myPage().toCodePage().toMyInvitationPage().assertInviteLevel(InviteLevel.expert);
+        expert = expert.add(createValidUserFor(oneNewUserOpenId));
+        myPage().toCodePage().toMyInvitationPage().assertInviteLevel(InviteLevel.best);
+
+        BigDecimal best = createValidUserFor(oneNewUserOpenId);
+
+        myPage().toCodePage().toMyInvitationPage().toWithdrawPage().assertBalance(
+                senior.multiply(InviteLevel.senior.getCommissionRate())
+                        .add(
+                                expert.multiply(InviteLevel.expert.getCommissionRate())
+                        )
+                        .add(
+                                best.multiply(InviteLevel.best.getCommissionRate())
+                        )
+        );
+
+        myPage().toCodePage().toMyInvitationPage().printThisPage();
+    }
+
+    @Ignore
     @Test
     public void invite() throws IOException, SignatureException {
         String oneNewUserOpenId = createNewUser().getOpenId();
@@ -115,9 +167,14 @@ public class InviteControllerTest extends LoginWebTest {
                 , userService);
     }
 
-    private void createValidUserFor(String openId) throws IOException, SignatureException {
+    private BigDecimal createValidUserFor(String openId) throws IOException, SignatureException {
+        return createValidUserFor(openId, randomOrderAmount());
+    }
+
+    private BigDecimal createValidUserFor(String openId, BigDecimal amount) throws IOException, SignatureException {
         String newOpenId = createNewUser(userService.byOpenId(openId)).getOpenId();
-        makeFinishCashOrder(userService.byOpenId(newOpenId), randomOrderAmount(), null);
+        makeFinishCashOrder(userService.byOpenId(newOpenId), amount, null);
+        return amount;
     }
 
 

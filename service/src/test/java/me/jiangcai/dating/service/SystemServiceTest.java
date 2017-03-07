@@ -5,6 +5,7 @@ import me.jiangcai.dating.ServiceBaseTest;
 import me.jiangcai.dating.entity.LoanRequest;
 import me.jiangcai.dating.entity.support.LoanRequestStatus;
 import me.jiangcai.dating.entity.support.RateConfig;
+import me.jiangcai.dating.model.InviteLevel;
 import me.jiangcai.dating.repository.LoanRequestRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,7 +144,12 @@ public class SystemServiceTest extends ServiceBaseTest {
     public void badCurrentRateConfig() {
         RateConfig config = systemService.currentRateConfig(new ProfitSplit() {
             @Override
-            public BigDecimal bookProfileRate(SystemService systemService) {
+            public BigDecimal bookProfileRate(SystemService systemService, UserService userService) {
+                return null;
+            }
+
+            @Override
+            public InviteLevel inviteLevel(UserService userService) {
                 return null;
             }
 
@@ -155,6 +161,11 @@ public class SystemServiceTest extends ServiceBaseTest {
             @Override
             public double guideProfileRate(SystemService systemService) {
                 return 0.5;
+            }
+
+            @Override
+            public BigDecimal guideRate(UserService userService) {
+                return null;
             }
         });
     }
@@ -167,8 +178,14 @@ public class SystemServiceTest extends ServiceBaseTest {
         BigDecimal bacheng = maxRate.multiply(new BigDecimal("0.2"));
 
         RateConfig config = systemService.currentRateConfig(new ProfitSplit() {
+
             @Override
-            public BigDecimal bookProfileRate(SystemService systemService) {
+            public InviteLevel inviteLevel(UserService userService) {
+                return null;
+            }
+
+            @Override
+            public BigDecimal bookProfileRate(SystemService systemService, UserService userService) {
                 return null;
             }
 
@@ -180,6 +197,11 @@ public class SystemServiceTest extends ServiceBaseTest {
             @Override
             public double guideProfileRate(SystemService systemService) {
                 return Double.NaN;
+            }
+
+            @Override
+            public BigDecimal guideRate(UserService userService) {
+                return null;
             }
         });
         assertThat(config.getAgentRate())
@@ -190,8 +212,14 @@ public class SystemServiceTest extends ServiceBaseTest {
                 .isEqualByComparingTo(maxRate);
 
         config = systemService.currentRateConfig(new ProfitSplit() {
+
             @Override
-            public BigDecimal bookProfileRate(SystemService systemService) {
+            public InviteLevel inviteLevel(UserService userService) {
+                return null;
+            }
+
+            @Override
+            public BigDecimal bookProfileRate(SystemService systemService, UserService userService) {
                 return null;
             }
 
@@ -203,6 +231,11 @@ public class SystemServiceTest extends ServiceBaseTest {
             @Override
             public double guideProfileRate(SystemService systemService) {
                 return 0;
+            }
+
+            @Override
+            public BigDecimal guideRate(UserService userService) {
+                return null;
             }
         });
         assertThat(config.getAgentRate())
@@ -215,8 +248,14 @@ public class SystemServiceTest extends ServiceBaseTest {
         //
 
         config = systemService.currentRateConfig(new ProfitSplit() {
+
             @Override
-            public BigDecimal bookProfileRate(SystemService systemService) {
+            public InviteLevel inviteLevel(UserService userService) {
+                return null;
+            }
+
+            @Override
+            public BigDecimal bookProfileRate(SystemService systemService, UserService userService) {
                 return null;
             }
 
@@ -228,6 +267,11 @@ public class SystemServiceTest extends ServiceBaseTest {
             @Override
             public double guideProfileRate(SystemService systemService) {
                 return 0;
+            }
+
+            @Override
+            public BigDecimal guideRate(UserService userService) {
+                return null;
             }
         });
         assertThat(config.getGuideRate())
@@ -236,8 +280,14 @@ public class SystemServiceTest extends ServiceBaseTest {
                 .isEqualByComparingTo(halfRate);
 
         config = systemService.currentRateConfig(new ProfitSplit() {
+
             @Override
-            public BigDecimal bookProfileRate(SystemService systemService) {
+            public InviteLevel inviteLevel(UserService userService) {
+                return null;
+            }
+
+            @Override
+            public BigDecimal bookProfileRate(SystemService systemService, UserService userService) {
                 return null;
             }
 
@@ -249,6 +299,11 @@ public class SystemServiceTest extends ServiceBaseTest {
             @Override
             public double guideProfileRate(SystemService systemService) {
                 return 0.5;
+            }
+
+            @Override
+            public BigDecimal guideRate(UserService userService) {
+                return null;
             }
         });
         assertThat(config.getAgentRate())
@@ -259,8 +314,14 @@ public class SystemServiceTest extends ServiceBaseTest {
         // both
 
         config = systemService.currentRateConfig(new ProfitSplit() {
+
             @Override
-            public BigDecimal bookProfileRate(SystemService systemService) {
+            public InviteLevel inviteLevel(UserService userService) {
+                return null;
+            }
+
+            @Override
+            public BigDecimal bookProfileRate(SystemService systemService, UserService userService) {
                 return null;
             }
 
@@ -272,6 +333,11 @@ public class SystemServiceTest extends ServiceBaseTest {
             @Override
             public double guideProfileRate(SystemService systemService) {
                 return 0.4;
+            }
+
+            @Override
+            public BigDecimal guideRate(UserService userService) {
+                return null;
             }
         });
         assertThat(config.getPlatformRate())

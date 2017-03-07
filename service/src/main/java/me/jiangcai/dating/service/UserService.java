@@ -4,6 +4,7 @@ import me.jiangcai.dating.entity.LoginToken;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.supplier.Pay123Card;
 import me.jiangcai.dating.exception.IllegalVerificationCodeException;
+import me.jiangcai.dating.model.InviteLevel;
 import me.jiangcai.dating.model.InviteUser;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import org.springframework.transaction.annotation.Transactional;
@@ -143,6 +144,15 @@ public interface UserService {
      */
     @Transactional(readOnly = true)
     long validInvites(String openId);
+
+// 我们可以通过 userService.validInvites(openId) 获知有效邀请数
+
+    /**
+     * @param openId 用户的openId
+     * @return 用户推广奖励级别
+     */
+    @Transactional(readOnly = true)
+    InviteLevel inviteLevel(String openId);
 
     /**
      * @param openId 用户的openId

@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="level" type="me.jiangcai.dating.model.InviteLevel"*/-->
+<!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
+<!--/*@thymesVar id="balance" type="java.lang.Number"*/-->
+<!--/*@thymesVar id="numbers" type="java.lang.Integer"*/-->
+<!--/*@thymesVar id="flows" type="java.util.List<me.jiangcai.dating.model.BalanceFlow>"*/-->
+<!--/*@thymesVar id="withdrawalFlows" type="java.util.List<me.jiangcai.dating.model.BalanceFlow>"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
@@ -12,15 +18,22 @@
 </head>
 <body>
 
-<div class="financial" th:if="${user.agentInfo!=null}">
+<div class="financial">
     <p class="pull-right"><a href="now.html" class="tx" th:href="@{/withdraw}">提现</a></p>
     <p class="smt">可提金额(元)<a href="note.html"><img src="images/question-icon2.png"/></a></p>
     <p class="money" th:text="${#numbers.formatDecimal(balance,1,'COMMA',2,'POINT')}"
        th:name="balance">1000.00</p>
-    <div class="num-y"><a href="note.html">当前利率0.60%
-        <span class="pull-right">分润80%
-        <img src="images/blackrightw-r.png"></span>
-    </a></div>
+    <!--note.html-->
+    <div class="num-y">
+        <a href="#">当前利率
+            <span id="cashRate" th:text="${#numbers.formatDecimal(level.rate.movePointRight(2),1,2)}">0.60</span>%
+            <span class="pull-right">分润
+                <span id="commission"
+                      th:text="${#numbers.formatDecimal(level.commission.movePointRight(2),1,0)}">80</span>%
+            <img src="images/blackrightw-r.png">
+            </span>
+        </a>
+    </div>
 </div>
 <div class="comtab">
     <ul>
@@ -30,58 +43,55 @@
         </li>
     </ul>
 </div>
-<!--提现明细!-->
-<div class="comlist">
-    <p class="kong" ><img src="images/kong-pic.png">暂无数据</p>
+<!--佣金明细!-->
+<div class="comlist" id="yj">
+    <p class="kong" th:if="${flows.isEmpty()}"><img src="images/kong-pic.png">暂无数据</p>
     <ul>
-        <li><img src="images/temp2.jpg" class="imgcir"/>
-            <p><span class="f12">欣欣殿下</span><span class="f12t">2017-04-04</span></p>
-            <p class="f14">收款金额4000元</p>
-           <div class="y-m"><span class="f22">10</span><span class="f12">元</span><img src="images/blackright-r.png"/> </div>
+        <!--class="clickHref" href="Partnerdata.html"-->
+        <li th:each="flow:${flows}">
+            <img src="images/temp2.jpg" th:src="${flow.owner.headImageUrl}" class="imgcir"/>
+            <p><span class="f12" th:text="${flow.owner.nickname}">欣欣殿下</span>
+                <span class="f12t" th:text="${{flow.startTime}}">2017-04-04</span></p>
+            <p class="f14">收款金额
+                <span th:text="${#numbers.formatDecimal(flow.originalAmount,1,'COMMA',2,'POINT')}">4000</span>
+                元</p>
+            <div class="y-m">
+                <span class="f22" th:text="${#numbers.formatDecimal(flow.amount,1,'COMMA',2,'POINT')}">10</span>
+                <span class="f12">元</span><img src="images/blackright-r.png"/>
+            </div>
         </li>
-        <li><img src="images/temp2.jpg" class="imgcir"/>
+        <li th:remove="all"><img src="images/temp2.jpg" class="imgcir"/>
             <p><span class="f12">欣欣殿下</span><span class="f12t">2017-04-04</span></p>
             <p class="f14">收款金额4000元</p>
-            <div class="y-m"><span class="f22">10</span><span class="f12">元</span><img src="images/blackright-r.png"/> </div>
-        </li>
-        <li><img src="images/temp2.jpg" class="imgcir"/>
-            <p><span class="f12">欣欣殿下</span><span class="f12t">2017-04-04</span></p>
-            <p class="f14">收款金额4000元</p>
-            <div class="y-m"><span class="f22">8</span><span class="f12">元</span><img src="images/blackright-r.png"/> </div>
-        </li>
-        <li><img src="images/temp2.jpg" class="imgcir"/>
-            <p><span class="f12">欣欣殿下</span><span class="f12t">2017-04-04</span></p>
-            <p class="f14">收款金额4000元</p>
-            <div class="y-m"><span class="f22">10</span><span class="f12">元</span><img src="images/blackright-r.png"/> </div>
-        </li>
-        <li><img src="images/temp2.jpg" class="imgcir"/>
-            <p><span class="f12">欣欣殿下</span><span class="f12t">2017-04-04</span></p>
-            <p class="f14">收款金额4000元</p>
-            <div class="y-m"><span class="f22">10</span><span class="f12">元</span><img src="images/blackright-r.png"/> </div>
+            <div class="y-m"><span class="f22">10</span><span class="f12">元</span><img src="images/blackright-r.png"/>
+            </div>
         </li>
     </ul>
 </div>
-<!--提现明细 end!-->
-<!--佣金明细!-->
+<!--佣金明细 end!-->
+<!--提现明细!-->
 <div class="yjlist" style="display: none">
-    <p class="kong" ><img src="images/kong-pic.png">暂无数据</p>
-    <ul class="bg">
+    <p class="kong" th:if="${withdrawalFlows.isEmpty()}"><img src="images/kong-pic.png">暂无数据</p>
+    <ul class="bg" th:if="${!withdrawalFlows.isEmpty()}">
         <li class="w10">提现时间</li>
         <li class="w5">金额(元)</li>
         <li class="w5">状态</li>
     </ul>
-    <ul th:remove="all" class="clickHref" href="Partnerdata.html">
-        <li class="w10" >欣欣殿下欣欣殿</li>
-        <li class="w5" >2000</li>
-        <li class="w5" >提现成功<span class="br-img"><img src="images/blackright-r.png"></span></li>
+    <!--class="clickHref" href="Partnerdata.html"-->
+    <ul th:each="flow:${withdrawalFlows}">
+        <li class="w10" th:text="${{flow.startTime}}">16-12-01 上午10:00</li>
+        <li class="w5" th:text="${#numbers.formatDecimal(flow.amount,1,'COMMA',2,'POINT')}">2000</li>
+        <li class="w5"><span th:text="${flow.status}">进行中</span><span class="br-img"><img src="images/blackright-r.png"></span>
+        </li>
     </ul>
-    <ul th:remove="all" class="clickHref" href="Partnerdata.html">
-        <li class="w10">欣欣殿下</li>
+    <ul th:remove="all">
+        <li class="w10">16-12-01 上午10:00</li>
         <li class="w5">2000</li>
-        <li class="w5">提现失败<span class="br-img"><img src="images/blackright-r.png"></span></li>
+        <li class="w5"><span>进行中</span><span class="br-img"><img src="images/blackright-r.png"></span></li>
     </ul>
 </div>
-<!--佣金明细 end!-->
+<!--提现明细 end!-->
+<script src="mock/all.js" th:src="@{/all.js}"></script>
 <script>
     $(".comtab li a").click(function () {
         $(".currtab").removeClass("currtab");

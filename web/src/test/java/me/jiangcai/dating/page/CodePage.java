@@ -13,9 +13,7 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * 合伙賺钱页面
- * 2016-12-25更新至「邀请好友」页面
- * code.html -> friends/inviteFriends.html
+ * 邀请合伙人 code.html
  * @author CJ
  */
 public class CodePage extends AbstractPage {
@@ -36,7 +34,7 @@ public class CodePage extends AbstractPage {
     @Override
     public void validatePage() {
         assertThat(webDriver.getTitle())
-                .isEqualTo("邀请好友");
+                .isEqualTo("邀请合伙人");
 //        webDriver.findElements(By.tagName("img")).stream()
 //                .filter(WebElement::isDisplayed)
 //                .filter(webElement -> "myShareQRCode".equals(webElement.getAttribute("name")))
@@ -44,11 +42,11 @@ public class CodePage extends AbstractPage {
 //                .ifPresent(element -> qrCode = element);
 
         webDriver
-//                .findElements(By.tagName("button")).stream()
-//                .filter(WebElement::isDisplayed)
-//                .filter(element -> element.getText().equals("邀请明细"))
-                .findElements(By.id("toInviteList")).stream()
+                .findElements(By.tagName("button")).stream()
                 .filter(WebElement::isDisplayed)
+                .filter(element -> element.getText().equals("邀请明细"))
+//                .findElements(By.id("toInviteList")).stream()
+//                .filter(WebElement::isDisplayed)
                 .findFirst()
                 .ifPresent(element -> inviteButton = element);
 

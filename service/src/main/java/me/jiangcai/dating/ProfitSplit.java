@@ -1,6 +1,8 @@
 package me.jiangcai.dating;
 
+import me.jiangcai.dating.model.InviteLevel;
 import me.jiangcai.dating.service.SystemService;
+import me.jiangcai.dating.service.UserService;
 
 import java.math.BigDecimal;
 
@@ -15,9 +17,17 @@ public interface ProfitSplit {
      * 账面手续费率
      *
      * @param systemService
+     * @param userService
      * @return 可以返回空标识使用默认
+     * @deprecated 应该不好用了
      */
-    BigDecimal bookProfileRate(SystemService systemService);
+    BigDecimal bookProfileRate(SystemService systemService, UserService userService);
+
+    /**
+     * @param userService 用户服务
+     * @return 推广激励等级; null表示没有
+     */
+    InviteLevel inviteLevel(UserService userService);
 
     /**
      * 2个分配比例相加绝对不可以大于或者等于1
@@ -57,4 +67,10 @@ public interface ProfitSplit {
     default boolean useLowestRate() {
         return false;
     }
+
+    /**
+     * @param userService 用户服务
+     * @return 确定的引导者汇率;null表示没有
+     */
+    BigDecimal guideRate(UserService userService);
 }
