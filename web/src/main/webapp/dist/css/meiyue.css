@@ -2497,7 +2497,7 @@ ul#navlist .list1 {
 }
 
 .yjlist li.w7 {
-    width: 50%
+    width: 55%
 }
 
 .yjlist li.w8 {
@@ -5381,7 +5381,7 @@ ul#navlist .list1 {
     text-align: center;
     display: block;
 }
-.comlist{ background: #fff; height: 400px; }
+.comlist{ background: #fff; min-height: 400px; }
 .comlist ul{padding-left: 15px;}
 .comlist li{ padding: 13px 0 13px 0; line-height: 22px;  border-bottom: 1px solid #dfdfdf}
 .comlist li:last-child{border-bottom: none}
