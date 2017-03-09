@@ -24,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * 邀请明细
- * <p>
  * myinvitation.html
  *
  * @author CJ
@@ -270,6 +269,12 @@ public class MyInvitationPage extends AbstractPage {
                 .isEqualTo(NumberUtils.format(level.getRate().movePointRight(2), 1, NumberPointType.COMMA, 2, NumberPointType.POINT, Locale.CHINA));
         assertThat(commission.getText())
                 .isEqualTo(NumberUtils.format(level.getCommission().movePointRight(2), 1, NumberPointType.COMMA, 0, NumberPointType.POINT, Locale.CHINA));
+    }
+
+    public InvitationNotePage toNotePage() {
+        webDriver.findElement(By.id("toNoteLink"))
+                .click();
+        return initPage(InvitationNotePage.class);
     }
 
     @Data

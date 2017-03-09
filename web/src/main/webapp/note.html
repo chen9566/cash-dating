@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--/*@thymesVar id="level" type="me.jiangcai.dating.model.InviteLevel"*/-->
+<!--/*@thymesVar id="number" type="java.lang.Number"*/-->
+<!--/*@thymesVar id="user" type="me.jiangcai.dating.entity.User"*/-->
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
@@ -13,8 +16,13 @@
 <body>
 <div class="note">
     <ul>
-        <li class="b-r"><p class="f15">当前汇率</p><span class="f26">0.60</span><span class="f15">％</span></li>
-        <li ><p class="f15">你邀请人数</p><span class="f26">5</span><span class="f15">人</span></li>
+        <li class="b-r"><p class="f15">当前汇率</p>
+            <span class="f26" id="cashRate"
+                  th:text="${#numbers.formatDecimal(level.rate.movePointRight(2),1,2)}">0.60</span>
+            <span class="f15">％</span>
+        </li>
+        <li><p class="f15">你邀请人数</p><span id="numbers" class="f26" th:text="${number}">5</span><span
+                class="f15">人</span></li>
     </ul>
 </div>
 
@@ -31,12 +39,12 @@
         <li class="w7" >0%</li>
     </ul>
     <ul >
-        <li class="w6" >5到10人</li>
+        <li class="w6">5到9人</li>
         <li class="w6" >0.45%</li>
         <li class="w7" >(0.6-0.45)*60%=0.09%</li>
     </ul>
     <ul >
-        <li class="w6" >10到15人</li>
+        <li class="w6">10到14人</li>
         <li class="w6" >0.38%</li>
         <li class="w7" >(0.6-0.38)*70%=0.154%</li>
     </ul>

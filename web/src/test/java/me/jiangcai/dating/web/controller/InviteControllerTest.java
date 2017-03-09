@@ -41,8 +41,10 @@ public class InviteControllerTest extends LoginWebTest {
         // 一个新用户
         // 然后慢慢邀请用户 并且让用户刷卡 然后它的等级也满满变高
         String oneNewUserOpenId = currentUser().getOpenId();
+        myPage().toCodePage().toMyInvitationPage().toNotePage().assertNumber(0);
         myPage().toCodePage().toMyInvitationPage().assertInviteLevel(InviteLevel.threshold);
         createValidUserFor(oneNewUserOpenId);
+        myPage().toCodePage().toMyInvitationPage().toNotePage().assertNumber(1);
         createValidUserFor(oneNewUserOpenId);
         createValidUserFor(oneNewUserOpenId);
         createValidUserFor(oneNewUserOpenId);

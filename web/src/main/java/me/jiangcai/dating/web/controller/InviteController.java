@@ -7,6 +7,7 @@ import me.jiangcai.dating.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,12 +29,22 @@ public class InviteController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET, value = {"/myCode"})
+    @Transactional(readOnly = true)
     public String myCode(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", userService.by(user.getId()));
         return "code.html";
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/invitationNote")
+    @Transactional(readOnly = true)
+    public String invitationNote(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("level", userService.inviteLevel(user.getOpenId()));
+        model.addAttribute("number", userService.validInvites(user.getOpenId()));
+        return "note.html";
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = {"/myInvite", "/myInvitation"})
+    @Transactional(readOnly = true)
     public String index(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", userService.by(user.getId()));
         final BigDecimal balance = statisticService.balance(user.getOpenId());

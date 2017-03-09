@@ -20,12 +20,12 @@
 
 <div class="financial">
     <p class="pull-right"><a href="now.html" class="tx" th:href="@{/withdraw}">提现</a></p>
-    <p class="smt">可提金额(元)<a href="note.html"><img src="images/question-icon2.png"/></a></p>
+    <p class="smt">可提金额(元)<a id="toNoteLink" href="note.html" th:href="@{/invitationNote}">
+        <img src="images/question-icon2.png"/></a></p>
     <p class="money" th:text="${#numbers.formatDecimal(balance,1,'COMMA',2,'POINT')}"
        th:name="balance">1000.00</p>
-    <!--note.html-->
     <div class="num-y">
-        <a href="#">当前利率
+        <a href="note.html" th:href="@{/invitationNote}">当前利率
             <span id="cashRate" th:text="${#numbers.formatDecimal(level.rate.movePointRight(2),1,2)}">0.60</span>%
             <span class="pull-right">分润
                 <span id="commission"
