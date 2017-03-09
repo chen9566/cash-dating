@@ -483,10 +483,10 @@ public class WealthServiceImpl implements WealthService {
             loanCacheTime = System.currentTimeMillis();
         }
         // 添加 工程贷款
-        Loan[] newArray = new Loan[loanCache.length + 1];
-        newArray[0] = new ProjectLoan();
-        System.arraycopy(loanCache, 0, newArray, 1, loanCache.length);
-        loanCache = newArray;
+//        Loan[] newArray = new Loan[loanCache.length + 1];
+//        newArray[0] = new ProjectLoan();
+//        System.arraycopy(loanCache, 0, newArray, 1, loanCache.length);
+//        loanCache = newArray;
         return loanCache;
     }
 

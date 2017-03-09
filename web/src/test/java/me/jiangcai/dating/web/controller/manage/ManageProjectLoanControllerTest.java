@@ -17,6 +17,7 @@ import me.jiangcai.dating.service.WealthService;
 import me.jiangcai.dating.test.TestReportHandler;
 import me.jiangcai.dating.web.converter.LocalDateFormatter;
 import org.apache.commons.lang.RandomStringUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -41,6 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author CJ
  */
+@Ignore
 @AsManage(ManageStatus.projectLoanSupplier)
 public class ManageProjectLoanControllerTest extends ManageWebTest {
 

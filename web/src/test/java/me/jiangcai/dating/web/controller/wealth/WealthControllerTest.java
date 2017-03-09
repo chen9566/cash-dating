@@ -63,7 +63,7 @@ public class WealthControllerTest extends LoginWebTest {
      * @throws IOException
      */
     @Test
-//    @Repeat(3)
+    @Ignore
     public void projectLoan() throws IOException, InterruptedException {
         MyPage myPage = myPage();
         Loan[] loanList = wealthService.loanList();
