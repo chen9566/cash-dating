@@ -40,6 +40,7 @@ public class PayControllerTest extends WebTest {
     private QRCodeService qrCodeService;
 
     @Test
+    @Ignore
     public void usePay123() throws IOException {
         User user = helloNewUser(null, true);
 
@@ -50,7 +51,6 @@ public class PayControllerTest extends WebTest {
     }
 
     @Test
-    @Ignore
     public void to() throws Exception {
         // 应该是由 我的页面 开始进入,现在程序错误 我们直接拿Image
         User user = helloNewUser(null, true);
