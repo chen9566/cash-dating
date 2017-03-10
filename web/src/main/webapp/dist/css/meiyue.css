@@ -5382,7 +5382,7 @@ ul#navlist .list1 {
     display: block;
 }
 .comlist{ background: #fff; min-height: 400px; }
-.comlist ul{padding-left: 15px;}
+.comlist ul{padding-left: 15px; }
 .comlist li{ padding: 13px 0 13px 0; line-height: 22px;  border-bottom: 1px solid #dfdfdf}
 .comlist li:last-child{border-bottom: none}
 .comlist p{ padding: 0; margin: 0;}
