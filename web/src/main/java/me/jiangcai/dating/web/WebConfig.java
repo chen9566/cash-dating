@@ -94,6 +94,8 @@ public class WebConfig {
             }
 
             registry
+                    // 商城
+                    .antMatchers("/mall/**").permitAll()
                     // 密码登录页
                     .antMatchers("/passwordLogin").permitAll()
                     // 产生二维码

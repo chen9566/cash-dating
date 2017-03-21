@@ -23,6 +23,10 @@ public class FakeGoods extends CashGoods {
 
     @ManyToOne
     private FakeCategory category;
+    /**
+     * 销量，可以随意修改
+     */
+    private long sales;
 
     @Override
     public boolean isTicketGoods() {
