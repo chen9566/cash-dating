@@ -1746,7 +1746,7 @@ ul, li, dl, dd {
 
 .o-money {
     background: #fff;
-    padding: 15px 15px 35px 15px;
+    padding: 15px 15px 30px 15px;
     overflow: hidden
 }
 
@@ -1765,7 +1765,7 @@ ul, li, dl, dd {
     color: #F65150;
     border: 1px solid #F65150;
     background: #fff;
-    border-radius: 10px;
+    border-radius:6px;
     padding: 0 15px;
     text-decoration: none;
 }
