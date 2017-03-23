@@ -16,7 +16,8 @@ button, input, select, textarea {
     font-size: 100%;
     border: 0;
     padding: 0;
-    margin: 0
+    margin: 0;
+    outline: none;
 }
 
 .fl {
@@ -1074,15 +1075,17 @@ button, input, select, textarea {
 
 .hotgoods li {
     overflow: hidden;
-    margin: 0 30px 30px 0;
+    margin: 0 18px 18px 0;
     background: #fff;
     float: left;
-    position: relative
+    position: relative;
+    width: 285px;
+    height: 380px;
 }
 
 .hotgoods li img {
-    width: 580px;
-    height: 278px;
+    width: 285px;
+    height: 285px;
 }
 
 .hotgoods li .f40 {
@@ -1097,10 +1100,13 @@ button, input, select, textarea {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    font-size: 14px;
-    padding: 10px 0 0 7px;
+    font-size: 13px;
+    padding: 15px 0 0 13px;
 }
 
+.hotgoods li p {
+    margin: 0;
+}
 .hotgoods li .f16 {
     margin-left: 10px;
     font-size: 14px;
@@ -1167,6 +1173,7 @@ button, input, select, textarea {
     margin-top: -166px;
     z-index: 111;
     display: none;
+    width: 580px;
 }
 
 .show-t h1 {
@@ -1177,7 +1184,6 @@ button, input, select, textarea {
     line-height: 40px;
     margin: 0;
 }
-
 .show-t .close {
     display: block;
     float: right;
@@ -1204,7 +1210,6 @@ button, input, select, textarea {
     line-height: 40px;
     text-align: center
 }
-
 .show-t .wx {
     padding: 15px;
     display: block;
@@ -1212,11 +1217,7 @@ button, input, select, textarea {
     float: left;
     width: 200px;
     height: 218px;
-    border: 15px solid;
-    -moz-border-top-colors: #f0b42c #db9b17;
-    -moz-border-right-colors: #f0b42c #db9b17;
-    -moz-border-bottom-colors: #f0b42c #db9b17;
-    -moz-border-left-colors: #f0b42c #db9b17;
+    border: 15px solid #f0b42c;
     background: #fff;
 
 }
@@ -1235,7 +1236,6 @@ button, input, select, textarea {
     margin: 0;
     padding-top: 2px
 }
-
 .show-t .zfb {
     padding: 15px;
     display: block;
@@ -1243,11 +1243,7 @@ button, input, select, textarea {
     float: left;
     width: 200px;
     height: 218px;
-    border: 15px solid;
-    -moz-border-top-colors: #73ad83 #448653;
-    -moz-border-right-colors: #73ad83 #448653;
-    -moz-border-bottom-colors: #73ad83 #448653;
-    -moz-border-left-colors: #73ad83 #448653;
+    border: 15px solid #73ad83;
     background: #fff;
 
 }
@@ -1276,7 +1272,6 @@ button, input, select, textarea {
     width: 330px;
     height: 75px;
 }
-
 .footer {
     background: #eee;
     border-top: 1px solid #dfdfdf;

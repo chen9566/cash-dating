@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
     <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
-    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
-    <script src="js/messages_cn.js"></script>
+    <script src="//cdn.kuanyes.com/jquery-validation-1.15.0/jquery.validate.min.js"></script>
+    <script src="//cdn.kuanyes.com/jquery-validation-1.15.0/localization/messages_zh.js"></script>
     <script src="js/vali.js"></script>
     <script src="../dist/js/yzm.js"></script>
+    <script src="../js/register.js"></script>
     <link rel="stylesheet" href="styles/styles.css">
     <style>
         .yzm-n {
@@ -34,11 +35,11 @@
         <div class="title">
             <span class="hd">新用户注册</span>
             <span class="tips">注册款爷，得好礼！</span>
-            <p class="other">已有账号，<a href="login.html" rel="nofollow">立即登录</a></p>
+            <p class="other">已有账号，<a href="login.html" th:href="@{/mall/login}" rel="nofollow">立即登录</a></p>
         </div>
 
         <div class="login-center">
-            <form class="cmxform" id="signupForm" method="get" action="">
+            <form class="cmxform" id="signupForm" method="get" action="" th:action="@{/mall/register}" th:method="post">
                 <div class="login-tel fl">
                     <ul>
                         <li>
@@ -53,8 +54,7 @@
                             <label class="normal">验证码：</label>
                             <div class="box_border">
                                 <input name="verificationCode"
-                                       maxlength="4" minlength="4"
-                                       type="tel" required
+                                       type="tel"
                                        placeholder="请输入验证码">
                             </div>
                             <div id="btn-mask" class="yzm-n">获取验证吗</div>
@@ -96,7 +96,12 @@
         <span class="gat">&nbsp;&nbsp;&nbsp;&nbsp;浙ICP备16035373号-1<img src="images/gat-icon.png">&nbsp;&nbsp;浙公网安备 33010802007586号</span>
     </div>
 </div>
-
+<script src="../mock/all.js" th:src="@{/all.js}"></script>
+<script>
+    function registerMessageAlert(str) {
+        alert(str);
+    }
+</script>
 </body>
 
 </html>
