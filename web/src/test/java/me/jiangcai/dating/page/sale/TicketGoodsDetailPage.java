@@ -27,8 +27,7 @@ public class TicketGoodsDetailPage extends AbstractPage {
     @Override
     public void validatePage() {
 //        printThisPage();
-        assertThat(webDriver.getTitle())
-                .isEqualToIgnoringCase("商品详情");
+        assertTitle("商品详情");
     }
 
     public TicketPayPage buy(int count) {

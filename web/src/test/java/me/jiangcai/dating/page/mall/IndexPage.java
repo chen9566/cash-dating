@@ -2,8 +2,6 @@ package me.jiangcai.dating.page.mall;
 
 import org.openqa.selenium.WebDriver;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * index.html
  *
@@ -17,7 +15,7 @@ public class IndexPage extends AbstractMallPage {
 
     @Override
     public void validatePage() {
-        assertThat(webDriver.getTitle())
-                .isEqualToIgnoringCase("款爷商城");
+        assertTitle("款爷商城");
     }
+
 }

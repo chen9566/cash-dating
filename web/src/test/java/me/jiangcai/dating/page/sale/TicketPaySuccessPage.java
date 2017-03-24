@@ -4,8 +4,6 @@ import me.jiangcai.dating.page.AbstractPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * pay-ts2.html
  *
@@ -21,8 +19,7 @@ public class TicketPaySuccessPage extends AbstractPage {
 
     @Override
     public void validatePage() {
-        assertThat(webDriver.getTitle())
-                .isEqualToIgnoringCase("支付成功");
+        assertTitle("支付成功");
     }
 
     /**

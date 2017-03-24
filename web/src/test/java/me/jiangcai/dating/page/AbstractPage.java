@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.function.Predicate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -147,5 +148,10 @@ public abstract class AbstractPage extends me.jiangcai.lib.test.page.AbstractPag
         } catch (Exception ex) {
             throw new IllegalStateException(ex);
         }
+    }
+
+    protected void assertTitle(String title) {
+        assertThat(webDriver.getTitle())
+                .isEqualToIgnoringCase(title);
     }
 }

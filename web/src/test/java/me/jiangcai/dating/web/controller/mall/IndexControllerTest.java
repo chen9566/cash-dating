@@ -2,6 +2,7 @@ package me.jiangcai.dating.web.controller.mall;
 
 import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.page.mall.IndexPage;
+import me.jiangcai.dating.page.mall.RegisterPage;
 import org.junit.Test;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
@@ -21,6 +22,15 @@ public class IndexControllerTest extends WebTest {
         IndexPage indexPage = initPage(IndexPage.class);
 
         indexPage.printThisPage();
+
+        indexPage.assertNotLogin();
+
+        // 现在打开注册页面
+        RegisterPage registerPage = indexPage.openRegisterPage();
+
+        // 填写 手机号码，然后点击验证码，填入验证码，密码，确认密码
+        registerPage.registerAsRandom();
+
     }
 
 }

@@ -10,8 +10,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Arrays;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * 准备支付页面
  * cardplay.html
@@ -28,8 +26,7 @@ public class TicketPayPage extends AbstractPage {
 
     @Override
     public void validatePage() {
-        assertThat(webDriver.getTitle())
-                .isEqualToIgnoringCase("确认订单");
+        assertTitle("确认订单");
     }
 
     /**
