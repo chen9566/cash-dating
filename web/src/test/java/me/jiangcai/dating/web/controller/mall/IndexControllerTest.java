@@ -21,7 +21,7 @@ public class IndexControllerTest extends WebTest {
         driver.get("http://localhost/mall/");
         IndexPage indexPage = initPage(IndexPage.class);
 
-        indexPage.printThisPage();
+//        indexPage.printThisPage();
 
         indexPage.assertNotLogin();
 
@@ -34,6 +34,7 @@ public class IndexControllerTest extends WebTest {
         registerPage.registerAsRandom(mobile, password);
 
         System.out.println(driver.getPageSource());
+        // 开始进入登录流程
     }
 
 }

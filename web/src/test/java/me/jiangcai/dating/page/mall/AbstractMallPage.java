@@ -33,6 +33,7 @@ abstract class AbstractMallPage extends AbstractPage {
     }
 
     public RegisterPage openRegisterPage() {
+//        System.out.println(registerLink);
         registerLink.click();
         return initPage(RegisterPage.class);
     }

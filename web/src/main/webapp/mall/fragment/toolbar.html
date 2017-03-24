@@ -13,28 +13,29 @@
     <title>ToolBar</title>
 </head>
 <body>
+<script th:inline="javascript" th:fragment="all">
+    var message = /*[[${_message}]]*/ '原型信息测试';
+    var error = /*[[${_error}]]*/'原型错误测试';
+    $(function () {
+        function add(msg, style) {
+            $.gritter.add({
+                text: msg,
+                class_name: style,
+                sticky: false
+            });
+        }
+
+        if (message) {
+            add(message, 'growl-info');
+        }
+        if (error) {
+            add(error, 'growl-danger');
+        }
+
+    });
+</script>
+
 <th:block th:fragment="pageHeader">
-    <script th:inline="javascript">
-        var message = /*[[${_message}]]*/ '原型信息测试';
-        var error = /*[[${_error}]]*/'原型错误测试';
-        $(function () {
-            function add(msg, style) {
-                $.gritter.add({
-                    text: msg,
-                    class_name: style,
-                    sticky: false
-                });
-            }
-
-            if (message) {
-                add(message, 'growl-info');
-            }
-            if (error) {
-                add(error, 'growl-danger');
-            }
-
-        });
-    </script>
     <div class="toolbar">
         <div class="w1200">
             <ul class="fr">

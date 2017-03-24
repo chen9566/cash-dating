@@ -29,10 +29,12 @@
     <title>用户注册</title>
 </head>
 <body>
+<script th:replace="/mall/fragment/toolbar.html::all"></script>
+
 <div class="header">
     <div class="w980"><img src="images/userlogin.png"/></div>
 </div>
-<div class="login-main" th:text="${#fields.errors()}">
+<div class="login-main">
     <div class="login-content">
         <div class="title">
             <span class="hd">新用户注册</span>
