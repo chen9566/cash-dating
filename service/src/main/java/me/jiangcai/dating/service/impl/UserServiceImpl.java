@@ -109,13 +109,24 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByOpenId(openId);
         if (user == null) {
-            user = newUser(openId, request);
+            user = byMobile(mobileNumber);
+            if (user == null)
+                user = newUser(openId, request);
         }
         if (inviteCode != null) {
             User from = userRepository.findByInviteCode(inviteCode);
             applyGuide(user, from);
         }
-        user.setMobileNumber(mobileNumber);
+
+        // 在使用微信之前 已经使用了手机号码注册；那么这个新建的帐号将被删除
+
+        User mobileUser = byMobile(mobileNumber);
+        if (mobileUser != null && mobileUser.getOpenId() == null) {
+            // 删除  user
+            mergeUserTo(user, mobileUser);
+            user = mobileUser;
+        } else
+            user.setMobileNumber(mobileNumber);
 
         if (user.getAgentUser() != null) {
             applicationEventPublisher.publishEvent(
@@ -124,6 +135,31 @@ public class UserServiceImpl implements UserService {
         }
 
         return userRepository.save(user);
+    }
+
+    /**
+     * 合并用户
+     *
+     * @param from 这里
+     * @param to   那里。。
+     */
+    private void mergeUserTo(User from, User to) {
+        to.setEnabled(from.isEnabled());
+        to.setAccessTimeToExpire(from.getAccessTimeToExpire());
+        to.setAccessToken(from.getAccessToken());
+        to.setAgentInfo(from.getAgentInfo());
+        to.setCards(from.getCards());
+//        if (to.getCards() != null){
+//            to.getCards().forEach(card -> {
+//                card.set
+//            });
+//        }
+        to.setCity(from.getCity());
+        to.setCountry(from.getCountry());
+        to.setGender(from.getGender());
+//        to.setHeadImageUrl(from.getHeadImageUrl());
+        userRepository.delete(from);
+        userRepository.save(to);
     }
 
     @Override

@@ -13,6 +13,14 @@ if [[ ! -w $1 ]]; then
     exit 1
 fi
 
+# download https://github.com/jboesch/Gritter/archive/1.7.4.zip
+if [[ ! -e $1/jquery-gritter-1.7.4 ]]; then
+    wget https://github.com/jboesch/Gritter/archive/1.7.4.zip
+    unzip 1.7.4.zip
+    rm 1.7.4.zip
+    mv Gritter-1.7.4 $1/gritter-1.7.4
+fi
+
 #download jquery-ui-1.12.1 http://jqueryui.com/
 if [[ ! -e $1/jquery-ui-1.12.1 ]]; then
     wget http://resali.huobanplus.com/cdn/jquery-ui/jquery-ui-1.12.1.eggplant.zip

@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
     <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
+    <script src="//cdn.kuanyes.com/gritter-1.7.4/js/jquery.gritter.min.js"></script>
+    <link href="//cdn.kuanyes.com/gritter-1.7.4/css/jquery.gritter.css" rel="stylesheet" property=""/>
     <script src="../js/pageSwitch.min.js"></script>
     <link rel="stylesheet" href="../styles/styles.css">
     <link rel="stylesheet" href="../styles/pageSwitch.min.css">
@@ -12,6 +14,27 @@
 </head>
 <body>
 <th:block th:fragment="pageHeader">
+    <script th:inline="javascript">
+        var message = /*[[${_message}]]*/ '原型信息测试';
+        var error = /*[[${_error}]]*/'原型错误测试';
+        $(function () {
+            function add(msg, style) {
+                $.gritter.add({
+                    text: msg,
+                    class_name: style,
+                    sticky: false
+                });
+            }
+
+            if (message) {
+                add(message, 'growl-info');
+            }
+            if (error) {
+                add(error, 'growl-danger');
+            }
+
+        });
+    </script>
     <div class="toolbar">
         <div class="w1200">
             <ul class="fr">
@@ -19,7 +42,7 @@
                 <li class="lt">|</li>
                 <li><a href="../login.html" name="loginLink">登陆</a></li>
                 <li class="lt">|</li>
-                <li><a href="../register.html" name="registerLink">免费注册</a></li>
+                <li><a href="../register.html" th:href="@{/mall/register}" name="registerLink">免费注册</a></li>
             </ul>
         </div>
     </div>

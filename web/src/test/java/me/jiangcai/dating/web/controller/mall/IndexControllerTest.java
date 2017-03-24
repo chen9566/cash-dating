@@ -29,8 +29,11 @@ public class IndexControllerTest extends WebTest {
         RegisterPage registerPage = indexPage.openRegisterPage();
 
         // 填写 手机号码，然后点击验证码，填入验证码，密码，确认密码
-        registerPage.registerAsRandom();
+        String mobile = randomMobile();
+        String password = randomMobile();
+        registerPage.registerAsRandom(mobile, password);
 
+        System.out.println(driver.getPageSource());
     }
 
 }

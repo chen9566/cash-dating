@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
     <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
+    <script src="//cdn.kuanyes.com/gritter-1.7.4/js/jquery.gritter.min.js"></script>
+    <link href="//cdn.kuanyes.com/gritter-1.7.4/css/jquery.gritter.css" rel="stylesheet" property=""/>
     <script src="//cdn.kuanyes.com/jquery-validation-1.15.0/jquery.validate.min.js"></script>
     <script src="//cdn.kuanyes.com/jquery-validation-1.15.0/localization/messages_zh.js"></script>
     <script src="js/vali.js"></script>
@@ -30,7 +32,7 @@
 <div class="header">
     <div class="w980"><img src="images/userlogin.png"/></div>
 </div>
-<div class="login-main">
+<div class="login-main" th:text="${#fields.errors()}">
     <div class="login-content">
         <div class="title">
             <span class="hd">新用户注册</span>
@@ -51,22 +53,22 @@
                             </div>
                         </li>
                         <li class="yamput">
-                            <label class="normal">验证码：</label>
+                            <label class="normal" for="verificationCode">验证码：</label>
                             <div class="box_border">
-                                <input name="verificationCode"
+                                <input id="verificationCode" name="verificationCode"
                                        type="tel"
                                        placeholder="请输入验证码">
                             </div>
                             <div id="btn-mask" class="yzm-n">获取验证吗</div>
                         </li>
                         <li>
-                            <label class="normal">创建密码：</label>
+                            <label class="normal" for="password">创建密码：</label>
                             <div class="box_border">
                                 <input id="password" name="password" type="password" placeholder="密码">
                             </div>
                         </li>
                         <li>
-                            <label class="normal">确认密码：</label>
+                            <label class="normal" for="confirm_password">确认密码：</label>
                             <div class="box_border">
                                 <input id="confirm_password" name="confirm_password" type="password" placeholder="密码">
                             </div>
