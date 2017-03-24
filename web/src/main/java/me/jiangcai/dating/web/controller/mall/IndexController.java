@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * 允许非授权访问的假商城
@@ -24,13 +25,17 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class IndexController {
 
+    public static final String MallMode = "MallMode";
+
     @Autowired
     private UserService userService;
     @Autowired
     private VerificationCodeService verificationCodeService;
 
     @RequestMapping(method = RequestMethod.GET, value = {"", "/"})
-    public String home() {
+    public String home(HttpSession session) {
+
+        session.setAttribute(MallMode, true);
         return "/mall/index.html";
     }
 
@@ -67,6 +72,14 @@ public class IndexController {
         userService.updatePassword(user, password);
         redirectAttributes.addFlashAttribute("_message", "欢迎加入款爷！");
         return "redirect:/mall";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/login")
+    public String login(String type, Model model) {
+        if (type != null) {
+            model.addAttribute("_error", "用户名或者密码错误");
+        }
+        return "/mall/login.html";
     }
 
 }

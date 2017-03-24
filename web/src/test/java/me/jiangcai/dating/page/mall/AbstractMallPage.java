@@ -12,6 +12,7 @@ abstract class AbstractMallPage extends AbstractPage {
 
     protected WebElement registerLink;
     protected WebElement loginLink;
+
     AbstractMallPage(WebDriver webDriver) {
         super(webDriver);
     }
@@ -36,5 +37,10 @@ abstract class AbstractMallPage extends AbstractPage {
 //        System.out.println(registerLink);
         registerLink.click();
         return initPage(RegisterPage.class);
+    }
+
+    public LoginPage openLoginPage() {
+        loginLink.click();
+        return initPage(LoginPage.class);
     }
 }

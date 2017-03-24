@@ -2,6 +2,7 @@ package me.jiangcai.dating.web.controller.mall;
 
 import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.page.mall.IndexPage;
+import me.jiangcai.dating.page.mall.LoginPage;
 import me.jiangcai.dating.page.mall.RegisterPage;
 import org.junit.Test;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -36,7 +37,11 @@ public class IndexControllerTest extends WebTest {
 //        System.out.println(driver.getPageSource());
         // 开始进入登录流程
         indexPage = initPage(IndexPage.class);
+        LoginPage loginPage = indexPage.openLoginPage();
 
+        loginPage.loginAs(mobile, password);
+
+        System.out.println(driver.getPageSource());
     }
 
 }

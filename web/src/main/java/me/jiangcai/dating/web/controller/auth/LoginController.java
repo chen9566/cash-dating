@@ -9,6 +9,7 @@ import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.web.controller.GlobalController;
+import me.jiangcai.dating.web.controller.mall.IndexController;
 import me.jiangcai.wx.OpenId;
 import me.jiangcai.wx.model.SceneCode;
 import me.jiangcai.wx.model.WeixinUserDetail;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -52,7 +54,14 @@ public class LoginController {
 
     // 此处执行密码登录
     @RequestMapping(method = RequestMethod.GET, value = "/passwordLogin")
-    public String passwordLogin() {
+    public String passwordLogin(String type, HttpSession session) {
+        if (session.getAttribute(IndexController.MallMode) != null) {
+            // 转到商城去
+            if (type == null)
+                return "redirect:/mall/login";
+            else
+                return "redirect:/mall/login?type=" + type;
+        }
         return "password.html";
     }
 
