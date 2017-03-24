@@ -33,8 +33,10 @@ public class IndexControllerTest extends WebTest {
         String password = randomMobile();
         registerPage.registerAsRandom(mobile, password);
 
-        System.out.println(driver.getPageSource());
+//        System.out.println(driver.getPageSource());
         // 开始进入登录流程
+        indexPage = initPage(IndexPage.class);
+
     }
 
 }

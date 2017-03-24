@@ -30,15 +30,15 @@ public interface UserService {
      * 绑定手机号码
      *
      * @param request
+     * @param response
      * @param openId           openId
      * @param mobileNumber     手机
      * @param verificationCode 验证码
-     * @param inviteCode       邀请码
-     * @return 用户实例
+     * @param inviteCode       邀请码     @return 用户实例
      * @throws IllegalVerificationCodeException 验证码无效
      */
     @Transactional
-    User registerMobile(HttpServletRequest request, String openId, String mobileNumber, String verificationCode, String inviteCode)
+    User registerMobile(HttpServletRequest request, HttpServletResponse response, String openId, String mobileNumber, String verificationCode, String inviteCode)
             throws IllegalVerificationCodeException;
 
     /**

@@ -51,7 +51,7 @@ public class ChanpayServiceTest extends ServiceBaseTest {
         WeixinUserDetail detail = WeixinUserMocker.randomWeixinUserDetail();
         String mobile = randomMobile();
         verificationCodeService.sendCode(mobile, VerificationType.register);
-        User user = userService.registerMobile(null, detail.getOpenId(), mobile, "1234", null);
+        User user = userService.registerMobile(null, null, detail.getOpenId(), mobile, "1234", null);
 //        verificationCodeService.sendCode(mobile, Function.identity()); 现在不用发验证码了
         // 16
         String card = randomBankCard();

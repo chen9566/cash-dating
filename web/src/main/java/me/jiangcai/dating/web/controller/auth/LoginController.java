@@ -106,9 +106,9 @@ public class LoginController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/registerMobile")
-    public String registerMobile(HttpServletRequest request, @OpenId String id, String mobile, String verificationCode
+    public String registerMobile(HttpServletRequest request, HttpServletResponse response, @OpenId String id, String mobile, String verificationCode
             , String inviteCode) {
-        userService.registerMobile(request, id, mobile, verificationCode, inviteCode);
+        userService.registerMobile(request, response, id, mobile, verificationCode, inviteCode);
 
         return "redirect:/start";
     }
