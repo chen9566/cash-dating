@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.util.StreamUtils;
 
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -75,8 +76,10 @@ public class ManageSaleControllerTest extends ManageWebTest {
         FakeGoods fakeGoods = addRandomFakeGoods(session);
         // 设定它的库存
 
+
         // 检查库存量是否符合
         assertDataResult(count, ticketGoods, session);
+        assertDataResult(0, fakeGoods, session);
 
         LocalDate expireDate = LocalDate.now().plusMonths(2);
 
@@ -220,6 +223,11 @@ public class ManageSaleControllerTest extends ManageWebTest {
             public boolean isTicketGoods() {
                 return false;
             }
+
+            @Override
+            protected void moreModel(Map<String, Object> data) {
+
+            }
         };
         goods.setName(UUID.randomUUID().toString());
         goods.setBrand(UUID.randomUUID().toString());
@@ -231,14 +239,15 @@ public class ManageSaleControllerTest extends ManageWebTest {
     }
 
     private void assertDataResult(final int count, CashGoods cashGoods, MockHttpSession session) throws Exception {
-        final String stockExpression = "$.rows[?(@.id==" + cashGoods.getId() + ")].stock";
-        System.out.println(stockExpression);
-        mockMvc.perform(getWeixin("/manage/goods/data").session(session)
+        final String thisData = "$.rows[?(@.id==" + cashGoods.getId() + ")]";
+        final String stockExpression = thisData + ".stock";
+        // 还应当取出该数据，并且根据type 验证详情字段
+        final String contentAsString = mockMvc.perform(get("/manage/goods/data").session(session)
 //                .param("search", newUser.getNickname())
                 .param("offset", "0")
                 .param("limit", "10"))
                 .andExpect(status().isOk())
-                .andExpect(simliarDataJsonAs("/mock/goods.json"))
+                .andExpect(similarDataJsonAs("/mock/goods.json"))
                 .andExpect(jsonPath("$.rows").isArray())
                 .andExpect(jsonPath(stockExpression).value(new Matcher<Object>() {
                     @Override
@@ -263,7 +272,25 @@ public class ManageSaleControllerTest extends ManageWebTest {
                     }
                 }))
                 .andExpect(jsonPath("$.total").isNumber())
-                .andExpect(jsonPath("$.total").value((int) cashGoodsRepository.count()));
+                .andExpect(jsonPath("$.total").value((int) cashGoodsRepository.count()))
+                .andReturn().getResponse().getContentAsString();
+
+
+        String type = (String) ((JSONArray) JsonPath.read(
+                contentAsString, thisData + ".javaType"
+        )).get(0);
+        String url = (String) ((JSONArray) JsonPath.read(
+                contentAsString, thisData + ".morePropertiesUrl"
+        )).get(0);
+
+        if (url != null) {
+            mockMvc.perform(get(url).session(session).accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                    .andExpect(similarJsonAs("/mock/goods_" + type + ".json"));
+        }
+
+
     }
 
 }

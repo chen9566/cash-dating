@@ -86,7 +86,7 @@ public class ManageLoanControllerTest extends ManageWebTest {
                 .param("offset", "0")
                 .param("limit", "10"))
                 .andExpect(status().isOk())
-                .andExpect(simliarDataJsonAs("/mock/loanRequest.json"));
+                .andExpect(similarDataJsonAs("/mock/loanRequest.json"));
 
         long requestId = firstPadding(session);
         declineLoan(session, requestId);
@@ -141,7 +141,7 @@ public class ManageLoanControllerTest extends ManageWebTest {
                 .param("offset", "0")
                 .param("limit", "10"))
                 .andExpect(status().isOk())
-                .andExpect(simliarDataJsonAs("/mock/loanRequest.json"))
+                .andExpect(similarDataJsonAs("/mock/loanRequest.json"))
 //                .andDo(print())
                 .andReturn().getResponse().getContentAsString(), "$.rows[0].id")).longValue();
     }

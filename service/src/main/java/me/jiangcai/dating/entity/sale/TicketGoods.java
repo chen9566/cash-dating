@@ -11,6 +11,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
 import javax.persistence.Transient;
+import java.util.Map;
 
 /**
  * 卡券类商品
@@ -38,6 +39,11 @@ public class TicketGoods extends CashGoods {
     @Override
     public Long getId() {
         return super.getId();
+    }
+
+    @Override
+    protected void moreModel(Map<String, Object> data) {
+        data.put("notes", notes);
     }
 
     @Transient

@@ -50,7 +50,7 @@ public class ManageAgentControllerTest extends ManageWebTest {
                 .param("offset", "0")
                 .param("limit", "10"))
                 .andExpect(status().isOk())
-                .andExpect(simliarDataJsonAs("/mock/agent.json"));
+                .andExpect(similarDataJsonAs("/mock/agent.json"));
     }
 
 }

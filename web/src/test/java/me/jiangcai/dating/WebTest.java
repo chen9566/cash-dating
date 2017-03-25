@@ -200,7 +200,25 @@ public abstract class WebTest extends ServiceBaseTest {
                 .containsAll(IterableIterator(excepted.fieldNames()));
     }
 
-    protected ResultMatcher simliarDataJsonAs(String resource) {
+    /**
+     * @param resource 参考
+     * @return 验证这个资源应该是类似的Json Object
+     */
+    protected ResultMatcher similarJsonAs(String resource) {
+        return result -> {
+            Resource resource1 = applicationContext.getResource(resource);
+            try (InputStream inputStream = resource1.getInputStream()) {
+                JsonNode actual = objectMapper.readTree(result.getResponse().getContentAsByteArray());
+                assertSimilarJsonObject(actual, objectMapper.readTree(inputStream));
+            }
+        };
+    }
+
+    /**
+     * @param resource 参考
+     * @return 验证这个资源应该是dataTable风格的json
+     */
+    protected ResultMatcher similarDataJsonAs(String resource) {
         return result -> {
             Resource resource1 = applicationContext.getResource(resource);
             try (InputStream inputStream = resource1.getInputStream()) {

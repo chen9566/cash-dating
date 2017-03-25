@@ -26,7 +26,7 @@ public class UserControllerTest extends ManageWebTest {
                 .param("offset", "0")
                 .param("limit", "10").session(session))
                 .andExpect(status().isOk())
-                .andExpect(simliarDataJsonAs("/mock/users.json"))
+                .andExpect(similarDataJsonAs("/mock/users.json"))
                 .andReturn().getResponse().getContentAsString();
         System.out.println(content);
 

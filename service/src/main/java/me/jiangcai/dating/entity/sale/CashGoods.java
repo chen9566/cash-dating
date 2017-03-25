@@ -16,7 +16,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 款爷商品，那肯定都是打折的
@@ -93,4 +95,16 @@ public abstract class CashGoods extends Goods {
     public Long getId() {
         return super.getId();
     }
+
+    /**
+     * @return 详情模型
+     */
+    public Map<String, Object> getDetailModel() {
+        HashMap<String, Object> data = new HashMap<>();
+        //
+        moreModel(data);
+        return data;
+    }
+
+    protected abstract void moreModel(Map<String, Object> data);
 }

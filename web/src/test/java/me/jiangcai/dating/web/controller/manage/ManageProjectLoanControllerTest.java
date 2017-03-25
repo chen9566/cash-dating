@@ -375,7 +375,7 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
                 .param("offset", "0")
                 .param("limit", "10"))
                 .andExpect(status().isOk())
-                .andExpect(simliarDataJsonAs("/mock/projectLoanRequest.json"));
+                .andExpect(similarDataJsonAs("/mock/projectLoanRequest.json"));
 
         long requestId = firstPadding(session);
         declineLoan(session, requestId).andExpect(status().isOk());
@@ -524,7 +524,7 @@ public class ManageProjectLoanControllerTest extends ManageWebTest {
                 .param("offset", "0")
                 .param("limit", "10"))
                 .andExpect(status().isOk())
-                .andExpect(simliarDataJsonAs("/mock/projectLoanRequest.json"))
+                .andExpect(similarDataJsonAs("/mock/projectLoanRequest.json"))
 //                .andDo(print())
                 .andReturn().getResponse().getContentAsString();
         // 几个图必须是不同的地址的 而且必须都存在

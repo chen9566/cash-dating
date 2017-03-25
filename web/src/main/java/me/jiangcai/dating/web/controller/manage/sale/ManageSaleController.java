@@ -10,6 +10,7 @@ import me.jiangcai.dating.repository.sale.CashGoodsRepository;
 import me.jiangcai.dating.service.DataService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.sale.MallGoodsService;
+import me.jiangcai.dating.web.controller.GlobalController;
 import me.jiangcai.goods.service.ManageGoodsService;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.lang.BooleanUtils;
@@ -38,6 +39,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
+import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -77,6 +79,26 @@ public class ManageSaleController {
     @Autowired
     private ManageGoodsService manageGoodsService;
 
+    // 商品详情
+    @RequestMapping(method = RequestMethod.GET, value = "/{goodsId}")
+    @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "','" + Login.Role_Sale_Goods_Read_Value + "')")
+    @Transactional(readOnly = true)
+    @ResponseBody
+    public Object detail(@PathVariable("goodsId") long goodsId) throws IOException {
+        // 目前只支持Fake
+        return cashGoodsRepository.getOne(goodsId).getDetailModel();
+    }
+
+    // 新增商品
+    @RequestMapping(method = RequestMethod.POST, value = "/addition")
+    @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "')")
+    @Transactional
+    public String add(String javaClass, String name, String price) throws IOException {
+        // 目前只支持Fake
+        mallGoodsService.addFakeGoods(name, price);
+        return "redirect:/manage/goods";
+    }
+
     // 编辑商品
     @RequestMapping(method = RequestMethod.POST, value = {"", "/"})
     @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "')")
@@ -103,9 +125,9 @@ public class ManageSaleController {
     @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "','" + Login.Role_Sale_Goods_Read_Value + "')")
     @Transactional(readOnly = true)
     @ResponseBody
-    public Object data(@AuthenticationPrincipal User user, String search, String sort, Sort.Direction order
+    public Object data(HttpServletRequest request, @AuthenticationPrincipal User user, String search, String sort, Sort.Direction order
             , int offset, int limit) {
-        return data.data(user, search, sort, order, offset, limit, CashGoods.class, fieldList(), null);
+        return data.data(user, search, sort, order, offset, limit, CashGoods.class, fieldList(request), null);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{goodsId}/enable")
@@ -180,7 +202,7 @@ public class ManageSaleController {
 
     }
 
-    private List<DataField> fieldList() {
+    private List<DataField> fieldList(HttpServletRequest request) {
         return Arrays.asList(
                 new DataService.NumberField("id", Long.class)
 //                , new DataService.StringField("imageUrl") {
@@ -210,13 +232,13 @@ public class ManageSaleController {
                 , new DataService.NumberField("price", BigDecimal.class)
                 , new DataService.StringField("subPrice")
                 , new DataService.StringField("richDetail")
-                , new DataService.StringField("notes") {
-                    @SuppressWarnings("unchecked")
-                    @Override
-                    public Selection<?> select(CriteriaBuilder builder, CriteriaQuery<?> query, Root<?> root) {
-                        return builder.treat((Root) root, TicketGoods.class).get("notes");
-                    }
-                }
+//                , new DataService.StringField("notes") {
+//                    @SuppressWarnings("unchecked")
+//                    @Override
+//                    public Selection<?> select(CriteriaBuilder builder, CriteriaQuery<?> query, Root<?> root) {
+//                        return builder.treat((Root) root, TicketGoods.class).get("notes");
+//                    }
+//                }
                 , new DataService.NumberField("stock", Long.class) {
                     @Override
                     public Selection<?> select(CriteriaBuilder builder, CriteriaQuery<?> query, Root<?> root) {
@@ -252,7 +274,22 @@ public class ManageSaleController {
                         return clazz.getSimpleName();
                     }
                 }
-                // GlobalController
+                , new DataService.NumberField("weight", Integer.class)
+                , new DataService.BooleanField("hot")
+                , new DataService.BooleanField("freshly")
+                , new DataService.BooleanField("special")
+                , new DataService.StringField("morePropertiesUrl") {
+                    @Override
+                    protected Expression<?> selectExpression(Root<?> root) {
+                        return root.get("id");
+                    }
+
+                    @Override
+                    public Object export(Object origin, MediaType type) {
+                        return GlobalController.contextUrlBuilder(request).append("/manage/goods/").append(origin).toString();
+                    }
+                }
+                //
 //                , new DataService.BooleanField("isTicket") {
 //                    @Override
 //                    public Selection<?> select(CriteriaBuilder builder, CriteriaQuery<?> query, Root<?> root) {

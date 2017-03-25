@@ -52,7 +52,7 @@ public class AgentRequestControllerTest extends ManageWebTest {
                 .param("limit", "10")
         )
                 .andExpect(status().isOk())
-                .andExpect(simliarDataJsonAs("/mock/agentRequest.json"))
+                .andExpect(similarDataJsonAs("/mock/agentRequest.json"))
                 .andDo(print());
 
         // 操作

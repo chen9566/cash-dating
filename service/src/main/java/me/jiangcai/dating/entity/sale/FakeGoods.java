@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import java.util.Map;
 
 /**
  * 伪装的商品
@@ -35,6 +36,12 @@ public class FakeGoods extends CashGoods {
     @Override
     public boolean isTicketGoods() {
         return false;
+    }
+
+    @Override
+    protected void moreModel(Map<String, Object> data) {
+        data.put("sales", sales);
+        data.put("stock", stock);
     }
 
     @Override
