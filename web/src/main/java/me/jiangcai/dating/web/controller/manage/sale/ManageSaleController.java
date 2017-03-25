@@ -11,6 +11,7 @@ import me.jiangcai.dating.service.DataService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.dating.web.controller.GlobalController;
+import me.jiangcai.dating.web.model.CashGoodsModel;
 import me.jiangcai.goods.service.ManageGoodsService;
 import me.jiangcai.lib.resource.service.ResourceService;
 import org.apache.commons.lang.BooleanUtils;
@@ -103,15 +104,26 @@ public class ManageSaleController {
     @RequestMapping(method = RequestMethod.POST, value = {"", "/"})
     @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "')")
     @Transactional
-    public String update(long goodsId, TicketGoods goods) {
-        TicketGoods goods1 = (TicketGoods) mallGoodsService.findGoods(goodsId);
-        goods1.setNotes(goods.getNotes());
-        goods1.setSubPrice(goods.getSubPrice());
-        goods1.setRichDetail(goods.getRichDetail());
-        goods1.setPrice(goods.getPrice());
-        goods1.setBrand(goods.getBrand());
-        goods1.setDescription(goods.getDescription());
-        goods1.setName(goods.getName());
+    public String update(long goodsId, CashGoodsModel goods, String notes, Long sale, Long stock) {
+        CashGoods cashGoods = mallGoodsService.findGoods(goodsId);
+        cashGoods.setSubPrice(goods.getSubPrice());
+        cashGoods.setRichDetail(goods.getRichDetail());
+        cashGoods.setPrice(goods.getPrice());
+        cashGoods.setBrand(goods.getBrand());
+        cashGoods.setDescription(goods.getDescription());
+        cashGoods.setName(goods.getName());
+
+        if (cashGoods instanceof TicketGoods) {
+            ((TicketGoods) cashGoods).setNotes(notes);
+        }
+
+        if (cashGoods instanceof FakeGoods) {
+            if (sale != null)
+                ((FakeGoods) cashGoods).setSales(sale);
+            if (stock != null)
+                ((FakeGoods) cashGoods).setStock(stock);
+        }
+
         return "redirect:/manage/goods";
     }
 

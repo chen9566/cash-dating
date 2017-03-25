@@ -74,12 +74,27 @@ public class ManageSaleControllerTest extends ManageWebTest {
         MockHttpSession session = mvcLogin();
         // 添加一个伪类商品
         FakeGoods fakeGoods = addRandomFakeGoods(session);
+        assertDataResult(0, fakeGoods, session);
         // 设定它的库存
-
+        final int fakeStock = random.nextInt(200) + 1;
+        // 修改商品-- 伪类很简单 直接修改商品就可以设定库存了
+        CashGoods goodsData = randomGoodsData();
+        mockMvc.perform(post("/manage/goods")
+                .session(session)
+                .param("goodsId", String.valueOf(fakeGoods.getId()))
+                .param("name", goodsData.getName())
+                .param("brand", goodsData.getBrand())
+                .param("description", goodsData.getDescription())
+                .param("subPrice", goodsData.getSubPrice())
+                .param("richDetail", goodsData.getRichDetail())
+                .param("price", goodsData.getPrice().toString())
+                .param("stock", String.valueOf(fakeStock))
+        )
+                .andExpect(status().isFound());
 
         // 检查库存量是否符合
         assertDataResult(count, ticketGoods, session);
-        assertDataResult(0, fakeGoods, session);
+        assertDataResult(fakeStock, fakeGoods, session);
 
         LocalDate expireDate = LocalDate.now().plusMonths(2);
 
@@ -118,7 +133,7 @@ public class ManageSaleControllerTest extends ManageWebTest {
                 .isTrue();
 
         // 修改商品
-        CashGoods goodsData = randomGoodsData();
+        goodsData = randomGoodsData();
         mockMvc.perform(post("/manage/goods")
                 .session(session)
                 .param("goodsId", String.valueOf(ticketGoods.getId()))
@@ -129,7 +144,6 @@ public class ManageSaleControllerTest extends ManageWebTest {
                 .param("richDetail", goodsData.getRichDetail())
                 .param("price", goodsData.getPrice().toString())
         )
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isFound());
 
         ticketGoods = (TicketGoods) mallGoodsService.findGoods(ticketGoods.getId());
@@ -172,7 +186,7 @@ public class ManageSaleControllerTest extends ManageWebTest {
 
         mockMvc.perform(get("/manage/goods/images/" + ticketGoods.getId())
                 .session(session))
-                .andDo(MockMvcResultHandlers.print())
+//                .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()").value(oldSize));
