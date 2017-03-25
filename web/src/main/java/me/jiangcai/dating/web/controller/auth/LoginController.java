@@ -72,13 +72,20 @@ public class LoginController {
         return "logout.html";
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/login", produces = MediaType.TEXT_HTML_VALUE)
+    public String allLogin(HttpSession session) {
+        if (session.getAttribute(IndexController.MallMode) != null)
+            return "redirect:/mall/";
+        return "redirect:/wxLogin";
+    }
+
     /**
      * 登录页面
      * 在这里我们确定它是否要登录
      *
      * @return 登录页面
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/login", produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(method = RequestMethod.GET, value = "/wxLogin", produces = MediaType.TEXT_HTML_VALUE)
     public String login(WeixinUserDetail detail, Model model, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         userService.updateWeixinDetail(detail, request);

@@ -141,6 +141,7 @@ public class WebConfig {
 //                .failureHandler()
                     .loginProcessingUrl("/passwordAuth")
                     .loginPage("/login")
+                    .defaultSuccessUrl("/mall/")
                     .failureUrl("/passwordLogin?type=error")
                     .permitAll()
                     .and()

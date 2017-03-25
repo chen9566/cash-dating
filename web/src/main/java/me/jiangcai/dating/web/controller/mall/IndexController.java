@@ -32,7 +32,12 @@ public class IndexController {
     @Autowired
     private VerificationCodeService verificationCodeService;
 
-    @RequestMapping(method = RequestMethod.GET, value = {"", "/"})
+    @RequestMapping(method = RequestMethod.GET, value = {""})
+    public String index() {
+        return "redirect:/mall/";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = {"/"})
     public String home(HttpSession session) {
 
         session.setAttribute(MallMode, true);
@@ -69,9 +74,10 @@ public class IndexController {
             }
         }
 
+        user.setMobileNumber(mobile);
         userService.updatePassword(user, password);
         redirectAttributes.addFlashAttribute("_message", "欢迎加入款爷！");
-        return "redirect:/mall";
+        return "redirect:/mall/";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/login")

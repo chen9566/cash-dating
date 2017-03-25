@@ -26,7 +26,7 @@ public class LoginPage extends AbstractMallPage {
         assertTitle("用户登录");
     }
 
-    public void loginAs(String mobile, String password) {
+    public IndexPage loginAs(String mobile, String password) {
         this.username.clear();
         this.username.sendKeys(mobile);
 
@@ -34,5 +34,6 @@ public class LoginPage extends AbstractMallPage {
         this.password.sendKeys(password);
 
         this.submitButton.click();
+        return initPage(IndexPage.class);
     }
 }
