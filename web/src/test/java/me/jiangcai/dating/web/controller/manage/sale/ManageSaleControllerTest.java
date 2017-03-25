@@ -12,8 +12,6 @@ import me.jiangcai.dating.page.sale.ManageGoodsPage;
 import me.jiangcai.dating.repository.mall.FakeGoodsRepository;
 import me.jiangcai.dating.repository.sale.CashGoodsRepository;
 import me.jiangcai.dating.web.converter.LocalDateFormatter;
-import me.jiangcai.goods.Seller;
-import me.jiangcai.goods.TradeEntity;
 import net.minidev.json.JSONArray;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -28,7 +26,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.util.StreamUtils;
 
 import java.time.LocalDate;
-import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -216,47 +213,6 @@ public class ManageSaleControllerTest extends ManageWebTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML));
 
         return fakeGoodsRepository.findAll(new Sort(Sort.Direction.DESC, "id")).get(0);
-    }
-
-    private CashGoods randomGoodsData() {
-        CashGoods goods = new CashGoods() {
-            @Override
-            public Seller getSeller() {
-                return null;
-            }
-
-            @Override
-            public void setSeller(Seller seller) {
-
-            }
-
-            @Override
-            public TradeEntity getOwner() {
-                return null;
-            }
-
-            @Override
-            public void setOwner(TradeEntity owner) {
-
-            }
-
-            @Override
-            public boolean isTicketGoods() {
-                return false;
-            }
-
-            @Override
-            protected void moreModel(Map<String, Object> data) {
-
-            }
-        };
-        goods.setName(UUID.randomUUID().toString());
-        goods.setBrand(UUID.randomUUID().toString());
-        goods.setDescription(UUID.randomUUID().toString());
-        goods.setSubPrice(UUID.randomUUID().toString().substring(0, 25));
-        goods.setPrice(randomOrderAmount());
-        goods.setRichDetail(UUID.randomUUID().toString());
-        return goods;
     }
 
     private void assertDataResult(final int count, CashGoods cashGoods, MockHttpSession session) throws Exception {

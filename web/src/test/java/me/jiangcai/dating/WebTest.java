@@ -10,6 +10,7 @@ import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.sale.CashGoods;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.model.trj.ProjectLoan;
@@ -27,6 +28,8 @@ import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.WealthService;
 import me.jiangcai.dating.web.WebConfig;
+import me.jiangcai.goods.Seller;
+import me.jiangcai.goods.TradeEntity;
 import me.jiangcai.lib.test.page.AbstractPage;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.logging.Log;
@@ -56,6 +59,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -496,6 +500,47 @@ public abstract class WebTest extends ServiceBaseTest {
     protected MySalePage mySalePage() {
         driver.get("http://localhost/sale/my");
         return initPage(MySalePage.class);
+    }
+
+    protected CashGoods randomGoodsData() {
+        CashGoods goods = new CashGoods() {
+            @Override
+            public Seller getSeller() {
+                return null;
+            }
+
+            @Override
+            public void setSeller(Seller seller) {
+
+            }
+
+            @Override
+            public TradeEntity getOwner() {
+                return null;
+            }
+
+            @Override
+            public void setOwner(TradeEntity owner) {
+
+            }
+
+            @Override
+            public boolean isTicketGoods() {
+                return false;
+            }
+
+            @Override
+            protected void moreModel(Map<String, Object> data) {
+
+            }
+        };
+        goods.setName(UUID.randomUUID().toString());
+        goods.setBrand(UUID.randomUUID().toString());
+        goods.setDescription(UUID.randomUUID().toString());
+        goods.setSubPrice(UUID.randomUUID().toString().substring(0, 25));
+        goods.setPrice(randomOrderAmount());
+        goods.setRichDetail(UUID.randomUUID().toString());
+        return goods;
     }
 
     @ComponentScan({"me.jiangcai.dating.test"})

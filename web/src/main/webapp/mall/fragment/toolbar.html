@@ -14,8 +14,16 @@
 </head>
 <body>
 <script th:inline="javascript" th:fragment="all">
+
     var message = /*[[${_message}]]*/ '原型信息测试';
     var error = /*[[${_error}]]*/'原型错误测试';
+
+    var search = /*[[${search}]]*/null;
+    var category = /*[[${category}]]*/null;
+    var hot = /*[[${hot}]]*/null;
+    var special = /*[[${special}]]*/null;
+    var order = /*[[${order}]]*/null;
+
     $(function () {
         function add(msg, style) {
             $.gritter.add({
@@ -32,6 +40,22 @@
             add(error, 'growl-danger');
         }
 
+        var body = $('body');
+        if (search) {
+            body.attr('data-search', search);
+        }
+        if (category) {
+            body.attr('data-category', category);
+        }
+        if (hot) {
+            body.attr('data-hot', hot);
+        }
+        if (special) {
+            body.attr('data-special', special);
+        }
+        if (order) {
+            body.attr('data-order', order);
+        }
     });
 </script>
 
@@ -53,11 +77,22 @@
     <div class="index-head">
         <div class="w1200">
             <div class="logo"><img src="../images/logo.png" th:src="@{/mall/images/logo.png}"/></div>
-            <div class="search"><input placeholder="请输入你想找得宝贝"><span class="stxt">搜索</span></div>
+            <div class="search"><input placeholder="请输入你想找得宝贝" name="search"><span class="stxt">搜索</span></div>
+        </div>
+    </div>
+
+    <div class="mainnav">
+        <div class="w1200">
+            <ul>
+                <li class="navigation"><a href="../index.html" th:href="@{/mall/}"> 全部商品</a></li>
+                <li><a href="../search.html" th:href="@{/mall/search(hot=true)}">爆品</a></li>
+                <li><a href="../search.html" th:href="@{/mall/search(special=true)}">特卖</a></li>
+            </ul>
         </div>
     </div>
 
 </th:block>
+
 
 </body>
 </html>
