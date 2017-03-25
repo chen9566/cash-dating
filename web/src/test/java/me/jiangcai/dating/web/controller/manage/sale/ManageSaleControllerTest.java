@@ -6,6 +6,7 @@ import me.jiangcai.dating.ManageWebTest;
 import me.jiangcai.dating.entity.sale.CashGoods;
 import me.jiangcai.dating.entity.sale.FakeGoods;
 import me.jiangcai.dating.entity.sale.TicketGoods;
+import me.jiangcai.dating.entity.sale.support.FakeCategory;
 import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.page.sale.ManageGoodsPage;
 import me.jiangcai.dating.repository.mall.FakeGoodsRepository;
@@ -79,6 +80,7 @@ public class ManageSaleControllerTest extends ManageWebTest {
         final int fakeStock = random.nextInt(200) + 1;
         // 修改商品-- 伪类很简单 直接修改商品就可以设定库存了
         CashGoods goodsData = randomGoodsData();
+        FakeCategory fakeCategory = FakeCategory.values()[random.nextInt(FakeCategory.values().length)];
         mockMvc.perform(post("/manage/goods")
                 .session(session)
                 .param("goodsId", String.valueOf(fakeGoods.getId()))
@@ -89,8 +91,12 @@ public class ManageSaleControllerTest extends ManageWebTest {
                 .param("richDetail", goodsData.getRichDetail())
                 .param("price", goodsData.getPrice().toString())
                 .param("stock", String.valueOf(fakeStock))
+                .param("fakeCategory", fakeCategory.name())
         )
                 .andExpect(status().isFound());
+
+        assertThat(fakeGoodsRepository.getOne(fakeGoods.getId()).getFakeCategory())
+                .isEqualByComparingTo(fakeCategory);
 
         // 检查库存量是否符合
         assertDataResult(count, ticketGoods, session);
@@ -206,6 +212,7 @@ public class ManageSaleControllerTest extends ManageWebTest {
                 .param("price", randomOrderAmount().toString())
         ), session)
                 .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML));
 
         return fakeGoodsRepository.findAll(new Sort(Sort.Direction.DESC, "id")).get(0);

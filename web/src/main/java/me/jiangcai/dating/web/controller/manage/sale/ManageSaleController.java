@@ -6,6 +6,7 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashGoods;
 import me.jiangcai.dating.entity.sale.FakeGoods;
 import me.jiangcai.dating.entity.sale.TicketGoods;
+import me.jiangcai.dating.entity.sale.support.FakeCategory;
 import me.jiangcai.dating.repository.sale.CashGoodsRepository;
 import me.jiangcai.dating.service.DataService;
 import me.jiangcai.dating.service.QRCodeService;
@@ -24,6 +25,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -104,7 +106,7 @@ public class ManageSaleController {
     @RequestMapping(method = RequestMethod.POST, value = {"", "/"})
     @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "')")
     @Transactional
-    public String update(long goodsId, CashGoodsModel goods, String notes, Long sale, Long stock) {
+    public String update(long goodsId, CashGoodsModel goods, String notes, Long sale, Long stock, String fakeCategory) {
         CashGoods cashGoods = mallGoodsService.findGoods(goodsId);
         cashGoods.setSubPrice(goods.getSubPrice());
         cashGoods.setRichDetail(goods.getRichDetail());
@@ -122,6 +124,9 @@ public class ManageSaleController {
                 ((FakeGoods) cashGoods).setSales(sale);
             if (stock != null)
                 ((FakeGoods) cashGoods).setStock(stock);
+            if (!StringUtils.isEmpty(fakeCategory)) {
+                ((FakeGoods) cashGoods).setFakeCategory(FakeCategory.valueOf(fakeCategory));
+            }
         }
 
         return "redirect:/manage/goods";

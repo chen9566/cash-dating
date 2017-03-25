@@ -2,13 +2,13 @@ package me.jiangcai.dating.entity.sale;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.dating.entity.sale.support.FakeCategory;
 import me.jiangcai.goods.Seller;
 import me.jiangcai.goods.TradeEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.ManyToOne;
 import java.util.Map;
 
 /**
@@ -22,8 +22,7 @@ import java.util.Map;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class FakeGoods extends CashGoods {
 
-    @ManyToOne
-    private FakeCategory category;
+    private FakeCategory fakeCategory;
     /**
      * 销量，可以随意修改
      */
@@ -42,6 +41,7 @@ public class FakeGoods extends CashGoods {
     protected void moreModel(Map<String, Object> data) {
         data.put("sales", sales);
         data.put("stock", stock);
+        data.put("fakeCategory", fakeCategory == null ? null : fakeCategory.name());
     }
 
     @Override

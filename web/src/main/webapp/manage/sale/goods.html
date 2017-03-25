@@ -225,6 +225,18 @@
                         <textarea class="editor" name="notes"></textarea>
                     </label>
                     <label class="specialGoodsProperty">
+                        类目:
+                        <select name="fakeCategory">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <option value="s1"
+                                    th:each="category:${T(me.jiangcai.dating.entity.sale.support.FakeCategory).values()}"
+                                    th:text="${category.name}" th:value="${category}">
+                                女装
+                            </option>
+                            <option th:remove="all" value="s2">男装</option>
+                        </select>
+                    </label>
+                    <label class="specialGoodsProperty">
                         销量:
                         <input type="number" step="1" min="0" required name="sales"/>
                     </label>
