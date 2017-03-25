@@ -44,6 +44,7 @@ public class IndexControllerTest extends WebTest {
         indexPage = loginPage.loginAs(mobile, password);
 
 //        System.out.println(driver.getPageSource());
+        indexPage.assertLogin();
     }
 
 }

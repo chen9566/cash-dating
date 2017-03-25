@@ -1,6 +1,8 @@
 package me.jiangcai.dating.page.mall;
 
 import me.jiangcai.dating.page.AbstractPage;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,8 +12,10 @@ import org.openqa.selenium.WebElement;
  */
 abstract class AbstractMallPage extends AbstractPage {
 
+    private static final Log log = LogFactory.getLog(AbstractMallPage.class);
     protected WebElement registerLink;
     protected WebElement loginLink;
+    protected WebElement welcomeSpan;
 
     AbstractMallPage(WebDriver webDriver) {
         super(webDriver);
@@ -21,6 +25,7 @@ abstract class AbstractMallPage extends AbstractPage {
         try {
             registerLink.isDisplayed();
         } catch (NoSuchElementException ex) {
+            printThisPage();
             throw new AssertionError("已登录");
         }
     }
@@ -28,8 +33,10 @@ abstract class AbstractMallPage extends AbstractPage {
     public void assertLogin() {
         try {
             registerLink.isDisplayed();
+            printThisPage();
             throw new AssertionError("未登录");
         } catch (NoSuchElementException ignored) {
+            log.info(welcomeSpan.getText());
         }
     }
 
