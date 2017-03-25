@@ -51,6 +51,7 @@ public class IndexControllerTest extends WebTest {
             goods.setFakeCategory(FakeCategory.values()[random.nextInt(FakeCategory.values().length)]);
             goods.setSales(random.nextInt(100) + 1);
             goods.setStock(random.nextInt(100) + 1);
+            goods.setDiscount("9.9");
 
             goods.setSubPrice(cashGoods.getSubPrice());
             goods.setRichDetail(cashGoods.getRichDetail());
@@ -58,6 +59,10 @@ public class IndexControllerTest extends WebTest {
             goods.setBrand(cashGoods.getBrand());
             goods.setDescription(cashGoods.getDescription());
             goods.setName(cashGoods.getName());
+            goods.setWeight(cashGoods.getWeight());
+            goods.setHot(cashGoods.isHot());
+            goods.setFreshly(cashGoods.isFreshly());
+            goods.setSpecial(cashGoods.isSpecial());
 
             mallGoodsService.saveGoods(goods);
         });

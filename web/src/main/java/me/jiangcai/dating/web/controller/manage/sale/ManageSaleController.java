@@ -115,6 +115,10 @@ public class ManageSaleController {
         cashGoods.setBrand(goods.getBrand());
         cashGoods.setDescription(goods.getDescription());
         cashGoods.setName(goods.getName());
+        cashGoods.setHot(goods.isHot());
+        cashGoods.setFreshly(goods.isFreshly());
+        cashGoods.setWeight(goods.getWeight());
+        cashGoods.setSpecial(goods.isSpecial());
 
         if (cashGoods instanceof TicketGoods) {
             ((TicketGoods) cashGoods).setNotes(notes);

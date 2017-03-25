@@ -540,6 +540,11 @@ public abstract class WebTest extends ServiceBaseTest {
         goods.setSubPrice(UUID.randomUUID().toString().substring(0, 25));
         goods.setPrice(randomOrderAmount());
         goods.setRichDetail(UUID.randomUUID().toString());
+        goods.setWeight(random.nextInt());
+        goods.setHot(random.nextBoolean());
+        goods.setFreshly(random.nextBoolean());
+        goods.setSpecial(random.nextBoolean());
+
         return goods;
     }
 
