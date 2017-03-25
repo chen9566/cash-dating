@@ -252,6 +252,7 @@ public class ManageSaleController {
                         return clazz.getSimpleName();
                     }
                 }
+                // GlobalController
 //                , new DataService.BooleanField("isTicket") {
 //                    @Override
 //                    public Selection<?> select(CriteriaBuilder builder, CriteriaQuery<?> query, Root<?> root) {

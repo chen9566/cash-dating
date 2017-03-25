@@ -198,15 +198,39 @@
                         原价:
                         <input type="text" name="subPrice" size="10" required/>
                     </label>
+                    <label>
+                        权重:
+                        <input style="width: 45px" title="权重值高则显示越靠前" type="number" step="1" required name="weight"/>
+                    </label>
+                    <label>
+                        爆款
+                        <input type="checkbox" name="hot"/>
+                    </label>
+                    <label>
+                        新品
+                        <input type="checkbox" name="freshly"/>
+                    </label>
+                    <label>
+                        特卖
+                        <input type="checkbox" name="special"/>
+                    </label>
                     <br/>
                     <label>
                         富文本说明:
                         <textarea class="editor" name="richDetail"></textarea>
                     </label>
                     <br/>
-                    <label>
+                    <label class="specialGoodsProperty">
                         购买须知:
                         <textarea class="editor" name="notes"></textarea>
+                    </label>
+                    <label class="specialGoodsProperty">
+                        销量:
+                        <input type="number" step="1" min="0" required name="sales"/>
+                    </label>
+                    <label class="specialGoodsProperty">
+                        库存:
+                        <input type="number" step="1" min="0" required name="stock"/>
                     </label>
                 </div>
                 <div class="modal-footer">

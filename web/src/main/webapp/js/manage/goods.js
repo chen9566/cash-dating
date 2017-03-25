@@ -150,11 +150,42 @@ $(function () {
         $('#goodsEditRegionTitle').text(data.name);
         // 填好表单
         // 弄一个属性组 然后自己就可以处理了
-        var properties = ['name', 'brand', 'description', 'price', 'subPrice', 'richDetail', 'notes'];
+        var properties = ['name', 'brand', 'description', 'price', 'subPrice', 'richDetail', 'weight', 'hot'
+            , 'freshly', 'special'];
+
+        function updateDomValue(name, value, showIt) {
+            var target = $('[name=' + name + ']', goodsEditRegion);
+
+            if (target.attr('type') == 'checkbox') {
+                target.prop('checked', value);
+            } else
+                target.val(value);
+
+            if (showIt) {
+                target.closest('.specialGoodsProperty').show();
+            }
+        }
+
         $.each(properties, function (index, value) {
-            $('[name=' + value + ']', goodsEditRegion).val(data[value]);
+            updateDomValue(value, data[value]);
         });
-        goodsEditRegion.modal();
+        // 隐藏所有的特殊属性
+        $('.specialGoodsProperty', goodsEditRegion).hide();
+        // 打开特殊属性地址
+        var url = data.morePropertiesUrl;
+        if (url) {
+            $.ajax(url, {
+                method: 'get',
+                dataType: 'json',
+                success: function (moreData) {
+                    $.each(moreData, function (propertyName, propertyValue) {
+                        updateDomValue(propertyName, propertyValue, true);
+                    });
+                    goodsEditRegion.modal();
+                }
+            });
+        } else
+            goodsEditRegion.modal();
     });
 
     $('.enableChange').click(function () {
