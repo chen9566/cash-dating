@@ -128,6 +128,21 @@ $(function () {
             title: '库存',
             field: 'stock',
             sortable: true
+        }, {
+            title: '爆款',
+            field: 'hot',
+            formatter: $.Manage.enableRenderer,
+            align: 'center'
+        }, {
+            title: '新品',
+            field: 'freshly',
+            formatter: $.Manage.enableRenderer,
+            align: 'center'
+        }, {
+            title: '特卖',
+            field: 'special',
+            formatter: $.Manage.enableRenderer,
+            align: 'center'
         }
     ], stockAddButton.add(enableButton).add(disableButton).add(editButton).add(imageButton), function (buttons, currentSelections) {
         stockAddButton.prop('disabled', currentSelections[0].type != '卡券类');
