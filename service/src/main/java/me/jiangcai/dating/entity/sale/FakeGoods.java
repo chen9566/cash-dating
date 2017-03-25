@@ -6,6 +6,7 @@ import me.jiangcai.dating.entity.sale.support.FakeCategory;
 import me.jiangcai.goods.Seller;
 import me.jiangcai.goods.TradeEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -31,6 +32,11 @@ public class FakeGoods extends CashGoods {
      * 库存，可以随意修改
      */
     private long stock;
+    /**
+     * 显示折扣
+     */
+    @Column(length = 7)
+    private String discount;
 
     @Override
     public boolean isTicketGoods() {

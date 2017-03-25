@@ -106,7 +106,8 @@ public class ManageSaleController {
     @RequestMapping(method = RequestMethod.POST, value = {"", "/"})
     @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "')")
     @Transactional
-    public String update(long goodsId, CashGoodsModel goods, String notes, Long sale, Long stock, String fakeCategory) {
+    public String update(long goodsId, CashGoodsModel goods, String notes, Long sale, Long stock, String fakeCategory
+            , String discount) {
         CashGoods cashGoods = mallGoodsService.findGoods(goodsId);
         cashGoods.setSubPrice(goods.getSubPrice());
         cashGoods.setRichDetail(goods.getRichDetail());
@@ -126,6 +127,9 @@ public class ManageSaleController {
                 ((FakeGoods) cashGoods).setStock(stock);
             if (!StringUtils.isEmpty(fakeCategory)) {
                 ((FakeGoods) cashGoods).setFakeCategory(FakeCategory.valueOf(fakeCategory));
+            }
+            if (!StringUtils.isEmpty(discount)) {
+                ((FakeGoods) cashGoods).setDiscount(discount);
             }
         }
 
