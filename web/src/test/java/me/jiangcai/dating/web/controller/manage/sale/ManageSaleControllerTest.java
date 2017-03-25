@@ -4,8 +4,11 @@ import com.jayway.jsonpath.JsonPath;
 import me.jiangcai.dating.AsManage;
 import me.jiangcai.dating.ManageWebTest;
 import me.jiangcai.dating.entity.sale.CashGoods;
+import me.jiangcai.dating.entity.sale.FakeGoods;
+import me.jiangcai.dating.entity.sale.TicketGoods;
 import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.page.sale.ManageGoodsPage;
+import me.jiangcai.dating.repository.mall.FakeGoodsRepository;
 import me.jiangcai.dating.repository.sale.CashGoodsRepository;
 import me.jiangcai.dating.web.converter.LocalDateFormatter;
 import me.jiangcai.goods.Seller;
@@ -16,6 +19,7 @@ import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
@@ -38,6 +42,11 @@ public class ManageSaleControllerTest extends ManageWebTest {
     private CashGoodsRepository cashGoodsRepository;
     @Autowired
     private LocalDateFormatter localDateFormatter;
+    @Autowired
+    private FakeGoodsRepository fakeGoodsRepository;
+
+//    @Autowired
+//    private EntityManager entityManager;
 
     @Test
     public void index() throws Exception {
@@ -45,14 +54,12 @@ public class ManageSaleControllerTest extends ManageWebTest {
         ManageGoodsPage page = initPage(ManageGoodsPage.class);
     }
 
-//    @Autowired
-//    private EntityManager entityManager;
-
     @Test
     public void data() throws Exception {
 
+        // 添加随机库存量的 卡券类商品
         final int count = random.nextInt(200) + 1;
-        CashGoods cashGoods = addSimpleTicketGoodsWithBatch(count);
+        TicketGoods ticketGoods = (TicketGoods) addSimpleTicketGoodsWithBatch(count);
 
         // 先看下函数可否运行
 //        final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -64,13 +71,18 @@ public class ManageSaleControllerTest extends ManageWebTest {
 
 
         MockHttpSession session = mvcLogin();
-        assertDataResult(count, cashGoods, session);
+        // 添加一个伪类商品
+        FakeGoods fakeGoods = addRandomFakeGoods(session);
+        // 设定它的库存
+
+        // 检查库存量是否符合
+        assertDataResult(count, ticketGoods, session);
 
         LocalDate expireDate = LocalDate.now().plusMonths(2);
 
         String location = mockMvc.perform(fileUpload("/manage/goods/batch")
                 .file("file", StreamUtils.copyToByteArray(applicationContext.getResource("classpath:/TicketBatchSAndF.zip").getInputStream()))
-                .param("goodsId", String.valueOf(cashGoods.getId()))
+                .param("goodsId", String.valueOf(ticketGoods.getId()))
                 .param("expiredDate", localDateFormatter.print(expireDate, null))
                 .session(session)
         )
@@ -80,33 +92,33 @@ public class ManageSaleControllerTest extends ManageWebTest {
         mockMvc.perform(get(location).session(session))
                 .andDo(MockMvcResultHandlers.print());// 包括成功的结果 以及失败的文件下载地址!
 
-        assertDataResult(count + 1, cashGoods, session);
+        assertDataResult(count + 1, ticketGoods, session);
 
-        mockMvc.perform(put("/manage/goods/" + cashGoods.getId() + "/enable")
+        mockMvc.perform(put("/manage/goods/" + ticketGoods.getId() + "/enable")
                 .session(session)
                 .contentType(MediaType.TEXT_PLAIN)
                 .content("false")
         )
                 .andExpect(status().isNoContent());
 
-        assertThat(cashGoodsRepository.getOne(cashGoods.getId()).isEnable())
+        assertThat(cashGoodsRepository.getOne(ticketGoods.getId()).isEnable())
                 .isFalse();
 
-        mockMvc.perform(put("/manage/goods/" + cashGoods.getId() + "/enable")
+        mockMvc.perform(put("/manage/goods/" + ticketGoods.getId() + "/enable")
                 .session(session)
                 .contentType(MediaType.TEXT_PLAIN)
                 .content("true")
         )
                 .andExpect(status().isNoContent());
 
-        assertThat(cashGoodsRepository.getOne(cashGoods.getId()).isEnable())
+        assertThat(cashGoodsRepository.getOne(ticketGoods.getId()).isEnable())
                 .isTrue();
 
         // 修改商品
         CashGoods goodsData = randomGoodsData();
         mockMvc.perform(post("/manage/goods")
                 .session(session)
-                .param("goodsId", String.valueOf(cashGoods.getId()))
+                .param("goodsId", String.valueOf(ticketGoods.getId()))
                 .param("name", goodsData.getName())
                 .param("brand", goodsData.getBrand())
                 .param("description", goodsData.getDescription())
@@ -117,16 +129,16 @@ public class ManageSaleControllerTest extends ManageWebTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isFound());
 
-        cashGoods = mallGoodsService.findGoods(cashGoods.getId());
-        assertThat(cashGoods.getName()).isEqualToIgnoringCase(goodsData.getName());
-        assertThat(cashGoods.getBrand()).isEqualToIgnoringCase(goodsData.getBrand());
-        assertThat(cashGoods.getSubPrice()).isEqualToIgnoringCase(goodsData.getSubPrice());
-        assertThat(cashGoods.getDescription()).isEqualToIgnoringCase(goodsData.getDescription());
-        assertThat(cashGoods.getRichDetail()).isEqualToIgnoringCase(goodsData.getRichDetail());
-        assertThat(cashGoods.getPrice()).isEqualByComparingTo(goodsData.getPrice());
+        ticketGoods = (TicketGoods) mallGoodsService.findGoods(ticketGoods.getId());
+        assertThat(ticketGoods.getName()).isEqualToIgnoringCase(goodsData.getName());
+        assertThat(ticketGoods.getBrand()).isEqualToIgnoringCase(goodsData.getBrand());
+        assertThat(ticketGoods.getSubPrice()).isEqualToIgnoringCase(goodsData.getSubPrice());
+        assertThat(ticketGoods.getDescription()).isEqualToIgnoringCase(goodsData.getDescription());
+        assertThat(ticketGoods.getRichDetail()).isEqualToIgnoringCase(goodsData.getRichDetail());
+        assertThat(ticketGoods.getPrice()).isEqualByComparingTo(goodsData.getPrice());
 
         // 处理图片
-        int oldSize = JsonPath.read(mockMvc.perform(get("/manage/goods/images/" + cashGoods.getId())
+        int oldSize = JsonPath.read(mockMvc.perform(get("/manage/goods/images/" + ticketGoods.getId())
                         .session(session))
 //                .andDo(MockMvcResultHandlers.print())
                         .andExpect(status().isOk())
@@ -134,14 +146,14 @@ public class ManageSaleControllerTest extends ManageWebTest {
                 , "$.length()");
 
         // 上传一张新的
-        mockMvc.perform(fileUpload("/manage/goods/images/" + cashGoods.getId())
+        mockMvc.perform(fileUpload("/manage/goods/images/" + ticketGoods.getId())
                 .file(new MockMultipartFile("qqfile", "thumbnail.png", "image/png", new ClassPathResource("/thumbnail.png").getInputStream()))
                 .param("qqfilename", UUID.randomUUID().toString())
                 .session(session))
 //                .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-        String newImageId = JsonPath.read(mockMvc.perform(get("/manage/goods/images/" + cashGoods.getId())
+        String newImageId = JsonPath.read(mockMvc.perform(get("/manage/goods/images/" + ticketGoods.getId())
                 .session(session))
 //                .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
@@ -149,18 +161,37 @@ public class ManageSaleControllerTest extends ManageWebTest {
                 .andExpect(jsonPath("$.length()").value(oldSize + 1))
                 .andReturn().getResponse().getContentAsString(), "$[0].uuid");
 
-        mockMvc.perform(delete("/manage/goods/images/" + cashGoods.getId() + "/" + newImageId)
+        mockMvc.perform(delete("/manage/goods/images/" + ticketGoods.getId() + "/" + newImageId)
                 .session(session)
         )
 //                .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isNoContent());
 
-        mockMvc.perform(get("/manage/goods/images/" + cashGoods.getId())
+        mockMvc.perform(get("/manage/goods/images/" + ticketGoods.getId())
                 .session(session))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()").value(oldSize));
+    }
+
+    /**
+     * 通过MVC创建一个虚拟的fakeGoods
+     *
+     * @param session
+     * @return
+     */
+    private FakeGoods addRandomFakeGoods(MockHttpSession session) throws Exception {
+        redirectTo(mockMvc.perform(post("/manage/goods/addition")
+                .session(session)
+                .param("javaClass", "FakeGoods")
+                .param("name", UUID.randomUUID().toString())
+                .param("price", randomOrderAmount().toString())
+        ), session)
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML));
+
+        return fakeGoodsRepository.findAll(new Sort(Sort.Direction.DESC, "id")).get(0);
     }
 
     private CashGoods randomGoodsData() {
