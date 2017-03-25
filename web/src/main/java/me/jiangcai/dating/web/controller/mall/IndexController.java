@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * 允许非授权访问的假商城
@@ -27,21 +26,18 @@ public class IndexController {
 
     public static final String MallMode = "MallMode";
 
+    private final UserService userService;
+    private final VerificationCodeService verificationCodeService;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private VerificationCodeService verificationCodeService;
+    public IndexController(UserService userService, VerificationCodeService verificationCodeService) {
+        this.userService = userService;
+        this.verificationCodeService = verificationCodeService;
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = {""})
     public String index() {
         return "redirect:/mall/";
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = {"/"})
-    public String home(HttpSession session) {
-
-        session.setAttribute(MallMode, true);
-        return "/mall/index.html";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/register")

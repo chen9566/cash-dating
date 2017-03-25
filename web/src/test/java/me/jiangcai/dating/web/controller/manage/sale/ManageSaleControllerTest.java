@@ -11,6 +11,7 @@ import me.jiangcai.dating.entity.support.ManageStatus;
 import me.jiangcai.dating.page.sale.ManageGoodsPage;
 import me.jiangcai.dating.repository.mall.FakeGoodsRepository;
 import me.jiangcai.dating.repository.sale.CashGoodsRepository;
+import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.dating.web.converter.LocalDateFormatter;
 import net.minidev.json.JSONArray;
 import org.hamcrest.Description;
@@ -43,6 +44,8 @@ public class ManageSaleControllerTest extends ManageWebTest {
     private LocalDateFormatter localDateFormatter;
     @Autowired
     private FakeGoodsRepository fakeGoodsRepository;
+    @Autowired
+    private MallGoodsService mallGoodsService;
 
 //    @Autowired
 //    private EntityManager entityManager;

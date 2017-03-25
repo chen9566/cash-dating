@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:res="http://resource.jiangcai.me" lang="en">
+<!--/*@thymesVar id="specialList" type="java.util.List<me.jiangcai.dating.entity.sale.FakeGoods>"*/-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -66,27 +67,29 @@
         <div class="section section3"><h3></h3></div>
     </div>
 </div>
-<div class="w1200">
+<div class="w1200" th:if="${!specialList.isEmpty()}">
     <div class="newpic"><img src="images/icon_new.png"/></div>
 </div>
-<div class="w1200">
+<div class="w1200" th:if="${!specialList.isEmpty()}">
     <div class="sale">
-        <ul>
+        <ul th:each="goods:${specialList}">
+            <li><img src="images/14885394034747.jpeg" res:src="${goods.titleGoodsImage.defaultImage.resourcePath}"/>
+            </li>
+            <li><span class="f30"><span th:text="${goods.discount}">9.6</span><span class="f16">折</span></span><span
+                    class="f20" th:text="${goods.name}">中国石油卡</span><span
+                    class="f12 fr">已售<span th:text="${goods.sales}">12222</span></span></li>
+        </ul>
+        <ul th:remove="all">
             <li><img src="images/14885394034747.jpeg"/></li>
             <li><span class="f30">9.6<span class="f16">折</span></span><span class="f20">中国石油卡</span><span
                     class="f12 fr">已售12222张</span></li>
         </ul>
-        <ul>
+        <ul th:remove="all">
             <li><img src="images/14885394034747.jpeg"/></li>
             <li><span class="f30">9.6<span class="f16">折</span></span><span class="f20">中国石油卡</span><span
                     class="f12 fr">已售12222张</span></li>
         </ul>
-        <ul>
-            <li><img src="images/14885394034747.jpeg"/></li>
-            <li><span class="f30">9.6<span class="f16">折</span></span><span class="f20">中国石油卡</span><span
-                    class="f12 fr">已售12222张</span></li>
-        </ul>
-        <ul>
+        <ul th:remove="all">
             <li><img src="images/14885394034747.jpeg"/></li>
             <li><span class="f30">9.6<span class="f16">折</span></span><span class="f20">中国石油卡</span><span
                     class="f12 fr">已售12222张</span></li>

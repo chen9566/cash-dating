@@ -2,7 +2,11 @@ package me.jiangcai.dating.entity.sale;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.goods.GoodsImage;
 import me.jiangcai.goods.core.entity.Goods;
+import me.jiangcai.goods.core.entity.SimpleGoodsImage;
+import me.jiangcai.goods.image.ImageUsage;
+import me.jiangcai.goods.image.ScaledImage;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,11 +36,26 @@ import java.util.Map;
 public abstract class CashGoods extends Goods {
 
     /**
+     * {@link me.jiangcai.lib.resource.service.ResourceService#getResource(String)}
+     */
+    public static final String DefaultGoodsImagePath = "defaultGoodsImage.jpeg";
+    private static GoodsImage DefaultGoodsImage = new SimpleGoodsImage();
+
+    static {
+        ScaledImage image = new ScaledImage();
+        image.setUsage(ImageUsage.preview);
+        image.setResourcePath(DefaultGoodsImagePath);
+        image.setFormat("jpeg");
+        image.setHeight(251);
+        image.setWidth(560);
+        DefaultGoodsImage.addScaledImage(image);
+    }
+
+    /**
      * 副价格，一般显示加上删除线
      */
     @Column(length = 30)
     private String subPrice;
-
     /**
      * 商品权重
      */
@@ -53,7 +72,6 @@ public abstract class CashGoods extends Goods {
      * 特卖
      */
     private boolean special;
-
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "goods")
     private List<GoodsStyle> styleList;
 
@@ -104,6 +122,15 @@ public abstract class CashGoods extends Goods {
         //
         moreModel(data);
         return data;
+    }
+
+    @Override
+    public GoodsImage getTitleGoodsImage() {
+        try {
+            return super.getTitleGoodsImage();
+        } catch (Exception ignored) {
+            return DefaultGoodsImage;
+        }
     }
 
     protected abstract void moreModel(Map<String, Object> data);

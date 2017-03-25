@@ -12,6 +12,7 @@ import me.jiangcai.dating.page.sale.TicketPayPage;
 import me.jiangcai.dating.page.sale.TicketPaySuccessPage;
 import me.jiangcai.dating.page.sale.TicketTradeSuccessPage;
 import me.jiangcai.dating.repository.sale.TicketCodeRepository;
+import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.dating.service.sale.MallTradeService;
 import me.jiangcai.goods.trade.TradeStatus;
 import org.junit.Test;
@@ -31,6 +32,8 @@ public class SaleControllerTest extends WebTest {
     private MallTradeService mallTradeService;
     @Autowired
     private TicketCodeRepository ticketCodeRepository;
+    @Autowired
+    private MallGoodsService mallGoodsService;
 
     @Test
     public void index() throws Exception {

@@ -11,6 +11,8 @@ import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashGoods;
+import me.jiangcai.dating.entity.sale.FakeGoods;
+import me.jiangcai.dating.entity.sale.support.FakeCategory;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.model.trj.ProjectLoan;
@@ -27,9 +29,11 @@ import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.WealthService;
+import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.dating.web.WebConfig;
 import me.jiangcai.goods.Seller;
 import me.jiangcai.goods.TradeEntity;
+import me.jiangcai.goods.service.ManageGoodsService;
 import me.jiangcai.lib.test.page.AbstractPage;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.logging.Log;
@@ -89,6 +93,10 @@ public abstract class WebTest extends ServiceBaseTest {
     private MockPay pay;
     @Autowired
     private SystemService systemService;
+    @Autowired
+    private MallGoodsService mallGoodsService;
+    @Autowired
+    private ManageGoodsService manageGoodsService;
 
     private static <T> Iterable<T> IterableIterator(Iterator<T> iterator) {
         return () -> iterator;
@@ -546,6 +554,39 @@ public abstract class WebTest extends ServiceBaseTest {
         goods.setSpecial(random.nextBoolean());
 
         return goods;
+    }
+
+    protected void addRandomFakeGoods() throws IOException {
+        RootAuthentication.runAsRoot(() -> {
+            FakeGoods goods;
+            try {
+                goods = mallGoodsService.addFakeGoods(UUID.randomUUID().toString(), randomOrderAmount().toString());
+            } catch (IOException e) {
+                throw new InternalError(e);
+            }
+            // 设定其属性
+            CashGoods cashGoods = randomGoodsData();
+
+            goods.setFakeCategory(FakeCategory.values()[random.nextInt(FakeCategory.values().length)]);
+            goods.setSales(random.nextInt(100) + 1);
+            goods.setStock(random.nextInt(100) + 1);
+            goods.setDiscount("7.1");
+
+            goods.setSubPrice(cashGoods.getSubPrice());
+            goods.setRichDetail(cashGoods.getRichDetail());
+            goods.setPrice(cashGoods.getPrice());
+            goods.setBrand(cashGoods.getBrand());
+            goods.setDescription(cashGoods.getDescription());
+            goods.setName(cashGoods.getName());
+            goods.setWeight(cashGoods.getWeight());
+            goods.setHot(cashGoods.isHot());
+            goods.setFreshly(cashGoods.isFreshly());
+            goods.setSpecial(cashGoods.isSpecial());
+
+            mallGoodsService.saveGoods(goods);
+            manageGoodsService.enableGoods(goods, mallGoodsService::saveGoods);
+        });
+
     }
 
     @ComponentScan({"me.jiangcai.dating.test"})
