@@ -15,6 +15,8 @@ $(function () {
     // var goodsId = $('[name=goodsId]', stockAddRegion);
     var goodsId = $('input[name=goodsId]');
     var expiredDate = $('[name=expiredDate]', stockAddRegion);
+    var addGoodsButton = $('#addGoodsButton');
+    var addGoodsRegion = $('#addGoodsRegion');
 
     function initImageRegion() {
         var manualUploader = new qq.FineUploader({
@@ -168,5 +170,9 @@ $(function () {
             }
         });
     });
+
+    addGoodsButton.click(function () {
+        addGoodsRegion.modal();
+    })
 
 });

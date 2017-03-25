@@ -4,6 +4,7 @@
     {
       "id": 1,
       "type": "卡券类",
+      "javaType": "TicketGoods",
       "enable": true,
       "brand": "铁牌",
       "name": "风油精",
@@ -17,6 +18,7 @@
     {
       "id": 2,
       "type": "普通类",
+      "javaType": "CashGoods",
       "enable": false,
       "brand": "宝马",
       "name": "i7",
@@ -26,6 +28,20 @@
       "stock": 200,
       "richDetail": "<p><b>foo</b></p>",
       "notes": "<p>1</p><p>3</p><p>4</p><p>5</p>"
+    },
+    {
+      "id": 3,
+      "type": "伪类",
+      "javaType": "FakeGoods",
+      "enable": false,
+      "brand": "宝马",
+      "name": "i7",
+      "description": "长江七号",
+      "price": 101.11,
+      "subPrice": "200.0",
+      "stock": 200,
+      "richDetail": "<p><b>foo</b></p>",
+      "notes": null
     }
   ]
 }

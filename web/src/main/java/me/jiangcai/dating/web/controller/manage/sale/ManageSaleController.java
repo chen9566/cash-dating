@@ -4,6 +4,7 @@ import me.jiangcai.dating.DataField;
 import me.jiangcai.dating.core.Login;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashGoods;
+import me.jiangcai.dating.entity.sale.FakeGoods;
 import me.jiangcai.dating.entity.sale.TicketGoods;
 import me.jiangcai.dating.repository.sale.CashGoodsRepository;
 import me.jiangcai.dating.service.DataService;
@@ -91,6 +92,7 @@ public class ManageSaleController {
         goods1.setName(goods.getName());
         return "redirect:/manage/goods";
     }
+
     @RequestMapping(method = RequestMethod.GET, value = {"", "/"})
     @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "','" + Login.Role_Sale_Goods_Read_Value + "')")
     public String index() {
@@ -234,7 +236,20 @@ public class ManageSaleController {
                     public Object export(Object origin, MediaType type) {
                         if (TicketGoods.class.equals(origin))
                             return "卡券类";
+                        if (FakeGoods.class.equals(origin))
+                            return "伪类";
                         return "unknown";
+                    }
+                }, new DataService.StringField("javaType") {
+                    @Override
+                    protected Expression<?> selectExpression(Root<?> root) {
+                        return root.type();
+                    }
+
+                    @Override
+                    public Object export(Object origin, MediaType type) {
+                        Class clazz = (Class) origin;
+                        return clazz.getSimpleName();
                     }
                 }
 //                , new DataService.BooleanField("isTicket") {

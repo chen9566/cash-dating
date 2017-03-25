@@ -39,10 +39,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.Resource;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
 import org.springframework.test.web.servlet.htmlunit.webdriver.WebConnectionHtmlUnitDriver;
@@ -422,9 +424,26 @@ public abstract class WebTest extends ServiceBaseTest {
     protected MockHttpSession mvcLogin() throws Exception {
         MockHttpSession session = new MockHttpSession();
         mockMvc.perform(getWeixin("/start").session(session));
-        mockMvc.perform(getWeixin("/login").session(session));
+        redirectTo(mockMvc.perform(getWeixin("/login").session(session)), session);
         mockMvc.perform(getWeixin("/start").session(session));
         return session;
+    }
+
+    /**
+     * 如果遇见302一直执行get
+     *
+     * @param perform 操作
+     * @param session session
+     * @return 操作
+     * @throws Exception
+     */
+    protected ResultActions redirectTo(ResultActions perform, MockHttpSession session) throws Exception {
+        final MockHttpServletResponse response = perform.andReturn().getResponse();
+        if (response.getStatus() == 302) {
+            String uri = response.getRedirectedUrl();
+            return redirectTo(mockMvc.perform(getWeixin(uri).session(session)), session);
+        }
+        return perform;
     }
 
     /**

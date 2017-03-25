@@ -14,6 +14,7 @@ import me.jiangcai.wx.OpenId;
 import me.jiangcai.wx.model.SceneCode;
 import me.jiangcai.wx.model.WeixinUserDetail;
 import me.jiangcai.wx.protocol.Protocol;
+import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
@@ -31,6 +32,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author CJ
@@ -73,9 +78,26 @@ public class LoginController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/login", produces = MediaType.TEXT_HTML_VALUE)
-    public String allLogin(HttpSession session) {
+    public String allLogin(HttpSession session, HttpServletRequest request) {
         if (session.getAttribute(IndexController.MallMode) != null)
             return "redirect:/mall/";
+        String ps = request.getParameterMap().entrySet().stream()
+                .flatMap(entry -> {
+                    String name = entry.getKey();
+                    return Stream.of(entry.getValue())
+                            .map(s -> new BasicNameValuePair(name, s));
+                })
+                .map(pair -> {
+                    try {
+                        return pair.getName() + "=" + URLEncoder.encode(pair.getValue(), "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        throw new InternalError(e);
+                    }
+                })
+                .collect(Collectors.joining("&"));
+
+        if (ps.length() > 0)
+            return "redirect:/wxLogin?" + ps;
         return "redirect:/wxLogin";
     }
 

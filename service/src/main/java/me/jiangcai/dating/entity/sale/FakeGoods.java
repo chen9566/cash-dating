@@ -27,6 +27,10 @@ public class FakeGoods extends CashGoods {
      * 销量，可以随意修改
      */
     private long sales;
+    /**
+     * 库存，可以随意修改
+     */
+    private long stock;
 
     @Override
     public boolean isTicketGoods() {

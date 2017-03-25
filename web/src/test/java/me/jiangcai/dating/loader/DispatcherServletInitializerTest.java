@@ -18,6 +18,7 @@ public class DispatcherServletInitializerTest extends WebTest {
 
     @Test
     public void weixin() throws Exception {
+//        redirectTo(mockMvc.perform(getWeixin("/login").session(session)), session);
         mockMvc.perform(getWeixin("/login?code=0416H2Ac23jicS0HwtAc2Z6Zzc26H2AB&state="))
                 .andDo(print());
         // 不可以是302
