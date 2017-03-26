@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:res="http://resource.jiangcai.me" lang="en">
 <!--/*@thymesVar id="specialList" type="java.util.List<me.jiangcai.dating.entity.sale.FakeGoods>"*/-->
 <!--/*@thymesVar id="goodsList" type="java.util.List<me.jiangcai.dating.entity.sale.FakeGoods>"*/-->
-<!--/*@thymesVar id="order" type="java.lang.String"*/-->
 <!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.service.CashStrings"*/-->
 <head>
     <meta charset="UTF-8">
@@ -16,7 +15,7 @@
     <link rel="stylesheet" href="styles/pageSwitch.min.css">
     <title>款爷商城</title>
 </head>
-<body data-order="new" th:attr="data-order=${order}">
+<body>
 <script th:replace="/mall/fragment/toolbar.html::all"></script>
 
 <th:block th:replace="/mall/fragment/toolbar.html::pageHeader">
@@ -51,7 +50,7 @@
 
 <div class="w1200">
     <div class="newicon">
-        <ul>
+        <ul class="clickForCategory">
             <li><a href="#" class="s1">女装</a><span class="fl f12">|</span><a href="#" class="s2">男装</a></li>
             <li><a href="#" class="s3">鞋子</a><span class="fl f12">|</span><a href="#" class="s4">箱包</a></li>
             <li><a href="#" class="s5">母婴</a><span class="fl f12">|</span><a href="#" class="s6">美妆</a></li>
@@ -107,7 +106,7 @@
             <a href="#" class="orderAble" data-value="cheap">价格从低到高</a>
             <a href="#" class="orderAble" data-value="expensive">价格从高到低</a>
         </div>
-        <div class="pic">
+        <div class="pic _goodsList">
             <ul>
                 <li href="details.html" class="clickHref" th:each="goods:${goodsList}"
                     th:href="@{/mall/{id}(id=${goods.id})}">

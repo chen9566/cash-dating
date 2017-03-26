@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:res="http://resource.jiangcai.me" lang="en">
+<!--/*@thymesVar id="goodsList" type="java.util.List<me.jiangcai.dating.entity.sale.FakeGoods>"*/-->
+<!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.service.CashStrings"*/-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -11,7 +13,7 @@
     <link rel="stylesheet" href="styles/styles.css">
     <title>款爷商城</title>
 </head>
-<body>
+<body data-search-result="true">
 <script th:replace="/mall/fragment/toolbar.html::all"></script>
 
 <th:block th:replace="/mall/fragment/toolbar.html::pageHeader">
@@ -45,65 +47,74 @@
 </th:block>
 
 <div class="navlist">
-    <div class="w1200">
-        <a href="#">今日上新</a><a href="#">女装</a><a href="#">女装</a><a href="#">女装</a><a href="#">女装</a><a
-            href="#">女装</a><a href="#">女装</a><a href="#">女装</a><a href="#">女装</a><a href="#">女装</a><a
-            href="#">女装</a>
+    <div class="w1200 clickForCategory">
+        <!--<a href="#">今日上新</a>-->
+        <a href="#" class="s1">女装</a><a href="#" class="s2">男装</a>
+        <a href="#" class="s3">鞋子</a><a href="#" class="s4">箱包</a>
+        <a href="#" class="s5">母婴</a><a href="#" class="s6">美妆</a>
+        <a href="#" class="s7">内衣</a><a href="#" class="s8">美食</a>
+        <a href="#" class="s9">家具</a><a href="#" class="s10">文具</a>
     </div>
 </div>
 <div class="w1200">
-    <div class="hotgoods">
+    <div class="hotgoods _goodsList">
         <ul>
-            <li>
+            <li class="clickHref" href="details.html" th:each="goods:${goodsList}">
+                <div class="hot-i" th:if="${goods.hot || goods.special}">
+                    <img th:if="${goods.hot}" src="images/hoticon.png"/>
+                    <img th:if="${goods.special}" src="images/saleicon.png"/>
+                </div>
+                <img src="images/750X36080k_qaug.jpeg" res:src="${goods.titleGoodsImage.defaultImage.resourcePath}"/>
+                <p class="f14" th:text="${goods.name}">男女士冰丝防晒袖套男女士冰丝防</p>
+                <p>
+                    <span class="f40"><em>￥</em><span
+                            th:text="${#cashStrings.mallPrice(goods.price)}">68</span></span>
+                    <span class="price-old" th:text="${goods.subPrice}"><em>￥</em>28 (1.7折)</span>
+                    <span class="fr f12">已售<span th:text="${goods.sales}">2000</span></span></p>
+            </li>
+            <li class="clickHref" href="details.html" th:remove="all">
                 <div class="hot-i"><img src="images/hoticon.png"/></div>
                 <img src="images/750X36080k_qaug.jpeg"/>
                 <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
                 <p><span class="f40"><em>￥</em>68</span><span class="price-old"><em>￥</em>128 (1.7折)</span><span
                         class="fr f12">已售2000</span></p>
             </li>
-            <li>
+            <li class="clickHref" href="details.html" th:remove="all">
                 <div class="hot-i"><img src="images/hoticon.png"/></div>
                 <img src="images/750X36080k_qaug.jpeg"/>
                 <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
                 <p><span class="f40"><em>￥</em>68</span><span class="price-old"><em>￥</em>128 (1.7折)</span><span
                         class="fr f12">已售2000</span></p>
             </li>
-            <li>
+            <li class="clickHref" href="details.html" th:remove="all">
                 <div class="hot-i"><img src="images/hoticon.png"/></div>
                 <img src="images/750X36080k_qaug.jpeg"/>
                 <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
                 <p><span class="f40"><em>￥</em>68</span><span class="price-old"><em>￥</em>128 (1.7折)</span><span
                         class="fr f12">已售2000</span></p>
             </li>
-            <li>
+            <li class="clickHref" href="details.html" th:remove="all">
                 <div class="hot-i"><img src="images/hoticon.png"/></div>
                 <img src="images/750X36080k_qaug.jpeg"/>
                 <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
                 <p><span class="f40"><em>￥</em>68</span><span class="price-old"><em>￥</em>128 (1.7折)</span><span
                         class="fr f12">已售2000</span></p>
             </li>
-            <li>
+            <li class="clickHref" href="details.html" th:remove="all">
                 <div class="hot-i"><img src="images/hoticon.png"/></div>
                 <img src="images/750X36080k_qaug.jpeg"/>
                 <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
                 <p><span class="f40"><em>￥</em>68</span><span class="price-old"><em>￥</em>128 (1.7折)</span><span
                         class="fr f12">已售2000</span></p>
             </li>
-            <li>
+            <li class="clickHref" href="details.html" th:remove="all">
                 <div class="hot-i"><img src="images/hoticon.png"/></div>
                 <img src="images/750X36080k_qaug.jpeg"/>
                 <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
                 <p><span class="f40"><em>￥</em>68</span><span class="price-old"><em>￥</em>128 (1.7折)</span><span
                         class="fr f12">已售2000</span></p>
             </li>
-            <li>
-                <div class="hot-i"><img src="images/hoticon.png"/></div>
-                <img src="images/750X36080k_qaug.jpeg"/>
-                <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                <p><span class="f40"><em>￥</em>68</span><span class="price-old"><em>￥</em>128 (1.7折)</span><span
-                        class="fr f12">已售2000</span></p>
-            </li>
-            <li>
+            <li class="clickHref" href="details.html" th:remove="all">
                 <div class="hot-i"><img src="images/hoticon.png"/></div>
                 <img src="images/750X36080k_qaug.jpeg"/>
                 <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
@@ -127,6 +138,7 @@
     $.searchUri = /*[[@{/mall/search}]]*/ 'search.html';
 </script>
 <script src="../mock/all.js" th:src="@{/all.js}"></script>
+<script src="../dist/js/share.js"></script>
 <script src="js/mall.js"></script>
 </body>
 

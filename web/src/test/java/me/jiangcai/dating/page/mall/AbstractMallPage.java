@@ -6,6 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 /**
  * @author CJ
@@ -16,6 +17,13 @@ abstract class AbstractMallPage extends AbstractPage {
     protected WebElement registerLink;
     protected WebElement loginLink;
     protected WebElement welcomeSpan;
+    @FindBy(css = "input[name=search]")
+    private WebElement inputSearch;
+    @FindBy(className = "stxt")
+    private WebElement submitSearch;
+    private WebElement specialLink;
+    private WebElement hotLink;
+    private WebElement homeLink;
 
     AbstractMallPage(WebDriver webDriver) {
         super(webDriver);
@@ -49,5 +57,27 @@ abstract class AbstractMallPage extends AbstractPage {
     public LoginPage openLoginPage() {
         loginLink.click();
         return initPage(LoginPage.class);
+    }
+
+    public SearchPage search(String text) {
+        inputSearch.clear();
+        inputSearch.sendKeys(text);
+        submitSearch.click();
+        return initPage(SearchPage.class);
+    }
+
+    public SearchPage openHotPage() {
+        hotLink.click();
+        return initPage(SearchPage.class);
+    }
+
+    public SearchPage openSpecialPage() {
+        specialLink.click();
+        return initPage(SearchPage.class);
+    }
+
+    public IndexPage backHome() {
+        homeLink.click();
+        return initPage(IndexPage.class);
     }
 }

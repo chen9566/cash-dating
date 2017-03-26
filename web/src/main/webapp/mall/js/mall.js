@@ -36,10 +36,12 @@ $(function () {
         search();
     });
 
-    $('.newicon ul li a').click(function () {
+    function changeCategory() {
         body.attr('data-category', $(this).attr('class'));
         search();
-    });
+    }
+
+    $('.clickForCategory a').click(changeCategory);
 
     // 更新状态值
     var order = body.attr('data-order');

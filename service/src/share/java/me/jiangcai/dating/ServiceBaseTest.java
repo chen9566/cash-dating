@@ -424,6 +424,15 @@ public abstract class ServiceBaseTest extends SpringWebTest {
         tradeSuccess(order, platformOrder);
     }
 
+    /**
+     * @param clazz 枚举类
+     * @param <T>   枚举类
+     * @return 随机枚举
+     */
+    protected <T extends Enum> T randomEnum(Class<T> clazz) {
+        T[] data = clazz.getEnumConstants();
+        return data[random.nextInt(data.length)];
+    }
 
     public static class RandomComparator implements Comparator<Object> {
         static Random random = new Random();
