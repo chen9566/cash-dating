@@ -99,7 +99,9 @@ public class MallGoodsServiceImpl implements MallGoodsService {
 
     @Override
     public Goods saveGoods(Goods goods) {
-        return cashGoodsRepository.save((CashGoods) goods);
+        final CashGoods cashGoods = (CashGoods) goods;
+        cashGoods.setUpdateTime(LocalDateTime.now());
+        return cashGoodsRepository.save(cashGoods);
     }
 
     @Override
@@ -113,7 +115,7 @@ public class MallGoodsServiceImpl implements MallGoodsService {
         TicketGoods ticketGoods = (TicketGoods) manageGoodsService.addGoods(TicketGoods::new
                 , goods -> cashGoodsRepository.save((CashGoods) goods), null, null
                 , name, price, imagePaths);
-
+        ticketGoods.setCreateTime(LocalDateTime.now());
         ticketGoods.setBrand(brand);
         ticketGoods.setSubPrice(subPrice);
         ticketGoods.setDescription(description);
@@ -129,9 +131,11 @@ public class MallGoodsServiceImpl implements MallGoodsService {
 
     @Override
     public FakeGoods addFakeGoods(String name, String price) throws IOException {
-        return (FakeGoods) manageGoodsService.addGoods(FakeGoods::new
+        FakeGoods fakeGoods = (FakeGoods) manageGoodsService.addGoods(FakeGoods::new
                 , goods -> cashGoodsRepository.save((CashGoods) goods), null, null
                 , name, new BigDecimal(price));
+        fakeGoods.setCreateTime(LocalDateTime.now());
+        return fakeGoods;
     }
 
     @Override

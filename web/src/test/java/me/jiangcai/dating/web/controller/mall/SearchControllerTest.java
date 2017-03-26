@@ -17,11 +17,26 @@ public class SearchControllerTest extends WebTest {
         driver.get("http://localhost/mall/");
         IndexPage indexPage = initPage(IndexPage.class);
 
-        indexPage.printThisPage();
+//        indexPage.printThisPage();
 
         FakeGoodsDetailPage detailPage = indexPage.openDetailPage(new RandomComparator());
 
         detailPage.printThisPage();
+
+        // 先回来 看看排序这事儿搞得如何
+        driver.get("http://localhost/mall/");
+        indexPage = initPage(IndexPage.class);
+//        indexPage.printThisPage();
+
+        indexPage.byCheap();
+        indexPage.printThisPage();
+
+        indexPage.byExpensive();
+        indexPage.printThisPage();
+
+        indexPage.byNew();
+        indexPage.printThisPage();
+
     }
 
 }

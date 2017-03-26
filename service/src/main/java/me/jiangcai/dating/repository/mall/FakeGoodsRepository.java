@@ -1,6 +1,7 @@
 package me.jiangcai.dating.repository.mall;
 
 import me.jiangcai.dating.entity.sale.FakeGoods;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,4 +12,6 @@ import java.util.List;
 public interface FakeGoodsRepository extends JpaRepository<FakeGoods, Long> {
 
     List<FakeGoods> findByDiscountIsNotNullAndEnableTrueAndSpecialTrue();
+
+    List<FakeGoods> findBySpecialFalseAndEnableTrue(Sort sort);
 }

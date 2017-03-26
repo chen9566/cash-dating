@@ -1311,3 +1311,7 @@ button, input, select, textarea {
 .error {
     color: red;
 }
+
+.clickHref {
+    cursor: pointer;
+}

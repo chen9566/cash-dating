@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:res="http://resource.jiangcai.me" lang="en">
 <!--/*@thymesVar id="specialList" type="java.util.List<me.jiangcai.dating.entity.sale.FakeGoods>"*/-->
+<!--/*@thymesVar id="goodsList" type="java.util.List<me.jiangcai.dating.entity.sale.FakeGoods>"*/-->
+<!--/*@thymesVar id="order" type="java.lang.String"*/-->
+<!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.service.CashStrings"*/-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -13,7 +16,7 @@
     <link rel="stylesheet" href="styles/pageSwitch.min.css">
     <title>款爷商城</title>
 </head>
-<body>
+<body data-order="new" th:attr="data-order=${order}">
 <script th:replace="/mall/fragment/toolbar.html::all"></script>
 
 <th:block th:replace="/mall/fragment/toolbar.html::pageHeader">
@@ -100,109 +103,33 @@
 <div class="w1200">
     <div class="goodlist">
         <div class="page">
-            <a href="#" class="curr">最新</a>
-            <a href="#">价格从低到高</a>
-            <a href="#">价格从高到低</a>
+            <a href="#" class="curr orderAble" data-value="new">最新</a>
+            <a href="#" class="orderAble" data-value="cheap">价格从低到高</a>
+            <a href="#" class="orderAble" data-value="expensive">价格从高到低</a>
         </div>
         <div class="pic">
             <ul>
-                <li><a href="details.html"><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>68</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </a>
+                <li href="details.html" class="clickHref" th:each="goods:${goodsList}"
+                    th:href="@{/mall/{id}(id=${goods.id})}">
+                    <p><img src="images/temp.jpeg" res:src="${goods.titleGoodsImage.defaultImage.resourcePath}"/></p>
+                    <p class="f14" th:text="${goods.name}">男女士冰丝防晒袖套男女士冰丝防</p>
+                    <p>
+                        <span class="f40"><em>￥</em><span
+                                th:text="${#cashStrings.mallPrice(goods.price)}">68</span></span>
+                        <span class="price-old" th:text="${goods.subPrice}"><em>￥</em>28 (1.7折)</span>
+                        <span class="fr f12">已售<span th:text="${goods.sales}">2000</span></span></p>
                 </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
+                <li href="details.html" th:remove="all" class="clickHref"><p><img src="images/temp.jpeg"/></p>
                     <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
                     <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
                             class="fr f12">已售2000</span></p>
                 </li>
-                <li><p><img src="images/temp.jpeg"/></p>
+                <li href="details.html" th:remove="all" class="clickHref"><p><img src="images/temp.jpeg"/></p>
                     <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
                     <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
                             class="fr f12">已售2000</span></p>
                 </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
-                    <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
-                    <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
-                            class="fr f12">已售2000</span></p>
-                </li>
-                <li><p><img src="images/temp.jpeg"/></p>
+                <li href="details.html" th:remove="all" class="clickHref"><p><img src="images/temp.jpeg"/></p>
                     <p class="f14">男女士冰丝防晒袖套男女士冰丝防</p>
                     <p><span class="f40"><em>￥</em>48</span><span class="price-old"><em>￥</em>28 (1.7折)</span><span
                             class="fr f12">已售2000</span></p>

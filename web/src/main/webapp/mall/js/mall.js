@@ -41,4 +41,21 @@ $(function () {
         search();
     });
 
+    // 更新状态值
+    var order = body.attr('data-order');
+    var orderAble = $('.orderAble');
+    orderAble.removeClass('curr');
+    if (order && order.length > 0) {
+        orderAble.closest('[data-value=' + order + ']').addClass('curr');
+    } else {
+        // 那就拿第一个
+        $(orderAble[0]).addClass('curr');
+    }
+
+    orderAble.click(function () {
+        var value = $(this).attr('data-value');
+
+        location.href = $.indexUri + "?order=" + value;
+    })
+
 });

@@ -20,6 +20,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,14 @@ public abstract class CashGoods extends Goods {
      * 特卖
      */
     private boolean special;
+    /**
+     * 创建时间
+     */
+    @Column(columnDefinition = "datetime")
+    private LocalDateTime createTime;
+    @Column(columnDefinition = "datetime")
+    private LocalDateTime updateTime;
+
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "goods")
     private List<GoodsStyle> styleList;
 
