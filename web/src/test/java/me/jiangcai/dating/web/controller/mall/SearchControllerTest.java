@@ -1,6 +1,7 @@
 package me.jiangcai.dating.web.controller.mall;
 
 import me.jiangcai.dating.WebTest;
+import me.jiangcai.dating.page.mall.FakeGoodsDetailPage;
 import me.jiangcai.dating.page.mall.IndexPage;
 import org.junit.Test;
 
@@ -17,6 +18,10 @@ public class SearchControllerTest extends WebTest {
         IndexPage indexPage = initPage(IndexPage.class);
 
         indexPage.printThisPage();
+
+        FakeGoodsDetailPage detailPage = indexPage.openDetailPage(new RandomComparator());
+
+        detailPage.printThisPage();
     }
 
 }

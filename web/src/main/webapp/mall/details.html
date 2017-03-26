@@ -1,47 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:res="http://resource.jiangcai.me" lang="en">
+<!--/*@thymesVar id="goods" type="me.jiangcai.dating.entity.sale.FakeGoods"*/-->
+<!--/*@thymesVar id="#cashStrings" type="me.jiangcai.dating.service.CashStrings"*/-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
     <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.6.1.min.js"></script>
+    <script src="//cdn.kuanyes.com/gritter-1.7.4/js/jquery.gritter.min.js"></script>
+    <link href="//cdn.kuanyes.com/gritter-1.7.4/css/jquery.gritter.css" rel="stylesheet" property=""/>
     <script src="js/pic_tab.js"></script>
     <script src="js/payfor.js"></script>
     <link rel="stylesheet" href="styles/styles.css">
-    <title>商品详情</title>
+    <title th:text="${goods.name}">商品详情</title>
 </head>
-<body>
+<body th:attr="data-id=${goods.id}">
 <div class="wap-show"></div>
-<div class="toolbar">
-    <div class="w1200">
-        <ul class="fr">
-            <li>欢迎来到款爷商城</li>
-            <li class="lt">|</li>
-            <li><a href="login.html">登陆</a></li>
-            <li class="lt">|</li>
-            <li><a href="register.html">免费注册</a></li>
-        </ul>
+
+<script th:replace="/mall/fragment/toolbar.html::all"></script>
+<th:block th:replace="/mall/fragment/toolbar.html::pageHeader">
+    <div class="toolbar">
+        <div class="w1200">
+            <ul class="fr">
+                <li>欢迎来到款爷商城</li>
+                <li class="lt">|</li>
+                <li><a href="login.html">登陆</a></li>
+                <li class="lt">|</li>
+                <li><a href="register.html">免费注册</a></li>
+            </ul>
+        </div>
     </div>
-</div>
-<div class="index-head">
-    <div class="w1200">
-        <div class="logo"><img src="images/logo.png"/></div>
-        <div class="search"><input placeholder="请输入你想找得宝贝"><span class="stxt">搜索</span></div>
+    <div class="index-head">
+        <div class="w1200">
+            <div class="logo"><img src="images/logo.png"/></div>
+            <div class="search"><input placeholder="请输入你想找得宝贝"><span class="stxt">搜索</span></div>
+        </div>
     </div>
-</div>
-<div class="mainnav">
-    <div class="w1200">
-        <ul>
-            <li class="navigation"><a href="index.html"> 全部商品</a></li>
-            <li><a href="search.html">爆品</a></li>
-            <li><a href="search.html">特卖</a></li>
-        </ul>
+    <div class="mainnav">
+        <div class="w1200">
+            <ul>
+                <li class="navigation"><a href="index.html"> 全部商品</a></li>
+                <li><a href="search.html">爆品</a></li>
+                <li><a href="search.html">特卖</a></li>
+            </ul>
+        </div>
     </div>
-</div>
+</th:block>
+
 <div class="w1200">
     <p class="link">
-        <a href="index.html"> 款爷首页 </a> > <a href="nz.html">女装</a> > <a href="#">休闲外套</a>
+        <a href="index.html" th:href="@{/mall/}"> 款爷首页 </a>
+
+        <span th:if="${goods.fakeCategory!=null}">
+    &gt; <a href="search.html" th:href="@{/mall/search(category=${goods.fakeCategory.name()})}"
+            th:text="${goods.fakeCategory.getName()}">女装</a>
+        </span>
     </p>
 </div>
 <div class="w1200">
@@ -51,21 +65,25 @@
             <div class="ban" id="demo1">
                 <div class="ban2" id="ban_pic1">
                     <ul>
-                        <li><a href="javascript:;" class="img1"><img src="images/b1.jpg" alt=""></a></li>
-                        <li><a href="javascript:;"><img src="images/b2.jpg" alt=""></a></li>
-                        <li><a href="javascript:;"><img src="images/b3.jpg" alt=""></a></li>
-                        <li><a href="javascript:;"><img src="images/b4.jpg" alt=""></a></li>
-                        <li><a href="javascript:;"><img src="images/b5.jpg" alt=""></a></li>
+                        <li th:each="image:${goods.goodsImages}">
+                            <a href="javascript:" class="img1" th:class="${imageStat.index==0?'img1':''}">
+                                <img src="images/b1.jpg" res:src="${image.defaultImage.resourcePath}" alt=""></a>
+                        </li>
+                        <li th:remove="all"><a href="javascript:"><img src="images/b2.jpg" alt=""></a></li>
+                        <li th:remove="all"><a href="javascript:"><img src="images/b3.jpg" alt=""></a></li>
+                        <li th:remove="all"><a href="javascript:"><img src="images/b4.jpg" alt=""></a></li>
+                        <li th:remove="all"><a href="javascript:"><img src="images/b5.jpg" alt=""></a></li>
                     </ul>
                 </div>
                 <div class="min_pic">
                     <div class="num clearfix" id="ban_num1">
                         <ul>
-                            <li><a href="javascript:;"><img src="images/s1.jpg" alt=""></a></li>
-                            <li><a href="javascript:;"><img src="images/s2.jpg" alt=""></a></li>
-                            <li><a href="javascript:;"><img src="images/s3.jpg" alt=""></a></li>
-                            <li><a href="javascript:;"><img src="images/s4.jpg" alt=""></a></li>
-                            <li><a href="javascript:;"><img src="images/s5.jpg" alt=""></a></li>
+                            <li th:each="image:${goods.goodsImages}"><a href="javascript:">
+                                <img src="images/s1.jpg" res:src="${image.defaultImage.resourcePath}" alt=""></a></li>
+                            <li th:remove="all"><a href="javascript:"><img src="images/s2.jpg" alt=""></a></li>
+                            <li th:remove="all"><a href="javascript:"><img src="images/s3.jpg" alt=""></a></li>
+                            <li th:remove="all"><a href="javascript:"><img src="images/s4.jpg" alt=""></a></li>
+                            <li th:remove="all"><a href="javascript:"><img src="images/s5.jpg" alt=""></a></li>
                         </ul>
                     </div>
                 </div>
@@ -77,39 +95,41 @@
                 <div class="pop_up_xx"><img src="images/chacha3.png" width="40" height="40" alt=""></div>
                 <div class="pop_up2" id="ban_pic2">
                     <ul>
-                        <li><a href="javascript:;"><img src="images/b1.jpg" alt=""></a></li>
-                        <li><a href="javascript:;"><img src="images/b2.jpg" alt=""></a></li>
-                        <li><a href="javascript:;"><img src="images/b3.jpg" alt=""></a></li>
-                        <li><a href="javascript:;"><img src="images/b4.jpg" alt=""></a></li>
-                        <li><a href="javascript:;"><img src="images/b5.jpg" alt=""></a></li>
+                        <li th:each="image:${goods.goodsImages}"><a href="javascript:">
+                            <img src="images/s1.jpg" res:src="${image.defaultImage.resourcePath}" alt=""></a></li>
+                        <li th:remove="all"><a href="javascript:"><img src="images/b2.jpg" alt=""></a></li>
+                        <li th:remove="all"><a href="javascript:"><img src="images/b3.jpg" alt=""></a></li>
+                        <li th:remove="all"><a href="javascript:"><img src="images/b4.jpg" alt=""></a></li>
+                        <li th:remove="all"><a href="javascript:"><img src="images/b5.jpg" alt=""></a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <!-- 产品轮播 end-->
         <div class="goods-warp">
-            <h1>韩版关晓彤同款简约拼色修身时尚宽松长袖卫衣</h1>
+            <h1 th:text="${goods.name}">韩版关晓彤同款简约拼色修身时尚宽松长袖卫衣</h1>
             <div class="sector-info">
-                <p><em>￥</em><span class=price>90</span><span class="price-old"><em>￥</em>28 (1.7折)</span>
+                <p><em>￥</em><span class="price" th:text="${#cashStrings.mallPrice(goods.price)}">80</span>
+                    <span class="price-old" th:text="${goods.subPrice}"><em>￥</em>28 (1.7折)</span>
                 </p>
                 <p><span class="freight">配送至:</span><span>全国</span><i>免运费</i></p>
             </div>
             <div class="J-other">
-                <dl>
-                    <dt>颜色:</dt>
-                    <dd><a href="#" class="color"><img src="images/s1.jpg"/> </a><a href="#" class="color"><img
-                            src="images/s1.jpg"/> </a></dd>
-                </dl>
-                <dl>
-                    <dt>尺码:</dt>
-                    <dd class="cm"><a href="#">S</a> <a href="#">M</a><a href="#">L</a><a href="#">XL</a><a
-                            href="#">XLL</a></dd>
-                </dl>
+                <!--<dl>-->
+                <!--<dt>颜色:</dt>-->
+                <!--<dd><a href="#" class="color"><img src="images/s1.jpg"/> </a><a href="#" class="color"><img-->
+                <!--src="images/s1.jpg"/> </a></dd>-->
+                <!--</dl>-->
+                <!--<dl>-->
+                <!--<dt>尺码:</dt>-->
+                <!--<dd class="cm"><a href="#">S</a> <a href="#">M</a><a href="#">L</a><a href="#">XL</a><a-->
+                <!--href="#">XLL</a></dd>-->
+                <!--</dl>-->
                 <dl>
                     <dt>数量：</dt>
                     <dd class="number">
                         <img class="min" src="images/X15.png"/>
-                        <input class="text_box" name="" type="text" value="1"/>
+                        <input class="text_box" name="count" type="number" min="1" step="1" value="1" title="数量"/>
                         <img class="add" src="images/16.png"/>
                     </dd>
                     <dd class="f16">总价:<span class="total">000</span></dd>
@@ -117,7 +137,7 @@
                 <dl>
                     <dt>&nbsp</dt>
                     <dd class="buy">
-                        <a href="javascript:;">立即购买</a>
+                        <a href="javascript:">立即购买</a>
                     </dd>
                 </dl>
             </div>
@@ -132,7 +152,7 @@
                 <!--<li>物流和售后</li>-->
             </ul>
         </div>
-        <p><img src="images/temp.png"/></p>
+        <p th:utext="${goods.richDetail}"><img src="images/temp.png"/></p>
     </div>
 </div>
 <div class="footer m-bottom">
@@ -198,4 +218,7 @@
 
     });
 </script>
+<script src="../mock/all.js" th:src="@{/all.js}"></script>
+<script src="../dist/js/share.js"></script>
+<script src="js/mall.js"></script>
 </html>
