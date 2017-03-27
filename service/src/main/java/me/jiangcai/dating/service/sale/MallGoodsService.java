@@ -4,6 +4,7 @@ import me.jiangcai.dating.core.Login;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashGoods;
 import me.jiangcai.dating.entity.sale.CashTrade;
+import me.jiangcai.dating.entity.sale.FakeGoods;
 import me.jiangcai.dating.entity.sale.TicketBatch;
 import me.jiangcai.dating.entity.sale.TicketGoods;
 import me.jiangcai.dating.model.TicketInfo;
@@ -76,6 +77,10 @@ public interface MallGoodsService {
     @Transactional
     @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "')")
     TicketGoods addTicketGoods(String name, String price, String stockStyle) throws IOException;
+
+    @Transactional
+    @PreAuthorize("hasAnyRole('ROOT','" + Login.Role_Sale_Goods_Value + "')")
+    FakeGoods addFakeGoods(String name, String price) throws IOException;
 
     /**
      * 建立订单咯

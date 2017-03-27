@@ -343,7 +343,7 @@ public class User implements WeixinUser, ProfitSplit, UserDetails, Locker, Buyer
 
     @Override
     public String getUsername() {
-        return nickname == null ? openId : nickname;
+        return nickname == null ? (mobileNumber == null ? openId : mobileNumber) : nickname;
     }
 
     @Override

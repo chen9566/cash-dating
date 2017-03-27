@@ -10,6 +10,9 @@ import me.jiangcai.dating.entity.Card;
 import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.SubBranchBank;
 import me.jiangcai.dating.entity.User;
+import me.jiangcai.dating.entity.sale.CashGoods;
+import me.jiangcai.dating.entity.sale.FakeGoods;
+import me.jiangcai.dating.entity.sale.support.FakeCategory;
 import me.jiangcai.dating.entity.support.Address;
 import me.jiangcai.dating.model.PayMethod;
 import me.jiangcai.dating.model.trj.ProjectLoan;
@@ -26,7 +29,11 @@ import me.jiangcai.dating.service.PayResourceService;
 import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.WealthService;
+import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.dating.web.WebConfig;
+import me.jiangcai.goods.Seller;
+import me.jiangcai.goods.TradeEntity;
+import me.jiangcai.goods.service.ManageGoodsService;
 import me.jiangcai.lib.test.page.AbstractPage;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.logging.Log;
@@ -39,10 +46,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.Resource;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
 import org.springframework.test.web.servlet.htmlunit.webdriver.WebConnectionHtmlUnitDriver;
@@ -54,6 +63,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -83,6 +93,10 @@ public abstract class WebTest extends ServiceBaseTest {
     private MockPay pay;
     @Autowired
     private SystemService systemService;
+    @Autowired
+    private MallGoodsService mallGoodsService;
+    @Autowired
+    private ManageGoodsService manageGoodsService;
 
     private static <T> Iterable<T> IterableIterator(Iterator<T> iterator) {
         return () -> iterator;
@@ -122,10 +136,10 @@ public abstract class WebTest extends ServiceBaseTest {
             page.setTestInstance(this);
             page.validatePage();
             return page;
-        } catch (RuntimeException ex) {
-            System.out.println(driver.getCurrentUrl());
-            System.out.println(driver.getPageSource());
-            throw ex;
+        } catch (AssertionError | RuntimeException error) {
+            System.err.println(driver.getCurrentUrl());
+            System.err.println(driver.getPageSource());
+            throw error;
         }
     }
 
@@ -198,7 +212,25 @@ public abstract class WebTest extends ServiceBaseTest {
                 .containsAll(IterableIterator(excepted.fieldNames()));
     }
 
-    protected ResultMatcher simliarDataJsonAs(String resource) {
+    /**
+     * @param resource 参考
+     * @return 验证这个资源应该是类似的Json Object
+     */
+    protected ResultMatcher similarJsonAs(String resource) {
+        return result -> {
+            Resource resource1 = applicationContext.getResource(resource);
+            try (InputStream inputStream = resource1.getInputStream()) {
+                JsonNode actual = objectMapper.readTree(result.getResponse().getContentAsByteArray());
+                assertSimilarJsonObject(actual, objectMapper.readTree(inputStream));
+            }
+        };
+    }
+
+    /**
+     * @param resource 参考
+     * @return 验证这个资源应该是dataTable风格的json
+     */
+    protected ResultMatcher similarDataJsonAs(String resource) {
         return result -> {
             Resource resource1 = applicationContext.getResource(resource);
             try (InputStream inputStream = resource1.getInputStream()) {
@@ -232,6 +264,10 @@ public abstract class WebTest extends ServiceBaseTest {
         return helloNewUser(defaultStartUrl, invite, withBindingCard);
     }
 
+    protected User helloNewUser(User invite, boolean withBindingCard, String mobile) throws IOException {
+        return helloNewUser(defaultStartUrl, invite, withBindingCard, mobile);
+    }
+
     /**
      * 磨磨唧唧的建立一个新用户
      *
@@ -241,7 +277,11 @@ public abstract class WebTest extends ServiceBaseTest {
      * @throws IOException
      */
     protected User helloNewUser(String startUrl, User invite, boolean withBindingCard) throws IOException {
-        String mobile = helloMobile(startUrl, invite);
+        return helloNewUser(startUrl, invite, withBindingCard, null);
+    }
+
+    protected User helloNewUser(String startUrl, User invite, boolean withBindingCard, String mobile) throws IOException {
+        mobile = helloMobile(startUrl, invite, mobile);
 
         // 应该到了下一个页面了
 
@@ -304,10 +344,15 @@ public abstract class WebTest extends ServiceBaseTest {
      * @return
      */
     protected String helloMobile(String startUrl, User invite) {
+        return helloMobile(startUrl, invite, null);
+    }
+
+    protected String helloMobile(String startUrl, User invite, String mobile) {
+        if (mobile == null)
+            mobile = randomMobile();
         if (startUrl == null)
             startUrl = defaultStartUrl;
         driver.get(startUrl);
-        String mobile = randomMobile();
         BindingMobilePage page = initPage(BindingMobilePage.class);
 
         page.submitWithNothing();
@@ -422,9 +467,26 @@ public abstract class WebTest extends ServiceBaseTest {
     protected MockHttpSession mvcLogin() throws Exception {
         MockHttpSession session = new MockHttpSession();
         mockMvc.perform(getWeixin("/start").session(session));
-        mockMvc.perform(getWeixin("/login").session(session));
+        redirectTo(mockMvc.perform(getWeixin("/login").session(session)), session);
         mockMvc.perform(getWeixin("/start").session(session));
         return session;
+    }
+
+    /**
+     * 如果遇见302一直执行get
+     *
+     * @param perform 操作
+     * @param session session
+     * @return 操作
+     * @throws Exception
+     */
+    protected ResultActions redirectTo(ResultActions perform, MockHttpSession session) throws Exception {
+        final MockHttpServletResponse response = perform.andReturn().getResponse();
+        if (response.getStatus() == 302) {
+            String uri = response.getRedirectedUrl();
+            return redirectTo(mockMvc.perform(getWeixin(uri).session(session)), session);
+        }
+        return perform;
     }
 
     /**
@@ -459,6 +521,85 @@ public abstract class WebTest extends ServiceBaseTest {
     protected MySalePage mySalePage() {
         driver.get("http://localhost/sale/my");
         return initPage(MySalePage.class);
+    }
+
+    protected CashGoods randomGoodsData() {
+        CashGoods goods = new CashGoods() {
+            @Override
+            public Seller getSeller() {
+                return null;
+            }
+
+            @Override
+            public void setSeller(Seller seller) {
+
+            }
+
+            @Override
+            public TradeEntity getOwner() {
+                return null;
+            }
+
+            @Override
+            public void setOwner(TradeEntity owner) {
+
+            }
+
+            @Override
+            public boolean isTicketGoods() {
+                return false;
+            }
+
+            @Override
+            protected void moreModel(Map<String, Object> data) {
+
+            }
+        };
+        goods.setName(UUID.randomUUID().toString());
+        goods.setBrand(UUID.randomUUID().toString());
+        goods.setDescription(UUID.randomUUID().toString());
+        goods.setSubPrice(UUID.randomUUID().toString().substring(0, 25));
+        goods.setPrice(randomOrderAmount());
+        goods.setRichDetail(UUID.randomUUID().toString());
+        goods.setWeight(random.nextInt());
+        goods.setHot(random.nextBoolean());
+        goods.setFreshly(random.nextBoolean());
+        goods.setSpecial(random.nextBoolean());
+
+        return goods;
+    }
+
+    protected void addRandomFakeGoods() throws IOException {
+        RootAuthentication.runAsRoot(() -> {
+            FakeGoods goods;
+            try {
+                goods = mallGoodsService.addFakeGoods(UUID.randomUUID().toString(), randomOrderAmount().toString());
+            } catch (IOException e) {
+                throw new InternalError(e);
+            }
+            // 设定其属性
+            CashGoods cashGoods = randomGoodsData();
+
+            goods.setFakeCategory(FakeCategory.values()[random.nextInt(FakeCategory.values().length)]);
+            goods.setSales(random.nextInt(100) + 1);
+            goods.setStock(random.nextInt(100) + 1);
+            goods.setDiscount("7.1");
+
+            goods.setSubPrice(cashGoods.getSubPrice());
+            goods.setRichDetail(cashGoods.getRichDetail());
+            goods.setPrice(cashGoods.getPrice());
+            goods.setBrand(cashGoods.getBrand());
+            goods.setDescription(cashGoods.getDescription());
+            goods.setName(cashGoods.getName());
+            goods.setWeight(cashGoods.getWeight());
+            goods.setHot(cashGoods.isHot());
+            goods.setFreshly(cashGoods.isFreshly());
+            goods.setSpecial(cashGoods.isSpecial());
+
+            mallGoodsService.saveGoods(goods);
+            manageGoodsService.enableGoods(goods, mallGoodsService::saveGoods);
+        });
+
     }
 
     @ComponentScan({"me.jiangcai.dating.test"})

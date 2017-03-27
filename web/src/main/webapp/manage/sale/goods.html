@@ -198,15 +198,55 @@
                         原价:
                         <input type="text" name="subPrice" size="10" required/>
                     </label>
+                    <label>
+                        权重:
+                        <input style="width: 45px" title="权重值高则显示越靠前" type="number" step="1" required name="weight"/>
+                    </label>
+                    <label>
+                        爆款
+                        <input type="checkbox" name="hot"/>
+                    </label>
+                    <label>
+                        新品
+                        <input type="checkbox" name="freshly"/>
+                    </label>
+                    <label>
+                        特卖
+                        <input type="checkbox" name="special"/>
+                    </label>
                     <br/>
                     <label>
                         富文本说明:
                         <textarea class="editor" name="richDetail"></textarea>
                     </label>
                     <br/>
-                    <label>
+                    <label class="specialGoodsProperty">
                         购买须知:
                         <textarea class="editor" name="notes"></textarea>
+                    </label>
+                    <label class="specialGoodsProperty">
+                        类目:
+                        <select name="fakeCategory">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <option value="s1"
+                                    th:each="category:${T(me.jiangcai.dating.entity.sale.support.FakeCategory).values()}"
+                                    th:text="${category.name}" th:value="${category}">
+                                女装
+                            </option>
+                            <option th:remove="all" value="s2">男装</option>
+                        </select>
+                    </label>
+                    <label class="specialGoodsProperty">
+                        销量:
+                        <input type="number" step="1" min="0" name="sales"/>
+                    </label>
+                    <label class="specialGoodsProperty">
+                        库存:
+                        <input type="number" step="1" min="0" name="stock"/>
+                    </label>
+                    <label class="specialGoodsProperty">
+                        特卖折扣:
+                        <input type="text" size="5" name="discount"/>
                     </label>
                 </div>
                 <div class="modal-footer">
@@ -256,6 +296,41 @@
     </div><!-- /.modal -->
 </div>
 
+<div class="modal fade" id="addGoodsRegion" tabindex="-1" role="dialog" aria-labelledby="addGoodsRegionLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="goods.html" method="get" th:action="@{/manage/goods/addition}" th:method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="addGoodsRegionLabel">新增商品</h4>
+                </div>
+                <div class="modal-body">
+                    <fieldset>
+                        <legend>商品类型</legend>
+                        <label for="radio-1">伪类</label>
+                        <input type="radio" value="FakeGoods" required name="javaClass" id="radio-1">
+                    </fieldset>
+                    <fieldset>
+                        <legend>商品数据</legend>
+                        <label>
+                            名称:
+                            <input type="text" name="name" size="10" required/>
+                        </label>
+                        <label>
+                            售价:
+                            <input type="number" name="price" size="10" step="0.01" required/>
+                        </label>
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">提交更改</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 
 <table id="table"
        data-url="../../mock/goods.json"
@@ -264,6 +339,12 @@
        data-toolbar="#toolbar"
        data-single-select="true"
 ></table>
+
+<div>
+    <button id="addGoodsButton" sec:authorize="hasAnyRole('SALE_GOODS','ROOT') " class="btn btn-danger">
+        <i class="glyphicon glyphicon-plus"></i> 新增商品
+    </button>
+</div>
 
 <script src="../../js/manage/goods.js" th:src="@{/js/manage/goods.js}"></script>
 <script src="//editor.kuanyes.com/ckeditor.js"></script>

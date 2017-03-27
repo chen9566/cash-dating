@@ -94,6 +94,8 @@ public class WebConfig {
             }
 
             registry
+                    // 新的微信登录页面
+                    .antMatchers("/wxLogin").permitAll()
                     // 商城
                     .antMatchers("/mall/**").permitAll()
                     // 密码登录页
@@ -141,6 +143,7 @@ public class WebConfig {
 //                .failureHandler()
                     .loginProcessingUrl("/passwordAuth")
                     .loginPage("/login")
+                    .defaultSuccessUrl("/mall/")
                     .failureUrl("/passwordLogin?type=error")
                     .permitAll()
                     .and()

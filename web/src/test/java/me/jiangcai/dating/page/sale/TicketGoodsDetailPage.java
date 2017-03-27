@@ -31,6 +31,7 @@ public class TicketGoodsDetailPage extends AbstractPage {
     }
 
     public TicketPayPage buy(int count) {
+        printThisPage();
         readyToBuy.click();
         assertThat(orderCreator.isDisplayed())
                 .isTrue();

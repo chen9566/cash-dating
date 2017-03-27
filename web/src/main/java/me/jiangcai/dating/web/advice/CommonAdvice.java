@@ -65,9 +65,13 @@ public class CommonAdvice {
     }
 
     @ExceptionHandler(IllegalVerificationCodeException.class)
-    public String illegalVerificationCodeException(IllegalVerificationCodeException ex) {
+    public String illegalVerificationCodeException(HttpServletRequest request, IllegalVerificationCodeException ex) {
         switch (ex.getType()) {
             case register:
+                // 如果是商城的话
+                if (request.getRequestURI().endsWith("/mall/register")) {
+                    return "redirect:/mall/register?type=1";
+                }
                 return "redirect:/login";
             default:
                 throw new IllegalStateException("unknown of " + ex.getType());

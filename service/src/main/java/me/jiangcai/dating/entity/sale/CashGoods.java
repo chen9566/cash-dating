@@ -2,7 +2,11 @@ package me.jiangcai.dating.entity.sale;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.jiangcai.goods.GoodsImage;
 import me.jiangcai.goods.core.entity.Goods;
+import me.jiangcai.goods.core.entity.SimpleGoodsImage;
+import me.jiangcai.goods.image.ImageUsage;
+import me.jiangcai.goods.image.ScaledImage;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,7 +20,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 款爷商品，那肯定都是打折的
@@ -30,11 +37,26 @@ import java.util.List;
 public abstract class CashGoods extends Goods {
 
     /**
+     * {@link me.jiangcai.lib.resource.service.ResourceService#getResource(String)}
+     */
+    public static final String DefaultGoodsImagePath = "defaultGoodsImage.jpeg";
+    private static GoodsImage DefaultGoodsImage = new SimpleGoodsImage();
+
+    static {
+        ScaledImage image = new ScaledImage();
+        image.setUsage(ImageUsage.preview);
+        image.setResourcePath(DefaultGoodsImagePath);
+        image.setFormat("jpeg");
+        image.setHeight(251);
+        image.setWidth(560);
+        DefaultGoodsImage.addScaledImage(image);
+    }
+
+    /**
      * 副价格，一般显示加上删除线
      */
     @Column(length = 30)
     private String subPrice;
-
     /**
      * 商品权重
      */
@@ -51,6 +73,13 @@ public abstract class CashGoods extends Goods {
      * 特卖
      */
     private boolean special;
+    /**
+     * 创建时间
+     */
+    @Column(columnDefinition = "datetime")
+    private LocalDateTime createTime;
+    @Column(columnDefinition = "datetime")
+    private LocalDateTime updateTime;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "goods")
     private List<GoodsStyle> styleList;
@@ -93,4 +122,25 @@ public abstract class CashGoods extends Goods {
     public Long getId() {
         return super.getId();
     }
+
+    /**
+     * @return 详情模型
+     */
+    public Map<String, Object> getDetailModel() {
+        HashMap<String, Object> data = new HashMap<>();
+        //
+        moreModel(data);
+        return data;
+    }
+
+    @Override
+    public GoodsImage getTitleGoodsImage() {
+        try {
+            return super.getTitleGoodsImage();
+        } catch (Exception ignored) {
+            return DefaultGoodsImage;
+        }
+    }
+
+    protected abstract void moreModel(Map<String, Object> data);
 }

@@ -10,17 +10,21 @@ import org.openqa.selenium.support.FindBy;
  */
 public class RegisterPage extends AbstractMallPage {
 
+    @FindBy(id = "mobile")
     private WebElement mobile;
+    @FindBy(id = "verificationCode")
     private WebElement verificationCode;
     @FindBy(id = "btn-mask")
     private WebElement buttonSend;
 
+    @FindBy(id = "password")
     private WebElement password;
+    @FindBy(id = "confirm_password")
     private WebElement confirm_password;
-    @FindBy(css = "[input=submit]")
+    @FindBy(css = "[type=submit]")
     private WebElement submitButton;
 
-    RegisterPage(WebDriver webDriver) {
+    public RegisterPage(WebDriver webDriver) {
         super(webDriver);
     }
 
@@ -30,6 +34,7 @@ public class RegisterPage extends AbstractMallPage {
     }
 
     public void registerAsRandom(String mobile, String password) {
+//        printThisPage();
         this.mobile.clear();
         this.mobile.sendKeys(mobile);
 
@@ -42,7 +47,7 @@ public class RegisterPage extends AbstractMallPage {
         }
 
         verificationCode.clear();
-        verificationCode.sendKeys("2334");
+        verificationCode.sendKeys("1234");
 
         this.password.clear();
         this.password.sendKeys(password);

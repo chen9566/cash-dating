@@ -62,6 +62,8 @@ public class BindingCardPage extends AbstractPage {
 
         checkFormElement();
 
+        printThisPage();
+
         assertThat(nameInput).isNotNull();
         assertThat(nameInput.isDisplayed()).isTrue();
         assertThat(provinceSelect).isNotNull();

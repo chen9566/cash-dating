@@ -9,6 +9,7 @@ import me.jiangcai.dating.service.QRCodeService;
 import me.jiangcai.dating.service.SystemService;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.web.controller.GlobalController;
+import me.jiangcai.dating.web.controller.mall.IndexController;
 import me.jiangcai.wx.OpenId;
 import me.jiangcai.wx.model.SceneCode;
 import me.jiangcai.wx.model.WeixinUserDetail;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -52,7 +54,14 @@ public class LoginController {
 
     // 此处执行密码登录
     @RequestMapping(method = RequestMethod.GET, value = "/passwordLogin")
-    public String passwordLogin() {
+    public String passwordLogin(String type, HttpSession session) {
+        if (session.getAttribute(IndexController.MallMode) != null) {
+            // 转到商城去
+            if (type == null)
+                return "redirect:/mall/login";
+            else
+                return "redirect:/mall/login?type=" + type;
+        }
         return "password.html";
     }
 
@@ -62,6 +71,30 @@ public class LoginController {
         model.addAttribute("name", systemService.getPublicAccountName());
         return "logout.html";
     }
+
+//    @RequestMapping(method = RequestMethod.GET, value = "/login", produces = MediaType.TEXT_HTML_VALUE)
+//    public String allLogin(HttpSession session, HttpServletRequest request) {
+//        if (session.getAttribute(IndexController.MallMode) != null)
+//            return "redirect:/mall/";
+//        String ps = request.getParameterMap().entrySet().stream()
+//                .flatMap(entry -> {
+//                    String name = entry.getKey();
+//                    return Stream.of(entry.getValue())
+//                            .map(s -> new BasicNameValuePair(name, s));
+//                })
+//                .map(pair -> {
+//                    try {
+//                        return pair.getName() + "=" + URLEncoder.encode(pair.getValue(), "UTF-8");
+//                    } catch (UnsupportedEncodingException e) {
+//                        throw new InternalError(e);
+//                    }
+//                })
+//                .collect(Collectors.joining("&"));
+//
+//        if (ps.length() > 0)
+//            return "redirect:/wxLogin?" + ps;
+//        return "redirect:/wxLogin";
+//    }
 
     /**
      * 登录页面
@@ -106,9 +139,9 @@ public class LoginController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/registerMobile")
-    public String registerMobile(HttpServletRequest request, @OpenId String id, String mobile, String verificationCode
+    public String registerMobile(HttpServletRequest request, HttpServletResponse response, @OpenId String id, String mobile, String verificationCode
             , String inviteCode) {
-        userService.registerMobile(request, id, mobile, verificationCode, inviteCode);
+        userService.registerMobile(request, response, id, mobile, verificationCode, inviteCode);
 
         return "redirect:/start";
     }

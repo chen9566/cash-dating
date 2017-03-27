@@ -3,6 +3,7 @@ package me.jiangcai.dating.service.sale.impl;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashGoods;
 import me.jiangcai.dating.entity.sale.CashTrade;
+import me.jiangcai.dating.entity.sale.FakeGoods;
 import me.jiangcai.dating.entity.sale.TicketBatch;
 import me.jiangcai.dating.entity.sale.TicketCode;
 import me.jiangcai.dating.entity.sale.TicketGoods;
@@ -98,7 +99,9 @@ public class MallGoodsServiceImpl implements MallGoodsService {
 
     @Override
     public Goods saveGoods(Goods goods) {
-        return cashGoodsRepository.save((CashGoods) goods);
+        final CashGoods cashGoods = (CashGoods) goods;
+        cashGoods.setUpdateTime(LocalDateTime.now());
+        return cashGoodsRepository.save(cashGoods);
     }
 
     @Override
@@ -112,7 +115,7 @@ public class MallGoodsServiceImpl implements MallGoodsService {
         TicketGoods ticketGoods = (TicketGoods) manageGoodsService.addGoods(TicketGoods::new
                 , goods -> cashGoodsRepository.save((CashGoods) goods), null, null
                 , name, price, imagePaths);
-
+        ticketGoods.setCreateTime(LocalDateTime.now());
         ticketGoods.setBrand(brand);
         ticketGoods.setSubPrice(subPrice);
         ticketGoods.setDescription(description);
@@ -124,6 +127,15 @@ public class MallGoodsServiceImpl implements MallGoodsService {
     @Override
     public TicketGoods addTicketGoods(String name, String price, String stockStyle) throws IOException {
         return addTicketGoods(null, stockStyle, name, new BigDecimal(price), null, null, null, null);
+    }
+
+    @Override
+    public FakeGoods addFakeGoods(String name, String price) throws IOException {
+        FakeGoods fakeGoods = (FakeGoods) manageGoodsService.addGoods(FakeGoods::new
+                , goods -> cashGoodsRepository.save((CashGoods) goods), null, null
+                , name, new BigDecimal(price));
+        fakeGoods.setCreateTime(LocalDateTime.now());
+        return fakeGoods;
     }
 
     @Override

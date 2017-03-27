@@ -12,6 +12,7 @@ import me.jiangcai.dating.page.sale.TicketPayPage;
 import me.jiangcai.dating.page.sale.TicketPaySuccessPage;
 import me.jiangcai.dating.page.sale.TicketTradeSuccessPage;
 import me.jiangcai.dating.repository.sale.TicketCodeRepository;
+import me.jiangcai.dating.service.sale.MallGoodsService;
 import me.jiangcai.dating.service.sale.MallTradeService;
 import me.jiangcai.goods.trade.TradeStatus;
 import org.junit.Test;
@@ -31,9 +32,17 @@ public class SaleControllerTest extends WebTest {
     private MallTradeService mallTradeService;
     @Autowired
     private TicketCodeRepository ticketCodeRepository;
+    @Autowired
+    private MallGoodsService mallGoodsService;
 
     @Test
     public void index() throws Exception {
+
+        // 清空库存
+        mallGoodsService.saleGoods().stream()
+                .filter(CashGoods::isTicketGoods)
+                .findAny()
+                .ifPresent(this::cleanStock);
 
         addSimpleTicketGoods();
 
@@ -53,8 +62,9 @@ public class SaleControllerTest extends WebTest {
         try {
             detailPage.buy(1);
             throw new AssertionError("还没有库存呢");
-        } catch (Throwable ignored) {
-
+        } catch (AssertionError error) {
+            if (!error.getMessage().equals("库存不足"))
+                throw error;
         }
 
         mallGoodsService.addTicketBatch(user, (TicketGoods) ticketGoods, LocalDate.now().plusMonths(1)

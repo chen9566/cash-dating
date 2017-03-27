@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://security.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -13,47 +13,86 @@
     <title>ToolBar</title>
 </head>
 <body>
+<script th:inline="javascript" th:fragment="all">
+
+    var message = /*[[${_message}]]*/ '原型信息测试';
+    var error = /*[[${_error}]]*/'原型错误测试';
+
+    var search = /*[[${search}]]*/null;
+    var category = /*[[${category}]]*/null;
+    var hot = /*[[${hot}]]*/null;
+    var special = /*[[${special}]]*/null;
+    var order = /*[[${order}]]*/null;
+
+    $(function () {
+        function add(msg, style) {
+            $.gritter.add({
+                text: msg,
+                class_name: style,
+                sticky: false
+            });
+        }
+
+        if (message) {
+            add(message, 'growl-info');
+        }
+        if (error) {
+            add(error, 'growl-danger');
+        }
+
+        var body = $('body');
+        if (search) {
+            body.attr('data-search', search);
+        }
+        if (category) {
+            body.attr('data-category', category);
+        }
+        if (hot) {
+            body.attr('data-hot', hot);
+        }
+        if (special) {
+            body.attr('data-special', special);
+        }
+        if (order) {
+            body.attr('data-order', order);
+        }
+    });
+</script>
+
 <th:block th:fragment="pageHeader">
-    <script th:inline="javascript">
-        var message = /*[[${_message}]]*/ '原型信息测试';
-        var error = /*[[${_error}]]*/'原型错误测试';
-        $(function () {
-            function add(msg, style) {
-                $.gritter.add({
-                    text: msg,
-                    class_name: style,
-                    sticky: false
-                });
-            }
-
-            if (message) {
-                add(message, 'growl-info');
-            }
-            if (error) {
-                add(error, 'growl-danger');
-            }
-
-        });
-    </script>
     <div class="toolbar">
         <div class="w1200">
-            <ul class="fr">
+            <ul class="fr" sec:authorize="isAnonymous()">
                 <li>欢迎来到款爷商城</li>
                 <li class="lt">|</li>
-                <li><a href="../login.html" name="loginLink">登陆</a></li>
+                <li><a href="../login.html" th:href="@{/mall/login}" name="loginLink">登陆</a></li>
                 <li class="lt">|</li>
                 <li><a href="../register.html" th:href="@{/mall/register}" name="registerLink">免费注册</a></li>
+            </ul>
+            <ul class="fr" sec:authorize="!isAnonymous()">
+                <li th:name="welcomeSpan">欢迎<span th:text="${#authentication.name}">用户</span>来到款爷商城</li>
             </ul>
         </div>
     </div>
     <div class="index-head">
         <div class="w1200">
             <div class="logo"><img src="../images/logo.png" th:src="@{/mall/images/logo.png}"/></div>
-            <div class="search"><input placeholder="请输入你想找得宝贝"><span class="stxt">搜索</span></div>
+            <div class="search"><input placeholder="请输入你想找得宝贝" name="search"><span class="stxt">搜索</span></div>
+        </div>
+    </div>
+
+    <div class="mainnav">
+        <div class="w1200">
+            <ul>
+                <li class="navigation"><a name="homeLink" href="../index.html" th:href="@{/mall/}"> 全部商品</a></li>
+                <li><a href="../search.html" name="hotLink" th:href="@{/mall/search(hot=true)}">爆品</a></li>
+                <li><a href="../search.html" name="specialLink" th:href="@{/mall/search(special=true)}">特卖</a></li>
+            </ul>
         </div>
     </div>
 
 </th:block>
+
 
 </body>
 </html>

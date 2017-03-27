@@ -1,15 +1,16 @@
 package me.jiangcai.dating.web.controller.mall;
 
 import me.jiangcai.dating.entity.User;
-import me.jiangcai.dating.exception.IllegalVerificationCodeException;
 import me.jiangcai.dating.model.VerificationType;
 import me.jiangcai.dating.service.UserService;
 import me.jiangcai.dating.service.VerificationCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,18 +24,28 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class IndexController {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private VerificationCodeService verificationCodeService;
+    public static final String MallMode = "MallMode";
 
-    @RequestMapping(method = RequestMethod.GET, value = {"", "/"})
-    public String home() {
-        return "/mall/index.html";
+    private final UserService userService;
+    private final VerificationCodeService verificationCodeService;
+
+    @Autowired
+    public IndexController(UserService userService, VerificationCodeService verificationCodeService) {
+        this.userService = userService;
+        this.verificationCodeService = verificationCodeService;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = {""})
+    public String index() {
+        return "redirect:/mall/";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/register")
-    public String register() {
+    public String register(@RequestParam(required = false) Integer type, Model model) {
+        if (type != null) {
+            // 1
+            model.addAttribute("_message", "你输入了错误的验证码");
+        }
         return "/mall/register.html";
     }
 
@@ -45,12 +56,8 @@ public class IndexController {
         // 这里详细的逻辑是，如果用户不存在，则建立该用户并且设置它的登录密码
         // 如果用户已存在， 并且密码已设置 则提示已注册；如果密码未设置 则设置该密码
         // 为此配套的话，需要公众号那边 也需要对手机号码已存在用户 做兼容性（即检查openId如果为空 则继续！）
-        try {
-            verificationCodeService.verify(mobile, verificationCode, VerificationType.register);
-        } catch (IllegalVerificationCodeException ignored) {
-            redirectAttributes.addFlashAttribute("_message", "验证码错误");
-            return "redirect:/mall/register";
-        }
+        verificationCodeService.verify(mobile, verificationCode, VerificationType.register);
+
         User user = userService.byMobile(mobile);
 
         if (user == null) {
@@ -63,9 +70,18 @@ public class IndexController {
             }
         }
 
+        user.setMobileNumber(mobile);
         userService.updatePassword(user, password);
         redirectAttributes.addFlashAttribute("_message", "欢迎加入款爷！");
-        return "redirect:/mall";
+        return "redirect:/mall/";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/login")
+    public String login(String type, Model model) {
+        if (type != null) {
+            model.addAttribute("_error", "用户名或者密码错误");
+        }
+        return "/mall/login.html";
     }
 
 }

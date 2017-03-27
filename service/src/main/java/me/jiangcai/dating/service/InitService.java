@@ -8,9 +8,11 @@ import me.jiangcai.dating.entity.ProjectLoanRequest;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.UserLoanData;
 import me.jiangcai.dating.entity.UserOrder;
+import me.jiangcai.dating.entity.sale.CashGoods;
 import me.jiangcai.lib.jdbc.ConnectionConsumer;
 import me.jiangcai.lib.jdbc.ConnectionProvider;
 import me.jiangcai.lib.jdbc.JdbcService;
+import me.jiangcai.lib.resource.service.ResourceService;
 import me.jiangcai.lib.upgrade.VersionUpgrade;
 import me.jiangcai.lib.upgrade.service.UpgradeService;
 import me.jiangcai.wx.PublicAccountSupplier;
@@ -24,6 +26,7 @@ import org.springframework.util.StreamUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -49,9 +52,21 @@ public class InitService {
     private JdbcService jdbcService;
     @Autowired
     private ApplicationContext applicationContext;
+    @Autowired
+    private ResourceService resourceService;
 
     @PostConstruct
     public void init() throws IOException, SQLException {
+
+        // 初始化默认图片
+        if (!resourceService.getResource(CashGoods.DefaultGoodsImagePath).exists()) {
+            try (InputStream inputStream
+                         = applicationContext.getResource("classpath:/" + CashGoods.DefaultGoodsImagePath)
+                    .getInputStream()) {
+                resourceService.uploadResource(CashGoods.DefaultGoodsImagePath, inputStream);
+            }
+        }
+
 //        String json = environment.getProperty("cash.weixin.menus");
 //        log.debug(json);
 //        if (json != null)
@@ -172,6 +187,19 @@ public class InitService {
                         break;
                     case v101000:
 //                        System.out.println("update to 1.1?");
+                        break;
+                    case v30000:
+                        jdbcService.tableAlterAddColumn(CashGoods.class, "weight", "0");
+                        jdbcService.tableAlterAddColumn(CashGoods.class, "hot", "0");
+                        jdbcService.tableAlterAddColumn(CashGoods.class, "freshly", "0");
+                        jdbcService.tableAlterAddColumn(CashGoods.class, "special", "0");
+                        jdbcService.tableAlterAddColumn(CashGoods.class, "createTime", null);
+                        jdbcService.tableAlterAddColumn(CashGoods.class, "updateTime", null);
+                        jdbcService.runStandaloneJdbcWork(connection -> {
+                            try (Statement statement = connection.getConnection().createStatement()) {
+                                statement.execute("UPDATE cashgoods SET `createTime`=current_timestamp,`updateTime`=current_timestamp");
+                            }
+                        });
                         break;
                 }
             }

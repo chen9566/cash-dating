@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerMobile(HttpServletRequest request, String openId, String mobileNumber, String verificationCode
+    public User registerMobile(HttpServletRequest request, HttpServletResponse response, String openId, String mobileNumber, String verificationCode
             , String inviteCode)
             throws IllegalVerificationCodeException {
         verificationCodeService.verify(mobileNumber, verificationCode, VerificationType.register);
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
             if (user == null)
                 user = newUser(openId, request);
         }
-        if (inviteCode != null) {
+        if (!StringUtils.isEmpty(inviteCode)) {
             User from = userRepository.findByInviteCode(inviteCode);
             applyGuide(user, from);
         }
@@ -125,6 +125,11 @@ public class UserServiceImpl implements UserService {
             // 删除  user
             mergeUserTo(user, mobileUser);
             user = mobileUser;
+            user.setOpenId(openId);
+            // 更换了当前用户
+            if (request != null && response != null) {
+                login(request, response, user);
+            }
         } else
             user.setMobileNumber(mobileNumber);
 
@@ -144,9 +149,17 @@ public class UserServiceImpl implements UserService {
      * @param to   那里。。
      */
     private void mergeUserTo(User from, User to) {
+        // from 这个用户没有价值了 置空它的openId
+        from.setOpenId(null);
         to.setEnabled(from.isEnabled());
         to.setAccessTimeToExpire(from.getAccessTimeToExpire());
         to.setAccessToken(from.getAccessToken());
+        to.setRefreshToken(from.getRefreshToken());
+        to.setTokenScopeStr(from.getTokenScopeStr());
+        to.setLastRefreshDetailTime(from.getLastRefreshDetailTime());
+        to.setNickname(from.getNickname());
+        to.setGender(from.getGender());
+        to.setHeadImageUrl(from.getHeadImageUrl());
         to.setAgentInfo(from.getAgentInfo());
         to.setCards(from.getCards());
 //        if (to.getCards() != null){
@@ -156,7 +169,7 @@ public class UserServiceImpl implements UserService {
 //        }
         to.setCity(from.getCity());
         to.setCountry(from.getCountry());
-        to.setGender(from.getGender());
+        to.setProvince(from.getProvince());
 //        to.setHeadImageUrl(from.getHeadImageUrl());
         userRepository.delete(from);
         userRepository.save(to);
