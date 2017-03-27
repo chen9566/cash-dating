@@ -212,10 +212,19 @@ public class ManageSaleControllerTest extends ManageWebTest {
                 .param("price", randomOrderAmount().toString())
         ), session)
                 .andExpect(status().isOk())
-                .andDo(MockMvcResultHandlers.print())
+//                .andDo(MockMvcResultHandlers.print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML));
 
-        return fakeGoodsRepository.findAll(new Sort(Sort.Direction.DESC, "id")).get(0);
+        FakeGoods goods = fakeGoodsRepository.findAll(new Sort(Sort.Direction.DESC, "id")).get(0);
+
+        mockMvc.perform(put("/manage/goods/" + goods.getId() + "/enable")
+                .session(session)
+                .contentType(MediaType.TEXT_PLAIN)
+                .content("true")
+        )
+                .andExpect(status().isNoContent());
+
+        return goods;
     }
 
     private void assertDataResult(final int count, CashGoods cashGoods, MockHttpSession session) throws Exception {
@@ -233,6 +242,8 @@ public class ManageSaleControllerTest extends ManageWebTest {
                     @Override
                     public boolean matches(Object item) {
                         JSONArray array = (JSONArray) item;
+                        assertThat(array)
+                                .contains(count);
                         return array.contains(count);
                     }
 

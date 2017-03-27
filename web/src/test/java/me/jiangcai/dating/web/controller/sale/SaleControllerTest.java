@@ -38,6 +38,12 @@ public class SaleControllerTest extends WebTest {
     @Test
     public void index() throws Exception {
 
+        // 清空库存
+        mallGoodsService.saleGoods().stream()
+                .filter(CashGoods::isTicketGoods)
+                .findAny()
+                .ifPresent(this::cleanStock);
+
         addSimpleTicketGoods();
 
         User user = helloNewUser(null, true);
@@ -56,8 +62,9 @@ public class SaleControllerTest extends WebTest {
         try {
             detailPage.buy(1);
             throw new AssertionError("还没有库存呢");
-        } catch (Throwable ignored) {
-
+        } catch (AssertionError error) {
+            if (!error.getMessage().equals("库存不足"))
+                throw error;
         }
 
         mallGoodsService.addTicketBatch(user, (TicketGoods) ticketGoods, LocalDate.now().plusMonths(1)

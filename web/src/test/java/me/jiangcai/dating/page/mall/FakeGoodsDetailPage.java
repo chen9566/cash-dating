@@ -15,6 +15,7 @@ public class FakeGoodsDetailPage extends AbstractMallPage {
 
     @Override
     public void validatePage() {
+        printThisPage();
         assertThat(webDriver.findElement(By.tagName("body")).getAttribute("data-id"))
                 .isNotEmpty();
     }

@@ -26,6 +26,7 @@ import me.jiangcai.dating.repository.CashOrderRepository;
 import me.jiangcai.dating.repository.SubBranchBankRepository;
 import me.jiangcai.dating.repository.UserOrderRepository;
 import me.jiangcai.dating.repository.UserRepository;
+import me.jiangcai.dating.repository.sale.TicketCodeRepository;
 import me.jiangcai.dating.service.CardService;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.OrderService;
@@ -104,6 +105,8 @@ public abstract class ServiceBaseTest extends SpringWebTest {
     private ManageGoodsService manageGoodsService;
     @Autowired
     private MallTradeService mallTradeService;
+    @Autowired
+    private TicketCodeRepository ticketCodeRepository;
 
     public SubBranchBank randomSubBranchBank() {
         return subBranchBankRepository.findAll().stream()
@@ -311,7 +314,6 @@ public abstract class ServiceBaseTest extends SpringWebTest {
         return BigDecimal.valueOf(100 + random.nextInt(100000 - 100));
     }
 
-
     /**
      * @return 随机生成的图片资源路径
      */
@@ -432,6 +434,24 @@ public abstract class ServiceBaseTest extends SpringWebTest {
     protected <T extends Enum> T randomEnum(Class<T> clazz) {
         T[] data = clazz.getEnumConstants();
         return data[random.nextInt(data.length)];
+    }
+
+    /**
+     * 清空库存
+     *
+     * @param goods 指定商品
+     */
+    protected void cleanStock(CashGoods goods) {
+        if (goods instanceof TicketGoods)
+            ticketCodeRepository.findAll((root, query, cb) -> cb.and(
+                    cb.equal(root.get("batch").get("goods"), goods)
+                    , cb.isFalse(root.get("used"))
+            )).forEach(ticketCode -> {
+                ticketCode.setUsed(true);
+                ticketCodeRepository.save(ticketCode);
+            });
+        else
+            throw new IllegalStateException("还不支持" + goods);
     }
 
     public static class RandomComparator implements Comparator<Object> {

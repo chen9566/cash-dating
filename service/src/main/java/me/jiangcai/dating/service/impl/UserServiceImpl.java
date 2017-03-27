@@ -154,6 +154,12 @@ public class UserServiceImpl implements UserService {
         to.setEnabled(from.isEnabled());
         to.setAccessTimeToExpire(from.getAccessTimeToExpire());
         to.setAccessToken(from.getAccessToken());
+        to.setRefreshToken(from.getRefreshToken());
+        to.setTokenScopeStr(from.getTokenScopeStr());
+        to.setLastRefreshDetailTime(from.getLastRefreshDetailTime());
+        to.setNickname(from.getNickname());
+        to.setGender(from.getGender());
+        to.setHeadImageUrl(from.getHeadImageUrl());
         to.setAgentInfo(from.getAgentInfo());
         to.setCards(from.getCards());
 //        if (to.getCards() != null){
@@ -163,7 +169,7 @@ public class UserServiceImpl implements UserService {
 //        }
         to.setCity(from.getCity());
         to.setCountry(from.getCountry());
-        to.setGender(from.getGender());
+        to.setProvince(from.getProvince());
 //        to.setHeadImageUrl(from.getHeadImageUrl());
         userRepository.delete(from);
         userRepository.save(to);

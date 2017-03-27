@@ -48,6 +48,7 @@ public class FakeGoods extends CashGoods {
         data.put("sales", sales);
         data.put("stock", stock);
         data.put("fakeCategory", fakeCategory == null ? null : fakeCategory.name());
+        data.put("discount", discount);
     }
 
     @Override
