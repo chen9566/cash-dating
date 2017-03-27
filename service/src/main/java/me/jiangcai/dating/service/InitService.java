@@ -188,6 +188,19 @@ public class InitService {
                     case v101000:
 //                        System.out.println("update to 1.1?");
                         break;
+                    case v30000:
+                        jdbcService.tableAlterAddColumn(CashGoods.class, "weight", "0");
+                        jdbcService.tableAlterAddColumn(CashGoods.class, "hot", "0");
+                        jdbcService.tableAlterAddColumn(CashGoods.class, "freshly", "0");
+                        jdbcService.tableAlterAddColumn(CashGoods.class, "special", "0");
+                        jdbcService.tableAlterAddColumn(CashGoods.class, "createTime", null);
+                        jdbcService.tableAlterAddColumn(CashGoods.class, "updateTime", null);
+                        jdbcService.runStandaloneJdbcWork(connection -> {
+                            try (Statement statement = connection.getConnection().createStatement()) {
+                                statement.execute("UPDATE cashgoods SET `createTime`=current_timestamp,`updateTime`=current_timestamp");
+                            }
+                        });
+                        break;
                 }
             }
         });

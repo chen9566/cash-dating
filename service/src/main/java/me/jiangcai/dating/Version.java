@@ -45,4 +45,8 @@ public enum Version {
      * mobileVerified
      */
     v109001,
+    /**
+     * 商城预发布
+     */
+    v30000,
 }
