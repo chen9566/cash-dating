@@ -37,7 +37,7 @@ public class IndexController {
 
     @RequestMapping(method = RequestMethod.GET, value = {""})
     public String index() {
-        return "redirect:/mall/";
+        return "redirect:/mall/index";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/register")

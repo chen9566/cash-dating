@@ -63,7 +63,7 @@ public class SearchController {
         return "/mall/search.html";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = {"/"})
+    @RequestMapping(method = RequestMethod.GET, value = {"/", "/index"})
     @Transactional(readOnly = true)
     public String home(HttpSession session, String order, Model model) {
         session.setAttribute(MallMode, true);
