@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="stylesheet" href="//cdn.kuanyes.com/bootstrap-3.3.7/css/bootstrap.min.css">
+    <script src="//cdn.kuanyes.com/jquery-3.1.1.min.js"></script>
+    <script src="//cdn.kuanyes.com/gritter-1.7.4/js/jquery.gritter.min.js"></script>
+    <link href="//cdn.kuanyes.com/gritter-1.7.4/css/jquery.gritter.css" rel="stylesheet" property=""/>
+    <script src="//cdn.kuanyes.com/jquery-validation-1.15.0/jquery.validate.min.js"></script>
+    <script src="//cdn.kuanyes.com/jquery-validation-1.15.0/localization/messages_zh.js"></script>
+    <script src="js/vali.js"></script>
+    <script src="../dist/js/yzm.js"></script>
+    <script src="../js/register.js"></script>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .yzm-n {
+            float: right;
+            color: #FFF;
+            font-size: 15px;
+            line-height: 44px;
+            height: 44px;
+            background: #F65150;
+            padding: 0 13px;
+            width: 103px;
+            text-align: center;
+        }
+    </style>
+    <title>用户注册</title>
+</head>
+<body>
+<div class="header">
+    <div class="w980"><img src="images/userlogin.png"/></div>
+</div>
+<div class="login-main" th:text="${#fields.errors()}">
+    <div class="login-content">
+        <div class="title">
+            <span class="hd">新用户注册</span>
+            <span class="tips">注册款爷，得好礼！</span>
+            <p class="other">已有账号，<a href="login.html" th:href="@{/mall/login}" rel="nofollow">立即登录</a></p>
+        </div>
+
+        <div class="login-center">
+            <form class="cmxform" id="signupForm" method="get" action="" th:action="@{/mall/register}" th:method="post">
+                <div class="login-tel fl">
+                    <ul>
+                        <li>
+                            <label class="normal" for="mobile">手机：</label>
+                            <div class="box_border">
+                                <input id="mobile" name="mobile" required
+                                       minlength="11" maxlength="11"
+                                       type="tel" placeholder="手机号码">
+                            </div>
+                        </li>
+                        <li class="yamput">
+                            <label class="normal" for="verificationCode">验证码：</label>
+                            <div class="box_border">
+                                <input id="verificationCode" name="verificationCode"
+                                       type="tel"
+                                       placeholder="请输入验证码">
+                            </div>
+                            <div id="btn-mask" class="yzm-n">获取验证吗</div>
+                        </li>
+                        <li>
+                            <label class="normal" for="password">创建密码：</label>
+                            <div class="box_border">
+                                <input id="password" name="password" type="password" placeholder="密码">
+                            </div>
+                        </li>
+                        <li>
+                            <label class="normal" for="confirm_password">确认密码：</label>
+                            <div class="box_border">
+                                <input id="confirm_password" name="confirm_password" type="password" placeholder="密码">
+                            </div>
+                        </li>
+                        <li>
+                            <label class="normal"></label>
+                            <div class="chex">
+                                <label><input class="ck checkbox" checked="checked"
+                                              type="checkbox" id="agree" name="agree"> 我已阅读并接受 《款爷用户协议》 </label></div>
+                        </li>
+                        <li>
+                            <label class="normal"></label>
+                            <div class="loginbtn">
+                                <input class="sub" value="立即注册" type="submit"></div>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+            <div class="login-l-img fr"><img src="//jp.juancdn.com/user/images/login/login-bj-ad.png" alt=""></div>
+        </div>
+    </div>
+</div>
+<div class="footer m-bottom">
+    <div class="w1200">
+        <img src="images/ky_logo2.png" width="50px" height="50px">
+        <span class="txt">杭州美约科技有限公司</span>
+        <span class="gat">&nbsp;&nbsp;&nbsp;&nbsp;浙ICP备16035373号-1<img src="images/gat-icon.png">&nbsp;&nbsp;浙公网安备 33010802007586号</span>
+    </div>
+</div>
+<script src="../mock/all.js" th:src="@{/all.js}"></script>
+<script>
+    function registerMessageAlert(str) {
+        alert(str);
+    }
+</script>
+</body>
+
+</html>

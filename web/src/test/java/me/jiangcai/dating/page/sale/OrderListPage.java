@@ -29,8 +29,7 @@ public class OrderListPage extends AbstractPage {
 
     @Override
     public void validatePage() {
-        assertThat(webDriver.getTitle())
-                .isEqualToIgnoringCase("我的订单");
+        assertTitle("我的订单");
 
         new WebDriverWait(webDriver, 5).until(new Predicate<WebDriver>() {
             @Override

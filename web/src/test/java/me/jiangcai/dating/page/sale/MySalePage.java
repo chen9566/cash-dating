@@ -26,8 +26,7 @@ public class MySalePage extends AbstractPage {
 
     @Override
     public void validatePage() {
-        assertThat(webDriver.getTitle())
-                .isEqualToIgnoringCase("我的");
+        assertTitle("我的");
     }
 
     /**
@@ -69,8 +68,7 @@ public class MySalePage extends AbstractPage {
 //            throw exception;
         }
 
-        assertThat(webDriver.getTitle())
-                .isEqualToIgnoringCase("我的优惠券");
+        assertTitle("我的优惠券");
         // 点击 button 立即使用
         webDriver.findElements(By.tagName("button")).stream()
                 .filter(WebElement::isDisplayed)
@@ -94,8 +92,7 @@ public class MySalePage extends AbstractPage {
                 .orElse(null)
                 .click();
 
-        assertThat(webDriver.getTitle())
-                .isEqualToIgnoringCase("我的优惠券");
+        assertTitle("我的优惠券");
 
         webDriver.navigate().back();
     }

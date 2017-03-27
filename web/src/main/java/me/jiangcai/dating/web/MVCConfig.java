@@ -57,6 +57,7 @@ class MVCConfig extends WebMvcConfigurerAdapter {
             , "user/js", "appfile/css", "appfile/images", "appfile/js", "appfile/list_files", "appfile/login_files"
             , "friends/styles", "friends/images"
             , "sale/images", "sale/js", "sale/styles"
+            , "mall/images", "mall/js", "mall/styles"
     };
 
     @Autowired

@@ -29,8 +29,7 @@ public class BindingMobilePage extends AbstractPage {
     @Override
     public void validatePage() {
         // 有可输入的手机号码
-        assertThat(webDriver.getTitle())
-                .isEqualToIgnoringCase("注册");
+        assertTitle("注册");
 
         webDriver.findElements(By.tagName("input")).stream()
                 .filter(element -> element.isDisplayed() && element.getAttribute("placeholder").contains("手机号码"))

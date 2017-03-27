@@ -47,8 +47,7 @@ public class TicketTradeSuccessPage extends AbstractPage {
 
     @Override
     public void validatePage() {
-        assertThat(webDriver.getTitle())
-                .isEqualToIgnoringCase("订单详情");
+        assertTitle("订单详情");
     }
 
     /**

@@ -21,6 +21,11 @@ $(function () {
     var lastTimeOut;
 
     function message(str) {
+        if (window.registerMessageAlert != null) {
+            registerMessageAlert(str);
+            return;
+        }
+
         myAlert.text(str);
         myAlert.fadeIn();
         if (lastTimeOut)
@@ -52,7 +57,7 @@ $(function () {
             message('请输入验证码');
             return false;
         }
-        
+
         return true;
     }
 

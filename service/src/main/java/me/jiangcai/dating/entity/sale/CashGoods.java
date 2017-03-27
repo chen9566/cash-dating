@@ -34,6 +34,24 @@ public abstract class CashGoods extends Goods {
      */
     @Column(length = 30)
     private String subPrice;
+
+    /**
+     * 商品权重
+     */
+    private int weight;
+    /**
+     * 爆品
+     */
+    private boolean hot;
+    /**
+     * 新品
+     */
+    private boolean freshly;
+    /**
+     * 特卖
+     */
+    private boolean special;
+
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "goods")
     private List<GoodsStyle> styleList;
 

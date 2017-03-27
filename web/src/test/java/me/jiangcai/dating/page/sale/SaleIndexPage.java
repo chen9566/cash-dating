@@ -6,8 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * 特卖首页
  * saleindex.html
@@ -22,8 +20,7 @@ public class SaleIndexPage extends AbstractPage {
 
     @Override
     public void validatePage() {
-        assertThat(webDriver.getTitle())
-                .isEqualToIgnoringCase("特卖");
+        assertTitle("特卖");
 
         try {
             Thread.sleep(1500L);

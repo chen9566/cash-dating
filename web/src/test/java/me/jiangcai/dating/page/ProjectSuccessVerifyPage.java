@@ -24,8 +24,7 @@ public class ProjectSuccessVerifyPage extends AbstractPage {
 
     @Override
     public void validatePage() {
-        assertThat(webDriver.getTitle())
-                .isEqualToIgnoringCase("验证手机号码");
+        assertTitle("验证手机号码");
     }
 
     public void clickSendCode() {

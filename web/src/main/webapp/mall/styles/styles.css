@@ -1,0 +1,1313 @@
+body {
+    background: #F6F6F6
+}
+
+ol, ul, li, dl, dd, dt {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+em, i {
+    font-style: normal;
+}
+
+button, input, select, textarea {
+    font-size: 100%;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    outline: none;
+}
+
+.fl {
+    float: left
+}
+
+.fr {
+    float: right
+}
+
+.toolbar {
+    overflow: hidden;
+    line-height: 29px;
+    background: #f6f6f6;
+    height: 30px;
+    border-bottom: 1px solid #dfdfdf;
+
+}
+
+.toolbar .lt {
+    color: #dfdfdf
+}
+
+.toolbar ul {
+    overflow: hidden
+}
+
+.toolbar li {
+    float: left;
+    overflow: hidden;
+    padding: 0 10px;
+}
+
+.toolbar li a {
+}
+
+.w1200 {
+    width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.index-head {
+    background: #fff;
+    height: 95px;
+}
+
+.index-head .logo {
+    float: left;
+    padding-top: 23px
+}
+
+.index-head .search {
+    width: 500px;
+    margin-top: 23px;
+    float: right;
+    border: 2px solid #F65150;
+    height: 42px;
+    cursor: pointer;
+}
+
+.index-head .search input {
+    width: 300px;
+    padding: 9px 0 0 5px
+}
+
+.index-head .stxt {
+    display: block;
+    float: right;
+    width: 100px;
+    text-align: center;
+    background: #F65150;
+    line-height: 38px;
+    height: 40px;
+    color: #fff;
+    font-size: 22px;
+}
+
+.mainnav {
+    background: #373232;
+    height: 46px;
+    overflow: hidden
+}
+
+.mainnav ul {
+    overflow: hidden
+}
+
+.mainnav li {
+    float: left;
+    text-align: center
+}
+
+.mainnav li a {
+    color: #fff;
+    line-height: 46px;
+    width: 120px;
+    display: block;
+    text-decoration: none
+}
+
+.navigation {
+    width: 242px !important;
+    text-align: center;
+    padding-left: 20px;
+    margin-right: 40px;
+    background: url("../images/leiicon.png") #F65150 no-repeat 33px 14px;
+    background-size: 18px;
+}
+
+.navigation a {
+    display: block;
+    width: 242px !important;
+    text-align: left;
+    padding-left: 40px;
+}
+
+.w980 {
+    width: 980px;
+    margin: 0 auto
+}
+
+.header {
+    background: #fff;
+    border-bottom: 4px solid #F65150;
+    padding: 5px 0
+}
+
+.main {
+    background: #fff
+}
+
+.login-main {
+    margin: 20px auto 0;
+    width: 980px;
+    overflow: hidden;
+
+}
+
+.login-main p {
+    margin: 0;
+}
+
+.login-content {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #e2e2e2;
+    overflow: hidden;
+    padding-bottom: 50px;
+    position: relative;
+    width: 978px;
+}
+
+.login-content .title {
+    border-bottom: 1px solid #e2e2e2;
+    overflow: hidden;
+    padding: 20px 50px;
+    width: 980px;
+}
+
+.login-content .title span.hd {
+    background: rgba(0, 0, 0, 0) url("../images/hd-bg.gif") no-repeat scroll right center;
+    color: #ff464e;
+    float: left;
+    font-family: "微软雅黑", "宋体";
+    font-size: 16px;
+    margin-right: 10px;
+    padding-right: 20px;
+}
+
+.login-content .title span.tips {
+    color: #666;
+    float: left;
+    margin-top: 3px;
+}
+
+.login-main .other {
+    color: #999;
+    float: right;
+    font-size: 14px;
+}
+
+.login-center {
+    height: auto;
+    overflow: hidden;
+    padding: 30px 80px 60px 80px;
+}
+
+.login-center .login-tel {
+    width: 450px;
+    overflow: hidden
+}
+
+.login-center .login-tel ul {
+    overflow: hidden;
+}
+
+.login-center .login-tel li {
+    overflow: hidden;
+
+}
+
+.login-center .normal {
+    display: inline;
+    float: left;
+    font-size: 16px;
+    height: 20px;
+    margin-top: 8px;
+    text-align: right;
+    width: 80px;
+    line-height: 28px;
+}
+
+.login-center .login_border {
+    margin-bottom: 30px;
+    float: left;
+    width: 255px;
+    border: 1px solid #bbb;
+    display: inline;
+}
+
+.login-center .login_border img {
+    width: 46px
+}
+
+.login-center .login_border input {
+    padding: 12px 0 11px 5px;
+
+    margin-right: 5px;
+}
+
+.login-center .box_border {
+    margin-bottom: 30px;
+    float: left;
+}
+
+.login-center .box_border img {
+    width: 46px
+}
+
+.login-center .box_border input {
+    padding: 12px 0 11px 5px;
+    width: 255px;
+    border: 1px solid #bbb;
+    display: inline;
+    margin-right: 5px;
+}
+
+.login-center .loginbtn {
+    float: left;
+
+}
+
+.login-center .login-tel .chex-d {
+    height: 20px;
+    padding-bottom: 8px;
+}
+
+.login-center .login-tel .ck {
+    margin-right: 5px;
+    display: inline;
+    float: left;
+}
+
+.login-center .login-tel .sub {
+    background: #F65150;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 16px;
+    height: 40px;
+    width: 255px;
+    margin-top: 10px;
+}
+
+.login-l-img {
+    overflow: hidden;
+    text-align: right;
+    width: 358px !important;
+}
+
+.foot-tips {
+    margin: 40px auto;
+    text-align: center;
+    width: 900px;
+}
+
+.code-input {
+    width: 130px;
+    border: 1px solid #c6c6c6;
+    color: #666;
+    float: left;
+
+    line-height: 14px;
+    padding: 12px 0 12px 10px;
+    height: 38px;
+
+}
+
+.verification-code {
+    float: left;
+    height: 40px;
+    margin-left: 10px;
+    width: 110px;
+}
+
+.login-center .forget-n {
+    width: 540px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.login-center .forget-n ul {
+}
+
+.login-center .forget-n li {
+    overflow: hidden
+}
+
+.login-center .forget-n .sub {
+    background: #F65150;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 16px;
+    height: 40px;
+    width: 255px;
+    margin-top: 30px;
+}
+
+.login-center .forget {
+    width: 180px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.login-center .forget ul {
+}
+
+.login-center .forget li {
+    overflow: hidden
+}
+
+.login-center .forget .sub {
+    background: #F65150;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 16px;
+    height: 40px;
+    width: 280px;
+    margin-top: 50px;
+}
+
+.banner {
+    width: 100%;
+    height: 420px;
+    overflow: hidden;
+
+}
+
+.sections, .section {
+    height: 420px;
+    cursor: pointer;
+}
+
+.banner, .sections {
+    position: relative;
+}
+
+.section {
+    background-color: #000;
+    background-size: cover;
+    background-position: 50% 50%;
+    text-align: center;
+    color: white;
+}
+
+.section0 {
+    background-image: url('../images/1.jpg');
+}
+
+.section1 {
+    background-image: url('../images/2.jpg');
+}
+
+.section2 {
+    background-image: url('../images/3.jpg');
+}
+
+.section3 {
+    background-image: url('../images/4.jpg');
+}
+
+.sale {
+    border: 1px solid #dfdfdf;
+    background: #fff;
+    overflow: hidden;
+    padding: 25px 0 0 25px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.sale ul {
+    width: 561px;
+    height: 310px;
+    overflow: hidden;
+    float: left;
+    margin: 0 25px 20px 0
+}
+
+.sale ul img {
+    width: 561px;
+    height: 251px;
+}
+
+.sale li {
+    line-height: 60px;
+    overflow: hidden;
+}
+
+.sale .f30 {
+    padding: 0 30px 0 15px;
+    font-size: 30px;
+    color: #F65150;
+    font-weight: bold;
+}
+
+.sale .f20 {
+    font-size: 20px;
+}
+
+.sale .f16 {
+    font-size: 16px;
+}
+
+.sale .f12 {
+    padding: 3px 15px 0 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.sale ul:last-child {
+    margin-right: 0;
+}
+
+.goodlist {
+    overflow: hidden;
+}
+
+.goodlist p {
+    margin: 0;
+}
+
+.goodlist .page {
+    line-height: 60px;
+    width: 100%;
+    height: 60px
+}
+
+.goodlist .page a {
+    color: #666666;
+    padding: 0 20px 0 0;
+    display: block;
+    float: left;
+    font-size: 14px;
+}
+
+.goodlist .page .curr {
+    color: #F65150
+}
+
+.goodlist .pic {
+    overflow: hidden;
+}
+
+.goodlist .pic ul {
+    overflow: hidden;
+    margin-right: -12px;
+}
+
+.goodlist .pic li {
+    overflow: hidden;
+    width: 285px;
+    height: 380px;
+    margin: 0 18px 18px 0;
+    float: left;
+    background: #fff;
+}
+
+.goodlist .pic li img {
+    width: 285px;
+    height: 285px;
+}
+
+.goodlist .pic .f40 {
+    padding-left: 5px;
+    font-size: 40px;
+    color: #F65150;
+    margin-right: 10px;
+    font-family: "Arial"
+}
+
+.goodlist .pic .f14 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    padding: 10px 0 0 7px;
+    color: #333;
+}
+
+.goodlist .pic .f12 {
+    color: #999;
+    font-size: 12px;
+    padding: 28px 10px 0 0
+}
+
+.goodlist .pic em {
+    font-family: "微软雅黑", "verdana";
+    font-size: 14px;
+    margin-left: 1px;
+    vertical-align: 1px;
+}
+
+.goodlist .pic .price-old {
+    color: #bbb;
+    font-size: 14px;
+    text-decoration: line-through;
+}
+
+.goodlist .pic li a {
+    text-decoration: none
+}
+
+.newpic {
+    margin: 50px 0 30px 0
+}
+
+.newicon {
+    z-index: 9999;
+    display: block;
+    width: 242px;
+    background: #fff;
+    position: absolute;
+    top: 171px;
+    height: 420px;
+}
+
+.newicon ul {
+    padding: 10px;
+    overflow: hidden;
+}
+
+.newicon li {
+    text-align: center;
+    border-bottom: 1px dashed #dfdfdf;
+    overflow: hidden
+}
+
+.newicon .kh {
+    text-align: center
+}
+
+.newicon a {
+    color: #353535;
+    text-decoration: none;
+    font-size: 15px;
+    display: block;
+    float: left;
+    line-height: 66px;
+    height: 66px;
+    width: 105px;
+    padding-left: 38px;
+
+}
+
+.newicon a:hover {
+    color: #F65150;
+}
+
+.newicon a.s1 {
+    background: url("../images/nz.png") no-repeat;
+    background-position: 16px 18px;
+}
+
+.newicon a.s1:hover {
+    background: url("../images/nz.png") no-repeat;
+    background-position: 16px -53px;
+}
+
+.newicon a.s2 {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -78px 18px;
+}
+
+.newicon a.s2:hover {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -78px -53px;
+}
+
+.newicon a.s3 {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -169px 17px;
+}
+
+.newicon a.s3:hover {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -169px -54px;
+}
+
+.newicon a.s4 {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -263px 17px;
+}
+
+.newicon a.s4:hover {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -263px -54px;
+}
+
+.newicon a.s5 {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -355px 16px;
+}
+
+.newicon a.s5:hover {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -355px -55px;
+}
+
+.newicon a.s6 {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -449px 17px;
+}
+
+.newicon a.s6:hover {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -449px -54px;
+}
+
+.newicon a.s7 {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -542px 17px;
+}
+
+.newicon a.s7:hover {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -542px -54px;
+}
+
+.newicon a.s8 {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -637px 17px;
+}
+
+.newicon a.s8:hover {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -637px -54px;
+}
+
+.newicon a.s9 {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -728px 18px;
+}
+
+.newicon a.s9:hover {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -728px -53px;
+}
+
+.newicon a.s10 {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -822px 18px;
+}
+
+.newicon a.s10:hover {
+    background: url("../images/nz.png") no-repeat;
+    background-position: -822px -53px;
+}
+
+.newicon .f12 {
+    color: #dfdfdf;
+    line-height: 66px;
+}
+
+.link {
+    line-height: 60px
+}
+
+.link p {
+    margin: 0;
+}
+
+.link a {
+    font-size: 14px;
+    color: #666
+}
+
+.goods_show {
+    padding: 40px;
+    background: #fff;
+    overflow: hidden;
+}
+
+/*产品详情图片轮播*/
+.goods-pic {
+    float: left;
+    overflow: hidden;
+    margin-right: 70px
+}
+
+.ban {
+    width: 450px;
+    height: 580px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.ban2 {
+    height: 450px;
+    width: 450px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ban2 ul {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.ban2 ul li {
+    width: 450px;
+    height: 450px
+}
+
+.ban2 ul li img {
+    width: 450px;
+    height: 450px
+}
+
+.prev {
+    float: left;
+    cursor: pointer;
+}
+
+.num {
+    height: 86px;
+    overflow: hidden;
+    width: 450px;
+    position: relative;
+    float: left;
+}
+
+.min_pic {
+    padding-top: 10px;
+    width: 500px;
+}
+
+.num ul {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.num ul li {
+    width: 86px;
+    height: 86px;
+    margin-right: 5px;
+    padding: 1px;
+}
+
+.num ul li img {
+    width: 84px;
+    height: 84px;
+}
+
+.num ul li.on {
+    border: 1px solid red;
+    padding: 0;
+}
+
+.mhc {
+    background: #000;
+    width: 100%;
+    opacity: 0.5;
+    -moz-opacity: 0.5;
+    filter: alpha(Opacity=50);
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+}
+
+.pop_up {
+    padding: 10px;
+    background: #fff;
+    position: fixed;
+    -position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -255px;
+    margin-top: -255px;
+    display: none;
+    z-index: 99;
+}
+
+.pop_up_xx {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: -40px;
+    right: 0;
+    cursor: pointer;
+}
+
+.pop_up2 {
+    width: 500px;
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+}
+
+.pop_up2 {
+    width: 500px;
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+    float: left;
+}
+
+.pop_up2 ul {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.pop_up2 ul li {
+    width: 500px;
+    height: 500px;
+    float: left;
+}
+
+.goods-warp {
+    float: left;
+    overflow: hidden;
+    width: 600px;
+}
+
+.goods-warp h1 {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold
+}
+
+.sector-info {
+    border-bottom: 1px solid #dfdfdf;
+    padding: 0 0 10px 0
+}
+
+.sector-info em {
+    font-size: 20px;
+    color: #F65150
+}
+
+.sector-info .price {
+    font-size: 60px;
+    color: #F65150
+}
+
+.sector-info .price-old {
+    color: #bbb;
+    font-size: 20px;
+    text-decoration: line-through;
+    margin-left: 20px;
+}
+
+.sector-info .price-old em {
+    color: #bbb;
+    font-size: 20px;
+}
+
+.freight {
+    display: block;
+    float: left;
+    width: 70px;
+    color: #999
+}
+
+.sector-info i {
+    background: #F65150;
+    color: #fff;
+    font-size: 13px;
+    padding: 3px 8px;
+    margin-left: 20px
+}
+
+.J-other {
+    padding: 30px 0;
+}
+
+.J-other a {
+    text-decoration: none
+}
+
+.J-other dl {
+    overflow: hidden;
+}
+
+.J-other dd {
+    line-height: 60px
+}
+
+.J-other dd img {
+    width: 40px;
+    height: 40px
+}
+
+.J-other dd.cm {
+    float: left;
+    margin: 10px 0 0 0;
+}
+
+.J-other dd.cm a {
+    text-decoration: none;
+    float: left;
+    text-align: center;
+    display: block;
+    width: 80px;
+    line-height: 40px;
+    border: 1px solid #dfdfdf;
+    background: #fff;
+    font-size: 14px;
+    color: #333;
+    margin-right: 10px;
+}
+
+.J-other dt {
+    display: block;
+    float: left;
+    width: 70px;
+    color: #999;
+    line-height: 60px
+}
+
+.J-other dd.cm a:hover {
+    border: 1px solid #F65150;
+}
+
+.J-other .number {
+    margin: 15px 0 0 0
+}
+
+.J-other .number input {
+    float: left;
+    text-align: center;
+    width: 50px;
+    border: 1px solid #ddd;
+    height: 32px;
+}
+
+.J-other .number img {
+    float: left;
+    width: 36px;
+    height: 32px;
+}
+
+.J-other .number .add {
+    margin-right: 15px;
+}
+
+.J-other .buy {
+    float: left;
+    margin-top: 50px
+}
+
+.J-other .buy a {
+    text-decoration: none;
+    display: block;
+    width: 260px;
+    text-align: center;
+    color: #fff;
+    line-height: 52px;
+    background: #F65150;
+    font-size: 22px;
+}
+
+.J-other .f16 {
+    color: #F65150;
+    font-size: 18px;
+    margin: -14px 0 0 0;
+}
+
+.details {
+    background: #fff;
+    text-align: center;
+}
+
+.details .navtab {
+    margin-bottom: 30px;
+    background: #f3f3f3;
+    line-height: 46px;
+    height: 46px;
+    border-top: 1px solid #dfdfdf;
+}
+
+.details .navtab ul {
+    line-height: 46px;
+}
+
+.details .navtab li {
+    border-left: 1px solid #dfdfdf;
+    font-size: 16px;
+    text-align: center;
+    width: 160px;
+    float: left;
+}
+
+.details .curr {
+    background: #fff;
+    border-bottom: 2px solid #F65150;
+    height: 45px;
+}
+
+.total {
+    color: #F65150;
+    margin-left: 10px
+}
+
+.navlist {
+    background: #fff;
+    line-height: 52px;
+    margin-bottom: 30px
+}
+
+.navlist a {
+    display: block;
+    float: left;
+    padding: 0 20px;
+    color: #666;
+}
+
+.hotgoods {
+}
+
+.hotgoods ul {
+    zoom: 1;
+    overflow: hidden;
+    margin-right: -30px
+}
+
+.hotgoods li {
+    overflow: hidden;
+    margin: 0 18px 18px 0;
+    background: #fff;
+    float: left;
+    position: relative;
+    width: 285px;
+    height: 380px;
+}
+
+.hotgoods li img {
+    width: 285px;
+    height: 285px;
+}
+
+.hotgoods li .f40 {
+    padding-left: 13px;
+    font-size: 40px;
+    color: #F65150;
+    margin-right: 10px;
+    font-family: "Arial";
+}
+
+.hotgoods li .f14 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    padding: 15px 0 0 13px;
+}
+
+.hotgoods li p {
+    margin: 0;
+}
+.hotgoods li .f16 {
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+.hotgoods li .f12 {
+    color: #999;
+    font-size: 12px;
+    padding: 28px 15px 0 0;
+}
+
+.hotgoods li em {
+    font-family: "微软雅黑", "verdana";
+    font-size: 14px;
+    margin-left: 1px;
+    vertical-align: 1px;
+}
+
+.hotgoods li .price-old {
+    color: #bbb;
+    font-size: 14px;
+    text-decoration: line-through;
+}
+
+.hot-i {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.hot-i img {
+    width: 56px !important;
+    height: 56px !important
+}
+
+.hot-t {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.hot-t img {
+    width: 56px !important;
+    height: 56px !important
+}
+
+.wap-show {
+    background: url(../images/showbg.png);
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    z-index: 100;
+    display: none;
+}
+
+.show-t {
+    margin: 0 auto;
+    background: #fff;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    margin-left: -23%;
+    margin-top: -166px;
+    z-index: 111;
+    display: none;
+    width: 580px;
+}
+
+.show-t h1 {
+    background: #f6f6f6;
+    padding-left: 10px;
+    height: 40px;
+    font-size: 16px;
+    line-height: 40px;
+    margin: 0;
+}
+.show-t .close {
+    display: block;
+    float: right;
+    font-size: 0;
+    background: url(../images/chacha3.png) no-repeat;
+    width: 40px;
+    height: 40px;
+}
+
+.show-t .pay {
+    padding: 0 30px;
+    background: #fff;
+    overflow: hidden
+}
+
+.show-t ul {
+    float: left;
+    margin: 10px 30px 30px 30px
+}
+
+.show-t ul h2 {
+    font-size: 16px;
+    color: #333;
+    line-height: 40px;
+    text-align: center
+}
+.show-t .wx {
+    padding: 15px;
+    display: block;
+    overflow: hidden;
+    float: left;
+    width: 200px;
+    height: 218px;
+    border: 15px solid #f0b42c;
+    background: #fff;
+
+}
+
+.show-t .wx li {
+    text-align: center;
+    background: #fff;
+    width: 180px;
+    height: 180px;
+}
+
+.show-t .wx h3 {
+    text-align: center;
+    color: #db9b17;
+    font-size: 14px;
+    margin: 0;
+    padding-top: 2px
+}
+.show-t .zfb {
+    padding: 15px;
+    display: block;
+    overflow: hidden;
+    float: left;
+    width: 200px;
+    height: 218px;
+    border: 15px solid #73ad83;
+    background: #fff;
+
+}
+
+.show-t .zfb li {
+    text-align: center;
+    background: #fff;
+    width: 180px;
+    height: 180px;
+}
+
+.show-t .zfb h3 {
+    text-align: center;
+    color: #448653;
+    font-size: 14px;
+    margin: 0;
+    padding-top: 2px
+}
+
+.show-t .cl {
+    padding: 33px;
+    overflow: hidden
+}
+
+.show-t .cl img {
+    width: 330px;
+    height: 75px;
+}
+.footer {
+    background: #eee;
+    border-top: 1px solid #dfdfdf;
+    padding: 15px 0;
+    color: #999;
+    overflow: hidden
+}
+
+.footer img {
+    float: left;
+    margin: 0 20px 0 0
+}
+
+.footer .txt {
+    color: #999;
+    font-size: 18px;
+    float: left;
+    line-height: 50px
+}
+
+.footer .gat {
+    font-size: 14px;
+    margin-left: 10px;
+    line-height: 50px
+}
+
+.footer .gat img {
+    margin: 16px -20px 0 20px;
+    width: 20px;
+    height: 20px
+}
+
+.m-bottom {
+    margin-top: 30px
+}
+
+.error {
+    color: red;
+}
