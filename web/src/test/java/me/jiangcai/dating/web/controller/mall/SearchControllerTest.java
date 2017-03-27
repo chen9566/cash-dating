@@ -9,6 +9,7 @@ import me.jiangcai.dating.page.mall.SearchPage;
 import me.jiangcai.dating.repository.mall.FakeGoodsRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,8 +18,16 @@ import java.util.List;
  * @author CJ
  */
 public class SearchControllerTest extends WebTest {
+
     @Autowired
     private FakeGoodsRepository fakeGoodsRepository;
+
+    protected void createWebDriver() {
+        driver = MockMvcHtmlUnitDriverBuilder
+                .mockMvcSetup(mockMvc)
+                // DIY by interface.
+                .build();
+    }
 
     @Test
     public void home() throws Exception {

@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
             if (user == null)
                 user = newUser(openId, request);
         }
-        if (inviteCode != null) {
+        if (!StringUtils.isEmpty(inviteCode)) {
             User from = userRepository.findByInviteCode(inviteCode);
             applyGuide(user, from);
         }

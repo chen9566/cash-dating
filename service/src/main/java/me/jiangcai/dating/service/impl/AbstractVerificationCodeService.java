@@ -10,6 +10,7 @@ import me.jiangcai.lib.notice.Content;
 import me.jiangcai.lib.notice.To;
 import me.jiangcai.lib.notice.exception.NoticeException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 
 import java.time.LocalDateTime;
 
@@ -18,8 +19,14 @@ import java.time.LocalDateTime;
  */
 public abstract class AbstractVerificationCodeService implements VerificationCodeService {
 
+    private final VerificationCodeRepository verificationCodeRepository;
+    private final Environment environment;
+
     @Autowired
-    private VerificationCodeRepository verificationCodeRepository;
+    public AbstractVerificationCodeService(VerificationCodeRepository verificationCodeRepository, Environment environment) {
+        this.verificationCodeRepository = verificationCodeRepository;
+        this.environment = environment;
+    }
 
     @Override
     public void verify(String mobile, String code, VerificationType type) throws IllegalVerificationCodeException {
@@ -41,7 +48,8 @@ public abstract class AbstractVerificationCodeService implements VerificationCod
         VerificationCode verificationCode = verificationCodeRepository.findOne(new VerificationCodePK(mobile, type));
         if (verificationCode != null) {
             // c < d - 10 + 1
-            if (LocalDateTime.now().isBefore(verificationCode.getCodeExpireTime().minusMinutes(9)))
+            if (!environment.acceptsProfiles("test")
+                    && LocalDateTime.now().isBefore(verificationCode.getCodeExpireTime().minusMinutes(9)))
                 throw new IllegalStateException("短时间内不可以重复发送。");
         } else {
             verificationCode = new VerificationCode();

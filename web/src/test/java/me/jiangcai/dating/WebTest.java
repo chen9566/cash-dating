@@ -136,10 +136,10 @@ public abstract class WebTest extends ServiceBaseTest {
             page.setTestInstance(this);
             page.validatePage();
             return page;
-        } catch (RuntimeException ex) {
-            System.out.println(driver.getCurrentUrl());
-            System.out.println(driver.getPageSource());
-            throw ex;
+        } catch (AssertionError | RuntimeException error) {
+            System.err.println(driver.getCurrentUrl());
+            System.err.println(driver.getPageSource());
+            throw error;
         }
     }
 
@@ -264,6 +264,10 @@ public abstract class WebTest extends ServiceBaseTest {
         return helloNewUser(defaultStartUrl, invite, withBindingCard);
     }
 
+    protected User helloNewUser(User invite, boolean withBindingCard, String mobile) throws IOException {
+        return helloNewUser(defaultStartUrl, invite, withBindingCard, mobile);
+    }
+
     /**
      * 磨磨唧唧的建立一个新用户
      *
@@ -273,7 +277,11 @@ public abstract class WebTest extends ServiceBaseTest {
      * @throws IOException
      */
     protected User helloNewUser(String startUrl, User invite, boolean withBindingCard) throws IOException {
-        String mobile = helloMobile(startUrl, invite);
+        return helloNewUser(startUrl, invite, withBindingCard, null);
+    }
+
+    protected User helloNewUser(String startUrl, User invite, boolean withBindingCard, String mobile) throws IOException {
+        mobile = helloMobile(startUrl, invite, mobile);
 
         // 应该到了下一个页面了
 
@@ -336,10 +344,15 @@ public abstract class WebTest extends ServiceBaseTest {
      * @return
      */
     protected String helloMobile(String startUrl, User invite) {
+        return helloMobile(startUrl, invite, null);
+    }
+
+    protected String helloMobile(String startUrl, User invite, String mobile) {
+        if (mobile == null)
+            mobile = randomMobile();
         if (startUrl == null)
             startUrl = defaultStartUrl;
         driver.get(startUrl);
-        String mobile = randomMobile();
         BindingMobilePage page = initPage(BindingMobilePage.class);
 
         page.submitWithNothing();

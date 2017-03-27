@@ -3,6 +3,7 @@ package me.jiangcai.dating;
 import me.jiangcai.chanpay.test.ChanpayTestSpringConfig;
 import me.jiangcai.chrone.test.ChroneTestConfig;
 import me.jiangcai.dating.model.VerificationType;
+import me.jiangcai.dating.repository.VerificationCodeRepository;
 import me.jiangcai.dating.service.BankService;
 import me.jiangcai.dating.service.ChanpayService;
 import me.jiangcai.dating.service.VerificationCodeService;
@@ -36,6 +37,8 @@ public class TestConfig {
     @Autowired
     private Environment environment;
     @Autowired
+    private VerificationCodeRepository verificationCodeRepository;
+    @Autowired
     private BankService bankService;
 
 //    @Bean
@@ -66,7 +69,7 @@ public class TestConfig {
     @Primary
     public VerificationCodeService verificationCodeService() {
         // 1234 always work
-        return new AbstractVerificationCodeService() {
+        return new AbstractVerificationCodeService(verificationCodeRepository, environment) {
             @Override
             protected void send(To to, Content content) throws NoticeException {
                 System.err.println("Send Code " + content.asText() + " to " + to.mobilePhone());
