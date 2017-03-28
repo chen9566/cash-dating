@@ -59,7 +59,8 @@
 <div class="w1200">
     <div class="hotgoods _goodsList">
         <ul>
-            <li class="clickHref" href="details.html" th:each="goods:${goodsList}">
+            <li class="clickHref" href="details.html" th:each="goods:${goodsList}"
+                th:href="@{/mall/{id}(id=${goods.id})}">
                 <div class="hot-i" th:if="${goods.hot || goods.special}">
                     <img th:if="${goods.hot}" src="images/hoticon.png"/>
                     <img th:if="${goods.special}" src="images/saleicon.png"/>
