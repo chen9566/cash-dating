@@ -528,7 +528,7 @@ button, input, select, textarea {
     white-space: nowrap;
     text-overflow: ellipsis;
     font-size: 14px;
-    padding: 10px 0 0 7px;
+    padding: 10px 7px 0 7px;
     color: #333;
 }
 
@@ -1089,7 +1089,7 @@ button, input, select, textarea {
 }
 
 .hotgoods li .f40 {
-    padding-left: 13px;
+    padding-left: 7px;
     font-size: 40px;
     color: #F65150;
     margin-right: 10px;
@@ -1101,7 +1101,7 @@ button, input, select, textarea {
     white-space: nowrap;
     text-overflow: ellipsis;
     font-size: 13px;
-    padding: 15px 0 0 13px;
+    padding: 15px 6px 0 7px;
 }
 
 .hotgoods li p {
