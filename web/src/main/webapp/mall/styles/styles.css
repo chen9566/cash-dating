@@ -1164,13 +1164,10 @@ button, input, select, textarea {
 }
 
 .show-t {
-    margin: 0 auto;
+    margin: 0 34%;
     background: #fff;
     position: fixed;
-    top: 40%;
-    left: 50%;
-    margin-left: -23%;
-    margin-top: -166px;
+    top:24%;
     z-index: 111;
     display: none;
     width: 580px;
