@@ -106,4 +106,9 @@ public class IndexController {
         return "/mall/login.html";
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/paySuccess")
+    public String paySuccess() {
+        return "/mall/paySuccess.html";
+    }
+
 }

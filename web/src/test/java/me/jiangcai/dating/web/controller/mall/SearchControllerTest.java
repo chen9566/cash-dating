@@ -2,12 +2,14 @@ package me.jiangcai.dating.web.controller.mall;
 
 import me.jiangcai.dating.entity.sale.FakeGoods;
 import me.jiangcai.dating.entity.sale.support.FakeCategory;
+import me.jiangcai.dating.page.ShowOrderPage;
 import me.jiangcai.dating.page.mall.FakeGoodsDetailPage;
 import me.jiangcai.dating.page.mall.IndexPage;
 import me.jiangcai.dating.page.mall.LoginPage;
 import me.jiangcai.dating.page.mall.SearchPage;
 import me.jiangcai.dating.repository.mall.FakeGoodsRepository;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
 
@@ -46,10 +48,15 @@ public class SearchControllerTest extends AbstractMallTest {
         detailPage.reloadPageInfo();
 
         String url = detailPage.clickBuy();
-
+        System.out.println(url);
         // 现在使用另一个driver 扫码支付 这个扫码支付应该是没有被保护
 //        ShowOrderPage
 
+        WebDriver wxDriver = createMicroMessengerDriver();
+        wxDriver.get(url);
+        ShowOrderPage showOrderPage = initPage(ShowOrderPage.class, wxDriver);
+        showOrderPage.pay();
+        System.out.println(wxDriver.getPageSource());
     }
 
     @Test

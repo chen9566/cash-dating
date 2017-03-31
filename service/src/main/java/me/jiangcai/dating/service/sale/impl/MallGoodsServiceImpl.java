@@ -4,11 +4,13 @@ import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashGoods;
 import me.jiangcai.dating.entity.sale.CashTrade;
 import me.jiangcai.dating.entity.sale.FakeGoods;
+import me.jiangcai.dating.entity.sale.FakeTrade;
 import me.jiangcai.dating.entity.sale.TicketBatch;
 import me.jiangcai.dating.entity.sale.TicketCode;
 import me.jiangcai.dating.entity.sale.TicketGoods;
 import me.jiangcai.dating.entity.sale.TicketTrade;
 import me.jiangcai.dating.entity.sale.TicketTradedGoods;
+import me.jiangcai.dating.entity.sale.support.FakeTradedGoods;
 import me.jiangcai.dating.model.TicketInfo;
 import me.jiangcai.dating.repository.sale.CashGoodsRepository;
 import me.jiangcai.dating.repository.sale.CashTradeRepository;
@@ -142,6 +144,8 @@ public class MallGoodsServiceImpl implements MallGoodsService {
     public CashTrade createOrder(User user, CashGoods goods, int count) {
         return (CashTrade) tradeService.createTrade(() -> {
                     if (goods.isTicketGoods()) return new TicketTrade();
+                    if (goods instanceof FakeGoods)
+                        return new FakeTrade();
                     throw new IllegalStateException("暂时不支持" + goods);
                 }, trade -> cashTradeRepository.saveAndFlush((CashTrade) trade)
                 , trade -> cashTradeRepository.getOne(((CashTrade) trade).getId())
@@ -153,6 +157,9 @@ public class MallGoodsServiceImpl implements MallGoodsService {
                         tradedGoods.setCodeSet(new HashSet<>());
                         Stream.of(token).forEach(t -> tradedGoods.getCodeSet().add((TicketCode) t));
                         return tradedGoods;
+                    }
+                    if (goods1 instanceof FakeGoods) {
+                        return new FakeTradedGoods((FakeGoods) goods1, token.length);
                     }
                     throw new IllegalStateException("暂时不支持" + goods1);
                 }

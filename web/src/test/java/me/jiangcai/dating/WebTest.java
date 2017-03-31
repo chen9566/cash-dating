@@ -169,7 +169,11 @@ public abstract class WebTest extends ServiceBaseTest {
 
     @Override
     protected void createWebDriver() {
-        driver = MockMvcHtmlUnitDriverBuilder
+        driver = createMicroMessengerDriver();
+    }
+
+    protected WebDriver createMicroMessengerDriver() {
+        return MockMvcHtmlUnitDriverBuilder
                 .mockMvcSetup(mockMvc)
 //                .useMockMvcForHosts("wxtest.jiangcai.me")
                 .withDelegate(new WebConnectionHtmlUnitDriver() {

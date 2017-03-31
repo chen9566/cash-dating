@@ -3,6 +3,7 @@ package me.jiangcai.dating.service.sale.impl;
 import me.jiangcai.dating.entity.PayOrder;
 import me.jiangcai.dating.entity.User;
 import me.jiangcai.dating.entity.sale.CashTrade;
+import me.jiangcai.dating.entity.sale.FakeTrade;
 import me.jiangcai.dating.entity.sale.TicketCode;
 import me.jiangcai.dating.entity.sale.TicketTrade;
 import me.jiangcai.dating.entity.sale.TicketTradedGoods;
@@ -135,7 +136,7 @@ public class MallTradeServiceImpl implements MallTradeService {
     public Specification<CashTrade> tradeSpecification(User user, TradeStatus type) {
         // 只处理这么几个状态
         return (root, query, cb) -> {
-            Predicate belong = CashTrade.belongUser(user, cb, root);
+            Predicate belong = cb.and(CashTrade.belongUser(user, cb, root), cb.notEqual(root.type(), FakeTrade.class));
             if (type != null)
                 return cb.and(belong, cb.equal(root.get("status"), type));
             // 只受理这么几个状态

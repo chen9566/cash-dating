@@ -3,6 +3,7 @@ package me.jiangcai.dating.entity;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.dating.entity.sale.CashTrade;
+import me.jiangcai.dating.entity.sale.FakeTrade;
 import me.jiangcai.goods.TradedGoods;
 
 import javax.persistence.CascadeType;
@@ -41,8 +42,12 @@ public class PayOrder extends CashOrder {
 
     @Override
     public String getSuccessURI() {
-        if (saleTrade != null)
+        if (saleTrade != null) {
+            if (saleTrade instanceof FakeTrade) {
+                return "/mall/paySuccess";
+            }
             return "/sale/paySuccess?id=" + saleTrade.getId();
+        }
         return null;
     }
 

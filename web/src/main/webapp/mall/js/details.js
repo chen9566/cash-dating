@@ -20,8 +20,8 @@ $(function () {
 
         console.log("click me");
         function showPayQR(data) {
-            $.currentOrderId = data;
             console.log("order info :", data);
+            $.currentOrderId = data;
             $('img[name=payImage]').attr('src', urlShow + "?id=" + data);
             $(".show-t").css({"display": "block"});
             $(".wap-show").css({"display": "block"});
@@ -43,9 +43,10 @@ $(function () {
         }
         $.ajax(url, {
             method: 'get',
-            dataType: 'json',
+            dataType: 'text',
             success: showPayQR,
             error: function () {
+                console.log('error json');
                 location.href = urlLogin;
             }
         });

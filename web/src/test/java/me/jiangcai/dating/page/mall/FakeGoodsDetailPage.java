@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -20,7 +22,7 @@ public class FakeGoodsDetailPage extends AbstractMallPage {
 
     @Override
     public void validatePage() {
-        printThisPage();
+//        printThisPage();
         assertThat(webDriver.findElement(By.tagName("body")).getAttribute("data-id"))
                 .isNotEmpty();
     }
@@ -30,7 +32,12 @@ public class FakeGoodsDetailPage extends AbstractMallPage {
         return initPage(LoginPage.class);
     }
 
-    public String clickBuy() {
-        return null;
+    public String clickBuy() throws InterruptedException, IOException {
+        buyButton.click();
+
+        Thread.sleep(500);
+
+        WebElement image = webDriver.findElements(By.name("payImage")).get(0);
+        return getQRCodeService().scanImage(toImage(image));
     }
 }
