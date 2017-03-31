@@ -18,7 +18,7 @@ public class BuyItController {
     @Autowired
     private FakeGoodsRepository fakeGoodsRepository;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{goodsId}")
+    @RequestMapping(method = RequestMethod.GET, value = "/{goodsId}.goods")
     public String detail(@PathVariable("goodsId") long goodsId, Model model) {
         model.addAttribute("goods", fakeGoodsRepository.getOne(goodsId));
         return "/mall/details.html";

@@ -76,7 +76,7 @@
 </div>
 <div class="w1200" th:if="${!specialList.isEmpty()}">
     <div class="sale">
-        <ul th:each="goods:${specialList}" href="details.html" th:href="@{/mall/{id}(id=${goods.id})}"
+        <ul th:each="goods:${specialList}" href="details.html" th:href="@{/mall/{id}.goods(id=${goods.id})}"
             class="clickHref">
             <li><img src="images/14885394034747.jpeg" res:src="${goods.freshlyGoodsImage.defaultImage.resourcePath}"/>
             </li>
@@ -111,7 +111,7 @@
         <div class="pic _goodsList">
             <ul>
                 <li href="details.html" class="clickHref" th:each="goods:${goodsList}"
-                    th:href="@{/mall/{id}(id=${goods.id})}">
+                    th:href="@{/mall/{id}.goods(id=${goods.id})}">
                     <p><img src="images/temp.jpeg" res:src="${goods.titleGoodsImage.defaultImage.resourcePath}"/></p>
                     <p class="f14" th:text="${goods.name}">男女士冰丝防晒袖套男女士冰丝防</p>
                     <p>
