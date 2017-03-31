@@ -78,6 +78,7 @@ public class ManageSaleControllerTest extends ManageWebTest {
         assertDataResult(0, fakeGoods, session);
         // 设定它的库存
         final int fakeStock = random.nextInt(200) + 1;
+        final int fakeSales = random.nextInt(200) + 1;
         // 修改商品-- 伪类很简单 直接修改商品就可以设定库存了
         CashGoods goodsData = randomGoodsData();
         FakeCategory fakeCategory = FakeCategory.values()[random.nextInt(FakeCategory.values().length)];
@@ -91,10 +92,13 @@ public class ManageSaleControllerTest extends ManageWebTest {
                 .param("richDetail", goodsData.getRichDetail())
                 .param("price", goodsData.getPrice().toString())
                 .param("stock", String.valueOf(fakeStock))
+                .param("sales", String.valueOf(fakeSales))
                 .param("fakeCategory", fakeCategory.name())
         )
                 .andExpect(status().isFound());
 
+        assertThat(fakeGoodsRepository.getOne(fakeGoods.getId()).getSales())
+                .isEqualTo(fakeSales);
         assertThat(fakeGoodsRepository.getOne(fakeGoods.getId()).getFakeCategory())
                 .isEqualByComparingTo(fakeCategory);
 
