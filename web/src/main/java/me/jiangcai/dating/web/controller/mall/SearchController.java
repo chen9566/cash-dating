@@ -88,7 +88,7 @@ public class SearchController {
         } else if ("expensive".equalsIgnoreCase(order)) {
             sort = new Sort(Sort.Direction.DESC, "price");
         } else {
-            sort = new Sort(Sort.Direction.DESC, "weight");
+            sort = new Sort(Sort.Direction.DESC, "weight").and(new Sort(Sort.Direction.DESC, "createTime"));
         }
         return sort;
     }
