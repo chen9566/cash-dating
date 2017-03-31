@@ -78,7 +78,7 @@
                 <div class="min_pic">
                     <div class="num clearfix" id="ban_num1">
                         <ul>
-                            <li th:each="image:${goods.goodsImages}"><a href="javascript:">
+                            <li th:each="image:${goods.normalGoodsImages}"><a href="javascript:">
                                 <img src="images/s1.jpg" res:src="${image.defaultImage.resourcePath}" alt=""></a></li>
                             <li th:remove="all"><a href="javascript:"><img src="images/s2.jpg" alt=""></a></li>
                             <li th:remove="all"><a href="javascript:"><img src="images/s3.jpg" alt=""></a></li>
@@ -95,7 +95,7 @@
                 <div class="pop_up_xx"><img src="images/chacha3.png" width="40" height="40" alt=""></div>
                 <div class="pop_up2" id="ban_pic2">
                     <ul>
-                        <li th:each="image:${goods.goodsImages}"><a href="javascript:">
+                        <li th:each="image:${goods.normalGoodsImages}"><a href="javascript:">
                             <img src="images/s1.jpg" res:src="${image.defaultImage.resourcePath}" alt=""></a></li>
                         <li th:remove="all"><a href="javascript:"><img src="images/b2.jpg" alt=""></a></li>
                         <li th:remove="all"><a href="javascript:"><img src="images/b3.jpg" alt=""></a></li>
