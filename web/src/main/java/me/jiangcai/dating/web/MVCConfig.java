@@ -126,6 +126,7 @@ class MVCConfig extends WebMvcConfigurerAdapter {
         for (String path : STATIC_RESOURCE_PATHS) {
             registry.addResourceHandler("/" + path + "/**").addResourceLocations("/" + path + "/");
         }
+        registry.addResourceHandler("/mall/favicon.ico").addResourceLocations("/mall/");
 
         registry.addResourceHandler("/agreement*.html").addResourceLocations("/");
         registry.addResourceHandler("/mart/**").addResourceLocations("/mart/");
@@ -138,12 +139,13 @@ class MVCConfig extends WebMvcConfigurerAdapter {
         String[] ignoring;
         int startIndex = 0;
         if (environment.acceptsProfiles("development")) {
-            ignoring = new String[MVCConfig.STATIC_RESOURCE_PATHS.length + 2];
+            ignoring = new String[MVCConfig.STATIC_RESOURCE_PATHS.length + 3];
             ignoring[startIndex++] = "/**/*.html";
             ignoring[startIndex++] = "/mock/**/*";
         } else {
-            ignoring = new String[MVCConfig.STATIC_RESOURCE_PATHS.length];
+            ignoring = new String[MVCConfig.STATIC_RESOURCE_PATHS.length + 1];
         }
+        ignoring[startIndex++] = "/mall/favicon.ico";
         for (String path : MVCConfig.STATIC_RESOURCE_PATHS) {
             ignoring[startIndex++] = "/" + path + "/**/*";
         }
