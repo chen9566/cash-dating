@@ -35,7 +35,7 @@ $(function () {
             },
             validation: {
                 allowedExtensions: ['jpeg', 'jpg', 'png', 'bmp'],
-                itemLimit: 4,
+                itemLimit: 20,
                 sizeLimit: 3 * 1024 * 1024
             },
             session: {

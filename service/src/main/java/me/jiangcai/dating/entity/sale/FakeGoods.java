@@ -3,14 +3,19 @@ package me.jiangcai.dating.entity.sale;
 import lombok.Getter;
 import lombok.Setter;
 import me.jiangcai.dating.entity.sale.support.FakeCategory;
+import me.jiangcai.goods.GoodsImage;
 import me.jiangcai.goods.Seller;
 import me.jiangcai.goods.TradeEntity;
+import me.jiangcai.goods.core.entity.SimpleGoodsImage;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 伪装的商品
@@ -70,4 +75,32 @@ public class FakeGoods extends CashGoods {
     public void setOwner(TradeEntity owner) {
 
     }
+
+    /**
+     * @return 获取新品图片
+     */
+    public GoodsImage getFreshlyGoodsImage() {
+        final List<SimpleGoodsImage> goodsImages = getGoodsImages();
+        if (goodsImages == null)
+            return getTitleGoodsImage();
+        return goodsImages.stream()
+                .filter(this::isFreshlyGoodsImage)
+                .map(simpleGoodsImage -> (GoodsImage) simpleGoodsImage)
+                .findFirst()
+                .orElse(getTitleGoodsImage());
+    }
+
+    private boolean isFreshlyGoodsImage(SimpleGoodsImage simpleGoodsImage) {
+        return simpleGoodsImage.getDescription().contains("新品图片");
+    }
+
+    public List<SimpleGoodsImage> getNormalGoodsImages() {
+        if (getGoodsImages() == null)
+            return Collections.emptyList();
+        return getGoodsImages().stream()
+                .filter(simpleGoodsImage -> !isFreshlyGoodsImage(simpleGoodsImage))
+                .collect(Collectors.toList());
+    }
+
+
 }

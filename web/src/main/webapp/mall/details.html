@@ -65,7 +65,7 @@
             <div class="ban" id="demo1">
                 <div class="ban2" id="ban_pic1">
                     <ul>
-                        <li th:each="image:${goods.goodsImages}">
+                        <li th:each="image:${goods.normalGoodsImages}">
                             <a href="javascript:" class="img1" th:class="${imageStat.index==0?'img1':''}">
                                 <img src="images/b1.jpg" res:src="${image.defaultImage.resourcePath}" alt=""></a>
                         </li>
