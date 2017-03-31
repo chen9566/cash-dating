@@ -33,7 +33,7 @@ abstract class AbstractMallTest extends WebTest {
 
 //        System.out.println(driver.getPageSource());
         // 开始进入登录流程
-        IndexPage indexPage = initPage(IndexPage.class, driver);
+        IndexPage indexPage = initPage(IndexPage.class, mallPage.getWebDriver());
         LoginPage loginPage = indexPage.openLoginPage();
 
         AbstractMallPage successPage = loginPage.loginAs(mobile, password);

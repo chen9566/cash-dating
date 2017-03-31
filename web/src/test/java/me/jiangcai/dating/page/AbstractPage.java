@@ -154,4 +154,8 @@ public abstract class AbstractPage extends me.jiangcai.lib.test.page.AbstractPag
         assertThat(webDriver.getTitle())
                 .isEqualToIgnoringCase(title);
     }
+
+    public WebDriver getWebDriver() {
+        return webDriver;
+    }
 }
