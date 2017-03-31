@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface FakeGoodsRepository extends JpaRepository<FakeGoods, Long>, JpaSpecificationExecutor<FakeGoods> {
 
-    List<FakeGoods> findByDiscountIsNotNullAndEnableTrueAndSpecialTrue();
+    List<FakeGoods> findByDiscountIsNotNullAndEnableTrueAndFreshlyTrue();
 
-    List<FakeGoods> findBySpecialFalseAndEnableTrue(Sort sort);
+    List<FakeGoods> findByFreshlyFalseAndEnableTrue(Sort sort);
 }

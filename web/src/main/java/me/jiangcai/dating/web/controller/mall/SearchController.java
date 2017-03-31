@@ -70,12 +70,12 @@ public class SearchController {
 
         model.addAttribute("order", order);
         // 寻找特卖商品
-        List<FakeGoods> specialList = fakeGoodsRepository.findByDiscountIsNotNullAndEnableTrueAndSpecialTrue();
+        List<FakeGoods> specialList = fakeGoodsRepository.findByDiscountIsNotNullAndEnableTrueAndFreshlyTrue();
         model.addAttribute("specialList", specialList);
         Sort sort = getOrders(order);
 
 
-        model.addAttribute("goodsList", fakeGoodsRepository.findBySpecialFalseAndEnableTrue(sort));
+        model.addAttribute("goodsList", fakeGoodsRepository.findByFreshlyFalseAndEnableTrue(sort));
 
         return "/mall/index.html";
     }
@@ -88,7 +88,7 @@ public class SearchController {
         } else if ("expensive".equalsIgnoreCase(order)) {
             sort = new Sort(Sort.Direction.DESC, "price");
         } else {
-            sort = new Sort(Sort.Direction.DESC, "weight");
+            sort = new Sort(Sort.Direction.DESC, "weight").and(new Sort(Sort.Direction.DESC, "createTime"));
         }
         return sort;
     }
