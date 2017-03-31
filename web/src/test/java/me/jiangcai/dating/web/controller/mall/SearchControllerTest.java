@@ -1,10 +1,10 @@
 package me.jiangcai.dating.web.controller.mall;
 
-import me.jiangcai.dating.WebTest;
 import me.jiangcai.dating.entity.sale.FakeGoods;
 import me.jiangcai.dating.entity.sale.support.FakeCategory;
 import me.jiangcai.dating.page.mall.FakeGoodsDetailPage;
 import me.jiangcai.dating.page.mall.IndexPage;
+import me.jiangcai.dating.page.mall.LoginPage;
 import me.jiangcai.dating.page.mall.SearchPage;
 import me.jiangcai.dating.repository.mall.FakeGoodsRepository;
 import org.junit.Test;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * @author CJ
  */
-public class SearchControllerTest extends WebTest {
+public class SearchControllerTest extends AbstractMallTest {
 
     @Autowired
     private FakeGoodsRepository fakeGoodsRepository;
@@ -27,6 +27,29 @@ public class SearchControllerTest extends WebTest {
                 .mockMvcSetup(mockMvc)
                 // DIY by interface.
                 .build();
+    }
+
+    @Test
+    public void buy() throws Exception {
+        addRandomFakeGoods();
+
+        driver.get("http://localhost/mall/");
+        IndexPage indexPage = initPage(IndexPage.class);
+
+        FakeGoodsDetailPage detailPage = indexPage.openDetailPage(new RandomComparator());
+        // 点击购买 我们需要记录它的cookie
+        LoginPage loginPage = detailPage.clickBuyWithoutLogin();
+
+        String mobile = registerOnMall(null, loginPage);
+
+        // 当前的页面 应该是详情页面
+        detailPage.reloadPageInfo();
+
+        String url = detailPage.clickBuy();
+
+        // 现在使用另一个driver 扫码支付 这个扫码支付应该是没有被保护
+//        ShowOrderPage
+
     }
 
     @Test

@@ -133,6 +133,11 @@ public class PayController {
                 .body(platformId);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/freeOrder/{id}")
+    public String freePay(@PathVariable("id") String id, Model model) throws IOException, SignatureException {
+        return orderInfo(null, id, model);
+    }
+
     /**
      * 打开这个付款二维码展示界面,开放显示
      * 这个页面应该会存在多个效果  比如微信平台的效果和非微信平台的效果
@@ -151,7 +156,7 @@ public class PayController {
             if (!StringUtils.isEmpty(successURI))
                 return "redirect:" + successURI;
             // 看是不是我
-            boolean isMe = order.getOwner().getOpenId().equals(openId);
+            boolean isMe = openId != null && order.getOwner().getOpenId().equals(openId);
 
             LocalDateTime time = order.getPlatformOrderSet().stream()
                     .filter(PlatformOrder::isFinish)

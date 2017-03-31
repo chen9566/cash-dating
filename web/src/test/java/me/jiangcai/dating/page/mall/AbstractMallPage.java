@@ -11,7 +11,7 @@ import org.openqa.selenium.support.FindBy;
 /**
  * @author CJ
  */
-abstract class AbstractMallPage extends AbstractPage {
+public abstract class AbstractMallPage extends AbstractPage {
 
     private static final Log log = LogFactory.getLog(AbstractMallPage.class);
     protected WebElement registerLink;

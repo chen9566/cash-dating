@@ -223,4 +223,5 @@ jq.fn.banqh = function (can) {
         //jq(can.pop_pic).find('ul li').eq(tpqhnum).fadeIn(can.pop_delayTime).siblings('li').fadeOut(can.pop_delayTime);//淡入淡出
     };
 
-}
+};
+

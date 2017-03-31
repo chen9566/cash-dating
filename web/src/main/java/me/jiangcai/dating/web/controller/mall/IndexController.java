@@ -8,12 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * 允许非授权访问的假商城
@@ -76,11 +79,30 @@ public class IndexController {
         return "redirect:/mall/";
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/welcome")
+    public String welcome(HttpSession session) {
+        String mallLastPage = (String) session.getAttribute("mallLastPage");
+        if (!StringUtils.isEmpty(mallLastPage))
+            return "redirect:" + mallLastPage;
+        return index();
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/login")
-    public String login(String type, Model model) {
+    public String login(@RequestHeader(required = false, name = "Referer") String referer, HttpSession session
+            , String type, Model model) {
         if (type != null) {
             model.addAttribute("_error", "用户名或者密码错误");
         }
+
+        if (!StringUtils.isEmpty(referer)) {
+            // 不是 login 不是 注册 不是 passwordAuth
+            if (!referer.contains("login") && !referer.contains("register") && !referer.contains("passwordAuth")
+                    && !referer.endsWith("mall/")
+                    && !referer.endsWith("mall/index")) {
+                session.setAttribute("mallLastPage", referer);
+            }
+        }
+
         return "/mall/login.html";
     }
 

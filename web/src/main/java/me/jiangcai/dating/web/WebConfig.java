@@ -121,6 +121,8 @@ public class WebConfig {
                     // 支付分享的
                     .antMatchers("/inviteQR/**").permitAll()
                     .antMatchers("/orderQRURL").permitAll()
+                    // 来自商城的自由支付订单
+                    .antMatchers("/freeOrder/**").permitAll()
                     .antMatchers("/order/**").permitAll()
                     .antMatchers("/orderCompleted/**").permitAll()
                     // 给他人支付
@@ -143,7 +145,7 @@ public class WebConfig {
 //                .failureHandler()
                     .loginProcessingUrl("/passwordAuth")
                     .loginPage("/login")
-                    .defaultSuccessUrl("/mall/")
+                    .defaultSuccessUrl("/mall/welcome")
                     .failureUrl("/passwordLogin?type=error")
                     .permitAll()
                     .and()

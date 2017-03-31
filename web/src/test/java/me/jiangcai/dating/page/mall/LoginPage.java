@@ -1,8 +1,10 @@
 package me.jiangcai.dating.page.mall;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.springframework.util.StringUtils;
 
 /**
  * 商城登录页面
@@ -26,7 +28,7 @@ public class LoginPage extends AbstractMallPage {
         assertTitle("用户登录");
     }
 
-    public IndexPage loginAs(String mobile, String password) {
+    public AbstractMallPage loginAs(String mobile, String password) {
         this.username.clear();
         this.username.sendKeys(mobile);
 
@@ -34,6 +36,10 @@ public class LoginPage extends AbstractMallPage {
         this.password.sendKeys(password);
 
         this.submitButton.click();
-        return initPage(IndexPage.class);
+
+        if (StringUtils.isEmpty(webDriver.findElement(By.tagName("body")).getAttribute("data-id"))) {
+            return initPage(IndexPage.class);
+        }
+        return initPage(FakeGoodsDetailPage.class);
     }
 }

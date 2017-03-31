@@ -111,7 +111,7 @@ public class CommonAdvice {
         response.setContentType(MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8");
         response.setStatus(suggestion != null ? suggestion : 400);
         try (Writer writer = response.getWriter()) {
-            writer.write(ex.getMessage());
+            writer.write(ex.getMessage() == null ? ex.getClass().toGenericString() : ex.getMessage());
             writer.flush();
         }
 //        response.sendError(400);
